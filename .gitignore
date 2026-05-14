@@ -1,0 +1,31 @@
+# Secrets
+.env
+.env.*
+*.pem
+*.key
+
+# Environnements virtuels
+venv/
+.venv/
+env/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Base locale
+*.db
+*.sqlite3
+
+# Logs
+*.log
+logs/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# IDE
+.vscode/
+.idea/
+

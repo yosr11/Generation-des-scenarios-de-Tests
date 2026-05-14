@@ -1,0 +1,1675 @@
+{
+  "summary": {
+    "total_stories": 49,
+    "stories_evaluated": 46,
+    "stories_no_testable_points": 3,
+    "stories_no_tests": 0,
+    "stories_with_full_coverage": 38,
+    "total_testable_points": 156,
+    "total_covered": 136,
+    "total_not_covered": 20,
+    "global_coverage_rate_percent": 87.18,
+    "threshold_used": 0.4
+  },
+  "details": [
+    {
+      "story_id": "NUXEPM-2416",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 2,
+        "covered": 2,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "Vérifier que les faux positifs sont éliminés",
+            "covered": true,
+            "best_score": 0.667,
+            "best_match": "Valider que les termes de métadonnées spécifiés ne produisent plus de faux posit",
+            "matched_test": "de l'élimination des faux positifs dans la recherche"
+          },
+          {
+            "testable_point": "Vérifier que les métadonnées sont correctement filtrées",
+            "covered": true,
+            "best_score": 0.667,
+            "best_match": "Confirmer que le filtre technique appliqué élimine correctement les métadonnées ",
+            "matched_test": "Validation du filtrage des métadonnées dans la recherche"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "NUXEPM-2377",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 2,
+        "covered": 2,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "vérifier que le gestionnaire peut créer une news pour plusieurs sociétés sans avoir à démultiplier le rôle 4YGESNEW",
+            "covered": true,
+            "best_score": 0.857,
+            "best_match": "Créer une news pour plusieurs sociétés avec un seul rôle 4YGESNEW",
+            "matched_test": "NUXEPM-2377-NOM-001 Création news multisécurité sans démultiplier rôle"
+          },
+          {
+            "testable_point": "vérifier que le rôle 4YGESNEW est attribué correctement pour chaque société",
+            "covered": true,
+            "best_score": 0.667,
+            "best_match": "Rechercher le rôle 4YGESNEW",
+            "matched_test": "NUXEPM-2377-ALT-002 Attribution rôle 4YGESNEW unique"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "NUXEPM-2376",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 3,
+        "covered": 3,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "vérifier que les News sont affichées selon les critères paramétrés",
+            "covered": true,
+            "best_score": 0.6,
+            "best_match": "Paramétrer l'ordre d'affichage des News selon des critères personnalisés",
+            "matched_test": "NUXEPM-2376-ALT-001 Paramétrage ordre d'affichage"
+          },
+          {
+            "testable_point": "vérifier que les annonces sont affichées avant les actualités par défaut",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Valider que les annonces sont affichées avant les actualités par défaut",
+            "matched_test": "NUXEPM-2376-NOM-001 Ordre annonces avant actualités"
+          },
+          {
+            "testable_point": "vérifier que les News sont affichées par ordre de fin de publication par défaut",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Valider que les News sont affichées par ordre de fin de publication par défaut",
+            "matched_test": "NUXEPM-2376-NOM-002 Ordre par date de fin de publication"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "YOU-13659",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 2,
+        "covered": 2,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "Vérifier que le rôle Administrateur est intégré sur QA02",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Valider que le rôle Administrateur des News est correctement intégré sur l'envir",
+            "matched_test": "de l'intégration du rôle Administrateur sur QA02"
+          },
+          {
+            "testable_point": "Vérifier que le rôle QADMIN01/4YOU est fonctionnel",
+            "covered": true,
+            "best_score": 0.75,
+            "best_match": "Le rôle QADMIN01/4YOU est listé dans la configuration système avec les permissio",
+            "matched_test": "de l'intégration du rôle Administrateur sur QA02"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "YOU-13622",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 4,
+        "covered": 2,
+        "not_covered": 2,
+        "coverage_rate_percent": 50.0,
+        "details": [
+          {
+            "testable_point": "Vérifier que l'administrateur peut accéder à l'espace ADMINISTRATEUR",
+            "covered": true,
+            "best_score": 0.667,
+            "best_match": "Accéder à l'espace d'administration des News",
+            "matched_test": "YOU-13622-NOM-001 Accès espace administrateur"
+          },
+          {
+            "testable_point": "Vérifier que l'administrateur peut consulter une News en cliquant sur le bouton en regard de la News",
+            "covered": true,
+            "best_score": 0.75,
+            "best_match": "Clique sur le bouton en regard d'une news",
+            "matched_test": "YOU-13622-NOM-002 Consultation news via popine"
+          },
+          {
+            "testable_point": "Vérifier que l'administrateur peut supprimer des news en cours de publication",
+            "covered": false,
+            "best_score": 0.25,
+            "best_match": "Accéder à l'espace d'administration des News",
+            "matched_test": "YOU-13622-NOM-001 Accès espace administrateur"
+          },
+          {
+            "testable_point": "Vérifier que l'administrateur est informé lorsqu'il supprime des news en cours de publication",
+            "covered": false,
+            "best_score": 0.25,
+            "best_match": "Accéder à l'espace d'administration des News",
+            "matched_test": "YOU-13622-NOM-001 Accès espace administrateur"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "YOU-13618",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 3,
+        "covered": 3,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "vérifier que la langue de connexion est affichée à la création de la News",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Valider que la langue de connexion est affichée par défaut lors de la création d",
+            "matched_test": "YOU-13618-NOM-001 Affichage langue connexion par défaut"
+          },
+          {
+            "testable_point": "vérifier que les zones Titre, Texte, Mot-clé, aperçu et Document d'actualité sont affichées dynamiquement",
+            "covered": true,
+            "best_score": 0.9,
+            "best_match": "Les zones Titre, Texte, Mot-clé, Aperçu et Document d'actualité sont affichées p",
+            "matched_test": "YOU-13618-NOM-003 Affichage dynamique zones traduction"
+          },
+          {
+            "testable_point": "vérifier que la News est affichée dans la langue d'origine si elle n'est pas disponible dans la langue de connexion du lecteur",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "La News est affichée dans la langue d'origine",
+            "matched_test": "YOU-13618-EXC-001 Affichage langue d'origine"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "YOU-13579",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 4,
+        "covered": 4,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "Vérifier que l'accès à l'espace d'administration des News est possible via le menu Burger/Administration/Administration des News",
+            "covered": true,
+            "best_score": 0.857,
+            "best_match": "Accéder à l'espace d'administration des News via le menu Burger",
+            "matched_test": "YOU-13579-NOM-001 Accès espace administration News"
+          },
+          {
+            "testable_point": "Vérifier que l'administrateur peut consulter une News en cliquant sur le bouton en regard de la News",
+            "covered": true,
+            "best_score": 0.5,
+            "best_match": "Sélectionne une News",
+            "matched_test": "YOU-13579-NOM-003 Suppression unitaire News"
+          },
+          {
+            "testable_point": "Vérifier que l'administrateur peut supprimer des news en cours de publication",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Supprimer une News en cours de publication",
+            "matched_test": "YOU-13579-NOM-003 Suppression unitaire News"
+          },
+          {
+            "testable_point": "Vérifier que l'administrateur est informé lorsqu'il supprime des news en cours de publication",
+            "covered": true,
+            "best_score": 0.75,
+            "best_match": "Supprimer une News en cours de publication",
+            "matched_test": "YOU-13579-NOM-003 Suppression unitaire News"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "YOU-13545",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 5,
+        "covered": 4,
+        "not_covered": 1,
+        "coverage_rate_percent": 80.0,
+        "details": [
+          {
+            "testable_point": "vérifier que la popup de consultation de l'actualité s'ouvre",
+            "covered": true,
+            "best_score": 0.75,
+            "best_match": "La popin de consultation de l'actualité s'ouvre",
+            "matched_test": "YOU-13545-NOM-001 Ouvrir popup consultation actualité"
+          },
+          {
+            "testable_point": "vérifier que le document est affiché dans la popup",
+            "covered": true,
+            "best_score": 0.667,
+            "best_match": "Le document est affiché dans le lecteur PDF/image de la popin",
+            "matched_test": "YOU-13545-NOM-003 Consulter document dans lecteur intégré"
+          },
+          {
+            "testable_point": "vérifier que le lien pour ouvrir le document est présent",
+            "covered": true,
+            "best_score": 0.5,
+            "best_match": "Valider l'ouverture du document via le lien dans la popin",
+            "matched_test": "YOU-13545-NOM-002 Ouvrir document via lien"
+          },
+          {
+            "testable_point": "vérifier que le lecteur PDF/image s'ouvre dans la popup",
+            "covered": true,
+            "best_score": 0.6,
+            "best_match": "Valider l'affichage du document dans le lecteur PDF/image de la popin",
+            "matched_test": "YOU-13545-NOM-003 Consulter document dans lecteur intégré"
+          },
+          {
+            "testable_point": "vérifier que l'alternative contextuelle est saisie pour les images porteuses d'information",
+            "covered": false,
+            "best_score": 0.333,
+            "best_match": "Le champ commentaire permet de saisir l'alternative contextuelle",
+            "matched_test": "YOU-13545-EXC-005 Champ commentaire pour image porteuse d'information"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "YOU-13544",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 6,
+        "covered": 3,
+        "not_covered": 3,
+        "coverage_rate_percent": 50.0,
+        "details": [
+          {
+            "testable_point": "Vérifier que les styles de texte sont applicables (Paragraphe, Titre 1, Titre 2...)",
+            "covered": true,
+            "best_score": 0.6,
+            "best_match": "Appliquer un style de texte (Titre 1, Paragraphe)",
+            "matched_test": "YOU-13544-NOM-002 Application d'un style de texte"
+          },
+          {
+            "testable_point": "Vérifier que les modes de mise en forme sont applicables (gras, italique, souligné, barré, indice, exposant)",
+            "covered": true,
+            "best_score": 0.6,
+            "best_match": "Appliquer les styles gras, italique et souligné",
+            "matched_test": "YOU-13544-NOM-003 Mise en forme (gras, italique)"
+          },
+          {
+            "testable_point": "Vérifier que les couleurs sont applicables",
+            "covered": false,
+            "best_score": 0.0,
+            "best_match": "",
+            "matched_test": ""
+          },
+          {
+            "testable_point": "Vérifier que les modes de liste (numéros ou puces) sont applicables",
+            "covered": false,
+            "best_score": 0.333,
+            "best_match": "Sélectionner le texte pour la liste",
+            "matched_test": "YOU-13544-NOM-006 Mode Liste et Tableau"
+          },
+          {
+            "testable_point": "Vérifier que le mode Tableau est applicable",
+            "covered": true,
+            "best_score": 0.5,
+            "best_match": "Créer un tableau",
+            "matched_test": "YOU-13544-NOM-006 Mode Liste et Tableau"
+          },
+          {
+            "testable_point": "Vérifier que la mise en forme est reproduite dans la popin de consultation",
+            "covered": false,
+            "best_score": 0.0,
+            "best_match": "",
+            "matched_test": ""
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "YOU-13543",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 4,
+        "covered": 4,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "Vérifier que l'administrateur peut accéder à l'espace ADMINISTRATEUR",
+            "covered": true,
+            "best_score": 0.667,
+            "best_match": "Accéder à l'espace d'administration des News",
+            "matched_test": "YOU-13543-NOM-001 Accès espace administrateur"
+          },
+          {
+            "testable_point": "Vérifier que l'administrateur peut consulter une News en cliquant sur le bouton en regard de la News",
+            "covered": true,
+            "best_score": 0.667,
+            "best_match": "Consulter les détails d'une News",
+            "matched_test": "YOU-13543-NOM-002 Consultation news via pop-up"
+          },
+          {
+            "testable_point": "Vérifier que l'administrateur peut supprimer des news en cours de publication",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Supprimer une News en cours de publication",
+            "matched_test": "YOU-13543-NOM-003 Suppression individuelle de News"
+          },
+          {
+            "testable_point": "Vérifier que l'administrateur est informé lorsqu'il supprime des news en cours de publication",
+            "covered": true,
+            "best_score": 0.75,
+            "best_match": "Supprimer une News en cours de publication",
+            "matched_test": "YOU-13543-NOM-003 Suppression individuelle de News"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "YOUQA-17070",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 2,
+        "covered": 2,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "Vérifier que la date de fin de publication inclut la journée entière du jour sélectionné",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Valider que la date de fin de publication inclut la journée entière du jour séle",
+            "matched_test": "YOUQA-17070-NOM-001 Validation date de fin incluse"
+          },
+          {
+            "testable_point": "Vérifier que la News est affichée sur la période de publication définie",
+            "covered": true,
+            "best_score": 0.667,
+            "best_match": "Valider la publication de la News",
+            "matched_test": "YOUQA-17070-NOM-001 Validation date de fin incluse"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "YOUQA-17036",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 2,
+        "covered": 2,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "Vérifier que les coches vertes ne sont pas affichées pour les zones Société et Etablissement vides",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Dupliquer une News et vérifier que les zones Société et Etablissement sont vides",
+            "matched_test": "YOUQA-17036-NOM-001 Duplication News - champs Société et Etablissement"
+          },
+          {
+            "testable_point": "Vérifier que les zones Société et Etablissement sont vides après duplication",
+            "covered": true,
+            "best_score": 0.75,
+            "best_match": "Valider les zones Société et Etablissement",
+            "matched_test": "YOUQA-17036-NOM-001 Duplication News - champs Société et Etablissement"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "Nuxepm-2272",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 2,
+        "covered": 2,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "Vérifier que le Carrousel est fermé lorsque l'utilisateur revient sur le SYD après avoir navigué dans l'application",
+            "covered": true,
+            "best_score": 0.5,
+            "best_match": "Valider que le carrousel reste fermé après navigation",
+            "matched_test": "Nuxepm-2272-NOM-001 Persistance Carrousel Fermé"
+          },
+          {
+            "testable_point": "Vérifier que le Carrousel est ouvert lorsque l'utilisateur arrive sur le SYD pour la première fois",
+            "covered": true,
+            "best_score": 0.5,
+            "best_match": "Fermer le Carrousel",
+            "matched_test": "Nuxepm-2272-NOM-001 Persistance Carrousel Fermé"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "Nuxepm-2271",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 2,
+        "covered": 2,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "verifier que la confidentialité de publication d'une News est modifiable après création",
+            "covered": true,
+            "best_score": 0.571,
+            "best_match": "Valider que l'auteur peut modifier la confidentialité d'une News après création",
+            "matched_test": "Nuxepm-2271-NOM-001 Modification confidentialité News par auteur"
+          },
+          {
+            "testable_point": "verifier que la confidentialité de publication d'une News est modifiable uniquement par les acteurs autorisés",
+            "covered": true,
+            "best_score": 0.5,
+            "best_match": "Ouvrir la News",
+            "matched_test": "Nuxepm-2271-NOM-001 Modification confidentialité News par auteur"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "NUXEPM-2154",
+      "status": "no_testable_points",
+      "coverage": null
+    },
+    {
+      "story_id": "NUXEPM-2144",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 2,
+        "covered": 2,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "Vérifier que le mot-clé est affiché sur la 3ème ligne de la News à droite de la date",
+            "covered": true,
+            "best_score": 0.875,
+            "best_match": "Valider l'affichage du mot-clé sur la 3ème ligne à droite de la date dans le car",
+            "matched_test": "NUXEPM-2144-NOM-001 Affichage mot-clé sur carrousel"
+          },
+          {
+            "testable_point": "Vérifier que le mot-clé est correctement associé à la News",
+            "covered": true,
+            "best_score": 0.6,
+            "best_match": "Valider l'affichage du mot-clé sur la 3ème ligne à droite de la date dans le car",
+            "matched_test": "NUXEPM-2144-NOM-001 Affichage mot-clé sur carrousel"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "NUXEPM-2143",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 3,
+        "covered": 3,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "vérifier que la zone 'Mot-clé' est présente",
+            "covered": true,
+            "best_score": 0.75,
+            "best_match": "Valider la position de la zone 'Mot-clé' dans l'interface",
+            "matched_test": "NUXEPM-2143-NOM-001 Affichage zone Mot-clé"
+          },
+          {
+            "testable_point": "vérifier que la liste des mots-clés est affichée",
+            "covered": true,
+            "best_score": 0.75,
+            "best_match": "Valider l'affichage de la liste des mots-clés configurés",
+            "matched_test": "NUXEPM-2143-NOM-002 Affichage liste mots-clés"
+          },
+          {
+            "testable_point": "vérifier que l'auteur peut sélectionner un ou plusieurs mots-clés",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Sélectionner",
+            "matched_test": "NUXEPM-2143-NOM-003 Sélection mots-clés"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "NUXEPM-2137",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 2,
+        "covered": 2,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "La recherche s'effectue via la zone de recherche disponible au-dessus du tableau listant les News",
+            "covered": true,
+            "best_score": 0.833,
+            "best_match": "La zone de recherche est visible au-dessus du tableau des News",
+            "matched_test": "NUXEPM-2137-NOM-001 présence zone recherche News"
+          },
+          {
+            "testable_point": "Les News liées au mot-clé sont affichées dans le tableau des News",
+            "covered": true,
+            "best_score": 0.667,
+            "best_match": "Le tableau des News affiche uniquement les News contenant le mot-clé 'Formation'",
+            "matched_test": "NUXEPM-2137-NOM-002 Filtrage News par mot-clé valide"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "YOU-13091",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 5,
+        "covered": 5,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "vérifier que l'administrateur peut créer un mot-clé",
+            "covered": true,
+            "best_score": 0.75,
+            "best_match": "Créer un nouveau mot-clé de News",
+            "matched_test": "YOU-13091-NOM-001 Créer un mot-clé de News"
+          },
+          {
+            "testable_point": "vérifier que l'administrateur peut mettre à jour un mot-clé",
+            "covered": true,
+            "best_score": 0.6,
+            "best_match": "Le mot-clé mis à jour apparaît dans la liste avec un message de confirmation",
+            "matched_test": "YOU-13091-NOM-002 Mettre à jour un mot-clé de News"
+          },
+          {
+            "testable_point": "vérifier que l'administrateur peut traduire un mot-clé",
+            "covered": true,
+            "best_score": 0.75,
+            "best_match": "Traduire un mot-clé existant",
+            "matched_test": "YOU-13091-NOM-003 Traduire un mot-clé de News"
+          },
+          {
+            "testable_point": "vérifier que l'administrateur peut supprimer un mot-clé",
+            "covered": true,
+            "best_score": 0.75,
+            "best_match": "Supprimer un mot-clé existant",
+            "matched_test": "YOU-13091-NOM-004 Supprimer un mot-clé de News"
+          },
+          {
+            "testable_point": "vérifier que l'administrateur est informé des News utilisant un mot-clé avant de confirmer la modification ou la suppression",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Confirmer la suppression",
+            "matched_test": "YOU-13091-NOM-004 Supprimer un mot-clé de News"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "YOU-13617",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 7,
+        "covered": 4,
+        "not_covered": 3,
+        "coverage_rate_percent": 57.14,
+        "details": [
+          {
+            "testable_point": "Vérifier que les styles de texte sont applicables",
+            "covered": true,
+            "best_score": 0.667,
+            "best_match": "Valider l'application des styles de texte",
+            "matched_test": "YOU-13617-NOM-002 Application des styles de texte"
+          },
+          {
+            "testable_point": "Vérifier que les modes de texte (gras, italique, souligné) sont applicables",
+            "covered": true,
+            "best_score": 0.667,
+            "best_match": "Valider les modes de mise en forme (gras, italique, souligné)",
+            "matched_test": "YOU-13617-NOM-003 Application des modes de mise en forme"
+          },
+          {
+            "testable_point": "Vérifier que les couleurs sont applicables",
+            "covered": false,
+            "best_score": 0.0,
+            "best_match": "",
+            "matched_test": ""
+          },
+          {
+            "testable_point": "Vérifier que les modes de texte (barré, indice, exposant) sont applicables",
+            "covered": true,
+            "best_score": 0.5,
+            "best_match": "Sélectionner un texte",
+            "matched_test": "YOU-13617-NOM-003 Application des modes de mise en forme"
+          },
+          {
+            "testable_point": "Vérifier que les listes (numéros ou puces) sont créables",
+            "covered": false,
+            "best_score": 0.0,
+            "best_match": "",
+            "matched_test": ""
+          },
+          {
+            "testable_point": "Vérifier que les tableaux sont créables",
+            "covered": false,
+            "best_score": 0.0,
+            "best_match": "",
+            "matched_test": ""
+          },
+          {
+            "testable_point": "Vérifier que la mise en forme est reproduite dans la popin de consultation",
+            "covered": true,
+            "best_score": 0.4,
+            "best_match": "Créer une News avec les fonctionnalités de mise en forme",
+            "matched_test": "YOU-13617-NOM-001 Création d'une News avec mise en forme"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "YOU-13432",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 4,
+        "covered": 4,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "Vérifier que la langue de connexion est affichée à la création de la News",
+            "covered": true,
+            "best_score": 0.8,
+            "best_match": "La langue de connexion est affichée dans le formulaire de création",
+            "matched_test": "YOU-13432-NOM-001 Création News langue connexion"
+          },
+          {
+            "testable_point": "Vérifier que la liste des langues proposée correspond aux langues disponibles pour l'application",
+            "covered": true,
+            "best_score": 0.75,
+            "best_match": "Valider la liste des langues disponibles",
+            "matched_test": "YOU-13432-NOM-002 Sélection langues disponibles"
+          },
+          {
+            "testable_point": "Vérifier que les zones Titre, Texte, Mot-clé, aperçu et Document d'actualité sont affichées avec la langue sélectionnée",
+            "covered": true,
+            "best_score": 0.818,
+            "best_match": "Les champs Titre, Texte, Mot-clé, Aperçu et Document d'actualité sont affichés d",
+            "matched_test": "YOU-13432-NOM-003 Affichage champs traduits"
+          },
+          {
+            "testable_point": "Vérifier que la période de publication, la confidentialité et l'illustration sont communes à toutes les langues",
+            "covered": true,
+            "best_score": 0.8,
+            "best_match": "La période de publication est identique pour toutes les langues",
+            "matched_test": "YOU-13432-NOM-004 Paramètres communs à toutes les langues"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "YOU-13388",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 5,
+        "covered": 5,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "Vérifier que le bouton 'loupe' est présent sur la ligne de la News dans le tableau des News",
+            "covered": true,
+            "best_score": 0.833,
+            "best_match": "Le bouton 'loupe' est visible sur la ligne de la News dans le tableau.",
+            "matched_test": "YOU-13388-NOM-001 Afficher le bouton loupe dans le tableau des News"
+          },
+          {
+            "testable_point": "Vérifier que le contenu de la news est visible sur le formulaire du dessous après avoir cliqué sur le bouton",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Le contenu de la News est visible sur le formulaire du dessous.",
+            "matched_test": "YOU-13388-NOM-002 Afficher le contenu de la News après clic sur le bouton loupe"
+          },
+          {
+            "testable_point": "Vérifier que le formulaire change de titre 'je crée une News' devient 'Je consulte une News'",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Le titre du formulaire change de 'je crée une News' à 'Je consulte une News'.",
+            "matched_test": "YOU-13388-NOM-003 Changer le titre du formulaire en 'Je consulte une News'"
+          },
+          {
+            "testable_point": "Vérifier que toutes les zones sont protégées, uniquement consultables",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Toutes les zones du formulaire sont protégées et uniquement consultables.",
+            "matched_test": "YOU-13388-NOM-004 Rendre toutes les zones consultables uniquement"
+          },
+          {
+            "testable_point": "Vérifier que le bouton 'Sauvegarder' n'est pas activé, n'est pas cliquable",
+            "covered": true,
+            "best_score": 0.667,
+            "best_match": "Désactiver le bouton 'Sauvegarder'",
+            "matched_test": "YOU-13388-NOM-005 Désactiver le bouton 'Sauvegarder'"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "YOU-13356",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 5,
+        "covered": 5,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "Vérifier que l'illustration est affichée dans l'aperçu",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "L'illustration est affichée à gauche dans l'aperçu après cropping",
+            "matched_test": "YOU-13356-NOM-001 Visualiser l'illustration dans l'aperçu"
+          },
+          {
+            "testable_point": "Vérifier que le titre est affiché dans l'aperçu",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Le nouveau titre est affiché dans l'aperçu sans nécessiter de rafraîchissement",
+            "matched_test": "YOU-13356-NOM-002 Visualiser le titre dynamique"
+          },
+          {
+            "testable_point": "Vérifier que les mots-clefs sont affichés dans l'aperçu",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Les mots-clefs sont affichés dans l'aperçu par ordre alphabétique",
+            "matched_test": "YOU-13356-ALT-003 Visualiser les mots-clefs alphabétiques"
+          },
+          {
+            "testable_point": "Vérifier que la date de début de publication est affichée dans l'aperçu",
+            "covered": true,
+            "best_score": 0.6,
+            "best_match": "La date de publication est affichée à gauche sous le titre",
+            "matched_test": "YOU-13356-NOM-005 Visualiser la date de publication"
+          },
+          {
+            "testable_point": "Vérifier que l'image par défaut est affichée si il n'y a pas d'illustration",
+            "covered": true,
+            "best_score": 0.75,
+            "best_match": "Valider l'affichage de l'image par défaut en absence d'illustration",
+            "matched_test": "YOU-13356-EXC-004 Visualiser l'image par défaut"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "NUXEPM-2194",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 4,
+        "covered": 4,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "vérifier que le carrousel occupe moins de place dans l'espace du collaborateur",
+            "covered": true,
+            "best_score": 0.8,
+            "best_match": "Valider que le carrousel occupe moins d'espace",
+            "matched_test": "NUXEPM-2194-NOM-001 taille carrousel"
+          },
+          {
+            "testable_point": "vérifier que les news déjà lues sont identifiables graphiquement",
+            "covered": true,
+            "best_score": 0.4,
+            "best_match": "Valider la visibilité graphique des news lues",
+            "matched_test": "NUXEPM-2194-NOM-002 Identification news lues"
+          },
+          {
+            "testable_point": "vérifier que le fond du carrousel est paramétrable de façon indépendante",
+            "covered": true,
+            "best_score": 0.5,
+            "best_match": "Rétracter le carrousel",
+            "matched_test": "NUXEPM-2194-NOM-001 taille carrousel"
+          },
+          {
+            "testable_point": "tester le carrousel en mode smartphone",
+            "covered": true,
+            "best_score": 0.5,
+            "best_match": "Rétracter le carrousel",
+            "matched_test": "NUXEPM-2194-NOM-001 taille carrousel"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "YOU-13261",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 5,
+        "covered": 5,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "Vérifier que le bouton 'loupe' est présent sur la ligne de la News dans le tableau des News",
+            "covered": true,
+            "best_score": 0.8,
+            "best_match": "Un bouton loupe est visible sur la ligne de la News",
+            "matched_test": "YOU-13261-NOM-001 Presence bouton loupe"
+          },
+          {
+            "testable_point": "Vérifier que le contenu de la news est visible sur le formulaire du dessous au clic sur le bouton",
+            "covered": true,
+            "best_score": 0.6,
+            "best_match": "Un bouton loupe est visible sur la ligne de la News",
+            "matched_test": "YOU-13261-NOM-001 Presence bouton loupe"
+          },
+          {
+            "testable_point": "Vérifier que le formulaire change de titre 'je crée une News' devient 'Je consulte une News'",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Le titre du formulaire change de 'Je crée une News' à 'Je consulte une News'",
+            "matched_test": "YOU-13261-NOM-003 Changement titre formulaire"
+          },
+          {
+            "testable_point": "Vérifier que toutes les zones sont protégées, uniquement consultables",
+            "covered": true,
+            "best_score": 0.4,
+            "best_match": "Valider que toutes les zones sont en lecture seule en mode consultation",
+            "matched_test": "YOU-13261-NOM-004 Zones en lecture seule"
+          },
+          {
+            "testable_point": "Vérifier que le bouton 'Sauvegarder' n'est pas activé, n'est pas cliquable",
+            "covered": true,
+            "best_score": 0.75,
+            "best_match": "Le bouton 'Sauvegarder' est gris et non cliquable",
+            "matched_test": "YOU-13261-NOM-005 Bouton Sauvegarder inactif"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "NUXEPM-1887",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 2,
+        "covered": 2,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "verifier que la date de création est affichée sur le formulaire de News",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "La date de création est affichée sur le formulaire",
+            "matched_test": "NUXEPM-1887-NOM-001 Afficher la date de création d'une News"
+          },
+          {
+            "testable_point": "verifier que la date de modification est affichée sur le formulaire de News",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "La date de modification est affichée sur le formulaire",
+            "matched_test": "NUXEPM-1887-NOM-002 Afficher la date de modification d'une News"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "NUXEPM-1886",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 2,
+        "covered": 2,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "Verifier que le titre de la section change en 'Je modifie une News' lors du clic sur le crayon de modification",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Le titre de la section change en 'Je modifie une News'",
+            "matched_test": "NUXEPM-1886-NOM-001 Modification du titre en 'Je modifie une News'"
+          },
+          {
+            "testable_point": "Verifier que le titre de la section change en 'Je duplique une News' lors du clic sur le symbole de duplication",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Le titre de la section change en 'Je duplique une News'",
+            "matched_test": "NUXEPM-1886-NOM-002 Modification du titre en 'Je duplique une News'"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "NUXEPM-1885",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 5,
+        "covered": 5,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "Vérifier que le bouton 'loupe' est présent sur la ligne de la News dans le tableau des News",
+            "covered": true,
+            "best_score": 0.667,
+            "best_match": "Valider la présence du bouton loupe dans le tableau des News",
+            "matched_test": "NUXEPM-1885-NOM-001 Présence du bouton loupe"
+          },
+          {
+            "testable_point": "Vérifier que le contenu de la news est visible sur le formulaire du dessous après avoir cliqué sur le bouton",
+            "covered": true,
+            "best_score": 0.8,
+            "best_match": "Contenu complet de la News visible dans le formulaire",
+            "matched_test": "NUXEPM-1885-NOM-002 Affichage du contenu après clic loupe"
+          },
+          {
+            "testable_point": "Vérifier que le formulaire change de titre 'je crée une News' devient 'Je consulte une News'",
+            "covered": true,
+            "best_score": 0.8,
+            "best_match": "Titre du formulaire modifié en 'Je consulte une News'",
+            "matched_test": "NUXEPM-1885-NOM-003 Changement de titre du formulaire"
+          },
+          {
+            "testable_point": "Vérifier que toutes les zones sont protégées, uniquement consultables",
+            "covered": true,
+            "best_score": 0.4,
+            "best_match": "Valider que toutes les zones sont en lecture seule",
+            "matched_test": "NUXEPM-1885-NOM-004 Zones en lecture seule"
+          },
+          {
+            "testable_point": "Vérifier que le bouton 'Sauvegarder' n'est pas activé, n'est pas cliquable",
+            "covered": true,
+            "best_score": 0.75,
+            "best_match": "Bouton Sauvegarder grisé et non cliquable",
+            "matched_test": "NUXEPM-1885-NOM-005 Bouton Sauvegarder désactivé"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "NUXEPM-1884",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 4,
+        "covered": 2,
+        "not_covered": 2,
+        "coverage_rate_percent": 50.0,
+        "details": [
+          {
+            "testable_point": "vérifier que le document est prévisualisé dans la popup",
+            "covered": true,
+            "best_score": 0.667,
+            "best_match": "Le document est affiché dans la popup",
+            "matched_test": "NUXEPM-1884-NOM-001 Prévisualisation du document d'actualité"
+          },
+          {
+            "testable_point": "vérifier que le lecteur a le choix d'ouvrir le document via un lien ou de consulter le document dans le lecteur PDF/image",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Consulter le document dans le lecteur PDF/image",
+            "matched_test": "NUXEPM-1884-NOM-001 Prévisualisation du document d'actualité"
+          },
+          {
+            "testable_point": "vérifier que les PDF sont accessibles et conformes",
+            "covered": false,
+            "best_score": 0.333,
+            "best_match": "Consulter le document dans le lecteur PDF/image",
+            "matched_test": "NUXEPM-1884-NOM-001 Prévisualisation du document d'actualité"
+          },
+          {
+            "testable_point": "vérifier que la zone Commentaire est présente pour les images porteuses d'information",
+            "covered": false,
+            "best_score": 0.2,
+            "best_match": "Cliquer sur une actualité avec une image porteuse d'information",
+            "matched_test": "NUXEPM-1884-EXC-001 Image porteuse d'information sans alternative contextuelle"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "NUXEPM-1883",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 2,
+        "covered": 2,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "vérifier que le carrousel est responsive en mode smartphone",
+            "covered": true,
+            "best_score": 0.75,
+            "best_match": "Tester le carrousel en mode smartphone",
+            "matched_test": "NUXEPM-1883-NOM-001 Tester le carrousel en mode smartphone"
+          },
+          {
+            "testable_point": "vérifier que la hauteur du carrousel est réduite",
+            "covered": true,
+            "best_score": 0.667,
+            "best_match": "Valider la hauteur du carrousel",
+            "matched_test": "NUXEPM-1883-NOM-002 la hauteur du carrousel"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "NUXEPM-1882",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 2,
+        "covered": 2,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "vérifier que la liste des langues proposée est la même que celle de la mire de connexion",
+            "covered": true,
+            "best_score": 0.857,
+            "best_match": "Valider que la liste des langues est la même que celle de la mire de connexion",
+            "matched_test": "NUXEPM-1882-ALT-001 la liste des langues"
+          },
+          {
+            "testable_point": "vérifier que l'auteur peut choisir une langue lors de la création d'une annonce",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Choisir une langue lors de la création d'une annonce",
+            "matched_test": "NUXEPM-1882-NOM-001 Choisir une langue pour une News"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "NUXEPM-1876",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 3,
+        "covered": 3,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "verifier que les News sont affichées en fonction de la confidentialité liée au rôle legacy du lecteur",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Les News sont affichées en fonction de la confidentialité liée au rôle legacy",
+            "matched_test": "NUXEPM-1876-NOM-001 Lire News en fonction de la confidentialité liée au rôle legacy"
+          },
+          {
+            "testable_point": "verifier que les News sont affichées en fonction de l'affectation du collaborateur",
+            "covered": true,
+            "best_score": 0.75,
+            "best_match": "Les News correspondent à l'affectation du collaborateur",
+            "matched_test": "NUXEPM-1876-NOM-001 Lire News en fonction de la confidentialité liée au rôle legacy"
+          },
+          {
+            "testable_point": "verifier que les News sont affichées en fonction de la population gérée par le manager et le gestionnaire",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Les News sont affichées en fonction de la population gérée",
+            "matched_test": "NUXEPM-1876-NOM-002 Lire News en fonction de la population gérée par le manager et le gestionnaire"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "NUXEPM-1874",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 2,
+        "covered": 2,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "Vérifier que les critères de confidentialité utilisateur libres sont affichés dans le formulaire de la démarche.",
+            "covered": true,
+            "best_score": 0.8,
+            "best_match": "Configurer des critères de confidentialité utilisateur libres",
+            "matched_test": "NUXEPM-1874-NOM-001 Configurer critères de confidentialité"
+          },
+          {
+            "testable_point": "Vérifier que les critères de confidentialité sont configurables.",
+            "covered": true,
+            "best_score": 0.667,
+            "best_match": "Configurer des critères de confidentialité utilisateur libres",
+            "matched_test": "NUXEPM-1874-NOM-001 Configurer critères de confidentialité"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "NUXEPM-1873",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 4,
+        "covered": 4,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "Vérifier que la roue dentée est présente à côté du symbole filtre",
+            "covered": true,
+            "best_score": 0.667,
+            "best_match": "Accéder à la roue dentée",
+            "matched_test": "NUXEPM-1873-NOM-001 Accès à la roue dentée"
+          },
+          {
+            "testable_point": "Vérifier que la liste des colonnes apparaît au clic sur la roue dentée",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "La liste des colonnes apparaît",
+            "matched_test": "NUXEPM-1873-NOM-001 Accès à la roue dentée"
+          },
+          {
+            "testable_point": "Vérifier que les colonnes peuvent être réorganisées avec du drag & drop",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Les colonnes sont réorganisées",
+            "matched_test": "NUXEPM-1873-NOM-002 Réorganisation des colonnes"
+          },
+          {
+            "testable_point": "Vérifier que les colonnes peuvent être masquées et réaffichées",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Les colonnes sont masquées",
+            "matched_test": "NUXEPM-1873-NOM-003 Masquage de colonnes"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "NUXEPM-1870",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 4,
+        "covered": 4,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "Vérifier que l'aperçu comporte l'image après cropping",
+            "covered": true,
+            "best_score": 0.6,
+            "best_match": "L'illustration apparaît dans l'aperçu, après cropping",
+            "matched_test": "NUXEPM-1870-NOM-001 Visualiser l'illustration dans l'aperçu"
+          },
+          {
+            "testable_point": "Vérifier que le titre est dynamiquement modifié dans l'aperçu",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Le titre est modifié",
+            "matched_test": "NUXEPM-1870-ALT-001 Modifier le titre et visualiser l'aperçu"
+          },
+          {
+            "testable_point": "Vérifier que les mots-clefs apparaissent dans la limite de la largeur disponible dans l'aperçu",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Les mots-clefs apparaissent dans l'aperçu, dans la limite de la largeur disponib",
+            "matched_test": "NUXEPM-1870-NOM-003 Visualiser les mots-clefs dans l'aperçu"
+          },
+          {
+            "testable_point": "Vérifier que trois petits points apparaissent en fin de titre et à droite de la liste des mots-clefs lorsque la place est remplie",
+            "covered": true,
+            "best_score": 0.667,
+            "best_match": "Les mots-clefs sont ajoutés",
+            "matched_test": "NUXEPM-1870-NOM-003 Visualiser les mots-clefs dans l'aperçu"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "NUXEPM-1825",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 3,
+        "covered": 3,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "vérifier que le critère 'Emploi' est disponible dans les critères de confidentialité",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Le critère Emploi est disponible dans les critères de confidentialité",
+            "matched_test": "NUXEPM-1825-NOM-001 Disposer du critère Emploi dans les critères de confidentialité"
+          },
+          {
+            "testable_point": "vérifier que la NEWS est publiée pour la population cible",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "La NEWS est publiée pour la population cible",
+            "matched_test": "NUXEPM-1825-NOM-002 Publier une NEWS pour une population liée à un ou plusieurs emplois"
+          },
+          {
+            "testable_point": "vérifier que seule la population cible peut lire l'annonce",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Valider que seule la population cible peut lire l'annonce",
+            "matched_test": "NUXEPM-1825-EXC-001 la confidentialité de la NEWS"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "NUXEPM-1753",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 3,
+        "covered": 3,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "Vérifier que l'administrateur peut supprimer en masse des news",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Supprimer la news",
+            "matched_test": "NUXEPM-1753-NOM-002 Supprimer des news en cours de publication"
+          },
+          {
+            "testable_point": "Vérifier que la suppression en masse est possible en fonction des critères sélectionnés (date, type, mots-clefs)",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Les mots-clefs sont sélectionnés",
+            "matched_test": "NUXEPM-1753-ALT-001 Purger les news avec des critères"
+          },
+          {
+            "testable_point": "Vérifier que seul l'administrateur peut supprimer des news en cours de publication",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Supprimer la news",
+            "matched_test": "NUXEPM-1753-NOM-002 Supprimer des news en cours de publication"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "NUXEPM-1752",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 4,
+        "covered": 4,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "L'administrateur peut accéder à l'espace ADMINISTRATEUR",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Accéder à l'espace ADMINISTRATEUR",
+            "matched_test": "NUXEPM-1752-NOM-001 Acceder à l'espace ADMINISTRATEUR"
+          },
+          {
+            "testable_point": "L'administrateur peut consulter une News en cliquant sur le bouton en regard de la News",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Consulter une News",
+            "matched_test": "NUXEPM-1752-NOM-002 Consulter une News"
+          },
+          {
+            "testable_point": "L'administrateur peut supprimer des news en cours de publication",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Supprimer une News en cours de publication",
+            "matched_test": "NUXEPM-1752-NOM-003 Supprimer une News en cours de publication"
+          },
+          {
+            "testable_point": "L'administrateur est informé lorsqu'il supprime des news en cours de publication",
+            "covered": true,
+            "best_score": 0.75,
+            "best_match": "Supprimer une News en cours de publication",
+            "matched_test": "NUXEPM-1752-NOM-003 Supprimer une News en cours de publication"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "NUXEPM-1729",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 3,
+        "covered": 3,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "Vérifier que les critères de filtre sont affichés dans une popup",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Les critères de filtre sont affichés",
+            "matched_test": "NUXEPM-1729-NOM-001 Filtrer les news par critères"
+          },
+          {
+            "testable_point": "Vérifier que les critères de filtre sont sélectionnables",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Les critères de filtre sont sélectionnables",
+            "matched_test": "NUXEPM-1729-NOM-001 Filtrer les news par critères"
+          },
+          {
+            "testable_point": "Vérifier que les news sont filtrées en fonction des critères sélectionnés",
+            "covered": true,
+            "best_score": 0.6,
+            "best_match": "Les news sont filtrées en fonction du type de news sélectionné",
+            "matched_test": "NUXEPM-1729-NOM-002 Filtrer les news par type de news"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "NUXEPM-1725",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 4,
+        "covered": 3,
+        "not_covered": 1,
+        "coverage_rate_percent": 75.0,
+        "details": [
+          {
+            "testable_point": "Vérifier que la langue de connexion est affichée à la création de la News",
+            "covered": true,
+            "best_score": 0.8,
+            "best_match": "Le formulaire de création de News est affiché avec la langue de connexion par dé",
+            "matched_test": "NUXEPM-1725-NOM-001 Créer une News avec la langue de connexion"
+          },
+          {
+            "testable_point": "Vérifier que la liste des langues proposée correspond aux langues disponibles pour l'application",
+            "covered": true,
+            "best_score": 0.6,
+            "best_match": "Sélectionner une langue dans la liste des langues proposée",
+            "matched_test": "NUXEPM-1725-NOM-002 Sélectionner une langue pour traduire une News"
+          },
+          {
+            "testable_point": "Vérifier que les zones Titre, Texte, Mot-clé, aperçu et Document d'actualité sont dynamiquement affichées sur le formulaire pour chaque langue sélectionnée",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Les zones Titre, Texte, Mot-clé, aperçu et Document d'actualité sont dynamiqueme",
+            "matched_test": "NUXEPM-1725-NOM-002 Sélectionner une langue pour traduire une News"
+          },
+          {
+            "testable_point": "Vérifier que la période de publication, la confidentialité et l'illustration sont communes à toutes les langues",
+            "covered": false,
+            "best_score": 0.2,
+            "best_match": "Sélectionner une langue dans la liste des langues proposée",
+            "matched_test": "NUXEPM-1725-NOM-002 Sélectionner une langue pour traduire une News"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "NUXEPM-1720",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 3,
+        "covered": 3,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "vérifier que l'administrateur peut purger les news en masse",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Purger en masse des NEWS",
+            "matched_test": "NUXEPM-1720-NOM-001 Purger en masse des NEWS"
+          },
+          {
+            "testable_point": "vérifier que la purge d'une actualité casse le lien avec le document",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Valider que la purge d'une actualité casse le lien avec le document",
+            "matched_test": "NUXEPM-1720-NOM-002 la purge d'une actualité"
+          },
+          {
+            "testable_point": "vérifier que la purge d'une actualité ne supprime pas physiquement le document",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Valider que la purge d'une actualité ne supprime pas physiquement le document",
+            "matched_test": "NUXEPM-1720-NOM-003 que la purge d'une actualité ne supprime pas physiquement le document"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "NUXEPM-1719",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 2,
+        "covered": 2,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "Vérifier que l'administrateur peut rechercher des mots-clefs de News",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Rechercher des mots-clefs de News",
+            "matched_test": "NUXEPM-1719-NOM-001 Rechercher des mots-clefs de News"
+          },
+          {
+            "testable_point": "Vérifier que les résultats de recherche sont affichés correctement",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Les résultats de recherche sont affichés",
+            "matched_test": "NUXEPM-1719-NOM-001 Rechercher des mots-clefs de News"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "NUXEPM-2258",
+      "status": "no_testable_points",
+      "coverage": null
+    },
+    {
+      "story_id": "YOU-13294",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 5,
+        "covered": 1,
+        "not_covered": 4,
+        "coverage_rate_percent": 20.0,
+        "details": [
+          {
+            "testable_point": "Vérifier que les styles de texte sont applicables",
+            "covered": false,
+            "best_score": 0.333,
+            "best_match": "Créer une annonce avec un titre et un corps de texte",
+            "matched_test": "YOU-13294-NOM-001 Créer une annonce"
+          },
+          {
+            "testable_point": "Vérifier que les modes de mise en forme sont applicables",
+            "covered": false,
+            "best_score": 0.0,
+            "best_match": "",
+            "matched_test": ""
+          },
+          {
+            "testable_point": "Vérifier que la couleur est applicable",
+            "covered": true,
+            "best_score": 0.5,
+            "best_match": "Appliquer une couleur au texte",
+            "matched_test": "YOU-13294-NOM-006 Appliquer une couleur"
+          },
+          {
+            "testable_point": "Vérifier que les listes et les tableaux sont créables",
+            "covered": false,
+            "best_score": 0.0,
+            "best_match": "",
+            "matched_test": ""
+          },
+          {
+            "testable_point": "Vérifier que la mise en forme est reproduite dans la popin de consultation",
+            "covered": false,
+            "best_score": 0.0,
+            "best_match": "",
+            "matched_test": ""
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "YOU-13035",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 2,
+        "covered": 2,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "vérifier que le composant Paypal s'intègre bien dans 4YOU",
+            "covered": true,
+            "best_score": 0.8,
+            "best_match": "Valider que le composant PayPal s'intègre correctement dans l'application 4YOU",
+            "matched_test": "de l'intégration du composant PayPal dans 4YOU"
+          },
+          {
+            "testable_point": "vérifier que le composant répond aux normes RGAA",
+            "covered": true,
+            "best_score": 0.75,
+            "best_match": "S'assurer que le composant PayPal respecte les normes RGAA",
+            "matched_test": "Validation de la conformité RGAA du composant PayPal"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "YOU-13032",
+      "status": "no_testable_points",
+      "coverage": null
+    },
+    {
+      "story_id": "NUXEPM-2110",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 2,
+        "covered": 2,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "vérifier que le carrousel est compatible RGAA",
+            "covered": true,
+            "best_score": 0.667,
+            "best_match": "Valider que le carrousel est fonctionnel en Angular et conforme RGAA",
+            "matched_test": "Validation de la migration Angular"
+          },
+          {
+            "testable_point": "vérifier que la livraison se fait au travers d'un seul ticket",
+            "covered": true,
+            "best_score": 0.6,
+            "best_match": "Valider la livraison via un seul ticket",
+            "matched_test": "Validation de la migration Angular"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "NUXEPM-1842",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 5,
+        "covered": 1,
+        "not_covered": 4,
+        "coverage_rate_percent": 20.0,
+        "details": [
+          {
+            "testable_point": "Vérifier que les styles de texte sont appliqués correctement",
+            "covered": false,
+            "best_score": 0.333,
+            "best_match": "Le texte s'affiche dans l'éditeur",
+            "matched_test": "NUXEPM-1842-NOM-002 Appliquer un style de texte"
+          },
+          {
+            "testable_point": "Vérifier que les modes gras, italique, souligné, barré, indice et exposant sont appliqués correctement",
+            "covered": false,
+            "best_score": 0.333,
+            "best_match": "Le texte est affiché en gras",
+            "matched_test": "NUXEPM-1842-NOM-002 Appliquer un style de texte"
+          },
+          {
+            "testable_point": "Vérifier que les couleurs sont appliquées correctement",
+            "covered": false,
+            "best_score": 0.0,
+            "best_match": "",
+            "matched_test": ""
+          },
+          {
+            "testable_point": "Vérifier que les listes et les tableaux sont affichés correctement",
+            "covered": false,
+            "best_score": 0.0,
+            "best_match": "",
+            "matched_test": ""
+          },
+          {
+            "testable_point": "Vérifier que la mise en forme du texte est reproduite dans la popin de consultation",
+            "covered": true,
+            "best_score": 0.667,
+            "best_match": "Valider la reproduction de la mise en forme dans la popin de consultation",
+            "matched_test": "NUXEPM-1842-NOM-003 la mise en forme dans la popin"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "NUXEPM-1718",
+      "status": "evaluated",
+      "coverage": {
+        "total_testable_points": 5,
+        "covered": 5,
+        "not_covered": 0,
+        "coverage_rate_percent": 100.0,
+        "details": [
+          {
+            "testable_point": "Vérifier que l'administrateur peut créer un nouveau mot-clé",
+            "covered": true,
+            "best_score": 0.8,
+            "best_match": "Créer un nouveau mot-clé pour les News",
+            "matched_test": "NUXEPM-1718-NOM-001 Créer mot-clé News"
+          },
+          {
+            "testable_point": "Vérifier que l'administrateur peut mettre à jour un mot-clé existant",
+            "covered": true,
+            "best_score": 1.0,
+            "best_match": "Mettre à jour un mot-clé existant",
+            "matched_test": "NUXEPM-1718-NOM-002 Mettre à jour mot-clé News"
+          },
+          {
+            "testable_point": "Vérifier que l'administrateur peut traduire un mot-clé",
+            "covered": true,
+            "best_score": 0.667,
+            "best_match": "Modifier le mot-clé",
+            "matched_test": "NUXEPM-1718-NOM-002 Mettre à jour mot-clé News"
+          },
+          {
+            "testable_point": "Vérifier que l'administrateur est informé des News utilisant un mot-clé avant de confirmer la suppression",
+            "covered": true,
+            "best_score": 0.667,
+            "best_match": "Modifier le mot-clé",
+            "matched_test": "NUXEPM-1718-NOM-002 Mettre à jour mot-clé News"
+          },
+          {
+            "testable_point": "Vérifier que la liste standard de mots-clés est correcte",
+            "covered": true,
+            "best_score": 0.6,
+            "best_match": "Le mot-clé est ajouté à la liste des mots-clés",
+            "matched_test": "NUXEPM-1718-NOM-001 Créer mot-clé News"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,119 @@
+{
+  "epic_key": "NUXEPM-345",
+  "generated_at": "2026-04-03T13:52:42.665333",
+  "coverage": {
+    "total_exploitable_stories": 37,
+    "stories_with_scenarios": 1,
+    "uncovered_stories": [
+      "NUXEPM-1108",
+      "NUXEPM-1125",
+      "NUXEPM-1159",
+      "NUXEPM-1176",
+      "NUXEPM-1319",
+      "NUXEPM-1321",
+      "NUXEPM-1328",
+      "NUXEPM-1329",
+      "NUXEPM-1415",
+      "NUXEPM-1446",
+      "NUXEPM-1613",
+      "NUXEPM-1889",
+      "NUXEPM-2125",
+      "NUXEPM-2126",
+      "NUXEPM-2167",
+      "NUXEPM-2230",
+      "NUXEPM-2231",
+      "NUXEPM-2303",
+      "NUXEPM-2306",
+      "NUXEPM-310",
+      "NUXEPM-337",
+      "NUXEPM-384",
+      "NUXEPM-385",
+      "NUXEPM-387",
+      "NUXEPM-491",
+      "NUXEPM-492",
+      "NUXEPM-535",
+      "NUXEPM-577",
+      "NUXEPM-599",
+      "NUXEPM-630",
+      "NUXEPM-661",
+      "NUXEPM-742",
+      "NUXEPM-794",
+      "NUXEPM-90",
+      "PPBACKLOG-4785",
+      "PPBACKLOG-7621"
+    ],
+    "total_acceptance_criteria": 93,
+    "total_scenarios": 4,
+    "coverage_rate": 2.7
+  },
+  "total_scenarios": 4,
+  "scenarios": [
+    {
+      "title": "Vérification de l'absence de régression dans l'application après l'intégration du code source",
+      "type": "technique",
+      "priority": "haute",
+      "preconditions": [
+        "L'intégration du code source est terminée",
+        "Les permissions 'user-system' sont configurées correctement",
+        "Les métadonnées du DigitalFiles DocumentsMetadata sont correctement transmises"
+      ],
+      "steps": [
+        "Exécuter les tests de régression existants pour vérifier que les fonctionnalités de l'application ne sont pas affectées",
+        "Vérifier que les appels API existants fonctionnent correctement",
+        "Tester les interactions entre les différents composants de l'application"
+      ],
+      "expected_result": "L'application fonctionne correctement sans régression après l'intégration du code source",
+      "source_story": "YOU-13748",
+      "source_ustype": "technique"
+    },
+    {
+      "title": "Test de la gestion de plusieurs cachets employeurs",
+      "type": "technique",
+      "priority": "haute",
+      "preconditions": [
+        "Le connecteur Contralia est configuré pour gérer plusieurs cachets employeurs",
+        "Les permissions 'user-system' sont configurées correctement",
+        "Les métadonnées du DigitalFiles DocumentsMetadata sont correctement transmises"
+      ],
+      "steps": [
+        "Créer plusieurs cachets employeurs dans le système",
+        "Vérifier que le connecteur Contralia peut gérer correctement les différents cachets",
+        "Tester la signature de documents avec plusieurs cachets employeurs"
+      ],
+      "expected_result": "Le connecteur Contralia gère correctement plusieurs cachets employeurs et les documents sont signés avec succès",
+      "source_story": "YOU-13748",
+      "source_ustype": "technique"
+    },
+    {
+      "title": "Vérification de la transmission des permissions 'user-system' via les métadonnées du DigitalFiles DocumentsMetadata",
+      "type": "technique",
+      "priority": "moyenne",
+      "preconditions": [
+        "Les permissions 'user-system' sont configurées correctement",
+        "Les métadonnées du DigitalFiles DocumentsMetadata sont correctement transmises"
+      ],
+      "steps": [
+        "Vérifier que les permissions 'user-system' sont transmises correctement via les métadonnées du DigitalFiles DocumentsMetadata",
+        "Tester les interactions entre les différents composants de l'application avec les permissions 'user-system' transmises"
+      ],
+      "expected_result": "Les permissions 'user-system' sont transmises correctement via les métadonnées du DigitalFiles DocumentsMetadata et les interactions entre les composants fonctionnent correctement",
+      "source_story": "YOU-13748",
+      "source_ustype": "technique"
+    },
+    {
+      "title": "Test de la transformation du GET des statuts et documents signés en POST",
+      "type": "technique",
+      "priority": "moyenne",
+      "preconditions": [
+        "La transformation du GET des statuts et documents signés en POST est terminée"
+      ],
+      "steps": [
+        "Vérifier que les appels API pour obtenir les statuts et documents signés utilisent maintenant la méthode POST",
+        "Tester les interactions entre les différents composants de l'application avec la nouvelle méthode POST"
+      ],
+      "expected_result": "Les appels API pour obtenir les statuts et documents signés utilisent correctement la méthode POST et les interactions entre les composants fonctionnent correctement",
+      "source_story": "YOU-13748",
+      "source_ustype": "technique"
+    }
+  ]
+}

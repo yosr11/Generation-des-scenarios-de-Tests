@@ -1,0 +1,292 @@
+import json
+import logging
+from typing import Dict, Any, List, Optional
+
+logger = logging.getLogger(__name__)
+
+from app.prompts.scenario_generation_prompt import (
+    build_manual_test_generation_system_prompt,
+    build_manual_test_generation_user_prompt,
+    build_manual_test_json_reformat_prompt,
+    build_manual_test_repair_system_prompt,
+    build_manual_test_repair_user_prompt,
+    build_poc_study_system_prompt,
+    build_documentation_system_prompt,
+    build_technical_system_prompt,
+)
+from pydantic import ValidationError
+
+from app.models.test_manual import (
+    ManualTestGenerationResult,
+    ManualGenerationStatus,
+    RecommendedTestStrategy,
+)
+from app.services.manual_test_validator import validate_manual_generation_result
+from app.utils.json_utils import extract_json_from_llm_response
+
+
+class ManualTestGeneratorService:
+    """
+    Compatible avec un client type OpenAI / Groq :
+    client.chat.completions.create(...)
+    """
+
+    def __init__(self, llm_client, model_name: str):
+        self.llm_client = llm_client
+        self.model_name = model_name
+
+    # Groq free tier TPM limits per model (input + max_tokens must fit)
+    MODEL_TPM_LIMITS = {
+        "qwen/qwen3-32b": 6000,
+    }
+
+    def _request_content(self, system_prompt: str, user_prompt: str, max_tokens: int = 4096) -> str:
+        # Adjust max_tokens for models with low TPM limits
+        tpm_limit = self.MODEL_TPM_LIMITS.get(self.model_name)
+        if tpm_limit:
+            est_input = (len(system_prompt) + len(user_prompt)) // 3
+            safe_max = tpm_limit - est_input - 200  # 200 token safety margin
+            if safe_max < max_tokens:
+                max_tokens = max(1024, safe_max)
+
+        response = self.llm_client.chat.completions.create(
+            model=self.model_name,
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
+            ],
+            temperature=0.2,
+            max_tokens=max_tokens,
+        )
+        return response.choices[0].message.content or ""
+
+    def _create_completion(self, system_prompt: str, user_prompt: str) -> Dict[str, Any]:
+        content = self._request_content(system_prompt, user_prompt)
+        try:
+            return extract_json_from_llm_response(content)
+        except ValueError as exc:
+            light_system = build_manual_test_repair_system_prompt()
+            reformat_prompt = build_manual_test_json_reformat_prompt(content, str(exc))
+            repaired_content = self._request_content(light_system, reformat_prompt)
+            return extract_json_from_llm_response(repaired_content)
+
+    @staticmethod
+    def _ensure_story_ids(data: Dict[str, Any], story_id: str) -> Dict[str, Any]:
+        if not data.get("story_id"):
+            data["story_id"] = story_id
+        for test in data.get("tests", []):
+            if not test.get("story_id"):
+                test["story_id"] = story_id
+        return data
+
+    @staticmethod
+    def _normalize_enums(data: Dict[str, Any]) -> Dict[str, Any]:
+        """Normalise les valeurs d'enum que le LLM peut renvoyer en français."""
+        strategy_map = {
+            "manuel": "manual", "manuelle": "manual",
+            "automatisé": "automated", "automatisée": "automated", "automatise": "automated",
+            "à affiner": "needs_refinement", "a affiner": "needs_refinement",
+            "functional testing": "manual", "functional": "manual", "test manuel": "manual",
+        }
+        status_map = {
+            "généré": "generated", "genere": "generated", "complété": "generated", "complete": "generated",
+            "completed": "generated", "done": "generated", "success": "generated",
+            "non généré": "not_generated", "non genere": "not_generated", "non_genere": "not_generated",
+            "failed": "not_generated", "error": "not_generated",
+        }
+        # Ensure message field exists
+        if "message" not in data or not data["message"]:
+            data["message"] = "Tests g\u00e9n\u00e9r\u00e9s automatiquement"
+
+        raw_strategy = (data.get("recommended_test_strategy") or "").strip().lower()
+        if raw_strategy in strategy_map:
+            data["recommended_test_strategy"] = strategy_map[raw_strategy]
+        elif raw_strategy not in ("manual", "automated", "needs_refinement"):
+            data["recommended_test_strategy"] = "manual"
+
+        raw_status = (data.get("generation_status") or "").strip().lower()
+        if raw_status in status_map:
+            data["generation_status"] = status_map[raw_status]
+        elif raw_status not in ("generated", "not_generated"):
+            data["generation_status"] = "generated" if data.get("tests") else "not_generated"
+
+        # Normalize scenario_type in each test
+        scenario_type_map = {
+            "validation": "NOM", "nominal": "NOM", "nom": "NOM",
+            "technique": "NOM", "technical": "NOM",
+            "alternatif": "ALT", "alternative": "ALT", "alt": "ALT",
+            "exception": "EXC", "erreur": "EXC", "exc": "EXC",
+        }
+        for test in data.get("tests", []):
+            raw_st = (test.get("scenario_type") or "").strip().lower()
+            if raw_st in scenario_type_map:
+                test["scenario_type"] = scenario_type_map[raw_st]
+            elif raw_st not in ("nom", "alt", "exc"):
+                # Fallback: toute valeur inconnue → NOM
+                test["scenario_type"] = "NOM"
+
+            # Convert string steps to proper step dicts
+            normalized_steps = []
+            for step_idx, step in enumerate(test.get("steps", []), start=1):
+                if isinstance(step, str):
+                    normalized_steps.append({"action": step, "data": "", "expected_result": "", "index": step_idx, "revision_po": ""})
+                elif isinstance(step, dict):
+                    normalized_steps.append(step)
+            test["steps"] = normalized_steps
+
+            # Normalize step fields: data must be string
+            for step_idx, step in enumerate(test.get("steps", []), start=1):
+                if not isinstance(step, dict):
+                    continue
+                # Ensure index is present
+                if "index" not in step:
+                    step["index"] = step_idx
+                if not isinstance(step.get("data"), str):
+                    step["data"] = json.dumps(step.get("data", ""), ensure_ascii=False) if step.get("data") else ""
+                if not isinstance(step.get("expected_result"), str):
+                    step["expected_result"] = json.dumps(step.get("expected_result", ""), ensure_ascii=False) if step.get("expected_result") else ""
+                if not isinstance(step.get("action"), str):
+                    step["action"] = json.dumps(step.get("action", ""), ensure_ascii=False) if step.get("action") else ""
+                # Ensure revision_po is present
+                if "revision_po" not in step:
+                    step["revision_po"] = ""
+
+        # Post-processing: fix golden rule violations
+        _fix_golden_rule_violations(data)
+
+        return data
+
+
+def _fix_golden_rule_violations(data: Dict[str, Any]) -> None:
+    """Corrige automatiquement les violations des golden rules QA."""
+    # Verbes interdits en début d'action
+    FORBIDDEN_ACTION_VERBS = {
+        "Vérifier": "Consulter",
+        "vérifier": "Consulter",
+        "Contrôler": "Consulter",
+        "contrôler": "Consulter",
+        "S'assurer": "Consulter",
+        "s'assurer": "Consulter",
+        "Observer": "Consulter",
+        "observer": "Consulter",
+        "Valider la": "Consulter la",
+        "valider la": "Consulter la",
+        "Valider le": "Consulter le",
+        "valider le": "Consulter le",
+        "Valider l'": "Consulter l'",
+        "valider l'": "Consulter l'",
+        "Valider les": "Consulter les",
+        "valider les": "Consulter les",
+    }
+
+    # Mots vagues interdits dans expected_result
+    VAGUE_WORDS = ["correctement", "normalement", "avec succès", "comme prévu", "de manière attendue"]
+
+    for test in data.get("tests", []):
+        # Fix test_name: remove "Vérifier" / "Vérification"
+        test_name = test.get("test_name", "")
+        for old_word, new_word in [("Vérifier ", ""), ("Vérification ", ""), ("vérifier ", ""), ("vérification ", "")]:
+            test_name = test_name.replace(old_word, new_word)
+        test["test_name"] = test_name
+
+        # Fix objective: replace "Vérifier" by "Valider" (objective allows "Valider")
+        objective = test.get("objective", "")
+        if objective.startswith("Vérifier"):
+            objective = "Valider" + objective[8:]
+        test["objective"] = objective
+
+        # Fix steps
+        for step in test.get("steps", []):
+            if not isinstance(step, dict):
+                continue
+
+            # Fix action: replace forbidden verbs
+            action = step.get("action", "")
+            for forbidden, replacement in FORBIDDEN_ACTION_VERBS.items():
+                if action.startswith(forbidden):
+                    action = replacement + action[len(forbidden):]
+                    break
+            step["action"] = action
+
+            # Fix expected_result: remove vague adverbs
+            er = step.get("expected_result", "")
+            for vague in VAGUE_WORDS:
+                er = er.replace(f" {vague}", "")
+            # Remove negations in expected_result
+            er = er.replace(" n'est pas ", " est ").replace(" ne sont pas ", " sont ").replace(" n'affiche pas ", " masque ")
+            step["expected_result"] = er
+
+
+    # Map story_type to the appropriate system prompt builder
+    STORY_TYPE_PROMPTS = {
+        "poc_or_study": build_poc_study_system_prompt,
+        "documentation": build_documentation_system_prompt,
+        "technical": build_technical_system_prompt,
+    }
+
+    def generate(
+        self,
+        story: Dict[str, Any],
+        analysis: Dict[str, Any],
+        rag_context: Optional[List[Dict[str, Any]]] = None,
+    ) -> ManualTestGenerationResult:
+        story_id = story.get("id", "")
+
+        # Select system prompt based on story_type
+        story_type = (analysis.get("story_type") or "").strip().lower()
+        prompt_builder = self.STORY_TYPE_PROMPTS.get(story_type, build_manual_test_generation_system_prompt)
+        system_prompt = prompt_builder()
+
+        user_prompt = build_manual_test_generation_user_prompt(
+            story=story, analysis=analysis, rag_context=rag_context,
+        )
+
+        # Fallback si prompt trop gros (413 TPM)
+        try:
+            data = self._normalize_enums(self._ensure_story_ids(self._create_completion(system_prompt, user_prompt), story_id))
+        except Exception as e:
+            if "413" in str(e) or "too large" in str(e).lower() or "rate_limit" in str(e).lower():
+                # Retry sans RAG
+                user_prompt = build_manual_test_generation_user_prompt(
+                    story=story, analysis=analysis, rag_context=None,
+                )
+                data = self._normalize_enums(self._ensure_story_ids(self._create_completion(system_prompt, user_prompt), story_id))
+            else:
+                raise
+
+        try:
+            result = ManualTestGenerationResult(**data)
+        except ValidationError as exc:
+            repair_system = build_manual_test_repair_system_prompt()
+            reformat_prompt = build_manual_test_json_reformat_prompt(
+                json.dumps(data, ensure_ascii=False), str(exc)
+            )
+            repaired_data = self._normalize_enums(self._ensure_story_ids(
+                self._create_completion(repair_system, reformat_prompt), story_id
+            ))
+            result = ManualTestGenerationResult(**repaired_data)
+
+        validation_errors = validate_manual_generation_result(result)
+        if validation_errors:
+            repair_system = build_manual_test_repair_system_prompt()
+            repair_prompt = build_manual_test_repair_user_prompt(data, validation_errors)
+            repaired_data = self._normalize_enums(self._ensure_story_ids(
+                self._create_completion(repair_system, repair_prompt),
+                story_id,
+            ))
+            repaired_result = ManualTestGenerationResult(**repaired_data)
+            repaired_errors = validate_manual_generation_result(repaired_result)
+
+            if not repaired_errors:
+                return repaired_result
+
+            return ManualTestGenerationResult(
+                story_id=story_id,
+                recommended_test_strategy=RecommendedTestStrategy.NEEDS_REFINEMENT,
+                generation_status=ManualGenerationStatus.NOT_GENERATED,
+                message="Les tests générés ne respectent pas complètement les golden rules.",
+                tests=[],
+                notes=repaired_errors,
+            )
+
+        return result

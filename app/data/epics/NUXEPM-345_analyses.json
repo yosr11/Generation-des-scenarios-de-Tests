@@ -1,0 +1,1768 @@
+{
+  "epic_key": "NUXEPM-345",
+  "generated_at": "2026-04-03T13:52:33.307461",
+  "count": 38,
+  "analyses": [
+    {
+      "id": "YOU-13748",
+      "project_key": "",
+      "title": "DN - Bridge de signature - Multi-cachets (Capitalisation HITACHI)",
+      "description_llm": "Le connecteur Contralia évolue et gère plusieurs cachets employeurs.\nPour gérer plusieurs cachets, il gère plusieurs permissions 'user-system' ayant les droits), ces permissions sont transmises via les métadonnées du DigitalFiles DocumentsMetadata.\nUne modification a été effectuée, le GET des statuts et documents signés a été transformé en POST.\nMAJ 16/03 :\nIl s'agit d'une capitalisation faite pour le client HITACHI en V8. Il faudra récupérer le code source et l'intégrer dans notre standard V9.\nIl s'agit d'un report à \"l'aveugle\" car on ne peut pas tester. Il faudra juste s'assurer qu'il n' y a pas de régression dans l'application.\nUne demande d'accès au dev HITACHI est en cours.\nBénéfice :\nDisposer de la gestion multi cachets.",
+      "labels": [
+        "HITACHI",
+        "IA4ENGENEERING",
+        "STREAM_APPLICATIF"
+      ],
+      "status": "In Progress",
+      "priority": "P1-High",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "technique",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "non",
+        "q2_nouvelle_fonctionnalite": "non",
+        "q3_logique_backend": "oui",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description concerne une évolution du connecteur Contralia et la gestion de plusieurs cachets employeurs, avec des modifications techniques comme le changement de méthode HTTP de GET à POST. Cela indique une logique backend et des éléments techniques, donc la classification est 'technique'."
+      },
+      "ac_list": [],
+      "ac_count": 0,
+      "technical_criteria": [
+        "Le connecteur Contralia gère plusieurs cachets employeurs",
+        "Les permissions 'user-system' sont transmises via les métadonnées du DigitalFiles DocumentsMetadata",
+        "Le GET des statuts et documents signés a été transformé en POST"
+      ],
+      "qa_strategy": [
+        "Vérifier l'absence de régression dans l'application après l'intégration du code source",
+        "Tester la gestion de plusieurs cachets employeurs"
+      ],
+      "test_data": [],
+      "risk": "Risque de régression dans l'application si l'intégration du code source n'est pas correcte",
+      "qa_action": "S'assurer qu'il n'y a pas de régression dans l'application après l'intégration du code source et tester la gestion de plusieurs cachets employeurs"
+    },
+    {
+      "id": "NUXEPM-2306",
+      "project_key": "",
+      "title": "DN - Signature multi-documents",
+      "description_llm": "Pouvoir signer une liasse de documents dans un envoi à signature électronique chez Contralia.\n4 documents max dans une transaction : 1 doc principal et 3 annexes\n1 doc 50 Mo max\n- etudier comment rassembler ces trois documents, aujourd'hui on envoie 1 seul doc par transaction à travers le DN",
+      "labels": [
+        "COVEA",
+        "Candidat_V10"
+      ],
+      "status": "To Be Detailed",
+      "priority": "P2-Medium",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "fonctionnelle",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "non",
+        "q2_nouvelle_fonctionnalite": "oui",
+        "q3_logique_backend": "non",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description demande une nouvelle fonctionnalité, à savoir la possibilité de signer une liasse de documents dans un envoi à signature électronique."
+      },
+      "ac_list": [
+        {
+          "id": "AC1",
+          "type": "positif",
+          "text": "Quand l'utilisateur envoie une liasse de documents à signature électronique, alors le système permet de signer jusqu'à 4 documents maximum dans une transaction."
+        },
+        {
+          "id": "AC2",
+          "type": "positif",
+          "text": "Quand l'utilisateur sélectionne les documents à envoyer, alors le système permet de sélectionner 1 document principal et 3 annexes maximum."
+        },
+        {
+          "id": "AC3",
+          "type": "positif",
+          "text": "Quand l'utilisateur envoie un document, alors le système vérifie que la taille du document ne dépasse pas 50 Mo."
+        },
+        {
+          "id": "AC4",
+          "type": "négatif",
+          "text": "Quand l'utilisateur tente d'envoyer plus de 4 documents dans une transaction, alors le système affiche un message d'erreur indiquant que le nombre maximum de documents est dépassé."
+        },
+        {
+          "id": "AC5",
+          "type": "négatif",
+          "text": "Quand l'utilisateur tente d'envoyer un document dont la taille dépasse 50 Mo, alors le système affiche un message d'erreur indiquant que la taille du document est trop grande."
+        }
+      ],
+      "ac_count": 5,
+      "technical_criteria": [],
+      "qa_strategy": [],
+      "test_data": [],
+      "risk": "",
+      "qa_action": ""
+    },
+    {
+      "id": "NUXEPM-2303",
+      "project_key": "",
+      "title": "PPBACKLOG-8589 - (Enveloppe Macro) - Signature électronique - Multi-cachets",
+      "description_llm": "Le connecteur Contralia évolue et gère plusieurs cachets employeurs.\nPour gérer plusieurs cachets, il gère plusieurs permissions 'user-system' ayant les droits), ces permissions sont transmises via les métadonnées du DigitalFiles DocumentsMetadata.\nUne modification a été effectuée, le GET des statuts et documents signés a été transformé en POST.\nBénéfice :\nDisposer de la gestion multi cachets.",
+      "labels": [
+        "Candidat_V10",
+        "HITACHI"
+      ],
+      "status": "To Be Detailed",
+      "priority": "P1-High",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "technique",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "non",
+        "q2_nouvelle_fonctionnalite": "non",
+        "q3_logique_backend": "oui",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description concerne une évolution du connecteur Contralia et la gestion de plusieurs cachets employeurs, ce qui implique des modifications techniques au niveau du backend."
+      },
+      "ac_list": [],
+      "ac_count": 0,
+      "technical_criteria": [
+        "Le connecteur Contralia gère plusieurs cachets employeurs",
+        "Les permissions 'user-system' sont transmises via les métadonnées du DigitalFiles DocumentsMetadata",
+        "Le GET des statuts et documents signés a été transformé en POST"
+      ],
+      "qa_strategy": [
+        "Vérifier la compatibilité du connecteur Contralia avec les nouvelles permissions 'user-system'",
+        "Tester la gestion de plusieurs cachets employeurs",
+        "Valider la modification du GET en POST pour les statuts et documents signés"
+      ],
+      "test_data": [],
+      "risk": "Risque de non-compatibilité avec les anciennes versions du connecteur Contralia ou des systèmes existants",
+      "qa_action": "Vérifier les journaux d'erreurs et les performances du système après la mise en place de la nouvelle version du connecteur Contralia"
+    },
+    {
+      "id": "NUXEPM-2231",
+      "project_key": "",
+      "title": "DN - Evolution pages d'ajout, modification, consultation - Multi-cachets",
+      "description_llm": "Le connecteur Contralia évolue et gère plusieurs cachets employeurs.\nPour gérer plusieurs cachets, il gère plusieurs permissions ('user-system' ayant les droits), ces permissions sont transmises via les métadonnées du DigitalFiles DocumentsMetadata.\nPour alimenter ces métadonnées, il existe plusieurs méthodes liées au mode de dépôt des documents dans le DN\nDépôt en masse - pas de modification, l'enrichissement du json est déjà possible\nDépôt individuel sur les pages du DN\npouvoir modifier les métadonnées de cachet sur la popup d'ajout d'un document, sur le popup de modification\npouvoir visualiser les métadonnées du cachet sur la popup de consultation\npouvoir préalimenter les métadonnées en allant chercher dans le dossier du collaborateur certaines métadonnées (société, établissement, uo, etc... itou ce qu'on fait pour le dépôt en coffre fort employeur). Cette alimentation par défaut doit pouvoir être modifiable par les services.\nDépôt individuel à partir du legacy\nmodifier le script d'alimentation des métadonnées coté HRAccess et coté Pléiades\nBénéfice :\nDisposer de la gestion multi cachets avec le dépôt individuel des documents",
+      "labels": [
+        "HITACHI"
+      ],
+      "status": "To Be Detailed",
+      "priority": "P2-Medium",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "technique",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "non",
+        "q2_nouvelle_fonctionnalite": "oui",
+        "q3_logique_backend": "oui",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description concerne une nouvelle fonctionnalité liée à la gestion de plusieurs cachets employeurs et à la modification des métadonnées de documents, ce qui implique des éléments techniques backend."
+      },
+      "ac_list": [],
+      "ac_count": 0,
+      "technical_criteria": [
+        "Gestion de plusieurs cachets employeurs via le connecteur Contralia",
+        "Transmission de permissions via les métadonnées du DigitalFiles DocumentsMetadata",
+        "Modification des métadonnées de cachet sur les pages d'ajout et de modification de documents",
+        "Visualisation des métadonnées du cachet sur la popup de consultation",
+        "Préalimentation des métadonnées en récupérant des informations dans le dossier du collaborateur"
+      ],
+      "qa_strategy": [
+        "Tests d'intégration pour vérifier la transmission de permissions et la gestion de plusieurs cachets",
+        "Tests de modification et de visualisation des métadonnées de cachet",
+        "Tests de préalimentation des métadonnées"
+      ],
+      "test_data": [],
+      "risk": "Risque de non-conformité avec les exigences de sécurité et de gestion des permissions si la mise en œuvre est incorrecte",
+      "qa_action": "Vérifier la documentation technique et les spécifications du connecteur Contralia pour comprendre les exigences de mise en œuvre et planifier les tests en conséquence"
+    },
+    {
+      "id": "NUXEPM-2230",
+      "project_key": "",
+      "title": "DN - Bridge de signature - Multi-cachets (Capitalisation HITACHI)",
+      "description_llm": "Le connecteur Contralia évolue et gère plusieurs cachets employeurs.\nPour gérer plusieurs cachets, il gère plusieurs permissions 'user-system' ayant les droits), ces permissions sont transmises via les métadonnées du DigitalFiles DocumentsMetadata.\nUne modification a été effectuée, le GET des statuts et documents signés a été transformé en POST.\nMAJ 16/03 :\nIl s'agit d'une capitalisation faite pour le client HITACHI en V8. Il faudra récupérer le code source et l'intégrer dans notre standard V9.\nIl s'agit d'un report à \"l'aveugle\" car on ne peut pas tester. Il faudra juste s'assurer qu'il n' y a pas de régression dans l'application.\nUne demande d'accès au dev HITACHI est en cours.\nBénéfice :\nDisposer de la gestion multi cachets.",
+      "labels": [
+        "HITACHI",
+        "STREAM_APPLICATIF"
+      ],
+      "status": "To Be Detailed",
+      "priority": "P1-High",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "technique",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "non",
+        "q2_nouvelle_fonctionnalite": "non",
+        "q3_logique_backend": "oui",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description concerne une évolution du connecteur Contralia et la gestion de plusieurs cachets employeurs, ainsi que l'intégration d'un code source pour le client HITACHI. Cela implique des modifications techniques et des considérations de backend, ce qui suggère une classification 'technique'."
+      },
+      "ac_list": [],
+      "ac_count": 0,
+      "technical_criteria": [
+        "Le connecteur Contralia gère plusieurs cachets employeurs",
+        "Les permissions 'user-system' sont transmises via les métadonnées du DigitalFiles DocumentsMetadata",
+        "Le GET des statuts et documents signés a été transformé en POST"
+      ],
+      "qa_strategy": [
+        "Vérifier l'absence de régression dans l'application après l'intégration du code source",
+        "S'assurer que la gestion multi-cachets fonctionne correctement"
+      ],
+      "test_data": [],
+      "risk": "Risque de régression dans l'application si l'intégration du code source n'est pas correcte",
+      "qa_action": "Vérifier l'absence de régression dans l'application et s'assurer que la gestion multi-cachets fonctionne correctement"
+    },
+    {
+      "id": "NUXEPM-2167",
+      "project_key": "",
+      "title": "DN - gestion de e-sign pour maitriser l'envoi en signature",
+      "description_llm": "En tant que gestionnaire sur 4YOU\nje souhaite gérer la propriété e-sign pour déclencher la signature électronique\nAujourd’hui :\nUn document destiné à la signature électronique est déposé dans le DN avec la propriété e-sign= true par défaut. Si cette propriété est forcée à false, cela n'a aucun effet sur le process et le document part à la signature électronique.\nEvolution demandée :\nUn document destiné à la signature électronique part à la signature uniquement si la valeur e-sign est à true.\nafin que le gestionnaire puisse gérer dans ce type de document des documents signés manuellement qui ne partent pas à la signature.\nLes méthodes standard pour envoyer les documents en signature sont :\nDépôt manuel du document dans le DN sur l’IHM :\npouvoir visualiser sur l'IHM du Dossier Numérique, e-sign, si le document est à signer, attribuer par défaut la valeur true, cette valeur est saisissable\nLa visualisation se fait dans le tableau des documents, sur la page de consultation, et celle de mise à jour du document\ndépot unitaire : la page des décisions et un lien. celle des contrats et un lien,\nun script de page web permet d'alimenter les données et les métadonnées, ajouter la gestion de la propriété e-sign, si le document est à signer e-sign = true, sinon c'est false.\ndépot en masse :\nun script de page permet d'alimenter les données et les métadonnées, ce script va alimenter e-sign, si le document est à signer e-sign vaut true sinon false\nImpacts identifiés à ce jour :\nla structure du DN : pas besoin de la modifier\ndu bridge de signature : il transmet les éléments, peut-il gérer les valeurs de e-sign?\ntraitement dans le DN - conditionner l'envoi à la signature électronique si e-sign = true\nRéaliser une étude de cadrage, estimer le temps nécessaire à sa réalisation\nVigilance : ne pas surcharger les logs/les reports du connecteur avec 'fausses erreurs'",
+      "labels": [
+        "Candidat_V10",
+        "HCL"
+      ],
+      "status": "Ready",
+      "priority": "P2-Medium",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "fonctionnelle",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "non",
+        "q2_nouvelle_fonctionnalite": "oui",
+        "q3_logique_backend": "non",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description demande une nouvelle fonctionnalité pour gérer la propriété e-sign et déclencher la signature électronique, ce qui correspond à une fonctionnalité utilisateur observable."
+      },
+      "ac_list": [
+        {
+          "id": "AC1",
+          "type": "positif",
+          "text": "Quand un document est déposé dans le DN avec la propriété e-sign à true, alors le document part à la signature électronique."
+        },
+        {
+          "id": "AC2",
+          "type": "positif",
+          "text": "Quand un document est déposé dans le DN avec la propriété e-sign à false, alors le document ne part pas à la signature électronique."
+        },
+        {
+          "id": "AC3",
+          "type": "positif",
+          "text": "Quand un gestionnaire visualise un document dans le tableau des documents, alors il peut voir la valeur de la propriété e-sign."
+        },
+        {
+          "id": "AC4",
+          "type": "positif",
+          "text": "Quand un gestionnaire dépose un document manuellement dans le DN, alors la valeur de la propriété e-sign est attribuée par défaut à true et est saisissable."
+        }
+      ],
+      "ac_count": 4,
+      "technical_criteria": [],
+      "qa_strategy": [],
+      "test_data": [],
+      "risk": "",
+      "qa_action": ""
+    },
+    {
+      "id": "PPBACKLOG-7621",
+      "project_key": "",
+      "title": "DN - Consulter-Filtrer-Télécharger des documents en masse",
+      "description_llm": "En tant que gestionnaire je souhaite\npouvoir accéder à des documents en masse  dans un tableau. Les colonnes du tableau sont :\n|Documents Id|Owner|Date de début|Date de fin|Type de document|Statut de signature|téléchargement|\npouvoir filtrer les documents sur chacun des éléments en colonne\npouvoir télécharger chaque document unitairement ou en masse\nVoir si ce tableau est disponible dans le DN ou dans API Link Platforme",
+      "labels": [
+        "Candidat_V10",
+        "Elis",
+        "TRANSDEV"
+      ],
+      "status": "To Be Detailed",
+      "priority": "P1-High",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "fonctionnelle",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "non",
+        "q2_nouvelle_fonctionnalite": "oui",
+        "q3_logique_backend": "non",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description demande une nouvelle fonctionnalité avec des actions utilisateur observables, donc la classification est fonctionnelle."
+      },
+      "ac_list": [
+        {
+          "id": "AC1",
+          "type": "positif",
+          "text": "Quand je suis un gestionnaire, alors je peux accéder à des documents en masse dans un tableau."
+        },
+        {
+          "id": "AC2",
+          "type": "positif",
+          "text": "Quand je suis dans le tableau des documents, alors je peux voir les colonnes suivantes : Documents Id, Owner, Date de début, Date de fin, Type de document, Statut de signature, Téléchargement."
+        },
+        {
+          "id": "AC3",
+          "type": "positif",
+          "text": "Quand je suis dans le tableau des documents, alors je peux filtrer les documents sur chacun des éléments en colonne."
+        },
+        {
+          "id": "AC4",
+          "type": "positif",
+          "text": "Quand je sélectionne un document, alors je peux le télécharger unitairement."
+        },
+        {
+          "id": "AC5",
+          "type": "positif",
+          "text": "Quand je sélectionne plusieurs documents, alors je peux les télécharger en masse."
+        },
+        {
+          "id": "AC6",
+          "type": "positif",
+          "text": "Quand je suis dans le DN ou dans API Link Platforme, alors je peux voir le tableau des documents."
+        }
+      ],
+      "ac_count": 6,
+      "technical_criteria": [],
+      "qa_strategy": [],
+      "test_data": [],
+      "risk": "",
+      "qa_action": ""
+    },
+    {
+      "id": "NUXEPM-2126",
+      "project_key": "",
+      "title": "DN - Intégration du motif de refus des décisions dans HR",
+      "description_llm": "En tant que gestionnaire sur 4YOU\nje souhaite pouvoir disposer du statut de rejet du document et du motif de refus d'une signature électronique\nafin de\ncomprendre la raison du refus et\npouvoir corriger le document initial en fonction de ce motif,\npouvoir remonter le statut et le motif du rejet dans le legacy\nImpacts identifiés à ce jour :\nModifier\nla structure du DN pour accueillir le motif,\ndu bridge de signature,\nle connecteur Contralia Link,\nl'affichage des métadonnées en ajoutant le motif de refus sur IHM DN : popup de consultation, mise à jour.\nRéaliser une étude de cadrage, estimer le temps nécessaire à sa réalisation",
+      "labels": [
+        "HCL"
+      ],
+      "status": "To Be Detailed",
+      "priority": "P2-Medium",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "fonctionnelle",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "non",
+        "q2_nouvelle_fonctionnalite": "oui",
+        "q3_logique_backend": "oui",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description demande une nouvelle fonctionnalité avec des éléments techniques, mais l'accent est mis sur les besoins de l'utilisateur et les impacts sur le système."
+      },
+      "ac_list": [
+        {
+          "id": "AC1",
+          "type": "positif",
+          "text": "Quand un gestionnaire consulte le statut de rejet d'un document, alors il peut voir le motif de refus de la signature électronique."
+        },
+        {
+          "id": "AC2",
+          "type": "positif",
+          "text": "Quand un gestionnaire consulte le statut de rejet d'un document, alors il peut comprendre la raison du refus."
+        },
+        {
+          "id": "AC3",
+          "type": "positif",
+          "text": "Quand un gestionnaire corrige le document initial en fonction du motif de refus, alors il peut remonter le statut et le motif du rejet dans le legacy."
+        },
+        {
+          "id": "AC4",
+          "type": "positif",
+          "text": "Quand un gestionnaire consulte les métadonnées d'un document, alors il peut voir le motif de refus sur l'IHM DN dans la popup de consultation et la mise à jour."
+        }
+      ],
+      "ac_count": 4,
+      "technical_criteria": [],
+      "qa_strategy": [],
+      "test_data": [],
+      "risk": "",
+      "qa_action": ""
+    },
+    {
+      "id": "NUXEPM-2125",
+      "project_key": "",
+      "title": "DN - Modifier VALIDE et VISIBLE si e-signature différent de \"SIGNé\"",
+      "description_llm": "En tant que gestionnaire sur 4YOU\nje souhaite faire évoluer les témoins VISIBLE et VALIDE en fonction du statut de e-signature\nAujourd’hui :\nUn document destiné à la signature électronique est déposé dans le DN avec les propriétés VISIBLE et VALIDE par défaut, avec la propriété e-sign= true par défaut.\nLorsque le document revient signé, les propriétés VISIBLE et VALIDE ne sont pas considérées, elles restent en l’état. Le statut esignature vaut « signé »\nEvolution demandée :\nUn document destiné à la signature électronique est déposé dans le DN avec les propriétés NON VISIBLE et NON VALIDE par défaut, avec la propriété e-sign= true par défaut.\nLorsque le document revient avec le statut de esignature à « signé », les propriétés NON VISIBLE et NON VALIDE sont mises à jour à VISIBLE et VALIDE.\nafin que le collaborateur n'ait pas accès aux documents non signés par l'employeur.\nLes méthodes standard pour envoyer les documents en signature sont :\nDépôt manuel du document dans le DN sur l’IHM :\npouvoir visualiser sur l'IHM du Dossier Numérique, NON-VALIDE et NON-VISIBLE, si le document est à signer et est dans un état de e-signature différent de \"SIGNE\".\nLes valeurs NON-VALIDE NON-VISIBLE sont des propriétés du document. La visualisation se fait dans le tableau des documents, sur la page de consultation, et celle de mise à jour du document\ndépot unitaire : la page des décisions et un lien. celle des contrats et un lien,\nun script de page web permet d'alimenter les données et les métadonnées, ajouter la gestion de la propriété NON-VALIDE et NON-VISIBLE, si le document est à signer et est dans un état de e-signature différent de \"SIGNE\".\ndépot en masse :\nun script de page permet d'alimenter les données et les métadonnées, ce script va alimenter NON-VALIDE et NON-VISIBLE, si le document est à signer et est dans un état de e-signature différent de \"SIGNE\".\nImpacts identifiés à ce jour :\nla structure du DN : pas besoin de la modifier\ndu bridge de signature : il transmet les éléments, peut-il gérer les valeurs de VISIBLE ou VALIDE?\ntraitement dans le DN - modifier VISIBLE et VALIDE si e-signature différent de signé et si le doc est de type \"A signer\"\nRéaliser une étude de cadrage, estimer le temps nécessaire à sa réalisation",
+      "labels": [
+        "Candidat_V10",
+        "HCL"
+      ],
+      "status": "Ready",
+      "priority": "P2-Medium",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "fonctionnelle",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "non",
+        "q2_nouvelle_fonctionnalite": "oui",
+        "q3_logique_backend": "non",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description demande une nouvelle fonctionnalité pour faire évoluer les témoins VISIBLE et VALIDE en fonction du statut de e-signature, ce qui indique une action utilisateur observable."
+      },
+      "ac_list": [
+        {
+          "id": "AC1",
+          "type": "positif",
+          "text": "Quand un document est déposé dans le DN avec les propriétés NON VISIBLE et NON VALIDE par défaut, alors les propriétés sont mises à jour à VISIBLE et VALIDE lorsque le document revient avec le statut de esignature à « signé »."
+        },
+        {
+          "id": "AC2",
+          "type": "positif",
+          "text": "Quand un document est à signer et est dans un état de e-signature différent de « SIGNE », alors les propriétés NON-VALIDE et NON-VISIBLE sont affichées sur l'IHM du Dossier Numérique."
+        },
+        {
+          "id": "AC3",
+          "type": "négatif",
+          "text": "Quand un document n'est pas à signer ou est dans un état de e-signature « SIGNE », alors les propriétés VISIBLE et VALIDE ne sont pas mises à jour."
+        }
+      ],
+      "ac_count": 3,
+      "technical_criteria": [],
+      "qa_strategy": [],
+      "test_data": [],
+      "risk": "",
+      "qa_action": ""
+    },
+    {
+      "id": "NUXEPM-1889",
+      "project_key": "",
+      "title": "DN - Migration des documents lors d'une montée de 4YOU",
+      "description_llm": "Migration des docs existants d'une 6.5.5 vers un 4YOU 8. ou 4YOU9;\nDisposer d'un batch qui reprenne les documents, et leurs metadonnées de l'ancienne version de 4YOU vers la nouvelle version de 4YOU 8 ou 4YOU9.\nAttention, les documents archivés en coffre-fort ne doivent pas être archivés une seconde fois.\net les documents signés doivent être repris avec un statut signé directement.\nA cadrer.",
+      "labels": [
+        "Candidat_V10",
+        "LABANQUEPOSTALE"
+      ],
+      "status": "To Be Detailed",
+      "priority": "P1-High",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "technique",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "non",
+        "q2_nouvelle_fonctionnalite": "non",
+        "q3_logique_backend": "oui",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description concerne la migration de documents et leurs métadonnées d'une ancienne version de 4YOU vers une nouvelle version, ce qui implique des traitements techniques backend."
+      },
+      "ac_list": [],
+      "ac_count": 0,
+      "technical_criteria": [
+        "Migration des documents existants de 6.5.5 vers 4YOU 8 ou 4YOU 9",
+        "Préservation des métadonnées des documents",
+        "Exclusion des documents archivés en coffre-fort de l'archivage une seconde fois",
+        "Préservation du statut signé pour les documents signés"
+      ],
+      "qa_strategy": [
+        "Tests de migration de documents avec différents statuts (archivés, signés, non signés)",
+        "Vérification de l'intégrité des métadonnées après migration",
+        "Tests de non-archivage des documents déjà archivés en coffre-fort"
+      ],
+      "test_data": [],
+      "risk": "Perte de données ou corruption des métadonnées lors de la migration",
+      "qa_action": "Développer des scénarios de test pour valider la migration des documents et leurs métadonnées, en incluant les cas de figure spécifiques mentionnés dans la description."
+    },
+    {
+      "id": "NUXEPM-1613",
+      "project_key": "",
+      "title": "DN - Intégration du motif de refus dans le DN",
+      "description_llm": "En tant que gestionnaire sur 4YOU\nje souhaite pouvoir disposer du motif de refus d'une signature électronique sur la popup de consultation du document qui un statut de signature \"Refusé\"\nafin de comprendre la raison du refus et de pouvoir corriger le document initial en fonction de ce motif\nImpacts identifiés à ce jour :\nModifier\nla structure du DN pour accueillir le motif,\ndu bridge de signature,\nle connecteur Contralia Link,\nl'affichage des métadonnées en ajoutant le motif de refus sur IHM DN : popup de consultation, mise à jour.\nRéaliser une étude de cadrage, estimer le temps nécessaire à sa réalisation",
+      "labels": [
+        "BIOGROUP",
+        "HCL"
+      ],
+      "status": "To Be Detailed",
+      "priority": "P2-Medium",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "fonctionnelle",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "non",
+        "q2_nouvelle_fonctionnalite": "oui",
+        "q3_logique_backend": "oui",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description demande une nouvelle fonctionnalité avec des éléments techniques, mais l'accent est mis sur l'expérience utilisateur et la modification de l'IHM."
+      },
+      "ac_list": [
+        {
+          "id": "AC1",
+          "type": "positif",
+          "text": "Quand un gestionnaire consulte un document avec un statut de signature 'Refusé' sur la popup de consultation du document, alors le motif de refus est affiché."
+        },
+        {
+          "id": "AC2",
+          "type": "positif",
+          "text": "Quand un gestionnaire voit le motif de refus, alors il peut comprendre la raison du refus et prendre les mesures nécessaires pour corriger le document initial."
+        }
+      ],
+      "ac_count": 2,
+      "technical_criteria": [],
+      "qa_strategy": [],
+      "test_data": [],
+      "risk": "",
+      "qa_action": ""
+    },
+    {
+      "id": "PPBACKLOG-4785",
+      "project_key": "",
+      "title": "DN - Consultation d'un doc sur Arkhinéo",
+      "description_llm": "En tant que gestionnaire,\nje souhaite pouvoir télécharger un document portant valeur probante, depuis Arkhinéo,\ndans le cas où ce document est stocké et en local et sur Arkhinéo.\nHypothèse :\nle type de document a pour configuration de stockage \"local\" et \"Coffre-fort employeur\".\nActuellement :\nle bouton \"télécharger\" récupère le document depuis le local (FS pour HRAccess, BDD pour Pléiades)\nBesoin exprimé :\nDisposer d'un bouton supplémentaire qui permet de télécharger le document de Arkhinéo et pas du local.",
+      "labels": [
+        "DEMANDE_MGEN",
+        "DEMANDE_VYV3",
+        "DemandeMeduimBusiness"
+      ],
+      "status": "To Be Detailed",
+      "priority": "P1-High",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "fonctionnelle",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "non",
+        "q2_nouvelle_fonctionnalite": "oui",
+        "q3_logique_backend": "non",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description demande une nouvelle fonctionnalité avec un bouton supplémentaire pour télécharger un document depuis Arkhinéo, ce qui correspond à une fonctionnalité utilisateur observable."
+      },
+      "ac_list": [
+        {
+          "id": "AC1",
+          "type": "positif",
+          "text": "Quand le gestionnaire clique sur le bouton de téléchargement depuis Arkhinéo, alors le document est téléchargé depuis Arkhinéo et non depuis le stockage local."
+        },
+        {
+          "id": "AC2",
+          "type": "positif",
+          "text": "Quand le type de document a pour configuration de stockage 'local' et 'Coffre-fort employeur', alors le bouton de téléchargement depuis Arkhinéo est disponible."
+        },
+        {
+          "id": "AC3",
+          "type": "négatif",
+          "text": "Quand le document n'est pas stocké sur Arkhinéo, alors le bouton de téléchargement depuis Arkhinéo n'est pas disponible ou affiche un message d'erreur approprié."
+        }
+      ],
+      "ac_count": 3,
+      "technical_criteria": [],
+      "qa_strategy": [],
+      "test_data": [],
+      "risk": "",
+      "qa_action": ""
+    },
+    {
+      "id": "NUXEPM-1446",
+      "project_key": "",
+      "title": "DN - Consultation d'un doc sur Arkhinéo",
+      "description_llm": "En tant que gestionnaire,\nje souhaite pouvoir télécharger un document portant valeur probante, depuis Arkhinéo,\ndans le cas où ce document est stocké et en local et sur Arkhinéo.\nHypothèse :\nle type de document a pour configuration de stockage \"local\" et \"Coffre-fort employeur\".\nActuellement :\nSi la configuration de stockage est \"local\" et \"coffre-fort employeur\",\nle bouton \"télécharger\" récupère le document depuis le local (FS pour HRAccess, BDD pour Pléiades).\nSi la configuration de stockage est \"coffre-fort employeur\" uniquement,\nle bouton \"télécharger\" récupère le document depuis le coffre-fort employeur.\nBesoin exprimé :\nDisposer de deux boutons de téléchargement dans le cas d'un stockage multiple.\nle bouton actuel avec une flèche vers le bas, pour télécharger à partir du lieu de stockage défini par défaut. (\"local\" en standard)\nun bouton supplémentaire qui permet de télécharger le document depuis le lieu de stockage L où L est défini dans le tableau ci-dessous (Arkhinéo dans le cas particulier du double stockage \"local\" et \"Arkhinéo\")\nComplément : élargir ce besoin particulier.\nDisposer d'un mode de téléchargement par défaut en cas de stockage multiple. Par exemple télécharger du local.\nDisposer d'un moyen supplémentaire (bouton) pour télécharger le document depuis le lieu de stockage choisi.\nCe bouton ne doit être disponible que pour le gestionnaire.\nCi-dessous le tableau des configurations théoriques.\nOn s'interdit de télécharger un doc d'un coffre fort salarié car c'est un espace privé.\n[capture d'écran]\nComment gérer la configuration par défaut?\nOn ne peut pas gérer un seule configuration par défaut de choix de lieu à partir duquel on télécharge.\nSi la configuration \"local\" est utilisée, elle est la configuration par défaut\nsinon\nsi la configuration \"GED\" est utilisée, elle est la configuration par défaut\nsi la configuration CFE est utilisée, elle ets la configuration par défaut.\nGraphiquement, comment proposer le second choix de téléchargement?\nCi-dessous la présentation actuelle :\nPeut-on ajouter un bouton dans la liste des actions? oui pour le bouton supplémentaire, vu avec Philippe.\nPar contre le contenu du bouton (la balance de la justice) est celui mis plus bas pour Arkhinéo. Ce bouton sera revu pour une configuration plus élargie que celle du cas particulier.\nQuand on clique sur le triangle, on demande au gestionnaire le choix en précisant pour le téléchargement du CFE que la consultation est payante.\nVous souhaitez télécharger depuis le coffre-fort employeur. La consultation est payante. Confirmez vous votre choix? Oui non\nVous souhaitez télécharger depuis la GED. Confirmez vous votre choix? Oui non\nVous pouvez télécharger depuis le coffre-fort employeur ou la GED. La consultation est payante sur le coffre-fort employeur.\nVous choisissez (case à cocher?)\nle coffre-fort\nla GED.",
+      "labels": [
+        "HITACHI"
+      ],
+      "status": "To Be Detailed",
+      "priority": "P1-High",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "fonctionnelle",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "non",
+        "q2_nouvelle_fonctionnalite": "oui",
+        "q3_logique_backend": "non",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description demande une nouvelle fonctionnalité avec des boutons de téléchargement pour les gestionnaires, ce qui correspond à une fonctionnalité utilisateur observable."
+      },
+      "ac_list": [
+        {
+          "id": "AC1",
+          "type": "positif",
+          "text": "Quand un document est stocké à la fois localement et sur Arkhinéo, alors deux boutons de téléchargement doivent être disponibles pour le gestionnaire."
+        },
+        {
+          "id": "AC2",
+          "type": "positif",
+          "text": "Quand le gestionnaire clique sur le bouton de téléchargement par défaut, alors le document doit être téléchargé depuis le lieu de stockage défini par défaut (local par défaut)."
+        },
+        {
+          "id": "AC3",
+          "type": "positif",
+          "text": "Quand le gestionnaire clique sur le bouton supplémentaire de téléchargement, alors il doit être possible de télécharger le document depuis le lieu de stockage choisi (Arkhinéo dans le cas de double stockage)."
+        },
+        {
+          "id": "AC4",
+          "type": "négatif",
+          "text": "Quand le gestionnaire tente de télécharger un document depuis un coffre-fort salarié, alors un message d'erreur doit être affiché car c'est un espace privé."
+        },
+        {
+          "id": "AC5",
+          "type": "positif",
+          "text": "Quand le gestionnaire choisit de télécharger depuis le coffre-fort employeur, alors un avertissement doit être affiché pour indiquer que la consultation est payante."
+        }
+      ],
+      "ac_count": 5,
+      "technical_criteria": [],
+      "qa_strategy": [],
+      "test_data": [],
+      "risk": "",
+      "qa_action": ""
+    },
+    {
+      "id": "NUXEPM-1415",
+      "project_key": "",
+      "title": "DN - Consulter-Filtrer-Télécharger des documents en masse",
+      "description_llm": "En tant que gestionnaire je souhaite\npouvoir accéder à des documents en masse  dans un tableau. Les colonnes du tableau sont :\n|Documents Id|Owner|Date de début|Date de fin|Type de document|Statut de signature|téléchargement|\npouvoir filtrer les documents sur chacun des éléments en colonne\npouvoir télécharger chaque document unitairement ou en masse\nVoir si ce tableau est disponible dans le DN ou dans API Link Platforme",
+      "labels": [
+        "Candidat_V10",
+        "Elis",
+        "TRANSDEV"
+      ],
+      "status": "To Be Detailed",
+      "priority": "P1-High",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "fonctionnelle",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "non",
+        "q2_nouvelle_fonctionnalite": "oui",
+        "q3_logique_backend": "non",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description demande une nouvelle fonctionnalité avec des actions utilisateur observables, donc classifiée comme 'fonctionnelle'."
+      },
+      "ac_list": [
+        {
+          "id": "AC1",
+          "type": "positif",
+          "text": "Quand je suis un gestionnaire, alors je peux accéder à des documents en masse dans un tableau."
+        },
+        {
+          "id": "AC2",
+          "type": "positif",
+          "text": "Quand je suis dans le tableau de documents, alors je peux voir les colonnes 'Documents Id', 'Owner', 'Date de début', 'Date de fin', 'Type de document', 'Statut de signature' et 'téléchargement'."
+        },
+        {
+          "id": "AC3",
+          "type": "positif",
+          "text": "Quand je suis dans le tableau de documents, alors je peux filtrer les documents sur chacun des éléments en colonne."
+        },
+        {
+          "id": "AC4",
+          "type": "positif",
+          "text": "Quand je sélectionne un document, alors je peux le télécharger unitairement."
+        },
+        {
+          "id": "AC5",
+          "type": "positif",
+          "text": "Quand je sélectionne plusieurs documents, alors je peux les télécharger en masse."
+        },
+        {
+          "id": "AC6",
+          "type": "positif",
+          "text": "Quand je suis dans le DN ou dans API Link Platforme, alors je peux voir le tableau de documents."
+        }
+      ],
+      "ac_count": 6,
+      "technical_criteria": [],
+      "qa_strategy": [],
+      "test_data": [],
+      "risk": "",
+      "qa_action": ""
+    },
+    {
+      "id": "NUXEPM-1329",
+      "project_key": "",
+      "title": "DN - Plan de classement- Confidentialité - critère UO, libellé court au lieu du long",
+      "description_llm": "En tant qu'administrateur du plan de classement,\nje veux voir le libellé long du critère \"UO\" dans la gestion de la confidentialité du plan de classement.\nAujourd'hui c'est le libellé court, alors que les libellés des autres référentiels sont les libellés longs.\n[capture d'écran]",
+      "labels": [
+        "SENAT"
+      ],
+      "status": "To Be Detailed",
+      "priority": "P3-Low",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "technique",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "oui",
+        "q2_nouvelle_fonctionnalite": "non",
+        "q3_logique_backend": "non",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description signale un problème existant avec l'affichage du libellé court au lieu du libellé long pour le critère 'UO' dans la gestion de la confidentialité du plan de classement."
+      },
+      "ac_list": [],
+      "ac_count": 0,
+      "technical_criteria": [
+        "Le libellé long du critère 'UO' doit être affiché dans la gestion de la confidentialité du plan de classement",
+        "Les libellés des autres référentiels doivent être les libellés longs"
+      ],
+      "qa_strategy": [
+        "Vérifier que le libellé long du critère 'UO' est affiché correctement",
+        "Vérifier que les libellés des autres référentiels sont les libellés longs"
+      ],
+      "test_data": [],
+      "risk": "Si le libellé court est affiché au lieu du libellé long, cela peut causer une confusion pour les administrateurs du plan de classement",
+      "qa_action": "Vérifier que le libellé long du critère 'UO' est affiché correctement dans la gestion de la confidentialité du plan de classement"
+    },
+    {
+      "id": "NUXEPM-1328",
+      "project_key": "",
+      "title": "DN - Plan de classement - Confidentialité - Concaténation code-libellé",
+      "description_llm": "En tant qu'administrateur du plan de classement,\nje souhaite pouvoir réaliser des recherches sur le code comme sur le libellé ,\npour les critères de confidentialité.\nUne proposition est\nde pouvoir concaténer code et libellé, et\nde rechercher sur cette zone concaténée.\n[capture d'écran]",
+      "labels": [
+        "SENAT"
+      ],
+      "status": "Ready",
+      "priority": "P3-Low",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "fonctionnelle",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "non",
+        "q2_nouvelle_fonctionnalite": "oui",
+        "q3_logique_backend": "non",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description demande une nouvelle fonctionnalité pour l'administrateur du plan de classement, permettant de réaliser des recherches sur le code et le libellé de confidentialité de manière concaténée."
+      },
+      "ac_list": [
+        {
+          "id": "AC1",
+          "type": "positif",
+          "text": "Quand l'administrateur du plan de classement effectue une recherche sur le code, alors le système doit afficher les résultats correspondants."
+        },
+        {
+          "id": "AC2",
+          "type": "positif",
+          "text": "Quand l'administrateur du plan de classement effectue une recherche sur le libellé, alors le système doit afficher les résultats correspondants."
+        },
+        {
+          "id": "AC3",
+          "type": "positif",
+          "text": "Quand l'administrateur du plan de classement effectue une recherche sur la zone concaténée du code et du libellé, alors le système doit afficher les résultats correspondants."
+        },
+        {
+          "id": "AC4",
+          "type": "négatif",
+          "text": "Quand l'administrateur du plan de classement effectue une recherche avec des critères invalides, alors le système doit afficher un message d'erreur approprié."
+        }
+      ],
+      "ac_count": 4,
+      "technical_criteria": [],
+      "qa_strategy": [],
+      "test_data": [],
+      "risk": "",
+      "qa_action": ""
+    },
+    {
+      "id": "NUXEPM-1321",
+      "project_key": "",
+      "title": "DN - Notification d'un gestionnaire du statut de validation d'un document",
+      "description_llm": "En tant que gestionnaire\nje souhaite que le statut de validation d'un document me soit notifié\nafin d'agir soit sur le document soit sur le dossier du collaborateur.\nRéaliser un cadrage qui intègre les éléments suivants :\nCréer un nouveau statut de validation : \"A valider\" qui complètent ceux existants ( \"Valide\" \"Non valide\")\nDéposer un document \"A signer\" avec un statut \"A valider\" (voir comment identifier les documents qui sont \"A valider\" et ceux à \"Valide\")\nêtre capable d'identifier les documents dont le statut de validation est à \"A valider\" ou \"Non valide\"\nsur une période à configurer (jour, heure, minute...)\nêtre capable de générer une tache dans l'inbox d'un gestionnaire (acteur role configurables)\nla tâche est rangée dans une catégorie \"Documents\" dans une sous catégorie \"à valider\" ou une sous-catégorie \"non valide\"\nle gestionnaire a la capacité à aller via un lien sur la tâche, sur le dossier du collaborateur dans le legacy pour\napporter un complément\nrefaire le contrat s'il est erroné\nle gestionnaire a la capacité à aller via un lien, sur le dossier numérique du collaborateur pour passer le statut du document\nde \"A valider\" à \"Valide\" ou \"Non valide\"\nde \"Non valide\" à \"A valider\"\nou bien il peut modifier le statut de validation directement sur la tâche dans l'inbox\nle gestionnaire a la capacité de justifier par un commentaire la raison de sa \"non validation\" du document.\nle gestionnaire a la capacité à clore en masse toutes les tâches au statut \"Valide\" ou \"Non valide\".\nUn axe de solution pour notifier le gestionnaire dans son inbox est de remonter les statuts de validation et de esignature dans  le legacy.\nCela permet de gérer des alertes dans inbox du gestionnaire et de pouvoir envoyer des mails au gestionnaire (cas de biogroup) qui souhaite envoyer un mail au gestionnaire qui doit valider les documents.\nj'ajoute une tache en ce sens.\nLe 14 janv 2025, je confirme que ce besoin reste d'actualité pour BIOGROUP (secteur privé - contrat de travail) et HCL(secteur public - décisions). En utilisant la signature électronique, est né le besoin de disposer aussi de la remontée du motif de refus ou bien en cas d'erreur, du code erreur. Enrichir l'étude de ce besoin.\nCette story est valable pour le secteur privé et pour le secteur public, pouvoir remonter dans le legacy coté secteur public le statut de signature des décisions.\nbesoin d'alerte et de motif de refus demandé par Covea, avant-vente",
+      "labels": [
+        "BIOGROUP"
+      ],
+      "status": "To Be Detailed",
+      "priority": "P2-Medium",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "fonctionnelle",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "non",
+        "q2_nouvelle_fonctionnalite": "oui",
+        "q3_logique_backend": "non",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description demande une nouvelle fonctionnalité pour notifier les gestionnaires du statut de validation d'un document, ce qui indique une fonctionnalité utilisateur observable."
+      },
+      "ac_list": [
+        {
+          "id": "AC1",
+          "type": "positif",
+          "text": "Quand un document est déposé avec un statut 'A valider', alors le gestionnaire reçoit une notification dans son inbox."
+        },
+        {
+          "id": "AC2",
+          "type": "positif",
+          "text": "Quand un document a un statut 'A valider' ou 'Non valide', alors le gestionnaire peut identifier ces documents sur une période configurable."
+        },
+        {
+          "id": "AC3",
+          "type": "positif",
+          "text": "Quand un gestionnaire clique sur une tâche dans son inbox, alors il peut accéder au dossier du collaborateur dans le legacy pour apporter des compléments."
+        },
+        {
+          "id": "AC4",
+          "type": "positif",
+          "text": "Quand un gestionnaire modifie le statut d'un document, alors il peut justifier sa décision par un commentaire."
+        },
+        {
+          "id": "AC5",
+          "type": "positif",
+          "text": "Quand un gestionnaire cloture une tâche, alors toutes les tâches au statut 'Valide' ou 'Non valide' peuvent être clôturées en masse."
+        }
+      ],
+      "ac_count": 5,
+      "technical_criteria": [],
+      "qa_strategy": [],
+      "test_data": [],
+      "risk": "",
+      "qa_action": ""
+    },
+    {
+      "id": "NUXEPM-1319",
+      "project_key": "",
+      "title": "DN - Notification d'un gestionnaire du statut de signature d'un document",
+      "description_llm": "En tant que gestionnaire\nje souhaite que le statut de signature d'un document me soit notifié\nafin d'agir soit sur le document soit sur le dossier du collaborateur.\nRéaliser un cadrage qui intègre les éléments suivants :\nêtre capable d'identifier les documents dont le statut est passé à\nà corriger\nsigné\nrefusé\nexpiré\nabandonné\nsur une période à configurer (jour, heure, minute...)\nêtre capable de générer une tache dans l'inbox d'un gestionnaire (acteur role configurables)\nla tâche est rangée dans une catégorie \"Documents en signature\", sous catégorie\n\"A corriger\"\n\"Signé\"\n\"Refus\"\n\"Expiré\n\"Abandonné\"\nle gestionnaire a la capacité à aller via un lien sur la tâche, sur le dossier du collaborateur dans le legacy pour\ncompléter le dossier s'il est signé, et le valider pour la paie\nrefaire le contrat et le réenvoyer s'il est refusé ou expiré.\nlire de motif de refus, s'il est refusé (ajouté le 06 mars 2026)\nle gestionnaire a la capacité à aller via un lien, sur le dossier numérique du collaborateur pour corriger les metadonnées.\nle gestionnaire a la capacité à clore en masse toutes les tâche d'un même sous-catégorie de la catégorie \"Documents en signature\".",
+      "labels": [
+        "AVANT-VENTE",
+        "BIOGROUP",
+        "COVEA"
+      ],
+      "status": "To Be Detailed",
+      "priority": "P2-Medium",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "fonctionnelle",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "non",
+        "q2_nouvelle_fonctionnalite": "oui",
+        "q3_logique_backend": "non",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description demande une nouvelle fonctionnalité avec des actions utilisateur observables, donc la classification est fonctionnelle."
+      },
+      "ac_list": [
+        {
+          "id": "AC1",
+          "type": "positif",
+          "text": "Quand un document est signé, alors le gestionnaire reçoit une notification avec un lien vers le dossier du collaborateur pour compléter et valider le dossier."
+        },
+        {
+          "id": "AC2",
+          "type": "positif",
+          "text": "Quand un document est refusé, alors le gestionnaire reçoit une notification avec un lien vers le dossier du collaborateur pour refaire le contrat et le réenvoyer, ainsi que lire le motif de refus."
+        },
+        {
+          "id": "AC3",
+          "type": "positif",
+          "text": "Quand un document est expiré, alors le gestionnaire reçoit une notification avec un lien vers le dossier du collaborateur pour refaire le contrat et le réenvoyer."
+        },
+        {
+          "id": "AC4",
+          "type": "positif",
+          "text": "Quand un document est abandonné, alors le gestionnaire reçoit une notification avec un lien vers le dossier du collaborateur pour prendre des mesures appropriées."
+        },
+        {
+          "id": "AC5",
+          "type": "positif",
+          "text": "Quand un document nécessite une correction, alors le gestionnaire reçoit une notification avec un lien vers le dossier numérique du collaborateur pour corriger les métadonnées."
+        },
+        {
+          "id": "AC6",
+          "type": "positif",
+          "text": "Quand le gestionnaire souhaite clore en masse des tâches d'une même sous-catégorie, alors il peut le faire via l'interface de gestion des tâches."
+        }
+      ],
+      "ac_count": 6,
+      "technical_criteria": [],
+      "qa_strategy": [],
+      "test_data": [],
+      "risk": "",
+      "qa_action": ""
+    },
+    {
+      "id": "NUXEPM-1176",
+      "project_key": "",
+      "title": "DN - Import en masse, directory listener",
+      "description_llm": "Lors d'un dépôt en masse de documents dans le DN (import batch), être capable de gérer l'import via le directorylistener.\nCréer un nouveau job appelé par le scheduler de directorylistener.\nCe directory listener a pour contrat :\nlit le JSON,\nle transforme en KO ou OK\nfabrique un rapport CSV\nfabrique un fichier LOG\nVérifier le comportement à définir pour l'archivage.\nAttention : périodicité de déclenchement du scheduler, serait unique pour tous les jobs. Cela apporte t il des contraintes? Non\nLe déclenchement est lié à la présence du JSON dans le répertoire, donc a priori cette périodicité ne pose pas de souci .\nScheduler se base sur Quartz (non Sopra) à changer pour la 8.0 qui utilisera une autre technologie.\nDonc on risque d'avoir deux dev en parrallèle.",
+      "labels": [
+        "STREAM_APPLICATIF"
+      ],
+      "status": "To Be Detailed",
+      "priority": "P3-Low",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "technique",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "non",
+        "q2_nouvelle_fonctionnalite": "non",
+        "q3_logique_backend": "oui",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description concerne le développement d'un nouveau job pour gérer l'import en masse de documents via le directory listener, ce qui implique des traitements techniques backend."
+      },
+      "ac_list": [],
+      "ac_count": 0,
+      "technical_criteria": [
+        "Création d'un nouveau job appelé par le scheduler de directorylistener",
+        "Lecture de JSON et transformation en KO ou OK",
+        "Génération d'un rapport CSV",
+        "Génération d'un fichier LOG",
+        "Vérification du comportement d'archivage"
+      ],
+      "qa_strategy": [
+        "Tests d'intégration pour vérifier la compatibilité avec le scheduler de directorylistener",
+        "Tests de performance pour évaluer la capacité à gérer les imports en masse",
+        "Tests de sécurité pour garantir la protection des données traitées"
+      ],
+      "test_data": [],
+      "risk": "Risque de compatibilité avec la technologie de scheduling actuelle (Quartz) et la future technologie prévue pour la version 8.0",
+      "qa_action": "Développer des scénarios de test pour couvrir les différents cas de figure, notamment les erreurs de lecture de JSON, les problèmes de transformation et les échecs de génération de rapports et de fichiers LOG."
+    },
+    {
+      "id": "NUXEPM-1159",
+      "project_key": "",
+      "title": "[?] DN - Confidentialité sur le plan de classement entreprise (fct DMS)",
+      "description_llm": "En tant que manager ou gestionnaire,\navoir la capacité à ne consulter, mettre à jour ou supprimer des documents sur un ensemble restreint de type de documents d'un plan de classement entreprise.\navoir la capacité de consulter un document sans pouvoir le mettre à jour, avoir la capacité de consulter et mettre à jour certains documents sans les supprimer, avoir la capacité de supprimer un document.\nEn tant que administrateur du plan de classement, avoir la capacité d'associer une confidentialité sur c.r.u.d. sur les types de documents en fonction du rôle du user (manager, gestionnaire).\nEtudier si la confidentialité s'applique sur un type de document comme est établie la confidentialité jusque 4YOU7.2, ou si elle s'applique sur un document comme le faisait le DMS.\nCommencer par poser une étude qui applique une confidentialité basée sur le modèle de rôle et la valeur de rôle ou les valeurs de rôle.(voir cadrage de Romain pour BYCN dans YOU-7307.\nElargir ce périmètre.",
+      "labels": [
+        "2023_STANDBY",
+        "STANDBY_2024",
+        "STREAM_COREAPP"
+      ],
+      "status": "To Be Detailed",
+      "priority": "P1-High",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "fonctionnelle",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "non",
+        "q2_nouvelle_fonctionnalite": "oui",
+        "q3_logique_backend": "non",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description demande une nouvelle fonctionnalité d'accès et de gestion de documents en fonction du rôle de l'utilisateur, ce qui correspond à une fonctionnalité."
+      },
+      "ac_list": [
+        {
+          "id": "AC1",
+          "type": "positif",
+          "text": "Quand un manager ou gestionnaire accède à un document, alors il ne peut consulter, mettre à jour ou supprimer que les documents autorisés en fonction de son rôle."
+        },
+        {
+          "id": "AC2",
+          "type": "positif",
+          "text": "Quand un manager ou gestionnaire tente de consulter un document sans autorisation, alors il reçoit un message d'erreur ou n'a pas accès au document."
+        },
+        {
+          "id": "AC3",
+          "type": "positif",
+          "text": "Quand un administrateur du plan de classement associe une confidentialité sur un type de document, alors les utilisateurs avec le rôle correspondant ne peuvent que consulter, mettre à jour ou supprimer les documents en fonction de leur rôle."
+        },
+        {
+          "id": "AC4",
+          "type": "positif",
+          "text": "Quand un utilisateur tente de supprimer un document sans autorisation, alors il reçoit un message d'erreur ou n'a pas accès à la fonction de suppression."
+        }
+      ],
+      "ac_count": 4,
+      "technical_criteria": [],
+      "qa_strategy": [],
+      "test_data": [],
+      "risk": "",
+      "qa_action": ""
+    },
+    {
+      "id": "NUXEPM-1125",
+      "project_key": "",
+      "title": "DN - Suppression en masse roll back",
+      "description_llm": "Lors d'un dépôt en masse de documents dans le DN (import batch), être capable de revenir en arrière et de supprimer le dépot",
+      "labels": [],
+      "status": "To Be Detailed",
+      "priority": "P3-Low",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "fonctionnelle",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "non",
+        "q2_nouvelle_fonctionnalite": "oui",
+        "q3_logique_backend": "non",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description demande une nouvelle fonctionnalité sans signaler de problème existant, elle concerne une action utilisateur observable et ne concerne pas le backend ou les données de test."
+      },
+      "ac_list": [
+        {
+          "id": "AC1",
+          "type": "positif",
+          "text": "Quand l'utilisateur effectue un dépôt en masse de documents dans le DN, alors il doit être capable de revenir en arrière et de supprimer le dépôt"
+        },
+        {
+          "id": "AC2",
+          "type": "positif",
+          "text": "Quand l'utilisateur supprime un dépôt en masse, alors les documents déposés doivent être correctement supprimés du système"
+        }
+      ],
+      "ac_count": 2,
+      "technical_criteria": [],
+      "qa_strategy": [],
+      "test_data": [],
+      "risk": "",
+      "qa_action": ""
+    },
+    {
+      "id": "NUXEPM-1108",
+      "project_key": "",
+      "title": "DN - Purge des docs - delete en cascade",
+      "description_llm": "En date du 02/11/2022, la R&D est en train de développer un outil dédié qui répond au besoin de purge dans le cadre de 4YOU7.2. Cependant cet outil n'exploite pas l'option de delete en cascade. Les tables à détruire sont inscrites manuellement dans le code.\nLes développements sont avancés et ont déjà été chiffrés. Cette story permettra de prendre ne compte cette option avec analyse de tous les impacts.",
+      "labels": [],
+      "status": "Cancelled",
+      "priority": "P3-Low",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "technique",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "non",
+        "q2_nouvelle_fonctionnalite": "non",
+        "q3_logique_backend": "oui",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description concerne un système backend et une fonctionnalité technique, mais ne demande pas de nouvelle fonctionnalité utilisateur observable. La mention de 'delete en cascade' et de tables à détruire manuellement dans le code indique une préoccupation technique."
+      },
+      "ac_list": [],
+      "ac_count": 0,
+      "technical_criteria": [
+        "Implémentation de l'option de delete en cascade",
+        "Analyse des impacts sur les tables à détruire"
+      ],
+      "qa_strategy": [
+        "Tests d'intégration pour vérifier la suppression en cascade",
+        "Vérification des données après suppression pour garantir l'intégrité des données"
+      ],
+      "test_data": [],
+      "risk": "Risque de perte de données ou d'incohérence des données si la suppression en cascade n'est pas correctement implémentée",
+      "qa_action": "Vérifier que l'outil de purge prend en compte l'option de delete en cascade et que les tests d'intégration sont réalisés pour garantir la correcte suppression des données"
+    },
+    {
+      "id": "NUXEPM-794",
+      "project_key": "",
+      "title": "DN - Connecteur base de donnée",
+      "description_llm": "Capitaliser ce qui a été fait pour SSG et installé chez les clients Cloud Pléiades\nReprise du principe de sauvegarde en blob , a priori un copier coller\nS'assurer que sonar retourne zéro défaut, car il n'a pas été passé sur le code, et il n'aime pas les copier-coller.\nce connecteur a été installé chez Sopra steria groupe et est systématiquement proposé aux clients CLOUD\nLe sujet a été encadré par Yann Michard, développé par Sarah Diéye, Vincent Duflos",
+      "labels": [
+        "STREAM_HUB"
+      ],
+      "status": "Done",
+      "priority": "P2-Medium",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "technique",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "non",
+        "q2_nouvelle_fonctionnalite": "non",
+        "q3_logique_backend": "oui",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description concerne le développement d'un connecteur base de données et la reprise de code existant, ce qui indique une tâche technique."
+      },
+      "ac_list": [],
+      "ac_count": 0,
+      "technical_criteria": [
+        "Le connecteur base de données doit être compatible avec les systèmes existants",
+        "Le code doit passer les tests Sonar sans défauts",
+        "Le connecteur doit être installable chez les clients Cloud"
+      ],
+      "qa_strategy": [
+        "Tests d'intégration pour vérifier la compatibilité avec les systèmes existants",
+        "Analyse de code pour détecter les défauts et améliorer la qualité",
+        "Tests de déploiement pour s'assurer de l'installabilité chez les clients Cloud"
+      ],
+      "test_data": [],
+      "risk": "Risque de non-compatibilité avec les systèmes existants ou de défauts dans le code",
+      "qa_action": "Vérifier la compatibilité du connecteur avec les systèmes existants, analyser le code pour détecter les défauts et tester le déploiement chez les clients Cloud"
+    },
+    {
+      "id": "NUXEPM-1030",
+      "project_key": "",
+      "title": "DN - Ajout d'un nouvel acteur ayant accès au DN avec configuration confidentialité",
+      "description_llm": "",
+      "labels": [
+        "PP2022",
+        "RH_PROXI"
+      ],
+      "status": "To Be Detailed",
+      "priority": "P2-Medium",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "invalide",
+      "exploitable": false,
+      "raisonnement": {
+        "q1_signale_probleme": "non",
+        "q2_nouvelle_fonctionnalite": "non",
+        "q3_logique_backend": "non",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "oui",
+        "conclusion": "Description absente ou trop courte"
+      },
+      "ac_list": [],
+      "ac_count": 0,
+      "technical_criteria": [],
+      "qa_strategy": [],
+      "test_data": [],
+      "risk": "",
+      "qa_action": "Description absente ou trop courte pour être exploitable."
+    },
+    {
+      "id": "NUXEPM-742",
+      "project_key": "",
+      "title": "Traçabilité des actions sur le Dossier Numérique",
+      "description_llm": "Pour des raisons de compliance RGPD, les actions réalisées dans le dossier numérique doivent être tracée\nCadrage à faire",
+      "labels": [],
+      "status": "To Be Detailed",
+      "priority": "P2-Medium",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "technique",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "non",
+        "q2_nouvelle_fonctionnalite": "non",
+        "q3_logique_backend": "oui",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description concerne la traçabilité des actions sur le Dossier Numérique pour des raisons de compliance RGPD, ce qui implique des aspects techniques de backend."
+      },
+      "ac_list": [],
+      "ac_count": 0,
+      "technical_criteria": [
+        "La traçabilité des actions sur le Dossier Numérique doit être implémentée",
+        "Les données de traçabilité doivent être stockées conformément aux exigences RGPD"
+      ],
+      "qa_strategy": [
+        "Vérifier que les actions réalisées dans le dossier numérique sont correctement tracées",
+        "Vérifier que les données de traçabilité sont stockées de manière sécurisée et conformément aux exigences RGPD"
+      ],
+      "test_data": [],
+      "risk": "Non-conformité aux exigences RGPD",
+      "qa_action": "Vérifier que la traçabilité des actions sur le Dossier Numérique est correctement implémentée et que les données de traçabilité sont stockées de manière sécurisée"
+    },
+    {
+      "id": "NUXEPM-661",
+      "project_key": "",
+      "title": "Intégration DN avec la gestion des décisions",
+      "description_llm": "Pouvoir déposer des décisions individuelles ou collectives dans le Dossier Numérique.\nL'objectif est de pouvoir déposer ces décisions avec un statut \"A signer\".\nLe dépôt de ces documents à signer, déclenche un connecteur de signature propre au secteur public.\nOn est capable d'identifier la population de collaborateurs concernés par une décision collective, stockage pour chaque collaborateur de la décision collective constituée.\nAu retour de signature, la décision signée remplace la décision à signer.\nDoc étude validé par Cédric. reprendre la partie technique de dépôt de doc sur Contralia (étude connecteur signature électronique Contralia)\nDonc pour la 7.2, les développements consistent à vérifier que le connecteur Contralia fonctionne. On prouve notre capacité à signer des documents.\nIl faudra adapter ces dev pour prendre en compte les types de document de décision et transférer les métadonnées attendues par le parapheur ou le connecteur de signature électronique choisi par le secteur public.\nIl n'est pas possible d'effectuer des tests de bout en bout pour les décisions avec Contralia. La solution Contralia est cablée chez Contralia (projet PES) pour ne traiter que deux types de documents \"CONTRAT DE TRAVAIL\" et \"AVENANT\" au contrat de travail. Mi août 2025 une demande d'évolution et un devis est demandé à Contralia aux rais de Covea pour rendre le type de document \"configurable\" et être en mesure de choisir des circuits identiques avec des types de document différents.",
+      "labels": [
+        "2023_STANDBY"
+      ],
+      "status": "Ready",
+      "priority": "P1-High",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "fonctionnelle",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "non",
+        "q2_nouvelle_fonctionnalite": "oui",
+        "q3_logique_backend": "oui",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description concerne une nouvelle fonctionnalité d'intégration avec la gestion des décisions et implique des éléments techniques de dépôt de documents et de signature électronique."
+      },
+      "ac_list": [
+        {
+          "id": "AC1",
+          "type": "positif",
+          "text": "Quand un utilisateur dépose une décision individuelle ou collective dans le Dossier Numérique, alors le système attribue un statut 'A signer' à la décision."
+        },
+        {
+          "id": "AC2",
+          "type": "positif",
+          "text": "Quand un utilisateur dépose une décision à signer, alors le système déclenche un connecteur de signature propre au secteur public."
+        },
+        {
+          "id": "AC3",
+          "type": "positif",
+          "text": "Quand la signature est retournée, alors la décision signée remplace la décision à signer dans le Dossier Numérique."
+        },
+        {
+          "id": "AC4",
+          "type": "positif",
+          "text": "Quand une décision collective est déposée, alors le système identifie la population de collaborateurs concernés et stocke la décision collective constituée pour chaque collaborateur."
+        },
+        {
+          "id": "AC5",
+          "type": "négatif",
+          "text": "Quand le type de document de décision n'est pas configuré pour le connecteur de signature électronique, alors le système ne permet pas la signature de la décision."
+        }
+      ],
+      "ac_count": 5,
+      "technical_criteria": [],
+      "qa_strategy": [],
+      "test_data": [],
+      "risk": "",
+      "qa_action": ""
+    },
+    {
+      "id": "NUXEPM-630",
+      "project_key": "",
+      "title": "DN - modifier la taille max des fichiers stockés",
+      "description_llm": "La valeur de la taille maximum des documents stockés dans le DN doit être un élément de configuration.\nLe fichier de configuration et l'élément de configuration doivent être documentés dans la doc d'installation et utilisateur du DN.\nLa valeur de la taille maximum des justificatifs joints aux démarches doit être un élément de configuration.\nSi possible, faire un contrôle qui vérifie que la taille maximum des justificatifs des démarches est bien <= à la taille maximum du DN.\nCes éléments doivent être documentés",
+      "labels": [
+        "DEMANDE_Auchan",
+        "DEMANDE_MI",
+        "DEMANDE_Thales",
+        "DossierNumérique",
+        "PP2022",
+        "PP2022_P1"
+      ],
+      "status": "Done-Done",
+      "priority": "P2-Medium",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "technique",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "non",
+        "q2_nouvelle_fonctionnalite": "non",
+        "q3_logique_backend": "oui",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description concerne la modification de la taille max des fichiers stockés et la configuration de l'élément de configuration, ce qui est lié à la logique backend."
+      },
+      "ac_list": [],
+      "ac_count": 0,
+      "technical_criteria": [
+        "La valeur de la taille maximum des documents stockés dans le DN doit être un élément de configuration",
+        "La valeur de la taille maximum des justificatifs joints aux démarches doit être un élément de configuration",
+        "Un contrôle doit vérifier que la taille maximum des justificatifs des démarches est bien <= à la taille maximum du DN"
+      ],
+      "qa_strategy": [
+        "Vérifier que la configuration de la taille max des fichiers stockés est effective",
+        "Vérifier que la configuration de la taille max des justificatifs joints aux démarches est effective",
+        "Vérifier que le contrôle de taille maximum des justificatifs des démarches est fonctionnel"
+      ],
+      "test_data": [],
+      "risk": "Si la configuration de la taille max des fichiers stockés n'est pas correcte, cela peut entraîner des problèmes de stockage ou de sécurité",
+      "qa_action": "Vérifier que les éléments de configuration sont correctement documentés dans la doc d'installation et utilisateur du DN"
+    },
+    {
+      "id": "NUXEPM-599",
+      "project_key": "",
+      "title": "DN : Finalisation de l'outil Edition du Plan de Classement",
+      "description_llm": "Finaliser l'outil en vue de livraison aux services,\nDans le cadre de la finalisation, évaluer la capacité de l'outil EPC (Edition du Plan de Classement) à comparer deux environnements pour en extraire les différences, et à traduire les libellés du plan de classement",
+      "labels": [
+        "2023_STANDBY",
+        "STREAM_COREAPP"
+      ],
+      "status": "Ready",
+      "priority": "P3-Low",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "fonctionnelle",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "non",
+        "q2_nouvelle_fonctionnalite": "oui",
+        "q3_logique_backend": "non",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description demande une nouvelle fonctionnalité sans signaler de problème existant, elle concerne donc une fonctionnalité observable par l'utilisateur."
+      },
+      "ac_list": [
+        {
+          "id": "AC1",
+          "type": "positif",
+          "text": "Quand l'outil EPC est utilisé pour comparer deux environnements, alors il doit extraire les différences entre ces environnements."
+        },
+        {
+          "id": "AC2",
+          "type": "positif",
+          "text": "Quand l'outil EPC est utilisé, alors il doit traduire les libellés du plan de classement."
+        },
+        {
+          "id": "AC3",
+          "type": "positif",
+          "text": "Quand l'outil EPC est finalisé, alors il doit être prêt pour une livraison aux services."
+        }
+      ],
+      "ac_count": 3,
+      "technical_criteria": [],
+      "qa_strategy": [],
+      "test_data": [],
+      "risk": "",
+      "qa_action": ""
+    },
+    {
+      "id": "NUXEPM-577",
+      "project_key": "",
+      "title": "DN - ExternalID en majuscules dans la livraison des plans de classement",
+      "description_llm": "Livrer un plan de classement ne comportant que des externalID en majuscules et sans lettres accentuées.\nModifier la configuration des démarches en sorte que\nles types de document, accueillant les justificatifs des démarches, soient identifiés par un external ID majuscule et non minuscule.\nLes identifiants à utiliser sont référencés dans le fichier excel joint.\nAutres impacts :\nLes scripts qui fabriquent le .json d'import batch pour\nles bulletins\nles contrats de travail\nles avenants\nHRAccess : Les scripts qui envoient un document dans le DN à partir du client riche utilisent des Id et non des externalId donc ils ne sont pas impactés par ces changements.\nPléiades : il faut modifier le référentiel legacy des externalId utilisés.\nAnalyser et documenter une reprise de base de données plan de classement pour les clients qui migreraient d'une version < 4YOU8 à celle de 4YOU8.",
+      "labels": [
+        "2023_STANDBY",
+        "Candidat_V9",
+        "Dossier_numérique"
+      ],
+      "status": "Ready",
+      "priority": "P2-Medium",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "technique",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "non",
+        "q2_nouvelle_fonctionnalite": "non",
+        "q3_logique_backend": "oui",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description concerne la modification de la configuration des démarches et l'utilisation d'externalID en majuscules, ce qui implique des changements techniques au niveau du backend et de l'infrastructure."
+      },
+      "ac_list": [],
+      "ac_count": 0,
+      "technical_criteria": [
+        "Les externalID dans les plans de classement doivent être en majuscules",
+        "Les types de document doivent être identifiés par un external ID majuscule",
+        "Les scripts qui fabriquent le .json d'import batch doivent être modifiés pour utiliser les nouveaux externalID",
+        "Le référentiel legacy des externalId utilisés dans Pléiades doit être modifié"
+      ],
+      "qa_strategy": [
+        "Vérifier que les plans de classement livrés ne comportent que des externalID en majuscules",
+        "Vérifier que les types de document sont identifiés par un external ID majuscule",
+        "Vérifier que les scripts qui fabriquent le .json d'import batch fonctionnent correctement avec les nouveaux externalID",
+        "Vérifier que le référentiel legacy des externalId utilisés dans Pléiades a été modifié correctement"
+      ],
+      "test_data": [],
+      "risk": "Impact sur les scripts et les référentiels legacy, risque de dysfonctionnement si les modifications ne sont pas correctes",
+      "qa_action": "Vérifier que les modifications ont été correctement appliquées et que les fonctionnalités impactées fonctionnent comme attendu"
+    },
+    {
+      "id": "NUXEPM-535",
+      "project_key": "",
+      "title": "DN - Connecteur signature électronique Contralia",
+      "description_llm": "En tant que gestionnaire, je souhaite pouvoir11197\nenvoyer un document à la signature électronique de Contralia, partenaire de Sopra HR,\nrécupérer le statut du document signé de Contralia, afin de mettre jour le statut du document dans le DN (de \"en attente de validation\" à \"signé\")\nrécupérer le dossier de preuve : (le dossier de preuve sera récupéré dans dans NUXEPM-1197 (ajouté le 03 avril 2023)).\ntélécharger le document\nPour réaliser cette fonctionnalité, capitaliser le travail des services réalisé pour Conforama. ce travail a déjà été repris par Thomas Mauve.\nestimation 30j\nIl faut côté 4You ajouter :\nla capacité à stocker et gérer dans le DN l'ID du document propre à Contralia.\nla capacité à rendre modifiable la zone de saisie des coordonnées attendues par Contralia : adresse mail et téléphone\najouter aux métadonnées des docs l'adresse mail et le téléphone",
+      "labels": [
+        "PP2022",
+        "PP2022_P1",
+        "dossier_numérique",
+        "signature"
+      ],
+      "status": "Ready",
+      "priority": "P2-Medium",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "fonctionnelle",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "non",
+        "q2_nouvelle_fonctionnalite": "oui",
+        "q3_logique_backend": "non",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description demande une nouvelle fonctionnalité pour envoyer un document à la signature électronique de Contralia et récupérer le statut du document signé, ce qui indique une action utilisateur observable."
+      },
+      "ac_list": [
+        {
+          "id": "AC1",
+          "type": "positif",
+          "text": "Quand le gestionnaire envoie un document à la signature électronique de Contralia, alors le statut du document dans le DN passe de 'en attente de validation' à 'signé'"
+        },
+        {
+          "id": "AC2",
+          "type": "positif",
+          "text": "Quand le gestionnaire récupère le statut du document signé de Contralia, alors le dossier de preuve est récupéré"
+        },
+        {
+          "id": "AC3",
+          "type": "positif",
+          "text": "Quand le gestionnaire souhaite télécharger le document, alors le document est téléchargeable"
+        },
+        {
+          "id": "AC4",
+          "type": "positif",
+          "text": "Quand le gestionnaire modifie la zone de saisie des coordonnées attendues par Contralia, alors les coordonnées sont mises à jour dans les métadonnées des documents"
+        }
+      ],
+      "ac_count": 4,
+      "technical_criteria": [],
+      "qa_strategy": [],
+      "test_data": [],
+      "risk": "",
+      "qa_action": ""
+    },
+    {
+      "id": "NUXEPM-492",
+      "project_key": "",
+      "title": "DN - Prise en compte de la validité d'un doc pour envoi en signature",
+      "description_llm": "Si un document est associé à un type de document \"A signer\"\nPar défaut il a un statut de signature \"Requise\", alors il est envoyé en signature.\nSi le statut de signature est \"Non requise\", alors il ne part pas en signature.\nComplément au 16 novembre 2023\n1 Pouvoir conditionner l'envoi en signature d'un document.\nAujourd'hui le 04 avril 2024 :\nSi un document est associé à un type de document \"A signer\", dès son dépôt dans le DN, il part à la signature. L'envoi en signature est conditionné\nau type de signature 1 UNREQUIRED_SIGNATURE à l'ajout d'un document\nqu'au statut de signature 5 TO_RECTIFY en mise à jour d'un document\nLe statut de signature du \\document\\,  Esignature,  est \"Requise\", son statut de validité est \"Valide\".\ndemande de ce ticket :\nEnvoyer un document en signature si il est valide et si le statut de esignature est \"requise\".\n2 Pouvoir visualiser le statut de validation \"Valide\" ou \"Non-valide\",\nsur la vue \"Aperçu\"",
+      "labels": [
+        "2023_STANDBY",
+        "DossierNumérique",
+        "STANDBY_2024",
+        "STREAM_COREAPP",
+        "dossier_numérique",
+        "signature"
+      ],
+      "status": "Ready",
+      "priority": "P2-Medium",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "fonctionnelle",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "non",
+        "q2_nouvelle_fonctionnalite": "oui",
+        "q3_logique_backend": "non",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description demande une nouvelle fonctionnalité d'envoi de document en signature si celui-ci est valide et si le statut de signature est 'Requise', ainsi que la visualisation du statut de validation sur la vue 'Aperçu'."
+      },
+      "ac_list": [
+        {
+          "id": "AC1",
+          "type": "positif",
+          "text": "Quand un document est associé à un type de document 'A signer' et a un statut de signature 'Requise' et est valide, alors il est envoyé en signature."
+        },
+        {
+          "id": "AC2",
+          "type": "négatif",
+          "text": "Quand un document est associé à un type de document 'A signer' et a un statut de signature 'Non requise' ou est non valide, alors il n'est pas envoyé en signature."
+        },
+        {
+          "id": "AC3",
+          "type": "positif",
+          "text": "Quand un document est visualisé sur la vue 'Aperçu', alors son statut de validation ('Valide' ou 'Non-valide') est affiché."
+        }
+      ],
+      "ac_count": 3,
+      "technical_criteria": [],
+      "qa_strategy": [],
+      "test_data": [],
+      "risk": "",
+      "qa_action": ""
+    },
+    {
+      "id": "NUXEPM-491",
+      "project_key": "",
+      "title": "DN - Ajout du témoin de validation dans le batch d'import en masse dans le DN",
+      "description_llm": "Prendre en compte le caractère de validité de chaque document dans les fichiers d'import. en masse vers le Dossier Numérique.\nSi ce témoin n'est pas alimenté par défaut il vaut \"valide\".\nDemande pour VYVCARE par Frédéric OBE le 12 nov 2020, pour la 6.5\ndemandé par Frédéric OBE le 12 novembre 2020, pour VYVCARE, en 6.5.",
+      "labels": [
+        "DossierNumérique",
+        "PP2022"
+      ],
+      "status": "To Be Detailed",
+      "priority": "P3-Low",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "technique",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "non",
+        "q2_nouvelle_fonctionnalite": "oui",
+        "q3_logique_backend": "oui",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description demande une nouvelle fonctionnalité liée à l'import en masse de documents dans le Dossier Numérique, avec prise en compte du caractère de validité de chaque document. Cela concerne le système backend et l'infrastructure, mais la demande est formulée de manière à impliquer une action observable pour l'utilisateur, notamment en ce qui concerne la validation des documents."
+      },
+      "ac_list": [],
+      "ac_count": 0,
+      "technical_criteria": [
+        "Le système doit prendre en compte le caractère de validité de chaque document lors de l'import en masse.",
+        "Si le témoin de validité n'est pas fourni, il doit être considéré comme 'valide' par défaut."
+      ],
+      "qa_strategy": [
+        "Tester l'import en masse de documents avec et sans le témoin de validité.",
+        "Vérifier que les documents sont correctement marqués comme valides ou non valides selon les cas."
+      ],
+      "test_data": [],
+      "risk": "Si le système ne prend pas correctement en compte le caractère de validité, cela pourrait entraîner des erreurs dans la gestion des documents.",
+      "qa_action": "Développer des scénarios de test pour valider le fonctionnement de l'import en masse avec le témoin de validité."
+    },
+    {
+      "id": "NUXEPM-387",
+      "project_key": "",
+      "title": "RGPD - DN Droit à l'effacement des données du DN",
+      "description_llm": "En tant que gestionnaire, avoir la capacité de supprimer tous les documents d'un collaborateur de 4You concernés par le RGPD à un instant donné. Cet instant peut-être à la demande du collaborateur, ou à l'initiative du gestionnaire.\nL'élément déclencheur de la suppression des documents peut être une alerte système ou une demande du collaborateur.\nPour la demande du collaborateur voir si on dédie une action pour cette demande ou on laisse le collaborateur utiliser la démarche \"mes questions RH\".",
+      "labels": [
+        "PP2022"
+      ],
+      "status": "Done-Done",
+      "priority": "P2-Medium",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "fonctionnelle",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "non",
+        "q2_nouvelle_fonctionnalite": "oui",
+        "q3_logique_backend": "non",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description demande une nouvelle fonctionnalité pour le gestionnaire, permettant de supprimer des documents liés à un collaborateur concernant le RGPD, ce qui indique une action utilisateur observable."
+      },
+      "ac_list": [
+        {
+          "id": "AC1",
+          "type": "positif",
+          "text": "Quand un gestionnaire demande la suppression des documents d'un collaborateur concernés par le RGPD, alors le système supprime ces documents."
+        },
+        {
+          "id": "AC2",
+          "type": "positif",
+          "text": "Quand un collaborateur demande la suppression de ses documents concernés par le RGPD, alors le système permet au gestionnaire de traiter cette demande."
+        },
+        {
+          "id": "AC3",
+          "type": "positif",
+          "text": "Quand une alerte système est déclenchée pour la suppression de documents liés au RGPD, alors le système permet au gestionnaire de supprimer ces documents."
+        },
+        {
+          "id": "AC4",
+          "type": "négatif",
+          "text": "Quand un collaborateur n'a pas de documents concernés par le RGPD, alors le système n'a rien à supprimer et informe le gestionnaire de cette situation."
+        }
+      ],
+      "ac_count": 4,
+      "technical_criteria": [],
+      "qa_strategy": [],
+      "test_data": [],
+      "risk": "",
+      "qa_action": ""
+    },
+    {
+      "id": "NUXEPM-385",
+      "project_key": "",
+      "title": "DN - Confidentialité sur le plan de classement",
+      "description_llm": "En tant que collaborateur, manager ou gestionnaire,\navoir la capacité à ne consulter, mettre à jour ou supprimer des documents sur un ensemble restreint de type de documents d'un plan de classement.\navoir la capacité de consulter un document sans pouvoir le mettre à jour, avoir la capacité de consulter et mettre à jour certains documents sans les supprimer, avoir la capacité de supprimer un document.\nEn tant que administrateur du plan de classement, avoir la capacité d'associer une confidentialité sur c.r.u.d. sur les types de documents en fonction du rôle du user (collaborateur, manager, gestionnaire de document).",
+      "labels": [],
+      "status": "Done-Done",
+      "priority": "P3-Low",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "fonctionnelle",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "non",
+        "q2_nouvelle_fonctionnalite": "oui",
+        "q3_logique_backend": "non",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description demande une nouvelle fonctionnalité avec des capacités spécifiques pour les utilisateurs en fonction de leurs rôles, ce qui indique une fonctionnalité métier observable."
+      },
+      "ac_list": [
+        {
+          "id": "AC1",
+          "type": "positif",
+          "text": "Quand un collaborateur accède à un document sur le plan de classement, alors il peut consulter le document mais ne peut pas le mettre à jour ou le supprimer."
+        },
+        {
+          "id": "AC2",
+          "type": "positif",
+          "text": "Quand un manager accède à un document sur le plan de classement, alors il peut consulter et mettre à jour le document mais ne peut pas le supprimer."
+        },
+        {
+          "id": "AC3",
+          "type": "positif",
+          "text": "Quand un gestionnaire de document accède à un document sur le plan de classement, alors il peut consulter, mettre à jour et supprimer le document."
+        },
+        {
+          "id": "AC4",
+          "type": "positif",
+          "text": "Quand un administrateur du plan de classement configure les droits d'accès, alors les utilisateurs ne peuvent effectuer que les actions autorisées en fonction de leur rôle."
+        },
+        {
+          "id": "AC5",
+          "type": "négatif",
+          "text": "Quand un utilisateur tente d'effectuer une action non autorisée sur un document, alors il reçoit un message d'erreur ou l'action est refusée."
+        }
+      ],
+      "ac_count": 5,
+      "technical_criteria": [],
+      "qa_strategy": [],
+      "test_data": [],
+      "risk": "",
+      "qa_action": ""
+    },
+    {
+      "id": "NUXEPM-384",
+      "project_key": "",
+      "title": "DN - Plan de classement numérique pour Pléiades 4YOU",
+      "description_llm": "En tant qu'administrateur du plan de classement je souhaite pouvoir visualiser, sur 4You, le plan de classement décrit dans le fichier excel joint à cette Jira.(Plan, rubriques, types de document, mots-clefs)",
+      "labels": [],
+      "status": "Done-Done",
+      "priority": "P2-Medium",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "fonctionnelle",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "non",
+        "q2_nouvelle_fonctionnalite": "oui",
+        "q3_logique_backend": "non",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description demande une nouvelle fonctionnalité d'affichage du plan de classement sur 4You, ce qui correspond à une fonctionnalité utilisateur observable."
+      },
+      "ac_list": [
+        {
+          "id": "AC1",
+          "type": "positif",
+          "text": "Quand l'administrateur du plan de classement se connecte à 4You, alors il peut visualiser le plan de classement décrit dans le fichier Excel."
+        },
+        {
+          "id": "AC2",
+          "type": "positif",
+          "text": "Quand l'administrateur du plan de classement visualise le plan de classement sur 4You, alors il peut voir les rubriques du plan de classement."
+        },
+        {
+          "id": "AC3",
+          "type": "positif",
+          "text": "Quand l'administrateur du plan de classement visualise le plan de classement sur 4You, alors il peut voir les types de document du plan de classement."
+        },
+        {
+          "id": "AC4",
+          "type": "positif",
+          "text": "Quand l'administrateur du plan de classement visualise le plan de classement sur 4You, alors il peut voir les mots-clefs du plan de classement."
+        }
+      ],
+      "ac_count": 4,
+      "technical_criteria": [],
+      "qa_strategy": [],
+      "test_data": [],
+      "risk": "",
+      "qa_action": ""
+    },
+    {
+      "id": "NUXEPM-337",
+      "project_key": "",
+      "title": "DN - Interdire le format txt dans le dossier numérique",
+      "description_llm": "Le format d'extension de fichier .txt doit être interdit dans le DN,\npour l'ajout manuel et\npour l'ajout automatique au niveau des démarches.\nA ce jour un contrôle doit interdire l'ajout du fichier txt au niveau de la démarche pour les démarches citées en commentaire.\nSur chaque démarche qui demande un justificatif, modifier le message d'erreur qui s'affiche lorsqu'on veut attacher un fichier non autorisé. La modification consiste à retirer le format TXT des extensions autorisées dans le message.\nLes démarches non impactées le 10 juin 2021 sont :\nLe changement de photo : les types de fichier sont gérés, seuls les fichiers images sont acceptés et filtrés\nMes questions RH : car les fichiers ne vont pas dans le DN\nVoir\n[URL]\nA ce jour on peut ajouter un fichier .txt dans le DN en tant que gestionnaire de document.\n[capture d'écran]",
+      "labels": [
+        "PP2022",
+        "dossier_numérique"
+      ],
+      "status": "Done-Done",
+      "priority": "P3-Low",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "technique",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "oui",
+        "q2_nouvelle_fonctionnalite": "non",
+        "q3_logique_backend": "non",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description signale un problème existant (ajout de fichiers .txt dans le DN) et demande une modification pour interdire ce format, ce qui correspond à une correction technique."
+      },
+      "ac_list": [],
+      "ac_count": 0,
+      "technical_criteria": [
+        "Le système doit interdire l'ajout de fichiers .txt dans le DN pour l'ajout manuel et automatique.",
+        "Le message d'erreur doit être modifié pour ne plus inclure le format TXT dans les extensions autorisées pour les démarches qui demandent un justificatif."
+      ],
+      "qa_strategy": [
+        "Tester l'ajout de fichiers .txt dans le DN en mode manuel et automatique pour vérifier que le système les interdit.",
+        "Vérifier que le message d'erreur affiché lors de la tentative d'ajout d'un fichier non autorisé ne mentionne plus le format TXT."
+      ],
+      "test_data": [],
+      "risk": "Si le format .txt n'est pas correctement interdit, des fichiers non autorisés pourraient être ajoutés au DN, ce qui pourrait avoir des implications de sécurité ou de confidentialité.",
+      "qa_action": "Tester les fonctionnalités d'ajout de fichiers dans le DN et vérifier les messages d'erreur pour s'assurer que les exigences sont respectées."
+    },
+    {
+      "id": "NUXEPM-310",
+      "project_key": "",
+      "title": "DN - Pouvoir \"attacher\" un document déjà présent dans le DN à une instance de démarche",
+      "description_llm": "Pouvoir relier un document déjà présent dans le DN à une nouvelle instance de démarche.\nLorsque je clique sur attacher un justificatif à la démarche je souhaite pouvoir visualiser l'arborescence du DN pour choisir un document qui existe déjà dans le DN.\nExemple :\nJ'ai fait une demande \"Mon déménagement\" avec un justificatif J1 déposé dans le DN au moment de la validation de la démarche par le gestionnaire.\nJe fais une demande de congé pour déménagement et je souhaite lier cette demande avec le justificatif déjà fourni pour mon déménagement.Pour cela je dois pouvoir à partir du formulaire naviguer dans le DN et sélectionner un document déjà présent. De fait le document est téléchargé et attaché à l'instance de la démarche. ou bien un lien virtuel est créé.\nLe gestionnaire qui validera la demande de congé, pourra naviguer dans le DN pour lire le document ou bien disposer du document téléchargé.",
+      "labels": [
+        "PP2022"
+      ],
+      "status": "Ready",
+      "priority": "P3-Low",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "fonctionnelle",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "non",
+        "q2_nouvelle_fonctionnalite": "oui",
+        "q3_logique_backend": "non",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description demande une nouvelle fonctionnalité permettant aux utilisateurs de relier un document déjà présent dans le DN à une nouvelle instance de démarche, ce qui correspond à une fonctionnalité utilisateur observable."
+      },
+      "ac_list": [
+        {
+          "id": "AC1",
+          "type": "positif",
+          "text": "Quand je clique sur attacher un justificatif à la démarche, alors je peux visualiser l'arborescence du DN pour choisir un document qui existe déjà dans le DN."
+        },
+        {
+          "id": "AC2",
+          "type": "positif",
+          "text": "Quand je sélectionne un document déjà présent dans le DN, alors le document est téléchargé et attaché à l'instance de la démarche ou un lien virtuel est créé."
+        },
+        {
+          "id": "AC3",
+          "type": "positif",
+          "text": "Quand le gestionnaire validera la demande de congé, alors il peut naviguer dans le DN pour lire le document ou disposer du document téléchargé."
+        }
+      ],
+      "ac_count": 3,
+      "technical_criteria": [],
+      "qa_strategy": [],
+      "test_data": [],
+      "risk": "",
+      "qa_action": ""
+    },
+    {
+      "id": "NUXEPM-90",
+      "project_key": "",
+      "title": "DN - Migration de plan de classement",
+      "description_llm": "En tant que \"responsable de la reprise des données\" du client,\nje veux être capable de migrer un plan de classement créé sur une plateforme 3.0 vers un plan de classement d'une plateforme 6.0,\nafin de conserver le plan de classement déjà réalisé chez le client,\ndans le contexte suivant : la migration concerne les plans de classement créés en 3.0, 3.2 et 4.0.\nCompléments :\nCette fonctionnalité correspond au Use-Case 29 du SFD du DN validé par Samuel Blanchet le 08 juin 2018. Elle n'a pas été développée sur le lot1.\nDescription du use case sur l'étude :\nIl parait plus sage de réaliser à la main la construction du nouveau plan de classement plutôt que de reprendre un plan de classement existant. Cela permet de construire le nouveau plan de classement sans erreur de report systématique.\nPour une reprise d’un plan de classement P de 3.0 à un autre plan de classement P de 6.0, lire les rubriques de la 3.0 et les ajouter au DN 6.0. Lire les types de document du DN 3.0 et les ajouter au DN de la 6.0.",
+      "labels": [],
+      "status": "Done-Done",
+      "priority": "P3-Low",
+      "test_keys": [],
+      "tests_count": 0,
+      "ustype": "fonctionnelle",
+      "exploitable": true,
+      "raisonnement": {
+        "q1_signale_probleme": "non",
+        "q2_nouvelle_fonctionnalite": "oui",
+        "q3_logique_backend": "non",
+        "q4_donnees_test": "non",
+        "q5_vide_incomplete": "non",
+        "conclusion": "La description demande une nouvelle fonctionnalité pour migrer un plan de classement d'une plateforme 3.0 vers une plateforme 6.0, ce qui correspond à une fonctionnalité observable pour l'utilisateur."
+      },
+      "ac_list": [
+        {
+          "id": "AC1",
+          "type": "positif",
+          "text": "Quand un responsable de la reprise des données tente de migrer un plan de classement créé sur une plateforme 3.0 vers une plateforme 6.0, alors le système permet la migration en conservant le plan de classement déjà réalisé."
+        },
+        {
+          "id": "AC2",
+          "type": "positif",
+          "text": "Quand un plan de classement est migré de la plateforme 3.0 à la plateforme 6.0, alors les rubriques de la 3.0 sont ajoutées au DN 6.0."
+        },
+        {
+          "id": "AC3",
+          "type": "positif",
+          "text": "Quand un plan de classement est migré de la plateforme 3.0 à la plateforme 6.0, alors les types de document du DN 3.0 sont ajoutés au DN de la 6.0."
+        }
+      ],
+      "ac_count": 3,
+      "technical_criteria": [],
+      "qa_strategy": [],
+      "test_data": [],
+      "risk": "",
+      "qa_action": ""
+    }
+  ]
+}
