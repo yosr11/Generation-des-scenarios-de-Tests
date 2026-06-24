@@ -9,11 +9,11 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variantStyles = {
-  primary: 'bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800',
-  secondary: 'bg-slate-200 text-slate-900 hover:bg-slate-300 active:bg-slate-400',
-  danger: 'bg-red-600 text-white hover:bg-red-700 active:bg-red-800',
-  success: 'bg-green-600 text-white hover:bg-green-700 active:bg-green-800',
-  outline: 'border border-slate-300 text-slate-900 hover:bg-slate-50 active:bg-slate-100',
+  primary: 'bg-brand-red text-white hover:bg-brand-orange active:bg-brand-orange',
+  secondary: 'bg-brand-navy text-white hover:bg-brand-navy/90',
+  danger: 'bg-brand-red text-white hover:bg-red-700',
+  success: 'bg-green-600 text-white hover:bg-green-700',
+  outline: 'border border-brand-navy/30 text-brand-navy hover:bg-brand-bg',
 }
 
 const sizeStyles = {

@@ -1,11 +1,16 @@
 from typing import List, Optional
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel, Field
+from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.deps import CurrentUser, get_client_ip, get_current_user, get_tester_jira_credentials
+from app.db.postgres import get_db
+from app.services.audit_service import log_action
 from app.services.jira_service import (
     add_xray_test_steps,
     create_test_issue,
+    create_user_jira_session,
     search_test_issue_by_summary,
 )
 
@@ -47,11 +52,14 @@ class IntegrateTestsResponse(BaseModel):
 router = APIRouter(tags=["Xray Integration"])
 
 
+def _resolve_jira_session(user: CurrentUser):
+    if user.is_tester:
+        creds = get_tester_jira_credentials(user)
+        return create_user_jira_session(creds.username, creds.password)
+    return None
+
+
 def _build_description(test_case: IntegrationTestCase) -> str:
-    """
-    Construit une description lisible.
-    Les vraies steps Xray sont envoyées séparément dans customfield_14404.
-    """
     desc = test_case.objective or ""
 
     if test_case.steps:
@@ -79,10 +87,6 @@ def _build_description(test_case: IntegrationTestCase) -> str:
 
 
 def _build_step_payload(test_case: IntegrationTestCase) -> List[dict]:
-    """
-    Format interne envoyé à jira_service.py.
-    jira_service.py convertira ensuite vers le format Xray exact.
-    """
     return [
         {
             "action": step.action,
@@ -95,14 +99,12 @@ def _build_step_payload(test_case: IntegrationTestCase) -> List[dict]:
 
 
 @router.post("/integrate-tests", response_model=IntegrateTestsResponse)
-def integrate_tests(body: IntegrateTestsRequest):
-    """
-    Intègre plusieurs tests manuels générés dans Jira/Xray TEST.
-
-    Correction importante :
-    - Les steps sont envoyées directement pendant la création du Test.
-    - On ne fait plus un deuxième appel add_xray_test_steps après création.
-    """
+async def integrate_tests(
+    body: IntegrateTestsRequest,
+    request: Request,
+    user: CurrentUser = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
     import logging
 
     logger = logging.getLogger(__name__)
@@ -113,6 +115,7 @@ def integrate_tests(body: IntegrateTestsRequest):
             detail="Aucun test fourni pour l'intégration.",
         )
 
+    jira_session = _resolve_jira_session(user)
     created_keys: List[str] = []
     errors: List[str] = []
 
@@ -128,6 +131,7 @@ def integrate_tests(body: IntegrateTestsRequest):
                 project_key=body.project_key,
                 summary=test_case.test_name,
                 use_test_jira=True,
+                session=jira_session,
             )
 
             if existing:
@@ -145,6 +149,7 @@ def integrate_tests(body: IntegrateTestsRequest):
                 issue_type="Test",
                 steps=step_payload,
                 use_test_jira=True,
+                session=jira_session,
             )
 
             if issue.get("error"):
@@ -177,6 +182,16 @@ def integrate_tests(body: IntegrateTestsRequest):
 
     status = "success" if not errors else "partial"
 
+    await log_action(
+        db,
+        user_identifier=user.email or user.jira_username or user.user_id,
+        role=user.role,
+        action="integrate_tests",
+        resource=body.project_key,
+        details=f"created={len(created_keys)}, errors={len(errors)}",
+        ip_address=get_client_ip(request),
+    )
+
     return IntegrateTestsResponse(
         status=status,
         created_count=len(created_keys),
@@ -186,18 +201,17 @@ def integrate_tests(body: IntegrateTestsRequest):
 
 
 @router.post("/integrate-test", response_model=IntegrateTestsResponse)
-def integrate_test_single(body: IntegrateTestSingleRequest):
-    """
-    Intègre un seul test manuel dans Jira/Xray TEST.
-
-    Correction importante :
-    - Les steps sont envoyées directement dans create_test_issue().
-    - Pas de deuxième update après création.
-    """
+async def integrate_test_single(
+    body: IntegrateTestSingleRequest,
+    request: Request,
+    user: CurrentUser = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
     import logging
 
     logger = logging.getLogger(__name__)
 
+    jira_session = _resolve_jira_session(user)
     created_keys: List[str] = []
     errors: List[str] = []
 
@@ -210,6 +224,7 @@ def integrate_test_single(body: IntegrateTestSingleRequest):
             project_key=body.project_key,
             summary=test_case.test_name,
             use_test_jira=True,
+            session=jira_session,
         )
 
         if existing:
@@ -227,6 +242,7 @@ def integrate_test_single(body: IntegrateTestSingleRequest):
                 issue_type="Test",
                 steps=step_payload,
                 use_test_jira=True,
+                session=jira_session,
             )
 
             if issue.get("error"):
@@ -255,6 +271,16 @@ def integrate_test_single(body: IntegrateTestSingleRequest):
 
     status = "success" if not errors else "partial"
 
+    await log_action(
+        db,
+        user_identifier=user.email or user.jira_username or user.user_id,
+        role=user.role,
+        action="integrate_test",
+        resource=f"{body.project_key}/{body.test.test_name}",
+        details=f"keys={created_keys}",
+        ip_address=get_client_ip(request),
+    )
+
     return IntegrateTestsResponse(
         status=status,
         created_count=len(created_keys),
@@ -271,15 +297,11 @@ class AddStepRequest(BaseModel):
 
 
 @router.post("/tests/{test_key}/add-step")
-def add_step_to_test(test_key: str, body: AddStepRequest):
-    """
-    Ajoute une step à un test Xray existant.
-
-    Attention :
-    Si Jira retourne "User does not have permission to browse or edit",
-    cet endpoint ne pourra pas fonctionner sans permission Edit.
-    L'intégration principale évite ce problème en créant les steps directement.
-    """
+def add_step_to_test(
+    test_key: str,
+    body: AddStepRequest,
+    user: CurrentUser = Depends(get_current_user),
+):
     import logging
 
     logger = logging.getLogger(__name__)

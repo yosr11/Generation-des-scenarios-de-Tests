@@ -18,7 +18,8 @@ const axiosInstance: AxiosInstance = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 300000, // 5 minutes for long-running operations
+  timeout: 300000,
+  withCredentials: true,
 })
 
 // ─────────────────────────────────────────────────────────────
@@ -172,6 +173,54 @@ function handleError(error: unknown): ApiError {
 // ─────────────────────────────────────────────────────────────
 
 export const apiClient = {
+  // ─── Auth Endpoints ───
+  auth: {
+    async loginAdmin(email: string, password: string) {
+      try {
+        const response = await axiosInstance.post('/auth/login/admin', { email, password })
+        return response.data
+      } catch (error) {
+        throw handleError(error)
+      }
+    },
+
+    async loginTester(username: string, password: string) {
+      try {
+        const response = await axiosInstance.post('/auth/login/tester', { username, password })
+        return response.data
+      } catch (error) {
+        throw handleError(error)
+      }
+    },
+
+    async me() {
+      try {
+        const response = await axiosInstance.get('/auth/me')
+        return response.data
+      } catch (error) {
+        throw handleError(error)
+      }
+    },
+
+    async projects() {
+      try {
+        const response = await axiosInstance.get('/auth/projects')
+        return response.data
+      } catch (error) {
+        throw handleError(error)
+      }
+    },
+
+    async logout() {
+      try {
+        const response = await axiosInstance.post('/auth/logout')
+        return response.data
+      } catch (error) {
+        throw handleError(error)
+      }
+    },
+  },
+
   // ─── Orchestrator Endpoints ───
   orchestrator: {
     /**
@@ -431,9 +480,34 @@ export const apiClient = {
 
   // ─── Test Editing Endpoints ───
   testEditing: {
-    /**
-     * Validate and improve tests
-     */
+    async refineChat(body: {
+      test: any
+      message: string
+      chat_history?: { role: string; content: string }[]
+      story_id?: string
+      story_summary?: string
+      model_alias?: string
+    }) {
+      try {
+        const response = await axiosInstance.post('/manual-tests/refine-chat', body)
+        return response.data
+      } catch (error) {
+        throw handleError(error)
+      }
+    },
+
+    async saveEdited(storyId: string, tests: any[]) {
+      try {
+        const response = await axiosInstance.post(`/manual-tests/save-edited/${encodeURIComponent(storyId)}`, {
+          tests,
+          generation_model: 'manual-edit',
+        })
+        return response.data
+      } catch (error) {
+        throw handleError(error)
+      }
+    },
+
     async validateAndImprove(storyId: string, options: any): Promise<any> {
       try {
         const response = await axiosInstance.post(
@@ -446,9 +520,6 @@ export const apiClient = {
       }
     },
 
-    /**
-     * Update test
-     */
     async updateTest(storyId: string, testId: string, data: any): Promise<any> {
       try {
         const response = await axiosInstance.put(

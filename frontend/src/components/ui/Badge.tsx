@@ -6,12 +6,12 @@ interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
 }
 
 const variantStyles = {
-  default: 'bg-slate-100 text-slate-700',
-  primary: 'bg-blue-100 text-blue-700',
+  default: 'bg-brand-bg text-brand-navy',
+  primary: 'bg-brand-navy/10 text-brand-navy',
   success: 'bg-green-100 text-green-700',
-  warning: 'bg-amber-100 text-amber-700',
+  warning: 'bg-brand-orange/15 text-brand-orange',
   error: 'bg-red-100 text-red-700',
-  info: 'bg-cyan-100 text-cyan-700',
+  info: 'bg-brand-bg text-brand-navy border border-brand-navy/20',
 }
 
 const sizeStyles = {

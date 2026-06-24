@@ -4,10 +4,14 @@ from __future__ import annotations
 import logging
 from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel, Field
+from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.deps import CurrentUser, get_client_ip, get_current_user
+from app.db.postgres import get_db
 from app.repositories.manual_tests_repository import save_manual_tests_snapshot
+from app.services.audit_service import log_action
 from app.services.llm_client import ALL_MODELS, build_llm_client
 from app.services.test_refinement_service import TestRefinementService
 from app.utils.test_steps_utils import finalize_edited_test
@@ -43,7 +47,12 @@ class SaveEditedTestsRequest(BaseModel):
 
 
 @router.post("/refine-chat", response_model=RefineChatResponse)
-def refine_test_chat(body: RefineChatRequest) -> RefineChatResponse:
+async def refine_test_chat(
+    body: RefineChatRequest,
+    request: Request,
+    user: CurrentUser = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+) -> RefineChatResponse:
     """Affiner un cas de test via instruction en langage naturel."""
     if body.model_alias not in ALL_MODELS:
         raise HTTPException(
@@ -65,6 +74,14 @@ def refine_test_chat(body: RefineChatRequest) -> RefineChatResponse:
             chat_history=history,
             story_context=story_context,
         )
+        await log_action(
+            db,
+            user_identifier=user.email or user.jira_username or user.user_id,
+            role=user.role,
+            action="refine_test",
+            resource=body.story_id or body.test.get("test_name", ""),
+            ip_address=get_client_ip(request),
+        )
         return RefineChatResponse(**result)
     except Exception as exc:
         logger.exception("refine-chat failed")
@@ -72,7 +89,13 @@ def refine_test_chat(body: RefineChatRequest) -> RefineChatResponse:
 
 
 @router.post("/save-edited/{story_id}")
-def save_edited_tests(story_id: str, body: SaveEditedTestsRequest) -> Dict[str, Any]:
+async def save_edited_tests(
+    story_id: str,
+    body: SaveEditedTestsRequest,
+    request: Request,
+    user: CurrentUser = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+) -> Dict[str, Any]:
     """Persiste les tests édités manuellement ou via l'assistant IA."""
     if not body.tests:
         raise HTTPException(status_code=400, detail="Aucun test à enregistrer.")
@@ -81,5 +104,14 @@ def save_edited_tests(story_id: str, body: SaveEditedTestsRequest) -> Dict[str, 
         story_id,
         finalized,
         generation_model=body.generation_model,
+    )
+    await log_action(
+        db,
+        user_identifier=user.email or user.jira_username or user.user_id,
+        role=user.role,
+        action="save_edited_tests",
+        resource=story_id,
+        details=f"count={len(finalized)}",
+        ip_address=get_client_ip(request),
     )
     return {"status": "ok", "story_id": story_id, "tests_count": len(finalized), "snapshot_id": row_id}

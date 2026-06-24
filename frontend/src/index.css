@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 * {
   margin: 0;
   padding: 0;
@@ -13,12 +15,11 @@ html {
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: white;
+  background-color: #F4F6F9;
+  color: #102A5A;
 }
 
 #root {
@@ -26,13 +27,12 @@ body {
   min-height: 100vh;
 }
 
-/* Streamlit-style inputs */
 input[type="text"],
 input[type="email"],
 input[type="password"],
 textarea,
 select {
-  border-color: #e5e7eb;
+  border-color: #d1d5db;
 }
 
 input[type="text"]:focus,
@@ -40,53 +40,34 @@ input[type="email"]:focus,
 input[type="password"]:focus,
 textarea:focus,
 select:focus {
-  border-color: #3b82f6;
+  border-color: #102A5A;
   outline: none;
+  box-shadow: 0 0 0 2px rgba(16, 42, 90, 0.15);
 }
 
-/* Remove default appearance for checkboxes */
 input[type="checkbox"] {
-  accent-color: #3b82f6;
+  accent-color: #D62B1F;
 }
 
-/* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f9fafb;
+  background: #F4F6F9;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #d1d5db;
+  background: #cbd5e1;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #9ca3af;
-}
-
-
-
-body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Source Sans Pro',
-    sans-serif;
-  background: #f8fafc;
-  color: #0f172a;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-#root {
-  width: 100%;
-  min-height: 100vh;
+  background: #94a3b8;
 }
 
 ::selection {
-  background: rgba(236, 72, 153, 0.15);
-  color: #111827;
+  background: rgba(216, 43, 31, 0.15);
+  color: #102A5A;
 }
-

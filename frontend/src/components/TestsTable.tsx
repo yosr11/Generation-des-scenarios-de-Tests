@@ -1,5 +1,10 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { apiClient } from '../api/client'
+import { Button } from './ui/Button'
+import { IntegrationResultPanel, IntegrationResult } from './tests/IntegrationResultPanel'
+import { TestEditPanel } from './tests/TestEditPanel'
+import { useToast } from '../contexts/ToastContext'
+import { useAuth } from '../contexts/AuthContext'
 
 interface TestScore {
   storyId: string
@@ -14,6 +19,11 @@ interface TestsTableProps {
 
 export default function TestsTable({ data }: TestsTableProps) {
   const [loadingId, setLoadingId] = useState<string | null>(null)
+  const [integrationResult, setIntegrationResult] = useState<IntegrationResult | null>(null)
+  const [editingTest, setEditingTest] = useState<any | null>(null)
+  const toast = useToast()
+  const { selectedProject } = useAuth()
+  const projectKey = selectedProject?.key || 'YOUQA'
   const getStatusBadge = (status: string) => {
     const badges = {
       pass: 'bg-green-100 text-green-800',
@@ -60,36 +70,41 @@ export default function TestsTable({ data }: TestsTableProps) {
                   </span>
                 </td>
                 <td className="py-3 px-4 text-center space-x-2">
-                  <button className="text-blue-600 hover:text-blue-800 transition-colors" onClick={async () => {
+                  <button
+                    className="text-brand-navy hover:text-brand-orange transition-colors text-sm font-medium"
+                    onClick={async () => {
                     const key = test.storyId
-                    // Integrate this single test (uses storyName as test name)
                     try {
                       setLoadingId(key)
-                      const payload = { project_key: 'YOUQA', test: { test_name: test.storyName, objective: test.storyName, steps: [] } }
-                      await apiClient.integration.integrateTest(payload)
-                      alert(`Test intégré pour ${test.storyName}`)
-                    } catch (err:any) {
-                      alert(`Erreur intégration: ${err?.message || JSON.stringify(err)}`)
+                      const payload = {
+                        project_key: projectKey,
+                        test: { test_name: test.storyName, objective: test.storyName, steps: [] },
+                      }
+                      const resp = await apiClient.integration.integrateTest(payload)
+                      setIntegrationResult({ ...resp, test_name: test.storyName })
+                      toast.success('Integration completed')
+                    } catch (err: any) {
+                      toast.error(err?.message || 'Integration failed')
                     } finally {
                       setLoadingId(null)
                     }
-                  }}>{loadingId===test.storyId? 'Integrating...':'Integrate'}</button>
+                  }}
+                  >
+                    {loadingId === test.storyId ? 'Integrating...' : 'Integrate'}
+                  </button>
 
-                  <button className="text-green-600 hover:text-green-800 transition-colors" onClick={async () => {
-                    const issueKey = window.prompt('Issue key Jira (ex: YOUQA-123) to add step to:')
-                    if (!issueKey) return
-                    const action = window.prompt('Action de la step:') || ''
-                    const expected = window.prompt('Expected result:') || ''
-                    try {
-                      setLoadingId(issueKey)
-                      await apiClient.integration.addStepToTest(issueKey, { action, expected_result: expected })
-                      alert(`Step ajoutée à ${issueKey}`)
-                    } catch (err:any) {
-                      alert(`Erreur ajout step: ${err?.message || JSON.stringify(err)}`)
-                    } finally {
-                      setLoadingId(null)
+                  <button
+                    className="text-brand-orange hover:text-brand-red transition-colors text-sm font-medium"
+                    onClick={() =>
+                      setEditingTest({
+                        test_name: test.storyName,
+                        objective: test.storyName,
+                        steps: [],
+                      })
                     }
-                  }}>Add Step</button>
+                  >
+                    Edit
+                  </button>
                 </td>
               </tr>
             ))}
@@ -100,6 +115,25 @@ export default function TestsTable({ data }: TestsTableProps) {
         <div className="text-center py-8 text-gray-500">
           Aucun test généré pour le moment.
         </div>
+      )}
+
+      {editingTest && (
+        <TestEditPanel
+          test={editingTest}
+          storyId={data[0]?.storyId || 'UNKNOWN'}
+          onClose={() => setEditingTest(null)}
+          onSaved={(updated) => {
+            setEditingTest(null)
+            toast.success('Test updated')
+          }}
+        />
+      )}
+
+      {integrationResult && (
+        <IntegrationResultPanel
+          result={integrationResult}
+          onClose={() => setIntegrationResult(null)}
+        />
       )}
     </div>
   )

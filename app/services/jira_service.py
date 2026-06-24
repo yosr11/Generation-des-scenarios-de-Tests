@@ -43,12 +43,15 @@ XRAY_FIELD_PRECONDITIONS = os.getenv("XRAY_FIELD_PRECONDITIONS", "customfield_14
 XRAY_FIELD_STEPS_COUNT = os.getenv("XRAY_FIELD_STEPS_COUNT", "customfield_14405")
 
 
-def _create_session() -> requests.Session:
+def _create_session(
+    username: Optional[str] = None,
+    password: Optional[str] = None,
+) -> requests.Session:
     """
     Crée une session Jira avec auth et headers JSON.
     """
     session = requests.Session()
-    session.auth = (JIRA_USERNAME, JIRA_PASSWORD)
+    session.auth = (username or JIRA_USERNAME, password or JIRA_PASSWORD)
     session.verify = False
     session.headers.update(
         {
@@ -57,6 +60,11 @@ def _create_session() -> requests.Session:
         }
     )
     return session
+
+
+def create_user_jira_session(username: str, password: str) -> requests.Session:
+    """Session Jira pour un utilisateur authentifié (testeur)."""
+    return _create_session(username=username, password=password)
 
 
 _session_prod = _create_session()
@@ -772,6 +780,7 @@ def create_test_issue(
     issue_type: str = "Test",
     steps: Optional[List[Dict[str, str]]] = None,
     use_test_jira: bool = False,
+    session: Optional[requests.Session] = None,
 ) -> Dict[str, Any]:
     """
     Crée une issue Jira de type Test avec steps Xray dès la création.
@@ -785,7 +794,7 @@ def create_test_issue(
     logger = logging.getLogger(__name__)
 
     jira_url = JIRA_TEST_URL if use_test_jira else JIRA_PROD_URL
-    session = _session_test if use_test_jira else _session_prod
+    jira_session = session or (_session_test if use_test_jira else _session_prod)
 
     url = f"{jira_url}/rest/api/2/issue"
 
@@ -818,7 +827,7 @@ def create_test_issue(
     )
 
     result = _post_jira_issue(
-        session=session,
+        session=jira_session,
         url=url,
         payload=payload,
     )
@@ -837,7 +846,7 @@ def create_test_issue(
         fields_without_test_type.pop(XRAY_FIELD_TEST_TYPE, None)
 
         result = _post_jira_issue(
-            session=session,
+            session=jira_session,
             url=url,
             payload={"fields": fields_without_test_type},
         )
@@ -857,7 +866,7 @@ def create_test_issue(
         fields_without_steps.pop(XRAY_FIELD_STEPS, None)
 
         retry_result = _post_jira_issue(
-            session=session,
+            session=jira_session,
             url=url,
             payload={"fields": fields_without_steps},
         )
@@ -1016,6 +1025,7 @@ def search_test_issue_by_summary(
     project_key: str,
     summary: str,
     use_test_jira: bool = False,
+    session: Optional[requests.Session] = None,
 ) -> Optional[str]:
     """
     Recherche un Test existant par summary pour éviter les doublons.
@@ -1031,7 +1041,7 @@ def search_test_issue_by_summary(
     if use_test_jira:
         result = search_issues_with_session(
             jql=jql,
-            session=_session_test,
+            session=session or _session_test,
             jira_url=JIRA_TEST_URL,
             fields="key,summary",
             max_per_page=10,

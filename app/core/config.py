@@ -1,5 +1,5 @@
-#Gère les variables d’environnement (.env).
-#Centralise les chemins JSON, credentials API, seuils et paramètres agents.
+# Gère les variables d'environnement (.env).
+# Centralise les chemins JSON, credentials API, seuils et paramètres agents.
 
 import os
 from pathlib import Path
@@ -15,9 +15,26 @@ class Settings:
     STORIES_PATH = os.getenv("STORIES_PATH", "app/data/stories.json")
     DB_PATH = os.getenv("DB_PATH", "app/data/agent.db")
 
+    # ── PostgreSQL ───────────────────────────────────────────
+    DATABASE_URL = os.getenv(
+        "DATABASE_URL",
+        "postgresql+asyncpg://postgres:postgres@localhost:5432/agent_test",
+    )
+
+    # ── Auth / JWT ───────────────────────────────────────────
+    JWT_SECRET = os.getenv("JWT_SECRET", "change-me-in-production-use-long-random-string")
+    JWT_ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
+    JWT_EXPIRE_MINUTES = int(os.getenv("JWT_EXPIRE_MINUTES", "480"))
+    COOKIE_NAME = os.getenv("COOKIE_NAME", "access_token")
+    COOKIE_SECURE = os.getenv("COOKIE_SECURE", "false").lower() == "true"
+    COOKIE_SAMESITE = os.getenv("COOKIE_SAMESITE", "lax")
+
+    ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "yomahfoudh@soprahr.com")
+    ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "soprahr2026")
+
     # ── LLM / Groq ──────────────────────────────────────────
     GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
-    LLM_PROVIDER = os.getenv("LLM_PROVIDER", "groq")  # "groq" ou "bedrock"
+    LLM_PROVIDER = os.getenv("LLM_PROVIDER", "groq")
     LLM_DEFAULT_MODEL = os.getenv("LLM_DEFAULT_MODEL", "qwen3")
     LLM_TEMPERATURE = float(os.getenv("LLM_TEMPERATURE", "0.0"))
     LLM_MAX_TOKENS = int(os.getenv("LLM_MAX_TOKENS", "2000"))
@@ -32,22 +49,14 @@ class Settings:
     BEDROCK_MODEL_ID = os.getenv("BEDROCK_MODEL_ID", "eu.amazon.nova-lite-v1:0")
 
     # ── Jira ─────────────────────────────────────────────────
-    # Production Jira: récupération des scénarios (NUXEPM, etc.)
     JIRA_PROD_URL = os.getenv("JIRA_PROD_URL", "https://hra-jira.ptx.fr.sopra")
-    
-    # Test Jira: création des tests (YOUQA)
     JIRA_TEST_URL = os.getenv("JIRA_TEST_URL", "https://hra-test-jira.ptx.fr.sopra")
-    
-    # Credentials (partagés entre les 2 instances)
     JIRA_USERNAME = os.getenv("JIRA_USERNAME", "")
     JIRA_PASSWORD = os.getenv("JIRA_PASSWORD", "")
-    
-    # Backward compatibility
     JIRA_BASE_URL = os.getenv("JIRA_BASE_URL", JIRA_PROD_URL)
 
     # ── Agent 1 — Analysis ───────────────────────────────────
     AGENT1_DEFAULT_MODEL = os.getenv("AGENT1_DEFAULT_MODEL", "qwen3")
-    # Supported models for Agent 1: "qwen3", "llama4", "gptoss", "gptoss120b", "qwen3.6", "nova-lite-2"
 
     # ── Agent 2 — Test Generation ────────────────────────────
     AGENT2_DEFAULT_MODEL = os.getenv("AGENT2_DEFAULT_MODEL", "llama4")
@@ -70,5 +79,4 @@ class Settings:
 
 settings = Settings()
 
-# S'assurer que le dossier data existe
 Path("app/data").mkdir(parents=True, exist_ok=True)
