@@ -1,5 +1,5 @@
 import React from 'react'
-import { AlertCircle, CheckCircle, AlertTriangle, Info } from 'lucide-react'
+import { AlertCircle, CheckCircle2, AlertTriangle, Info, X } from 'lucide-react'
 
 type AlertType = 'info' | 'success' | 'warning' | 'error'
 
@@ -12,44 +12,47 @@ interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
   onDismiss?: () => void
 }
 
-const alertStyles = {
+const alertStyles: Record<AlertType, {
+  container: string; title: string; description: string; icon: string; iconBg: string
+}> = {
   info: {
-    container: 'bg-blue-50 border border-blue-200',
-    title: 'text-blue-900',
-    description: 'text-blue-700',
-    icon: 'text-blue-600',
+    container:   'bg-brand-violet/5 border border-brand-violet/15',
+    title:       'text-brand-violet',
+    description: 'text-brand-violet/80',
+    icon:        'text-brand-violet',
+    iconBg:      'bg-brand-violet/10',
   },
   success: {
-    container: 'bg-green-50 border border-green-200',
-    title: 'text-green-900',
-    description: 'text-green-700',
-    icon: 'text-green-600',
+    container:   'bg-emerald-50 border border-emerald-200',
+    title:       'text-emerald-800',
+    description: 'text-emerald-700',
+    icon:        'text-emerald-600',
+    iconBg:      'bg-emerald-100',
   },
   warning: {
-    container: 'bg-amber-50 border border-amber-200',
-    title: 'text-amber-900',
-    description: 'text-amber-700',
-    icon: 'text-amber-600',
+    container:   'bg-orange-50 border border-orange-200',
+    title:       'text-orange-800',
+    description: 'text-orange-700',
+    icon:        'text-brand-orange',
+    iconBg:      'bg-orange-100',
   },
   error: {
-    container: 'bg-red-50 border border-red-200',
-    title: 'text-red-900',
-    description: 'text-red-700',
-    icon: 'text-red-600',
+    container:   'bg-brand-rose/5 border border-brand-rose/20',
+    title:       'text-brand-rose',
+    description: 'text-brand-rose/80',
+    icon:        'text-brand-rose',
+    iconBg:      'bg-brand-rose/10',
   },
 }
 
-const alertIcons = {
-  info: Info,
-  success: CheckCircle,
+const alertIcons: Record<AlertType, React.ElementType> = {
+  info:    Info,
+  success: CheckCircle2,
   warning: AlertTriangle,
-  error: AlertCircle,
+  error:   AlertCircle,
 }
 
-export const Alert = React.forwardRef<
-  HTMLDivElement,
-  AlertProps
->(
+export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
   (
     {
       className = '',
@@ -79,25 +82,33 @@ export const Alert = React.forwardRef<
       <div
         ref={ref}
         className={`
-          rounded-lg p-4 flex gap-4 items-start
+          rounded-2xl p-4 flex gap-3 items-start animate-fade-in
           ${style.container}
           ${className}
         `}
         role="alert"
         {...props}
       >
-        <Icon className={`w-5 h-5 mt-0.5 flex-shrink-0 ${style.icon}`} />
-        <div className="flex-1">
-          {title && <h4 className={`font-semibold ${style.title}`}>{title}</h4>}
-          {description && <p className={`text-sm ${style.description} ${title ? 'mt-1' : ''}`}>{description}</p>}
-          {children && <div className={style.description}>{children}</div>}
+        <div className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 ${style.iconBg}`}>
+          <Icon className={`w-4 h-4 ${style.icon}`} />
+        </div>
+        <div className="flex-1 min-w-0">
+          {title && (
+            <h4 className={`font-bold text-sm ${style.title}`}>{title}</h4>
+          )}
+          {description && (
+            <p className={`text-sm ${style.description} ${title ? 'mt-0.5' : ''} leading-relaxed`}>
+              {description}
+            </p>
+          )}
+          {children && <div className={`text-sm ${style.description}`}>{children}</div>}
         </div>
         {dismissible && (
           <button
             onClick={handleDismiss}
-            className={`flex-shrink-0 font-medium text-sm hover:opacity-70 transition ${style.description}`}
+            className={`flex-shrink-0 p-1 rounded-lg hover:bg-black/5 transition-colors ${style.icon}`}
           >
-            ✕
+            <X size={14} />
           </button>
         )}
       </div>

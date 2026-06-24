@@ -6,6 +6,7 @@ import { AppLayout } from './components/layout/AppLayout'
 import { ProtectedRoute } from './components/auth/ProtectedRoute'
 import { LoginPage } from './pages/LoginPage'
 import { ProjectSelectPage } from './pages/ProjectSelectPage'
+import { LandingPage } from './pages/LandingPage'
 import { DashboardPage, PipelinePage, AnalysisPage, HistoryPage } from './pages'
 
 function AuthenticatedLayout() {
@@ -22,9 +23,13 @@ function App() {
       <AuthProvider>
         <ToastProvider>
           <Routes>
+            {/* Public Routes */}
+            <Route path="/"      element={<LandingPage />} />
             <Route path="/login" element={<LoginPage />} />
+
+            {/* Authenticated Routes */}
             <Route element={<AuthenticatedLayout />}>
-              <Route path="/" element={<Navigate to="/pipeline" replace />} />
+              <Route path="/home" element={<Navigate to="/pipeline" replace />} />
               <Route
                 path="/pipeline"
                 element={
@@ -33,9 +38,9 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-              <Route path="/analysis" element={<AnalysisPage />} />
+              <Route path="/analysis"  element={<AnalysisPage />} />
               <Route path="/dashboard" element={<DashboardPage />} />
-              <Route path="/history" element={<HistoryPage />} />
+              <Route path="/history"   element={<HistoryPage />} />
               <Route
                 path="/projects"
                 element={
@@ -45,7 +50,9 @@ function App() {
                 }
               />
             </Route>
-            <Route path="*" element={<Navigate to="/pipeline" replace />} />
+
+            {/* Catch-all */}
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </ToastProvider>
       </AuthProvider>

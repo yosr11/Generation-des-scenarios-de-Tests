@@ -3,6 +3,7 @@ import { useNavigate, Navigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { useToast } from '../contexts/ToastContext'
 import { apiClient } from '../api/client'
+import { Zap, Mail, Lock, User, Eye, EyeOff, ArrowRight, Shield } from 'lucide-react'
 
 type LoginMode = 'tester' | 'admin'
 
@@ -11,14 +12,18 @@ export const LoginPage: React.FC = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [email, setEmail] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const { setAuth, user, loading: authLoading } = useAuth()
   const toast = useToast()
   const navigate = useNavigate()
 
   if (authLoading) return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-brand-blue via-brand-pink to-brand-orange animate-fade-in">
-      <div className="text-white text-lg font-semibold">Chargement...</div>
+    <div className="min-h-screen flex items-center justify-center bg-brand-navy">
+      <div className="flex flex-col items-center gap-4">
+        <div className="w-12 h-12 rounded-full bg-grad-cta animate-pulse-glow" />
+        <p className="text-white/60 text-sm">Chargement...</p>
+      </div>
     </div>
   )
 
@@ -49,175 +54,253 @@ export const LoginPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50 to-pink-50 p-4 animate-fade-in">
-      <div className="w-full max-w-md">
-        {/* Header */}
-        <div className="text-center mb-8 animate-slide-down">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-brand-blue to-brand-pink mb-4 shadow-lg">
-            <div className="text-white text-2xl font-bold">◊</div>
-          </div>
-          <h1 className="text-3xl font-bold text-brand-navy mb-2">Synaptéest</h1>
-          <p className="text-gray-600 text-sm">Plateforme de génération intelligente de tests</p>
+    <div className="min-h-screen flex bg-brand-navy overflow-hidden">
+
+      {/* ── Left Panel — Branding ─────────────────── */}
+      <div className="hidden lg:flex lg:w-[55%] relative flex-col justify-between p-12 overflow-hidden">
+
+        {/* Orbs */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="orb orb-rose w-[500px] h-[500px] top-[-100px] left-[-100px] animate-pulse-glow" />
+          <div className="orb orb-violet w-[400px] h-[400px] bottom-[-80px] right-[-80px] animate-pulse-glow" style={{ animationDelay: '2s' }} />
+          <div className="orb orb-orange w-[300px] h-[300px] top-[40%] right-[10%] animate-pulse-glow" style={{ animationDelay: '1s' }} />
+          {/* Grid */}
+          <div className="absolute inset-0" style={{
+            backgroundImage: 'linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)',
+            backgroundSize: '50px 50px',
+          }} />
         </div>
 
-        {/* Card */}
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden animate-scale-in">
-          {/* Gradient Bar */}
-          <div className="h-1 bg-gradient-to-r from-brand-blue via-brand-pink to-brand-orange"></div>
+        {/* Logo */}
+        <div className="relative z-10 animate-fade-in">
+          <div className="flex items-center gap-3">
+            <img src="/logo_sopra.png" alt="Sopra HR"
+              className="h-9 w-auto object-contain"
+              style={{ filter: 'brightness(0) invert(1)', opacity: 0.9 }} />
+            <div className="w-px h-6 bg-white/20" />
+            <span className="text-2xl font-bold text-white">
+              Synap<span style={{ color: '#f43f5e' }}>test</span>
+            </span>
+          </div>
+        </div>
 
-          <div className="p-8">
-            {/* Welcome Text */}
-            <h2 className="text-2xl font-bold text-brand-navy mb-1">Bienvenue</h2>
-            <p className="text-gray-500 text-sm mb-6">Connectez-vous pour continuer</p>
+        {/* Center Content */}
+        <div className="relative z-10 flex-1 flex flex-col justify-center">
+          <div className="animate-slide-up">
+            <h1 className="text-5xl font-extrabold text-white mb-6 leading-tight">
+              Générez vos tests<br />
+              <span className="text-gradient-hero">avec l'IA</span>
+            </h1>
+            <p className="text-white/55 text-lg mb-10 leading-relaxed max-w-md">
+              Transformez vos user stories Jira en scénarios de tests exhaustifs
+              grâce à une orchestration multi-agents intelligente.
+            </p>
 
-            {/* Mode Tabs */}
-            <div className="flex gap-2 mb-6 bg-gray-100 p-1 rounded-lg">
+            {/* Feature Chips */}
+            <div className="flex flex-wrap gap-3">
+              {['Multi-agent', 'Automatisé', 'LangGraph', 'RAG Context'].map((tag, i) => (
+                <span
+                  key={tag}
+                  className="glass-card px-4 py-2 text-sm text-white/80 font-medium animate-fade-in"
+                  style={{ animationDelay: `${i * 0.1 + 0.3}s` }}
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Stats Row */}
+          <div className="animate-slide-up delay-300 mt-10 grid grid-cols-3 gap-4">
+            {[
+              { v: '5', l: 'Agents IA' },
+              { v: '3', l: 'Itérations' },
+              { v: '70%', l: 'Couverture' },
+            ].map((s) => (
+              <div key={s.l} className="glass-card p-4 text-center">
+                <p className="text-3xl font-extrabold text-gradient-warm">{s.v}</p>
+                <p className="text-xs text-white/50 mt-1 font-medium">{s.l}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Bottom Brand */}
+        <div className="relative z-10 animate-fade-in delay-500">
+          <p className="text-white/30 text-xs">
+            © 2025 · <span className="text-brand-rose font-semibold">Sopra HR Software</span> · Synaptest Platform
+          </p>
+        </div>
+      </div>
+
+      {/* ── Right Panel — Form ───────────────────── */}
+      <div className="w-full lg:w-[45%] flex items-center justify-center p-6 lg:p-12 relative bg-brand-offwhite">
+
+        {/* Subtle bg texture */}
+        <div className="absolute inset-0 opacity-30" style={{
+          backgroundImage: 'radial-gradient(circle at 20% 20%, rgba(124,58,237,0.08) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(244,63,94,0.06) 0%, transparent 50%)',
+        }} />
+
+        <div className="relative z-10 w-full max-w-md animate-scale-in">
+
+          {/* Mobile Logo */}
+          <div className="lg:hidden flex items-center gap-3 mb-8">
+            <img src="/logo_sopra.png" alt="Sopra HR" className="h-7 w-auto object-contain opacity-90" />
+            <div className="w-px h-5 bg-gray-300" />
+            <span className="text-xl font-bold text-brand-navy">
+              Synap<span style={{ color: '#f43f5e' }}>test</span>
+            </span>
+          </div>
+
+          {/* Header */}
+          <div className="mb-8">
+            <h2 className="text-3xl font-extrabold text-brand-navy mb-2">Bienvenue 👋</h2>
+            <p className="text-brand-muted">Connectez-vous pour continuer</p>
+          </div>
+
+          {/* Role Tabs */}
+          <div className="flex gap-2 p-1.5 bg-brand-navy/08 rounded-2xl mb-8">
+            {(['tester', 'admin'] as LoginMode[]).map((m) => (
               <button
+                key={m}
                 type="button"
-                onClick={() => setMode('tester')}
-                className={`flex-1 py-2 px-4 rounded-md font-semibold text-sm transition-all ${
-                  mode === 'tester'
-                    ? 'bg-white text-brand-blue shadow-md'
-                    : 'text-gray-600 hover:text-brand-navy'
+                onClick={() => setMode(m)}
+                className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-semibold transition-all duration-250 ${
+                  mode === m
+                    ? m === 'tester'
+                      ? 'bg-brand-navy text-white shadow-card'
+                      : 'bg-grad-cta text-white shadow-glow-rose'
+                    : 'text-brand-navy/60 hover:text-brand-navy'
                 }`}
               >
-                👤 Testeur
+                {m === 'tester' ? <User size={15} /> : <Shield size={15} />}
+                {m === 'tester' ? 'Testeur' : 'Admin'}
               </button>
-              <button
-                type="button"
-                onClick={() => setMode('admin')}
-                className={`flex-1 py-2 px-4 rounded-md font-semibold text-sm transition-all ${
-                  mode === 'admin'
-                    ? 'bg-white text-brand-pink shadow-md'
-                    : 'text-gray-600 hover:text-brand-navy'
-                }`}
-              >
-                🛡 Admin
-              </button>
+            ))}
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {mode === 'tester' ? (
+              <div className="animate-fade-in space-y-5">
+                <div>
+                  <label className="block text-xs font-bold text-brand-navy/70 uppercase tracking-widest mb-2">
+                    Identifiant Jira
+                  </label>
+                  <div className="relative">
+                    <User size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-muted" />
+                    <input
+                      type="text"
+                      id="login-username"
+                      placeholder="yomahfoudh"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      required
+                      className="w-full pl-11 pr-4 py-3.5 bg-white border-2 border-gray-100 rounded-xl text-sm font-medium text-brand-navy placeholder:text-gray-300 focus:border-brand-violet transition-all shadow-sm"
+                    />
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="animate-fade-in space-y-5">
+                <div>
+                  <label className="block text-xs font-bold text-brand-navy/70 uppercase tracking-widest mb-2">
+                    Email Admin
+                  </label>
+                  <div className="relative">
+                    <Mail size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-muted" />
+                    <input
+                      type="email"
+                      id="login-email"
+                      placeholder="admin@soprahr.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                      className="w-full pl-11 pr-4 py-3.5 bg-white border-2 border-gray-100 rounded-xl text-sm font-medium text-brand-navy placeholder:text-gray-300 focus:border-brand-rose transition-all shadow-sm"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Password */}
+            <div>
+              <label className="block text-xs font-bold text-brand-navy/70 uppercase tracking-widest mb-2">
+                Mot de passe
+              </label>
+              <div className="relative">
+                <Lock size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-muted" />
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  id="login-password"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className={`w-full pl-11 pr-12 py-3.5 bg-white border-2 border-gray-100 rounded-xl text-sm font-medium text-brand-navy placeholder:text-gray-300 transition-all shadow-sm ${
+                    mode === 'tester' ? 'focus:border-brand-violet' : 'focus:border-brand-rose'
+                  }`}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-brand-muted hover:text-brand-navy transition-colors"
+                >
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
             </div>
 
-            {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {mode === 'tester' ? (
+            {/* Submit */}
+            <button
+              type="submit"
+              id="login-submit"
+              disabled={loading}
+              className="w-full py-4 rounded-xl font-bold text-white text-sm flex items-center justify-center gap-2.5 transition-all duration-250 disabled:opacity-60 disabled:cursor-not-allowed mt-2 hover:-translate-y-0.5"
+              style={{
+                background: 'linear-gradient(135deg, #ef4444, #f43f5e, #f97316)',
+                boxShadow: '0 6px 24px rgba(244,63,94,0.4)',
+              }}
+            >
+              {loading ? (
                 <>
-                  <div>
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">
-                      Identifiant Jira
-                    </label>
-                    <div className="relative">
-                      <span className="absolute left-3 top-3 text-gray-400">👤</span>
-                      <input
-                        type="text"
-                        placeholder="yomahfoudh"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
-                        className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none transition-all"
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">
-                      Mot de passe
-                    </label>
-                    <div className="relative">
-                      <span className="absolute left-3 top-3 text-gray-400">🔒</span>
-                      <input
-                        type="password"
-                        placeholder="••••••••"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none transition-all"
-                      />
-                    </div>
-                  </div>
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  Connexion...
                 </>
               ) : (
                 <>
-                  <div>
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">
-                      Email Admin
-                    </label>
-                    <div className="relative">
-                      <span className="absolute left-3 top-3 text-gray-400">✉️</span>
-                      <input
-                        type="email"
-                        placeholder="admin@soprahr.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                        className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-pink focus:border-transparent outline-none transition-all"
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">
-                      Mot de passe
-                    </label>
-                    <div className="relative">
-                      <span className="absolute left-3 top-3 text-gray-400">🔒</span>
-                      <input
-                        type="password"
-                        placeholder="••••••••"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-pink focus:border-transparent outline-none transition-all"
-                      />
-                    </div>
-                  </div>
+                  {mode === 'tester' ? <User size={16} /> : <Shield size={16} />}
+                  Se connecter
+                  <ArrowRight size={15} />
                 </>
               )}
-
-              {/* Submit Button */}
-              <button
-                type="submit"
-                disabled={loading}
-                className={`w-full py-2 px-4 rounded-lg font-semibold text-white transition-all transform hover:scale-105 active:scale-95 ${
-                  mode === 'tester'
-                    ? 'bg-gradient-to-r from-brand-blue to-brand-blue hover:shadow-lg'
-                    : 'bg-gradient-to-r from-brand-pink to-brand-orange hover:shadow-lg'
-                } disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none`}
-              >
-                {loading ? (
-                  <span className="flex items-center justify-center gap-2">
-                    <span className="inline-block animate-spin">⟳</span>
-                    Connexion...
-                  </span>
-                ) : (
-                  '→ Se connecter'
-                )}
-              </button>
-            </form>
-
-            {/* Divider */}
-            <div className="flex items-center gap-3 my-5">
-              <div className="flex-1 h-px bg-gray-200"></div>
-              <span className="text-xs text-gray-400 font-medium">ou</span>
-              <div className="flex-1 h-px bg-gray-200"></div>
-            </div>
-
-            {/* Toggle Button */}
-            <button
-              type="button"
-              onClick={() => setMode(mode === 'tester' ? 'admin' : 'tester')}
-              className="w-full py-2 px-4 border-2 border-gray-200 rounded-lg font-semibold text-brand-navy hover:border-brand-blue hover:bg-blue-50 transition-all"
-            >
-              ↺ {mode === 'tester' ? 'Connexion Admin' : 'Connexion Testeur'}
             </button>
+          </form>
 
-            {/* Footer */}
-            <p className="text-center text-xs text-gray-500 mt-6">
-              Accès sécurisé · <span className="font-bold text-brand-navy">Sopra HR Software</span> · 2025
-            </p>
+          {/* Divider */}
+          <div className="flex items-center gap-4 my-6">
+            <div className="flex-1 h-px bg-gray-100" />
+            <span className="text-xs text-gray-400 font-medium">ou</span>
+            <div className="flex-1 h-px bg-gray-100" />
           </div>
-        </div>
 
-        {/* Background Decoration */}
-        <div className="absolute -z-10 inset-0 overflow-hidden">
-          <div className="absolute top-20 right-10 w-72 h-72 bg-brand-blue rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-pulse"></div>
-          <div className="absolute bottom-20 left-10 w-72 h-72 bg-brand-pink rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+          {/* Toggle */}
+          <button
+            type="button"
+            onClick={() => setMode(mode === 'tester' ? 'admin' : 'tester')}
+            className="w-full py-3.5 px-4 border-2 border-gray-100 rounded-xl text-sm font-semibold text-brand-navy hover:border-brand-violet hover:text-brand-violet hover:bg-brand-violet/5 transition-all flex items-center justify-center gap-2"
+          >
+            {mode === 'tester' ? (
+              <><Shield size={15} /> Connexion Admin</>
+            ) : (
+              <><User size={15} /> Connexion Testeur</>
+            )}
+          </button>
+
+          {/* Footer */}
+          <p className="text-center text-xs text-gray-400 mt-8">
+            Accès sécurisé · <span className="font-bold text-brand-navy">Sopra HR Software</span> · 2025
+          </p>
         </div>
       </div>
     </div>
