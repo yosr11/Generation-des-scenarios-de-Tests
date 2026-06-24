@@ -33,6 +33,27 @@ async def seed_admin_user(db: AsyncSession) -> None:
     await db.commit()
 
 
+from sqlalchemy.exc import IntegrityError
+
+
+async def create_user(db: AsyncSession, email: str, password: str, role: str = "tester") -> dict:
+    """Crée un utilisateur PostgreSQL (admin tool)."""
+    result = await db.execute(select(User).where(User.email == email))
+    existing = result.scalar_one_or_none()
+    if existing:
+        return {"ok": False, "error": "User already exists"}
+
+    hashed = hash_password(password)
+    user = User(email=email, hashed_password=hashed, role=role)
+    db.add(user)
+    try:
+        await db.commit()
+    except IntegrityError as exc:
+        await db.rollback()
+        return {"ok": False, "error": str(exc)}
+    return {"ok": True}
+
+
 async def authenticate_admin(db: AsyncSession, email: str, password: str) -> Optional[User]:
     result = await db.execute(select(User).where(User.email == email))
     user = result.scalar_one_or_none()

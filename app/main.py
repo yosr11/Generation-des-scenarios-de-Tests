@@ -22,6 +22,7 @@ from app.api.routes_legacy_tests import router as legacy_tests_router
 from app.api.routes_integration import router as integration_router
 from app.api.routes_test_editing import router as test_editing_router
 from app.api.routes_auth import router as auth_router
+from app.api.routes_admin import router as admin_router
 
 logger = logging.getLogger(__name__)
 
@@ -68,6 +69,7 @@ async def global_exception_handler(request: Request, exc: Exception):
 
 
 app.include_router(auth_router)
+app.include_router(admin_router)
 app.include_router(stories_router)
 app.include_router(epic_router)
 app.include_router(analysis_router)

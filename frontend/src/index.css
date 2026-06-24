@@ -1,8 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+/* CSS Variables & Theme */
+:root {
+  --color-navy: #0f1724;
+  --color-pink: #ff6fa3;
+  --color-blue: #4fc3f7;
+  --color-orange: #ff8a3d;
+  --color-yellow: #ffd166;
+  --color-red: #ff4655;
+  --gradient-primary: linear-gradient(135deg, #6EE7F5, #FF9AC6);
+  --gradient-secondary: linear-gradient(135deg, #4fc3f7, #ff8a3d);
+}
 
 * {
   margin: 0;
@@ -18,8 +30,8 @@ body {
   font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #F4F6F9;
-  color: #102A5A;
+  background: linear-gradient(to bottom, #f7f9fc, #eff5ff);
+  color: #0f1724;
 }
 
 #root {
@@ -27,12 +39,14 @@ body {
   min-height: 100vh;
 }
 
+/* Form Inputs */
 input[type="text"],
 input[type="email"],
 input[type="password"],
 textarea,
 select {
-  border-color: #d1d5db;
+  border-color: #e5e7eb;
+  transition: all 0.3s ease;
 }
 
 input[type="text"]:focus,
@@ -40,13 +54,94 @@ input[type="email"]:focus,
 input[type="password"]:focus,
 textarea:focus,
 select:focus {
-  border-color: #102A5A;
+  border-color: #4fc3f7;
   outline: none;
-  box-shadow: 0 0 0 2px rgba(16, 42, 90, 0.15);
+  box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.1);
+  background-color: rgba(255, 255, 255, 0.95);
 }
 
 input[type="checkbox"] {
-  accent-color: #D62B1F;
+  accent-color: #ff4655;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Utility Classes */
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+.animate-slide-up {
+  animation: slideInUp 0.5s ease-out;
+}
+
+.animate-slide-down {
+  animation: slideInDown 0.5s ease-out;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.4s ease-out;
+}
+
+.gradient-primary {
+  background: var(--gradient-primary);
+}
+
+.gradient-secondary {
+  background: var(--gradient-secondary);
 }
 
 ::-webkit-scrollbar {
