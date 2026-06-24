@@ -1,6 +1,6 @@
-"""Modèles Pydantic pour les réponses Agent 3 (validateur pur, sans génération ni LLM)."""
+"""Modèles Pydantic pour les réponses Agent 3 (validateur pur)."""
 
-from typing import Annotated, Any, Dict, List, Literal, Union
+from typing import Annotated, Any, Dict, List, Literal, Optional, Union
 
 from pydantic import BaseModel, Field
 
@@ -55,9 +55,22 @@ class MergeDuplicatesInstruction(BaseModel):
 
 
 CorrectionInstruction = Annotated[
-    Union[AddTestInstruction, FixObjectiveInstruction, FixStepInstruction, MergeDuplicatesInstruction],
+    Union[
+        AddTestInstruction,
+        FixObjectiveInstruction,
+        FixStepInstruction,
+        MergeDuplicatesInstruction,
+    ],
     Field(discriminator="instruction_type"),
 ]
+
+
+class LLMQualityFeedback(BaseModel):
+    score: int = Field(..., ge=0, le=10, description="Score qualitatif global (0-10)")
+    summary: str = Field(..., description="Résumé court et lisible pour QA (1-3 phrases)")
+    strengths: List[str] = Field(default_factory=list, description="Points forts")
+    weaknesses: List[str] = Field(default_factory=list, description="Points faibles")
+    recommendations: List[str] = Field(default_factory=list, description="Recommandations concrètes")
 
 
 class Agent3ValidationReport(BaseModel):
@@ -70,6 +83,10 @@ class Agent3ValidationReport(BaseModel):
     validation_status: ValidationStatus = "INVALID"
     correction_instructions: List[CorrectionInstruction] = Field(default_factory=list)
 
+    # Optionnel : feedback narratif (LLM). Ne change pas la décision.
+    llm_quality_feedback: Optional[LLMQualityFeedback] = None
+    llm_quality_model_alias: Optional[str] = None
+
 
 class Agent3ValidationResult(BaseModel):
     story_id: str
@@ -78,12 +95,15 @@ class Agent3ValidationResult(BaseModel):
 
 
 class Agent3StoryDashboard(BaseModel):
-    """Même charge utile que le rapport, avec identifiant de story (pas de métadonnées Agent 2)."""
+    """Vue synthétique pour UI (mêmes champs que report, sans renvoyer les tests)."""
 
     story_id: str
     coverage_rate: float = 0.0
     uncovered_testable_points: List[str] = Field(default_factory=list)
     duplicate_pairs: List[DuplicatePairReport] = Field(default_factory=list)
-    ambiguity_findings: List[Dict[str, Any]] = []
+    ambiguity_findings: List[Dict[str, Any]] = Field(default_factory=list)
     validation_status: ValidationStatus = "INVALID"
     correction_instructions: List[CorrectionInstruction] = Field(default_factory=list)
+
+    llm_quality_feedback: Optional[LLMQualityFeedback] = None
+    llm_quality_model_alias: Optional[str] = None

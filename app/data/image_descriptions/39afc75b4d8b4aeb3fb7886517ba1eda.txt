@@ -1,0 +1,25 @@
+[Image jointe : Duplication_News.png]
+Voici la description de l'écran :
+
+1. **CONTEXTE** : Il s'agit d'un formulaire intitulé "Confidentialité" qui semble destiné à configurer les paramètres de confidentialité pour une news ou une actualité.
+
+2. **LIBELLÉS VISIBLES** :
+   - Confidentialité
+   - Société
+   - Etablissement
+   - Acteur autorisé à voir la News *
+
+3. **AGENÇEMENT** : 
+   - Le titre "Confidentialité" est en haut de l'écran.
+   - Trois champs de formulaire sont présents, disposés verticalement :
+     1. Le champ "Société" est en haut.
+     2. Le champ "Etablissement" est au milieu.
+     3. Le champ "Acteur autorisé à voir la News *" est en bas.
+   - Chaque champ a un libellé à gauche et une icône de validation (une coche verte) à droite, à l'exception du dernier champ qui a un astérisque (*) à côté de son libellé.
+
+4. **ÉTATS / INTERACTIONS** :
+   - Les champs "Société" et "Etablissement" ont une coche verte à droite, indiquant qu'ils sont validés ou que les informations sont correctes.
+   - Le champ "Acteur autorisé à voir la News *" est marqué d'un astérisque, indiquant qu'il est obligatoire.
+   - Tous les champs ont une flèche déroulante à droite, suggérant qu'il s'agit de champs de sélection déroulante.
+
+L'image semble être un extrait d'une application web ou d'un logiciel de gestion des ressources humaines (Sopra HR), permettant de configurer la confidentialité d'une news en sélectionnant la société, l'établissement et les acteurs autorisés à la voir.

@@ -1,1 +1,0 @@
-#API pour générer un rapport final :tests générés + résultats d’exécution.

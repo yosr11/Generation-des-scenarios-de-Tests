@@ -4,7 +4,12 @@ from statistics import mean
 from typing import Any
 
 from .judge_prompt import build_judge_system_prompt, build_judge_user_prompt
-from app.services.llm_client import call_groq, call_groq_json_schema
+from app.services.llm_client import (
+    call_groq,
+    call_groq_json_schema,
+    call_github_models,
+    GITHUB_MODELS,
+)
 
 
 def load_json(path: str) -> Any:
@@ -88,8 +93,17 @@ def judge_once(story: dict, analysis: dict, model_alias: str = "qwen3", max_retr
 
     for attempt in range(max_retries):
         try:
-            # GPT OSS 120B -> JSON schema
-            if model_alias == "gptoss120b":
+            # GitHub Models (gpt-4.1, gpt-4o, ...) -> JSON object
+            if model_alias in GITHUB_MODELS:
+                raw_text = call_github_models(
+                    system_prompt=system_prompt,
+                    user_prompt=user_prompt,
+                    model_alias=model_alias,
+                    temperature=0.0,
+                    max_tokens=1000,
+                )
+            # Groq GPT OSS 120B -> JSON schema
+            elif model_alias == "gptoss120b":
                 raw_text = call_groq_json_schema(
                     system_prompt=system_prompt,
                     user_prompt=user_prompt,
@@ -99,7 +113,7 @@ def judge_once(story: dict, analysis: dict, model_alias: str = "qwen3", max_retr
                     max_tokens=1000,
                 )
             else:
-                # Qwen3 ou autre -> JSON object
+                # Qwen3 ou autre Groq -> JSON object
                 raw_text = call_groq(
                     system_prompt=system_prompt,
                     user_prompt=user_prompt,

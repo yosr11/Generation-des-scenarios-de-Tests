@@ -6,6 +6,7 @@ import requests
 import urllib3
 import os
 from dotenv import load_dotenv
+from app.utils.cleaning import flatten_issuelinks
 
 load_dotenv()
 
@@ -202,23 +203,6 @@ def get_stories_by_epic_detailed(epic_key: str) -> list:
     return []
 
 
-def _flatten_issuelinks(raw_links: list) -> list:
-    out = []
-    for link in raw_links:
-        link_type = (link.get("type") or {}).get("name", "")
-        for direction in ("inwardIssue", "outwardIssue"):
-            target = link.get(direction)
-            if target:
-                out.append({
-                    "type": link_type,
-                    "direction": direction.replace("Issue", ""),
-                    "key": target.get("key", ""),
-                    "summary": (target.get("fields") or {}).get("summary", ""),
-                    "status": ((target.get("fields") or {}).get("status") or {}).get("name", ""),
-                })
-    return out
-
-
 def _parse_issues_detailed(issues: list) -> list:
     stories = []
     for issue in issues:
@@ -229,7 +213,7 @@ def _parse_issues_detailed(issues: list) -> list:
             "description":        f.get("description", ""),
             "labels":             f.get("labels", []),
             "components":         [c.get("name") for c in (f.get("components") or [])],
-            "issuelinks":         _flatten_issuelinks(f.get("issuelinks") or []),
+            "issuelinks":         flatten_issuelinks(f.get("issuelinks") or []),
             "priority":           (f.get("priority") or {}).get("name", ""),
             "status":             (f.get("status") or {}).get("name", ""),
             "fixVersions":        [v.get("name") for v in (f.get("fixVersions") or [])],

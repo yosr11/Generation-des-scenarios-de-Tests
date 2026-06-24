@@ -7,7 +7,8 @@ def main():
     parser = argparse.ArgumentParser(description="Évaluation LLM-as-Judge sur fichier JSON (batch)")
     parser.add_argument("--input", required=True, help="Chemin du JSON d'entrée")
     parser.add_argument("--output", required=True, help="Chemin du JSON de sortie")
-    parser.add_argument("--model", default="qwen3", help="Alias du modèle Groq (ex: qwen3, gptoss120b)")
+    parser.add_argument("--model", default="qwen3",
+                        help="Alias du modèle juge (Groq: qwen3, gptoss120b, llama4 | GitHub Models: gpt-4.1, gpt-4.1-mini, gpt-4o)")
     parser.add_argument("--runs", type=int, default=1, help="Nombre de runs par story")
 
     args = parser.parse_args()

@@ -1,0 +1,29 @@
+[Image jointe : image-2025-04-22-16-06-58-568.png]
+1. CONTEXTE : 
+L'écran semble être une barre d'outils ou une toolbar, probablement utilisée pour la mise en forme de texte dans un éditeur de contenu.
+
+2. LIBELLÉS VISIBLES : 
+- Style
+- B
+- I
+- U
+- A
+- A° 
+- ¶ 
+- U 
+- ≡
+- ≡ 
+- 
+- + 
+- ^
+
+3. AGENCEMENT : 
+- Tous les éléments sont alignés horizontalement de gauche à droite.
+- Chaque élément est séparé par un petit espace.
+
+4. ÉTATS / INTERACTIONS : 
+- Tous les éléments semblent être des boutons ou des icônes cliquables.
+- Aucun champ obligatoire n'est visible.
+- Aucune case n'est cochée.
+- Aucun onglet n'est sélectionné de manière visible.
+- Les éléments sont probablement interactifs, mais leur état actif ou inactif n'est pas clairement défini sans plus de contexte.

@@ -18,7 +18,8 @@ Chaque document collecté est retourné sous forme de dict :
 
 import os
 import logging
-from typing import Any, Dict, List, Optional
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from typing import Any, Dict, List, Optional, Tuple
 
 import requests
 import urllib3
@@ -26,6 +27,7 @@ from dotenv import load_dotenv
 
 from app.utils.document_loader import extract_text_from_bytes
 from app.utils.cleaning import clean_text
+from app.services.vision_client import describe_image, ocr_only
 
 load_dotenv()
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -40,6 +42,12 @@ JIRA_EPIC_LINK_FIELD = os.getenv("JIRA_EPIC_LINK_FIELD", "customfield_12402")
 # Taille max d'un fichier à télécharger (10 Mo)
 MAX_FILE_SIZE = 10 * 1024 * 1024
 
+# Workers pour le téléchargement + extraction parallèle des PJ d'un epic.
+# 4 = bon compromis : 4× plus rapide qu'en séquentiel sans saturer la rate-limit Groq vision.
+ATTACHMENT_WORKERS = int(os.getenv("ATTACHMENT_WORKERS", "4"))
+# Limite du nombre d'images traitées par VLM par story (réduit les coûts)
+MAX_VLM_IMAGES_PER_STORY = int(os.getenv("MAX_VLM_IMAGES_PER_STORY", "9999"))
+
 _session = requests.Session()
 _session.auth = (JIRA_USERNAME, JIRA_PASSWORD)
 _session.verify = False
@@ -53,28 +61,51 @@ _session.headers.update({"Accept": "application/json"})
 def collect_documents_for_story(issue_key: str) -> List[Dict[str, Any]]:
     """
     Collecte tous les documents liés à une story Jira.
+    Le VLM (images) n'est appliqué qu'aux PJ de la story elle-même.
     Retourne une liste de dicts {source, origin_key, filename, text}.
     """
     documents: List[Dict[str, Any]] = []
 
-    # 1) PJ de la story elle-même
+    # 1) PJ de la story elle-même — VLM activé seulement sur les N premières images
     story_attachments = _get_attachments(issue_key)
+    vlm_count = 0
     for att in story_attachments:
-        text = _download_and_extract(att)
+        fname = att.get("filename", "") or ""
+        name_lower = fname.lower()
+        is_image = name_lower.endswith((".png", ".jpg", ".jpeg", ".gif", ".bmp", ".webp"))
+
+        text = None
+        if is_image:
+            if vlm_count < MAX_VLM_IMAGES_PER_STORY:
+                text = _download_and_extract(att, vlm_enabled=True)
+                if text:
+                    vlm_count += 1
+            else:
+                # fallback local OCR (no VLM call)
+                try:
+                    resp = _session.get(att.get("content"), timeout=None)
+                    if resp.status_code == 200:
+                        text = ocr_only(resp.content, fname)
+                except Exception:
+                    text = None
+        else:
+            # Non-images : normal extraction (pdf/docx/text)
+            text = _download_and_extract(att, vlm_enabled=False)
+
         if text:
             documents.append({
                 "source": "attachment",
                 "origin_key": issue_key,
-                "filename": att.get("filename", ""),
+                "filename": fname,
                 "text": text,
             })
 
-    # 2) PJ de l'epic parent
+    # 2) PJ de l'epic parent — VLM désactivé (mockups souvent génériques, coût élevé)
     epic_key = _get_epic_key(issue_key)
     if epic_key:
         epic_attachments = _get_attachments(epic_key)
         for att in epic_attachments:
-            text = _download_and_extract(att)
+            text = _download_and_extract(att, vlm_enabled=False)
             if text:
                 documents.append({
                     "source": "epic_attachment",
@@ -83,7 +114,7 @@ def collect_documents_for_story(issue_key: str) -> List[Dict[str, Any]]:
                     "text": text,
                 })
 
-    # 3) Tickets liés : description + PJ
+    # 3) Tickets liés : description + PJ — VLM désactivé
     linked_keys = _get_linked_issue_keys(issue_key)
     for linked_key in linked_keys:
         # Description du ticket lié (nettoyée du wiki markup)
@@ -100,7 +131,7 @@ def collect_documents_for_story(issue_key: str) -> List[Dict[str, Any]]:
         # PJ du ticket lié
         linked_attachments = _get_attachments(linked_key)
         for att in linked_attachments:
-            text = _download_and_extract(att)
+            text = _download_and_extract(att, vlm_enabled=False)
             if text:
                 documents.append({
                     "source": "linked_attachment",
@@ -122,11 +153,19 @@ def collect_documents_for_story(issue_key: str) -> List[Dict[str, Any]]:
     return documents
 
 
-def collect_documents_for_epic(epic_key: str) -> Dict[str, Any]:
+def collect_documents_for_epic(
+    epic_key: str,
+    *,
+    vlm_focus_story: Optional[str] = None,
+) -> Dict[str, Any]:
     """
     Collecte les documents pour TOUTES les stories d'un epic.
     Déduplique : les PJ de l'epic et les PJ/descriptions partagées
     ne sont récupérées qu'une seule fois.
+
+    `vlm_focus_story` : si fourni, le VLM (extraction d'images) n'est appliqué
+    QUE sur les pièces jointes de cette story. Toutes les autres images
+    (epic, autres stories, tickets liés) sont ignorées pour limiter le coût.
 
     Retourne :
       {
@@ -149,11 +188,11 @@ def collect_documents_for_epic(epic_key: str) -> Dict[str, Any]:
             "epic_documents": [],
         }
 
-    # 1) PJ de l'epic lui-même (une seule fois)
+    # 1) PJ de l'epic lui-même (une seule fois) — VLM désactivé
     epic_documents: List[Dict[str, Any]] = []
     epic_attachments = _get_attachments(epic_key)
     for att in epic_attachments:
-        text = _download_and_extract(att)
+        text = _download_and_extract(att, vlm_enabled=False)
         if text:
             epic_documents.append({
                 "source": "epic_attachment",
@@ -170,15 +209,35 @@ def collect_documents_for_epic(epic_key: str) -> Dict[str, Any]:
     for story in stories:
         story_key = story.get("id", "")
         story_docs: List[Dict[str, Any]] = []
+        is_focus = (vlm_focus_story is not None and story_key == vlm_focus_story)
 
-        # PJ de la story
+        # PJ de la story — VLM activé uniquement si c'est la story en focus,
+        # et limité à MAX_VLM_IMAGES_PER_STORY par story. Sinon on tente l'OCR local.
         story_attachments = _get_attachments(story_key)
+        vlm_count = 0
         for att in story_attachments:
-            fname = att.get("filename", "")
+            fname = att.get("filename", "") or ""
             dedup_key = f"{story_key}_{fname}"
             if dedup_key not in seen_filenames:
                 seen_filenames.add(dedup_key)
-                text = _download_and_extract(att)
+                name_lower = fname.lower()
+                is_image = name_lower.endswith((".png", ".jpg", ".jpeg", ".gif", ".bmp", ".webp"))
+
+                text = None
+                if is_image and is_focus and vlm_count < MAX_VLM_IMAGES_PER_STORY:
+                    text = _download_and_extract(att, vlm_enabled=True)
+                    if text:
+                        vlm_count += 1
+                elif is_image:
+                    try:
+                        resp = _session.get(att.get("content"), timeout=None)
+                        if resp.status_code == 200:
+                            text = ocr_only(resp.content, fname)
+                    except Exception:
+                        text = None
+                else:
+                    text = _download_and_extract(att, vlm_enabled=False)
+
                 if text:
                     story_docs.append({
                         "source": "attachment",
@@ -187,7 +246,7 @@ def collect_documents_for_epic(epic_key: str) -> Dict[str, Any]:
                         "text": text,
                     })
 
-        # Tickets liés (description + PJ), dédupliqués globalement
+        # Tickets liés (description + PJ), dédupliqués globalement — VLM désactivé
         linked_keys = _get_linked_issue_keys(story_key)
         for linked_key in linked_keys:
             if linked_key in seen_linked_keys:
@@ -210,7 +269,7 @@ def collect_documents_for_epic(epic_key: str) -> Dict[str, Any]:
                 dedup_key = f"{linked_key}_{fname}"
                 if dedup_key not in seen_filenames:
                     seen_filenames.add(dedup_key)
-                    text = _download_and_extract(att)
+                    text = _download_and_extract(att, vlm_enabled=False)
                     if text:
                         story_docs.append({
                             "source": "linked_attachment",
@@ -228,12 +287,13 @@ def collect_documents_for_epic(epic_key: str) -> Dict[str, Any]:
 
     logger.info(
         "Collecte epic %s : %d stories, %d documents total "
-        "(epic: %d, stories: %d)",
+        "(epic: %d, stories: %d, vlm_focus=%s)",
         epic_key,
         len(stories),
         total_docs,
         len(epic_documents),
         total_docs - len(epic_documents),
+        vlm_focus_story or "aucune",
     )
 
     return {
@@ -263,8 +323,17 @@ def _get_attachments(issue_key: str) -> List[Dict[str, Any]]:
         return []
 
 
-def _download_and_extract(attachment: Dict[str, Any]) -> Optional[str]:
-    """Télécharge une PJ et extrait le texte."""
+def _download_and_extract(
+    attachment: Dict[str, Any],
+    *,
+    vlm_enabled: bool = False,
+) -> Optional[str]:
+    """Télécharge une PJ et extrait le texte.
+
+    Les images bitmap ne sont envoyées au VLM Groq que si `vlm_enabled=True`.
+    Par défaut on les ignore pour limiter le coût/latence : on n'active le VLM
+    que sur les PJ de la story actuellement analysée.
+    """
     content_url = attachment.get("content")
     filename = attachment.get("filename", "")
     size = attachment.get("size", 0)
@@ -272,22 +341,33 @@ def _download_and_extract(attachment: Dict[str, Any]) -> Optional[str]:
     if not content_url:
         return None
 
-    # Skip les fichiers trop gros ou les images
     if size > MAX_FILE_SIZE:
         logger.info("Skip %s (trop volumineux : %d octets)", filename, size)
         return None
 
-    if filename.lower().endswith((".png", ".jpg", ".jpeg", ".gif", ".bmp", ".svg", ".ico")):
+    name_lower = filename.lower()
+    # Formats vectoriels / icônes non gérés par le VLM (et peu utiles pour la spec)
+    if name_lower.endswith((".svg", ".ico")):
+        return None
+
+    is_image = name_lower.endswith((".png", ".jpg", ".jpeg", ".gif", ".bmp", ".webp"))
+    if is_image and not vlm_enabled:
+        logger.debug("Skip image %s (VLM désactivé pour cette source)", filename)
         return None
 
     try:
         resp = _session.get(content_url, timeout=None)
         if resp.status_code != 200:
             return None
-        return extract_text_from_bytes(resp.content, filename)
     except requests.RequestException as e:
         logger.warning("Erreur téléchargement %s : %s", filename, e)
         return None
+
+    if is_image:
+        return describe_image(resp.content, filename)
+
+    # PDF / DOCX / texte brut
+    return extract_text_from_bytes(resp.content, filename)
 
 
 def _get_epic_key(issue_key: str) -> Optional[str]:

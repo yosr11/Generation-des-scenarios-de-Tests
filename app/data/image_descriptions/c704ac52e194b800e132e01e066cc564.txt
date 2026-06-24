@@ -1,0 +1,48 @@
+[Image jointe : 2026-05-19_09h21_50.gif]
+Voici la description de l'écran :
+
+1. CONTEXTE : Il s'agit d'un formulaire de création de news, probablement dans un contexte d'administration ou de gestion de contenu.
+
+2. LIBELLÉS VISIBLES :
+   - Rechercher dans le titre, le corps ou le résumé de la news
+   - TOUTES
+   - ANNONCES
+   - ACTUALITÉS
+   - En cours de publication (deux occurrences)
+   - Éléments par page
+   - Je crée une News
+   - Les champs indiqués par une * sont obligatoires.
+   - Type de News *
+   - Annonces
+   - Publication
+   - Confidentialité
+   - Société
+   - Établissement *
+   - ETABST18
+   - Acteur autorisé à voir la News *
+   - Valide
+   - Date de début de publication *
+   - 19/05/2026
+   - Date de fin de publication *
+
+3. AGENCEMENT :
+   - En haut, il y a un champ de recherche.
+   - En dessous, des onglets ou des boutons avec les libellés TOUTES, ANNONCES, et ACTUALITÉS sont affichés, avec des nombres à côté (9 pour TOUTES et ANNONCES, 0 pour ACTUALITÉS) et des indications de publication en cours.
+   - Un système de pagination ou de navigation est visible avec des flèches et le texte "Éléments par page" suivi d'un menu déroulant avec l'option "5".
+   - Un bandeau avec le texte "Je crée une News" est affiché.
+   - La partie principale contient un formulaire avec plusieurs champs :
+     - Type de News * (avec une liste déroulante montrant "Annonces")
+     - Publication (avec un checkbox "Valide")
+     - Date de début de publication * (avec une date pré-remplie "19/05/2026")
+     - Date de fin de publication * (vide)
+     - Confidentialité (avec un champ texte pour "Société")
+     - Établissement * (avec le texte "ETABST18")
+     - Acteur autorisé à voir la News * (vide)
+
+4. ÉTATS / INTERACTIONS :
+   - Le champ "Type de News" a une liste déroulante avec "Annonces" sélectionné.
+   - Le champ "Date de début de publication" a une date pré-remplie.
+   - Le champ "Établissement" a le texte "ETABST18" qui pourrait être un champ de sélection ou de texte.
+   - Il y a des étoiles (*) à côté des champs obligatoires.
+   - Le checkbox "Valide" sous "Publication" est coché.
+   - Les champs ont des bordures et des coches vertes à côté d'eux, indiquant qu'ils ont été validés ou sont en cours de validation.

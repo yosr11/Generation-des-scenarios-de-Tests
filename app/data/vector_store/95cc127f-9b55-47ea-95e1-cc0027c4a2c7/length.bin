@@ -1,0 +1,2 @@
+invalid type: string "les travaux de prise en compte afin de permettre par la suite la planification des modifications par rapport aux autres éléments touchant la plateforme (angularisation, RGAA, ...).", expected i64 document
+Ce mécanisme devrait être généralisé pour les textes de mails à minima, et tout texte que le client peut adapter (comme les catégories/sous-catégories du CSP, par 

@@ -1,6 +1,6 @@
 """
-Agent 3 — validateur pur : couverture sémantique, doublons (rapport), ambiguïtés (constats), instructions.
-Les tests en entrée sont renvoyés inchangés. Aucun LLM, aucun Agent 2, aucune boucle de régénération.
+Agent 3 — validateur pur : couverture sémantique, doublons (rapport), ambiguïtés (regex + LLM), instructions.
+Les tests en entrée sont renvoyés inchangés. Aucune boucle de régénération.
 """
 
 from __future__ import annotations
@@ -11,6 +11,7 @@ from app.models.agent3_validation import Agent3ValidationReport, Agent3Validatio
 from app.models.test_manual import ManualTestCase
 from app.services.agent3_coverage_service import analyze_coverage
 from app.services.agent3_prescriptive_service import build_validation_envelope
+from app.services.agent3_quality_llm_service import llm_quality_feedback
 
 
 def validate_and_improve_tests(
@@ -18,11 +19,16 @@ def validate_and_improve_tests(
     testable_points: List[str],
     tests: List[ManualTestCase],
     *,
+    story_summary: str = "",
     coverage_threshold: float = 0.70,
-    coverage_similarity_threshold: float = 0.52,
-    duplicate_similarity_threshold: float = 0.88,
+    coverage_similarity_threshold: float = 0.7,
+    duplicate_similarity_threshold: float = 0.8,
     embedding_model: str = "paraphrase-multilingual-MiniLM-L12-v2",
+    run_llm_quality_feedback: bool = False,
+    quality_model_alias: str = "llama4",
+    run_llm_ambiguity_detection: bool = True,
 ) -> Agent3ValidationResult:
+
     cov = analyze_coverage(testable_points, tests, coverage_similarity_threshold, embedding_model)
 
     env = build_validation_envelope(
@@ -33,6 +39,62 @@ def validate_and_improve_tests(
         coverage_threshold,
     )
 
+    # Enrichir les ambiguïtés avec la détection sémantique LLM
+    if run_llm_ambiguity_detection and tests:
+        from app.services.agent3_ambiguity_service import detect_ambiguous_steps_with_llm
+        llm_ambiguities = detect_ambiguous_steps_with_llm(tests, model_alias=quality_model_alias)
+        if llm_ambiguities:
+            # Fusionner sans doublons (même test + même step_index + même field)
+            existing_keys = {
+                (a.get("test_name", ""), a.get("step_index", 0), a.get("field", ""))
+                for a in env["ambiguity_findings"]
+            }
+            for llm_a in llm_ambiguities:
+                key = (llm_a.test_name, llm_a.step_index, llm_a.field)
+                if key not in existing_keys:
+                    env["ambiguity_findings"].append({
+                        "test_name": llm_a.test_name,
+                        "step_index": llm_a.step_index,
+                        "field": llm_a.field,
+                        "reason": llm_a.reason,
+                        "original_text": llm_a.original_text or "",
+                        "source": "llm",
+                    })
+            # Recalculer le statut avec les nouvelles ambiguïtés
+            from app.services.agent3_prescriptive_service import compute_validation_status
+            env["validation_status"] = compute_validation_status(
+                float(cov.coverage_rate),
+                coverage_threshold,
+                len(env["duplicate_pairs"]),
+                len(env["ambiguity_findings"]),
+            )
+
+    # Prepare optional LLM qualitative feedback
+    quality_payload = None
+    if run_llm_quality_feedback:
+        # story_summary is already passed as a parameter — use it directly
+        metrics = {
+            "coverage_rate": float(round(cov.coverage_rate, 4)),
+            "covered_count": int(cov.covered_count),
+            "total_points": int(cov.total_points),
+            "uncovered_points": list(cov.uncovered_points),
+            "duplicate_pairs_count": len(env["duplicate_pairs"]),
+            "ambiguity_count": len(env["ambiguity_findings"]),
+            "validation_status": env["validation_status"],
+            "coverage_similarity_threshold": coverage_similarity_threshold,
+            "coverage_threshold": coverage_threshold,
+            "duplicate_similarity_threshold": duplicate_similarity_threshold,
+        }
+        tests_raw = [t.model_dump() for t in tests]
+        quality_payload = llm_quality_feedback(
+            story_id=story_id,
+            story_summary=story_summary,
+            testable_points=testable_points,
+            tests=tests_raw,
+            metrics=metrics,
+            model_alias=quality_model_alias,
+        )
+
     report = Agent3ValidationReport(
         coverage_rate=round(cov.coverage_rate, 4),
         uncovered_testable_points=list(cov.uncovered_points),
@@ -40,6 +102,8 @@ def validate_and_improve_tests(
         ambiguity_findings=env["ambiguity_findings"],
         validation_status=env["validation_status"],
         correction_instructions=env["correction_instructions"],
+        llm_quality_feedback=quality_payload,
+        llm_quality_model_alias=quality_model_alias if quality_payload else None,
     )
 
     sid = story_id or (tests[0].story_id if tests else "")

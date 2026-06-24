@@ -186,13 +186,20 @@ def retrieve_context(
     epic_key: str,
     query_text: str,
     top_k: int = TOP_K,
+    pin_origin_keys: Optional[List[str]] = None,
+    exclude_origin_keys: Optional[List[str]] = None,
 ) -> List[Dict[str, Any]]:
     """
-    Recherche les `top_k` chunks les plus pertinents pour
-    le texte donné (summary + description d'une story).
+    Recherche les `top_k` chunks les plus pertinents pour le texte donné.
 
-    Retourne une liste de dicts :
-      {text, source, origin_key, filename, score}
+    `pin_origin_keys` : tous les chunks dont l'origin_key est dans cette liste
+        sont AJOUTÉS en tête du contexte (dédupliqués avec le top-K sémantique).
+
+    `exclude_origin_keys` : tous les chunks dont l'origin_key est dans cette
+        liste sont EXCLUS du top-K sémantique (cas d'usage : les PJ de la story
+        analysée sont injectées en direct comme spec, pas comme inspiration RAG).
+
+    Retourne : liste de dicts {text, source, origin_key, filename, distance, pinned}
     """
     client = _get_chroma_client()
     model = _get_model()
@@ -208,11 +215,41 @@ def retrieve_context(
     if collection.count() == 0:
         return []
 
-    # Limiter top_k au nombre de chunks disponibles
-    actual_k = min(top_k, collection.count())
+    pinned_chunks: List[Dict[str, Any]] = []
+    pinned_ids: set = set()
 
+    # ── 1) Pinned : récupérer TOUS les chunks dont origin_key ∈ pin_origin_keys
+    if pin_origin_keys:
+        try:
+            pinned_res = collection.get(
+                where={"origin_key": {"$in": list(pin_origin_keys)}},
+                include=["documents", "metadatas"],
+            )
+            if pinned_res and pinned_res.get("documents"):
+                for doc_id, doc, meta in zip(
+                    pinned_res.get("ids", []),
+                    pinned_res["documents"],
+                    pinned_res.get("metadatas") or [{}] * len(pinned_res["documents"]),
+                ):
+                    pinned_ids.add(doc_id)
+                    pinned_chunks.append({
+                        "text": doc,
+                        "source": meta.get("source", ""),
+                        "origin_key": meta.get("origin_key", ""),
+                        "filename": meta.get("filename", ""),
+                        "distance": 0.0,
+                        "pinned": True,
+                    })
+        except Exception as e:
+            logger.warning("Pin chunks lookup failed for %s: %s", collection_name, e)
+
+    # ── 2) Top-K sémantique (dédupliqué des pinned et exclu)
+    actual_k = min(top_k, collection.count())
     query_embedding = model.encode([query_text], show_progress_bar=False).tolist()
 
+    excluded_set = set(exclude_origin_keys or [])
+
+    semantic_chunks: List[Dict[str, Any]] = []
     try:
         results = collection.query(
             query_embeddings=query_embedding,
@@ -227,25 +264,30 @@ def retrieve_context(
             logger.info("Collection %s supprimée, elle sera réindexée au prochain appel.", collection_name)
         except Exception:
             pass
-        return []
+        # On garde au moins les pinned si on en avait
+        return pinned_chunks
 
-    # Restructurer le résultat
-    context_chunks = []
     if results and results.get("documents"):
         docs = results["documents"][0]
         metas = results["metadatas"][0] if results.get("metadatas") else [{}] * len(docs)
         distances = results["distances"][0] if results.get("distances") else [0.0] * len(docs)
+        ids = results.get("ids", [[]])[0] if results.get("ids") else [None] * len(docs)
 
-        for doc, meta, dist in zip(docs, metas, distances):
-            context_chunks.append({
+        for doc_id, doc, meta, dist in zip(ids, docs, metas, distances):
+            if doc_id and doc_id in pinned_ids:
+                continue  # déjà dans pinned
+            if meta.get("origin_key", "") in excluded_set:
+                continue  # PJ de la story analysée → injectée en direct, pas via RAG
+            semantic_chunks.append({
                 "text": doc,
                 "source": meta.get("source", ""),
                 "origin_key": meta.get("origin_key", ""),
                 "filename": meta.get("filename", ""),
                 "distance": round(dist, 4),
+                "pinned": False,
             })
 
-    return context_chunks
+    return pinned_chunks + semantic_chunks
 
 
 # ══════════════════════════════════════════════════════════════

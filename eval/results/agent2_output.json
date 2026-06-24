@@ -1,0 +1,461 @@
+{
+  "name": "agent2_output",
+  "description": "Resultats des scenarios de test generes par l'Agent 2 (manual_test_generator). Meme structure que eval/golden_dataset_agent2.json pour comparaison directe.",
+  "version": "1.0",
+  "stories": [
+    {
+      "story_id": "NUXEPM-2289",
+      "story_title": "Ma demande d'acompte - Démarche 'Ma demande d'acompte ou d'avance'",
+      "test_scenarios": [
+        {
+          "id": "NUXEPM-2289-NOM-001",
+          "title": "NUXEPM-2289-NOM-001 Accès à la démarche 'Ma demande d'acompte ou d'avance'",
+          "preconditions": [],
+          "steps": [
+            "Accéder"
+          ],
+          "expected_results": [
+            "La page de la démarche 'Ma demande d'acompte ou d'avance' est affichée",
+            "Accéder à la démarche 'Ma demande d'acompte ou d'avance'"
+          ]
+        },
+        {
+          "id": "NUXEPM-2289-NOM-002",
+          "title": "NUXEPM-2289-NOM-002 de la suppression de la notion d'avance",
+          "preconditions": [
+            "Accéder à la démarche 'Ma demande d'acompte ou d'avance'"
+          ],
+          "steps": [
+            "Valider"
+          ],
+          "expected_results": [
+            "La notion d'avance est visible",
+            "Valider que la notion d'avance n'apparait plus"
+          ]
+        },
+        {
+          "id": "NUXEPM-2289-NOM-003",
+          "title": "NUXEPM-2289-NOM-003 de la suppression de la saisie du mode de paiement",
+          "preconditions": [
+            "Accéder à la démarche 'Ma demande d'acompte ou d'avance'"
+          ],
+          "steps": [
+            "Valider"
+          ],
+          "expected_results": [
+            "Le champ de saisie du mode de paiement est visible",
+            "Valider que la saisie du mode de paiement est supprimée"
+          ]
+        },
+        {
+          "id": "NUXEPM-2289-NOM-004",
+          "title": "NUXEPM-2289-NOM-004 Configuration du mois de prise d'acompte",
+          "preconditions": [
+            "Accéder à la démarche 'Ma demande d'acompte ou d'avance'"
+          ],
+          "steps": [
+            "Configurer"
+          ],
+          "expected_results": [
+            "Le mois de prise d'acompte est configurable",
+            "Valider que le mois de prise d'acompte est configurable"
+          ]
+        },
+        {
+          "id": "NUXEPM-2289-NOM-005",
+          "title": "NUXEPM-2289-NOM-005 du calcul du montant maximum",
+          "preconditions": [
+            "Accéder à la démarche 'Ma demande d'acompte ou d'avance'"
+          ],
+          "steps": [
+            "Valider"
+          ],
+          "expected_results": [
+            "Le montant maximum est calculé à partir du legacy HRa",
+            "Valider que le montant maximum est calculé à partir du legacy HRa"
+          ]
+        }
+      ]
+    },
+    {
+      "story_id": "NUXEPM-1843",
+      "story_title": "",
+      "test_scenarios": [
+        {
+          "id": "NUXEPM-1843-NOM-001",
+          "title": "NUXEPM-1843-NOM-001 Acceder à l'Espace Gestionnaire",
+          "preconditions": [
+            "Utilisateur non collaborateur (hired) avec rôle RRH de proximité",
+            "Compte 4YOU valide"
+          ],
+          "steps": [
+            "Se connecter à 4YOU",
+            "Accéder à l'Espace Gestionnaire"
+          ],
+          "expected_results": [
+            "L'utilisateur est connecté à 4YOU",
+            "L'utilisateur a accès à l'Espace Gestionnaire",
+            "Accéder à l'Espace Gestionnaire"
+          ]
+        },
+        {
+          "id": "NUXEPM-1843-NOM-002",
+          "title": "NUXEPM-1843-NOM-002 Acceder au menu burger",
+          "preconditions": [
+            "Utilisateur non collaborateur (hired) avec rôle RRH de proximité",
+            "Compte 4YOU valide",
+            "Accès à l'Espace Gestionnaire"
+          ],
+          "steps": [
+            "Accéder au menu burger"
+          ],
+          "expected_results": [
+            "Le menu burger est affiché avec les options : Accueil, Mes collaborateurs, Processus RH, Dossier numérique, Mes préférences, Accessibilité, A propos, Déconnexion",
+            "Accéder au menu burger avec les options attendues"
+          ]
+        },
+        {
+          "id": "NUXEPM-1843-NOM-003",
+          "title": "NUXEPM-1843-NOM-003 Acceder à la démarche Poser une question RH",
+          "preconditions": [
+            "Utilisateur non collaborateur (hired) avec rôle RRH de proximité",
+            "Compte 4YOU valide",
+            "Accès à l'Espace Gestionnaire"
+          ],
+          "steps": [
+            "Accéder à la démarche Poser une question RH depuis le ? du bandeau"
+          ],
+          "expected_results": [
+            "L'utilisateur a accès à la démarche Poser une question RH",
+            "Accéder à la démarche Poser une question RH depuis le ? du bandeau"
+          ]
+        },
+        {
+          "id": "NUXEPM-1843-NOM-004",
+          "title": "NUXEPM-1843-NOM-004 la connexion de l'utilisateur non collaborateur",
+          "preconditions": [
+            "Utilisateur non collaborateur (hired) avec rôle RRH de proximité",
+            "Compte 4YOU valide"
+          ],
+          "steps": [
+            "Se connecter à 4YOU"
+          ],
+          "expected_results": [
+            "L'utilisateur est connecté à 4YOU sans erreur",
+            "Valider que l'utilisateur non collaborateur (hired) peut se connecter à 4YOU"
+          ]
+        }
+      ]
+    },
+    {
+      "story_id": "NUXEPM-2450",
+      "story_title": "",
+      "test_scenarios": [
+        {
+          "id": "NUXEPM-2450-NOM-001",
+          "title": "NUXEPM-2450-NOM-001 Accès à Mes questions RH depuis la page d'accueil Collaborateur-Manager",
+          "preconditions": [
+            "Être connecté en tant que Collaborateur-Manager",
+            "Être sur la page d'accueil de 4YOU"
+          ],
+          "steps": [
+            "Naviguer vers la page d'accueil Collaborateur-Manager",
+            "Rechercher le bouton '?' du bandeau",
+            "Rechercher l'accès à Mes questions RH dans le menu Burger",
+            "Rechercher l'accès à Mes questions RH dans la liste des démarches"
+          ],
+          "expected_results": [
+            "La page d'accueil de 4YOU est affichée",
+            "Le bouton '?' du bandeau est visible",
+            "L'accès à Mes questions RH est supprimé du menu Burger",
+            "L'accès à Mes questions RH est supprimé de la liste des démarches",
+            "Valider que les collaborateurs-managers ne peuvent plus accéder à Mes questions RH depuis la page d'accueil de 4YOU"
+          ]
+        },
+        {
+          "id": "NUXEPM-2450-ALT-001",
+          "title": "NUXEPM-2450-ALT-001 Navigation vers Neocase depuis 4YOU",
+          "preconditions": [
+            "Être connecté en tant que Collaborateur-Manager",
+            "Être sur la page d'accueil de 4YOU"
+          ],
+          "steps": [
+            "Naviguer vers Neocase depuis la page d'accueil de 4YOU"
+          ],
+          "expected_results": [
+            "La page d'accueil de Neocase est affichée",
+            "Valider que les collaborateurs-managers peuvent naviguer vers Neocase depuis la page d'accueil de 4YOU"
+          ]
+        },
+        {
+          "id": "NUXEPM-2450-NOM-002",
+          "title": "NUXEPM-2450-NOM-002 du bandeau",
+          "preconditions": [
+            "Être sur la page d'accueil de 4YOU en tant que Collaborateur-Manager"
+          ],
+          "steps": [
+            "Consulter le bandeau"
+          ],
+          "expected_results": [
+            "Le bouton '?' est visible",
+            "Valider que le bouton '?' du bandeau n'est plus visible"
+          ]
+        },
+        {
+          "id": "NUXEPM-2450-NOM-003",
+          "title": "NUXEPM-2450-NOM-003 du menu Burger",
+          "preconditions": [
+            "Être sur la page Mes démarches en tant que Collaborateur-Manager"
+          ],
+          "steps": [
+            "Ouvrir le menu Burger"
+          ],
+          "expected_results": [
+            "Mes questions RH est visible dans le menu",
+            "Valider que l'accès à Mes questions RH est supprimé du menu Burger"
+          ]
+        }
+      ]
+    },
+    {
+      "story_id": "NUXEPM-1884",
+      "story_title": "News - Prévisualisation du document de l'actualité",
+      "test_scenarios": [
+        {
+          "id": "NUXEPM-1884-NOM-001",
+          "title": "NUXEPM-1884-NOM-001 Prévisualisation du document d'actualité",
+          "preconditions": [
+            "L'utilisateur est connecté en tant que LECTEUR des News",
+            "La popup de consultation de l'actualité est fermée"
+          ],
+          "steps": [
+            "Cliquer sur une actualité dans le carrousel",
+            "Consulter le document dans la popup"
+          ],
+          "expected_results": [
+            "La popup de consultation de l'actualité s'ouvre",
+            "Le document s'affiche dans la popup",
+            "Prévisualiser le document d'une actualité dans la popup"
+          ]
+        },
+        {
+          "id": "NUXEPM-1884-NOM-002",
+          "title": "NUXEPM-1884-NOM-002 Ouverture du document via un lien",
+          "preconditions": [
+            "L'utilisateur est connecté en tant que LECTEUR des News",
+            "La popup de consultation de l'actualité est ouverte"
+          ],
+          "steps": [
+            "Cliquer sur le lien pour ouvrir le document dans une nouvelle fenêtre ou onglet"
+          ],
+          "expected_results": [
+            "Le document s'ouvre dans une nouvelle fenêtre ou onglet",
+            "Ouvrir le document via un lien qui s'ouvre dans une nouvelle fenêtre ou onglet"
+          ]
+        },
+        {
+          "id": "NUXEPM-1884-NOM-003",
+          "title": "NUXEPM-1884-NOM-003 Consultation du document dans le lecteur PDF/image",
+          "preconditions": [
+            "L'utilisateur est connecté en tant que LECTEUR des News",
+            "La popup de consultation de l'actualité est ouverte"
+          ],
+          "steps": [
+            "Choisir de consulter le document dans le lecteur PDF/image"
+          ],
+          "expected_results": [
+            "Le document s'affiche dans le lecteur PDF/image",
+            "Consulter le document dans le lecteur PDF/image qui s'ouvre dans la popin de consultation de l'actualité"
+          ]
+        },
+        {
+          "id": "NUXEPM-1884-EXC-001",
+          "title": "NUXEPM-1884-EXC-001 de l'accessibilité des PDF",
+          "preconditions": [
+            "L'utilisateur est connecté en tant que LECTEUR des News",
+            "Un document PDF est joint à l'actualité"
+          ],
+          "steps": [
+            "Consulter le document PDF"
+          ],
+          "expected_results": [
+            "Le document PDF est accessible et conforme aux critères d'accessibilité numérique",
+            "Valider que les PDF sont accessibles et conformes aux critères d'accessibilité numérique"
+          ]
+        },
+        {
+          "id": "NUXEPM-1884-EXC-002",
+          "title": "NUXEPM-1884-EXC-002 de la zone Commentaire pour les images",
+          "preconditions": [
+            "L'utilisateur est connecté en tant que LECTEUR des News",
+            "Un document image est joint à l'actualité"
+          ],
+          "steps": [
+            "Consulter le document image"
+          ],
+          "expected_results": [
+            "La zone Commentaire est présente pour saisir l'alternative contextuelle",
+            "Valider que la zone Commentaire est présente pour les images porteuses d'information"
+          ]
+        }
+      ]
+    },
+    {
+      "story_id": "NUXEPM-2419",
+      "story_title": "Limitation de la population gestionnaire sur une autre information que ZY00",
+      "test_scenarios": [
+        {
+          "id": "NUXEPM-2419-NOM-001",
+          "title": "NUXEPM-2419-NOM-001 Limitation de la population gestionnaire",
+          "preconditions": [
+            "le composant com.soprahr.foryou.hub.hra.tspopulation.hra est configuré avec l'information spécifique créée côté HRa"
+          ],
+          "steps": [
+            "Se connecter à l'application 4You",
+            "Accéder à la liste d'activité",
+            "Valider la population des utilisateurs"
+          ],
+          "expected_results": [
+            "L'utilisateur est connecté",
+            "La liste d'activité est affichée",
+            "La population des utilisateurs est limitée en fonction des critères définis et validés avec chaque client",
+            "Valider que la population des utilisateurs est correctement limitée en fonction de critères définis et validés avec chaque client"
+          ]
+        },
+        {
+          "id": "NUXEPM-2419-NOM-002",
+          "title": "NUXEPM-2419-NOM-002 Modification du composant com.soprahr.foryou.hub.hra.tspopulation.hra",
+          "preconditions": [
+            "le code source du composant com.soprahr.foryou.hub.hra.tspopulation.hra est disponible"
+          ],
+          "steps": [
+            "Accéder au code source du composant com.soprahr.foryou.hub.hra.tspopulation.hra",
+            "Valider les modifications apportées au composant"
+          ],
+          "expected_results": [
+            "Le code source est accessible",
+            "Les modifications sont présentes et correctes",
+            "Valider que le composant com.soprahr.foryou.hub.hra.tspopulation.hra est modifié correctement"
+          ]
+        },
+        {
+          "id": "NUXEPM-2419-NOM-003",
+          "title": "NUXEPM-2419-NOM-003 Remplacement des occurrences de ZY00",
+          "preconditions": [
+            "le code source du composant com.soprahr.foryou.hub.hra.tspopulation.hra est disponible"
+          ],
+          "steps": [
+            "Rechercher les occurrences de ZY00 dans le code source",
+            "Valider que le code de l'information spécifique est utilisé"
+          ],
+          "expected_results": [
+            "Aucune occurrence de ZY00 n'est trouvée",
+            "Le code de l'information spécifique est utilisé à la place de ZY00",
+            "Valider que les occurrences de ZY00 sont remplacées par le code de l'information spécifique créée côté HRa"
+          ]
+        },
+        {
+          "id": "NUXEPM-2419-NOM-004",
+          "title": "NUXEPM-2419-NOM-004 Ajout d'un paramètre dans le fichier de configuration",
+          "preconditions": [
+            "le fichier de configuration est disponible"
+          ],
+          "steps": [
+            "Accéder au fichier de configuration",
+            "Valider que le paramètre est présent et configuré correctement"
+          ],
+          "expected_results": [
+            "Le fichier de configuration est accessible",
+            "Le paramètre est présent et configuré",
+            "Valider que le paramètre ajouté dans le fichier de configuration est pris en compte"
+          ]
+        },
+        {
+          "id": "NUXEPM-2419-EXC-001",
+          "title": "NUXEPM-2419-EXC-001 Erreur lors de la limitation de la population gestionnaire",
+          "preconditions": [
+            "La population des utilisateurs est configurée pour être limitée en fonction de critères définis et validés avec chaque client"
+          ],
+          "steps": [
+            "Configurer les critères de limitation de la population gestionnaire",
+            "Simuler une erreur lors de la limitation de la population gestionnaire"
+          ],
+          "expected_results": [
+            "Le système permet de configurer les critères de limitation de la population gestionnaire",
+            "Le système affiche un message d'erreur approprié",
+            "Valider que le système gère correctement les erreurs lors de la limitation de la population gestionnaire"
+          ]
+        }
+      ]
+    },
+    {
+      "story_id": "NUXEPM-2284",
+      "story_title": "PPBACKLOG-7652 - Enveloppe Macro - Affichage du temps de travail",
+      "test_scenarios": [
+        {
+          "id": "NUXEPM-2284-NOM-001",
+          "title": "NUXEPM-2284-NOM-001 Afficher temps de travail contractuel en heures hebdomadaires",
+          "preconditions": [
+            "ZYTL NBSTHW est configuré"
+          ],
+          "steps": [
+            "Se connecter",
+            "Accéder au profil collaborateur",
+            "Afficher le temps de travail contractuel"
+          ],
+          "expected_results": [
+            "Le collaborateur est connecté",
+            "Le profil collaborateur est affiché",
+            "Le temps de travail contractuel est affiché en heures hebdomadaires",
+            "Afficher le temps de travail contractuel en heures hebdomadaires"
+          ]
+        },
+        {
+          "id": "NUXEPM-2284-EXC-001",
+          "title": "NUXEPM-2284-EXC-001 Gérer le cas où ZYTL FORANU est différent de 0",
+          "preconditions": [
+            "ZYTL FORANU est différent de 0"
+          ],
+          "steps": [
+            "Se connecter",
+            "Accéder au profil collaborateur",
+            "Afficher le temps de travail contractuel"
+          ],
+          "expected_results": [
+            "Le collaborateur est connecté",
+            "Le profil collaborateur est affiché",
+            "Le temps de travail contractuel est affiché en forfait annuel en jours",
+            "Gérer le cas où ZYTL FORANU est différent de 0"
+          ]
+        },
+        {
+          "id": "NUXEPM-2284-EXC-002",
+          "title": "NUXEPM-2284-EXC-002 Gérer le cas où les zones de forfait sont non renseignées",
+          "preconditions": [
+            "ZYTL FORANU et ZYTL FORANH sont vides"
+          ],
+          "steps": [
+            "Se connecter",
+            "Consulter le profil"
+          ],
+          "expected_results": [
+            "La page de profil est affichée",
+            "Le système propose de choisir entre jour, hebdo ou mensuel",
+            "Gérer le cas où les zones de forfait sont non renseignées"
+          ]
+        }
+      ]
+    },
+    {
+      "story_id": "NUXEPM-2370",
+      "story_title": "Modularisation des démarches GTA avec Multi Contrat - FIXING",
+      "status": "skipped",
+      "story_type": "technical",
+      "duration_ms": 2655,
+      "errors": [
+        "Cette story est de type 'technical' et sort du périmètre du pipeline. Seules les User Stories fonctionnelles (forme 'En tant que… je veux…') sont traitées. Recommandation : pour une story technique, prévoir des tests d'intégration / unitaires côté développement."
+      ],
+      "test_scenarios": []
+    }
+  ]
+}

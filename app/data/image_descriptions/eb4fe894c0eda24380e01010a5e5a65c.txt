@@ -1,0 +1,29 @@
+[Image jointe : TextePopin.png]
+Voici une description détaillée du contenu de l'image :
+
+1. **CONTEXTE** : Il s'agit d'une page web ou d'un popup affichant des informations sur les vacances de Noël, avec un visuel associé et un lien vers un document PDF.
+
+2. **LIBELLÉS VISIBLES** :
+   - Vacances de NOËL
+   - Publié le 08/10/2025
+   - e-billet UGC 28 septembre 2025.pdf
+   - Fermer
+   - Voir le document
+   - Télécharger le document
+   - Le texte complet contenu dans la boîte de texte :
+     "Les vacances scolaires commencent généralement le vendredi soir ou le samedi matin après les cours et se terminent deux semaines plus tard le lundi matin à la reprise des cours. Elles comportent : - Les vacances de la Toussaint (ou d'automne) : en 2012, revenues à deux semaines, les vacances de Toussaint sont généralement situées à la fin du mois d'octobre et au début du mois de novembre. Elles duraient une semaine et demie entre 1981 et 1996 et entre 2003 et 2011, et une semaine entre 1997 et 2002. Les vacances de Noël (ou de fin d'année) : d'une durée de deux semaines et également communes à toutes les zones. Elles englobent les fêtes de Noël et du jour de l'an et laissent quelques jours de récupération au début du mois de janvier. les vacances de Mardi-gras (ou d'hiver) : situées au mois de février jusqu'à mars. Elles sont divisées en zones et durent deux semaines. - Les vacances de Pâques (ou de printemps) : dernières vacances de l'année scolaire, elles sont également divisées en zones et durent deux semaines. Entre 1977 et 1990, existait une journée de congé supplémentaire désignée sous le nom de « journée du maire », dont la date était fixée à la demande du maire de la commune, par le recteur d'académie. Celle-ci servait notamment à accompagner, en dehors des congés scolaires et jours fériés légaux, des festivités et commémorations organisées par la commune. Par exemple à Oradour-sur-Glane, la journée du maire tombait le 10 juin, en souvenir évidemment du massacre du 10 juin 1944."
+
+3. **AGENCEMENT** :
+   - En haut à gauche, il y a une image carrée colorée représentant une scène de fête foraine.
+   - À droite de l'image, sont affichés le titre "Vacances de NOËL" et la date de publication "Publié le 08/10/2025".
+   - En dessous de l'image et du titre, il y a un lien vers un document PDF intitulé "e-billet UGC 28 septembre 2025.pdf".
+   - Le texte principal est contenu dans une boîte avec une bordure rouge.
+   - Trois boutons sont positionnés en bas : "Fermer", "Voir le document", et "Télécharger le document".
+
+4. **ÉTATS / INTERACTIONS** :
+   - Le bouton "Fermer" semble être un bouton de fermeture de la fenêtre ou du popup.
+   - Le bouton "Voir le document" et "Télécharger le document" sont associés au lien vers le PDF et permettent probablement d'ouvrir ou de télécharger le document directement. 
+   - Aucun champ obligatoire n'est visible. 
+   - Aucune case n'est cochée par défaut. 
+   - Il n'y a pas d'onglet sélectionné. 
+   - Tous les éléments apparaissent comme étant dans un état statique, sans indication de champs à remplir ou de boutons nécessitant une action particulière pour être activés.

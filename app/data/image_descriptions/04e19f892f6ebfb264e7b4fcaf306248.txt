@@ -1,0 +1,23 @@
+[Image jointe : Mot-clé_Ajout.png]
+Voici la description de l'écran :
+
+1. CONTEXTE : Il s'agit d'une fenêtre modale de type formulaire pour ajouter un mot-clé.
+2. LIBELLÉS VISIBLES :
+   - AJOUT D'UN MOT-CLÉ
+   - Les champs indiqués par une * sont obligatoires.
+   - Votre nouveau mot-clé *
+   - Langue *
+   - Annuler
+   - Appliquer
+   - (icone fermure en haut à droite)
+3. AGENCEMENT : 
+   - Le titre "AJOUT D'UN MOT-CLÉ" est en haut.
+   - Le texte d'information sur les champs obligatoires est en dessous du titre.
+   - Le champ "Votre nouveau mot-clé *" est en dessous du texte d'information.
+   - Le champ "Langue *" est en dessous du champ "Votre nouveau mot-clé *".
+   - Les boutons "Annuler" et "Appliquer" sont en bas, "Annuler" à gauche et "Appliquer" à droite.
+   - L'icone de fermeture est en haut à droite.
+4. ÉTATS / INTERACTIONS :
+   - Les champs "Votre nouveau mot-clé *" et "Langue *" ont une étoile *, indiquant qu'ils sont obligatoires.
+   - Le champ "Langue *" semble être une liste déroulante.
+   - Les boutons "Annuler" et "Appliquer" sont actifs.

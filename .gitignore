@@ -29,3 +29,5 @@ logs/
 .vscode/
 .idea/
 
+".env" 
+"app/data/vector_store/" 

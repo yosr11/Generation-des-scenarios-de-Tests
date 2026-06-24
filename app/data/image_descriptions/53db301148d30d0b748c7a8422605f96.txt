@@ -1,0 +1,65 @@
+[Image jointe : Traduction.png]
+Voici la description de l'écran :
+
+1. CONTEXTE : 
+L'écran semble être un formulaire de création de "News" dans un système de gestion. Il s'agit d'une page de type formulaire.
+
+2. LIBELLÉS VISIBLES :
+- Gestion des News
+- PUBLICATION
+- TITRE
+- AUTEUR
+- DATE DE CREATION
+- DATE DE DEBUT DE PUBLICATION
+- DATE DE FIN DE PUBLICATION
+- VALIDE
+- ACTIONS
+- Éléments par page
+- Je crée une News
+- Les champs indiqués par une * sont obligatoires.
+- Type de News *
+- Langue *
+- English 
+- Français (avec un X à droite)
+- Italiano (avec un X à droite)
+- Titres dans le carrousel English *
+- Texte English *
+- Titres dans le carrousel Français *
+- Texte Français *
+- Publication 
+- Valide (case à cocher)
+- Date de début de publication * 
+- Date de fin de publication *
+- La localisation de la News est France secteur privé. 
+- La langue de publication de la News est le Français. 
+- Confidentialité 
+- Société * 
+- Etablissement 
+- Acteur autorisé à voir la News *
+
+3. AGENCEMENT :
+Le formulaire est divisé en deux colonnes. 
+- La colonne de gauche contient :
+  - Type de News 
+  - Langue 
+  - Titres dans le carrousel English 
+  - Texte English 
+  - Titres dans le carrousel Français 
+  - Texte Français 
+- La colonne de droite contient :
+  - Publication 
+  - Valide 
+  - Date de début de publication 
+  - Date de fin de publication 
+  - Confidentialité 
+  - Société 
+  - Etablissement 
+  - Acteur autorisé à voir la News 
+
+4. ÉTATS / INTERACTIONS :
+- Les champs obligatoires sont indiqués par une étoile (*).
+- La case "Valide" est une case à cocher.
+- Les champs "Date de début de publication" et "Date de fin de publication" ont un calendrier déroulant.
+- Les champs "Société", "Etablissement" et "Acteur autorisé à voir la News" ont des menus déroulants.
+- Les boutons et liens ne sont pas visibles sur cette capture. 
+- Le champ Langue a des onglets avec du texte : English, Français et Italiano. Seuls Français et English sont activés avec un petit X à droite de chaque onglet.

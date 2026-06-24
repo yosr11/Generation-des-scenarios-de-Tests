@@ -1,0 +1,31 @@
+[Image jointe : test_keyword.png]
+Voici la description détaillée de l'image :
+
+**1. Contexte**
+L'image montre une capture d'écran d'une liste de cartes, probablement un flux d'actualité ou une liste d'éléments d'information. Il y a 3 cartes visibles.
+
+**2. Éléments natifs stylisés**
+- Carte 1 : Aucun élément natif stylisé visible.
+- Carte 2 : Aucun élément natif stylisé visible.
+- Carte 3 : 
+  - "Formation", 
+    - Forme : pastille,
+    - Couleur du fond : bleu (assez clair),
+    - Couleur du texte : blanc,
+    - Position : en haut à droite de la carte.
+
+**3. Annotations ajoutées**
+- Un encadré violet autour du mot "Formation" dans la troisième carte.
+- Une flèche jaune pointant vers la troisième carte.
+
+**4. Autres libellés visibles**
+- "13/10/2024" (date visible sur chaque carte),
+- "Politique RH de la zon…" (titre tronqué visible sur les deux premières cartes),
+- "Politique RH" (titre tronqué visible sur la troisième carte, avant la pastille "Formation"),
+- "Thierry Cabannes reçoit les acteurs de l'info du jour, des experts et nos journalistes dans #MidiNewsWE." (texte descriptif visible sur chaque carte, tronqué sur les deux dernières).
+
+**5. Agencement**
+Les cartes sont disposées en colonne, avec une image à gauche (visage d'un homme en costume) et les informations à droite. Chaque carte a une date en haut à droite, suivie du titre et de la description.
+
+**6. États / Interactions**
+Aucun élément interactif (boutons, champs de texte, etc.) n'est visible. Les cartes semblent être en mode lecture seule.

@@ -18,8 +18,8 @@ def build_story_dashboard(
     tests: List[ManualTestCase],
     *,
     coverage_threshold: float = 0.70,
-    coverage_similarity_threshold: float = 0.52,
-    duplicate_similarity_threshold: float = 0.88,
+    coverage_similarity_threshold: float = 0.7,
+    duplicate_similarity_threshold: float = 0.8,
     embedding_model: str = "paraphrase-multilingual-MiniLM-L12-v2",
 ) -> Agent3StoryDashboard:
     cov = analyze_coverage(testable_points, tests, coverage_similarity_threshold, embedding_model)

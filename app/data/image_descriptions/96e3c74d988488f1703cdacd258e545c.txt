@@ -1,0 +1,53 @@
+[Image jointe : image-2026-04-08-10-01-03-380.png]
+Voici la description de l'écran :
+
+1. CONTEXTE : Il s'agit d'une fenêtre modale de modification d'un champ, probablement dans un système de gestion de données ou de configuration de formulaire.
+
+2. LIBELLÉS VISIBLES :
+   - Modifier un champ
+   - Nom
+   - Role
+   - IDCY00
+   - Rubrique de référence (facultatif)
+   - SD
+   - Info.
+   - Rubrique
+   - ZY
+   - ES
+   - IDCY00
+   - Format
+   - Chaîne
+   - Numérique entier
+   - Date
+   - Longueur
+   - 3
+   - Type de valorisation
+   - Valeur simple
+   - Valeur générique (supporte les caractères %,_)
+   - Liste de valeurs
+   - Nb. occurrences
+   - 1
+   - Commentaire
+   - OK
+   - Annuler
+
+3. AGENCEMENT :
+   - Le titre "Modifier un champ" est en haut de la fenêtre.
+   - Les champs "Nom" et "Role" sont alignés horizontalement en haut.
+   - "Rubrique de référence (facultatif)" est en dessous, avec trois champs ("SD", "Info.", "Rubrique") alignés horizontalement.
+   - La section "Format" est en dessous, avec trois options de format (Chaîne, Numérique entier, Date) et un champ "Longueur".
+   - La section "Type de valorisation" est en dessous, avec trois options (Valeur simple, Valeur générique, Liste de valeurs) et un champ "Nb. occurrences".
+   - Un champ "Commentaire" est en dessous.
+   - Les boutons "OK" et "Annuler" sont en bas de la fenêtre.
+
+4. ÉTATS / INTERACTIONS :
+   - Le champ "Role" contient la valeur "IDCY00" et est en édition.
+   - Le champ "SD" contient la valeur "ZY".
+   - Le champ "Info." contient la valeur "ES".
+   - Le champ "Rubrique" contient la valeur "IDCY00".
+   - L'option "Chaîne" est sélectionnée dans la section "Format".
+   - La valeur "3" est présente dans le champ "Longueur".
+   - L'option "Valeur générique (supporte les caractères %,_)" est sélectionnée dans la section "Type de valorisation".
+   - Le champ "Nb. occurrences" contient la valeur "1".
+   - Le champ "Commentaire" est vide.
+   - Le bouton "OK" est à gauche et le bouton "Annuler" est à droite en bas de la fenêtre.

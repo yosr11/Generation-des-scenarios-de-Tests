@@ -1,0 +1,54 @@
+[Image jointe : image-2025-04-23-08-07-40-541.png]
+1. CONTEXTE : 
+L'écran semble être un formulaire de création de news, avec des champs pour saisir les informations relatives à la news.
+
+2. LIBELLÉS VISIBLES :
+- Je créé une News
+- Les champs indiqués par une * sont obligatoires.
+- Type de News *
+- ACTUALITE
+- Titre dans le carrousel *
+- Les News sortent dans 4YOU9.0
+- Texte *
+- Les News permettent d'informer les collaborateurs manager gestionnaires.
+- Document d’actualité
+- Actualité.png 
+- Illustration dans le carrousel
+- Veuillez sélectionner une image
+- News.png
+- Publication 
+- Cette News est 
+- VALIDE
+- NON VALIDE
+- Date de début de publication *
+--/--/----
+- Date de fin de publication *
+--/--/----
+- Localisation 
+- France secteur privé
+- Langue 
+- Français
+- Confidentialité 
+- Société 
+- Etablissement
+- Acteur autorisé à voir la News 
+- Pouvoir tout cocher dans une liste
+
+3. AGENCEMENT :
+- Le titre "Je créé une News" est en haut à gauche.
+- Les champs "Type de News", "Titre dans le carrousel" et "Texte" sont alignés à gauche, avec leurs libellés au-dessus.
+- Le champ "Document d’actualité" avec le lien "Actualité.png" et le bouton pour supprimer le document sont en dessous des champs précédents.
+- Le champ "Illustration dans le carrousel" avec le lien "News.png" et le bouton pour supprimer l'image sont en dessous du champ "Document d’actualité".
+- Une image de preview est affichée en dessous du champ "Illustration dans le carrousel".
+- Les champs de publication ("Date de début de publication", "Date de fin de publication", "Localisation", "Langue") sont alignés à droite.
+- Les champs de confidentialité ("Société", "Etablissement", "Acteur autorisé à voir la News") sont en dessous des champs de publication.
+
+4. ÉTATS / INTERACTIONS :
+- Le champ "Type de News" a une liste déroulante avec l'option "ACTUALITE" sélectionnée.
+- Le champ "Titre dans le carrousel" a une valeur saisie : "Les News sortent dans 4YOU9.0".
+- Le champ "Texte" a une valeur saisie : "Les News permettent d'informer les collaborateurs manager gestionnaires.".
+- Le champ "Document d’actualité" a un lien "Actualité.png".
+- Le champ "Illustration dans le carrousel" a un lien "News.png".
+- Le champ "Publication" a deux boutons radio : "VALIDE" et "NON VALIDE", avec "VALIDE" sélectionné.
+- Les champs "Date de début de publication" et "Date de fin de publication" ont des champs de saisie avec des placeholders "--/--/----".
+- Les champs "Société", "Etablissement" et "Acteur autorisé à voir la News" ont des listes déroulantes.

@@ -1,0 +1,23 @@
+[Image jointe : image-2025-09-30-11-21-32-171.png]
+1. CONTEXTE : 
+L'image représente une pop-up ou une fenêtre modale qui semble être une notification ou un message d'information.
+
+2. LIBELLÉS VISIBLES :
+- TEST5
+- Publié le 29/09/2025
+- ACT5
+- Fermer
+- Lire l'actualité
+
+3. AGENCEMENT :
+- La pop-up est positionnée au centre de l'écran.
+- Une image (représentant un appareil photo ou une tablette) est située à gauche de la pop-up.
+- Le texte "TEST5" et la date "Publié le 29/09/2025" sont situés à droite de l'image, en haut de la pop-up.
+- Le texte "ACT5" est centré en dessous de l'image.
+- Les boutons "Fermer" et "Lire l'actualité" sont situés en bas de la pop-up, alignés horizontalement.
+
+4. ÉTATS / INTERACTIONS :
+- Le bouton "Fermer" semble être un bouton de fermeture de la pop-up.
+- Le bouton "Lire l'actualité" semble être un lien ou un bouton actif.
+- La pop-up semble être une fenêtre modale, car le fond derrière elle est grisé et elle est superposée à d'autres éléments de l'interface. 
+- Un petit "X" est visible en haut à droite de la pop-up.

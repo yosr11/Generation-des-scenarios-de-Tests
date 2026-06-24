@@ -1,22 +1,24 @@
 """
-Détection d'étapes ambiguës (heuristiques / regex). Agent 3 ne réécrit pas le contenu des tests.
+Détection d'étapes ambiguës (heuristiques regex + LLM sémantique). Agent 3 ne réécrit pas le contenu des tests.
 """
 
 from __future__ import annotations
 
+import json
+import logging
 import re
 from dataclasses import dataclass
 from typing import List, Optional
 
 from app.models.test_manual import ManualTestCase
 
+logger = logging.getLogger(__name__)
+
 AMBIGUITY_REGEX = [
-    (re.compile(r"(?i)\bremplir le formulaire\b"), "action générique « remplir le formulaire » sans précision"),
-    (re.compile(r"(?i)\bremplir le(s)?\s+champ(s)?\b"), "champs non nommés"),
-    (re.compile(r"(?i)\ble système réag(it|is)\b"), "résultat attendu vague (réaction système)"),
-    (re.compile(r"(?i)\bcorrectement\b|\bcomme prévu\b|\bde manière attendue\b"), "adverbe de vagueur"),
-    (re.compile(r"(?i)\bvalider que\b|\bvérifier que\b"), "formulation non actionnable en étape"),
-    (re.compile(r"(?i)\bfonctionne\b.*\b(sans erreur|correctement)\b"), "résultat peu observable"),
+    # Seule ambiguïté retenue : "vérifier" utilisé comme verbe d'action / d'objectif.
+    # Toute autre formulation vague provient de la user story elle-même et ne peut
+    # être corrigée dans le test → ce n'est pas une ambiguïté de test.
+    (re.compile(r"(?i)\bv[eé]rifier\b"), "verbe interdit « vérifier » dans action/résultat/objectif"),
 ]
 
 
@@ -33,17 +35,18 @@ def _regex_reason(text: str) -> Optional[str]:
     for rx, label in AMBIGUITY_REGEX:
         if rx.search(text):
             return label
-    if len(text.strip()) < 12 and re.search(
-        r"(?i)^(saisir|remplir|ouvrir|cliquer|consulter)\b", text.strip()
-    ):
-        return "étape trop courte / objet d'action implicite"
     return None
 
 
 def detect_ambiguous_steps(test: ManualTestCase) -> List[AmbiguityFinding]:
     out: List[AmbiguityFinding] = []
+
     if (test.objective or "").strip():
-        r = _regex_reason(test.objective)
+        r = None
+        for rx, label in AMBIGUITY_REGEX:
+            if rx.search(test.objective):
+                r = label
+                break
         if r:
             out.append(
                 AmbiguityFinding(
@@ -54,6 +57,7 @@ def detect_ambiguous_steps(test: ManualTestCase) -> List[AmbiguityFinding]:
                     reason=r,
                 )
             )
+
     for step in test.steps:
         for field, val in (("action", step.action), ("expected_result", step.expected_result)):
             r = _regex_reason(val or "")
@@ -67,4 +71,17 @@ def detect_ambiguous_steps(test: ManualTestCase) -> List[AmbiguityFinding]:
                         reason=r,
                     )
                 )
+
     return out
+
+
+def detect_ambiguous_steps_with_llm(
+    tests: List[ManualTestCase],
+    model_alias: str = "llama4",
+) -> List[AmbiguityFinding]:
+    """
+    Désactivé : la seule ambiguïté reconnue est « vérifier », déjà détectée par regex.
+    Toute autre « vagueur » (résultat non chiffré, action générique) provient de la
+    user story et n'est pas une ambiguïté de test → pas de détection LLM (faux positifs).
+    """
+    return []

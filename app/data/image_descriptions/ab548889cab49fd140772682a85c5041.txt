@@ -1,0 +1,49 @@
+[Image jointe : Mot-clé_Administrateur.png]
+Voici la description de l'écran :
+
+1. CONTEXTE : Il s'agit d'une page de gestion des mots-clés pour les news, avec un tableau listant les mots-clés existants.
+
+2. LIBELLÉS VISIBLES :
+   - Administration des News
+   - Vous administrez ici les News, vous pouvez gérer les mots-clés.
+   - Quitter
+   - Sauvegarder
+   - Liste des News
+   - Je gère les mots-clés
+   - UTILISATION
+   - MOT-CLÉ
+   - LANGUE
+   - ADMINISTRATEUR
+   - DATE DE CRÉATION
+   - DATE DE MODIFICATION
+   - ACTION
+   - Ajouter un mot-clé
+   - Supprimer
+   - utilisé (deux fois, avec un carré rouge)
+   - libre (trois fois, avec un carré gris)
+   - Absence
+   - Congé
+   - Congé spécifique
+   - Éducation
+   - Solidarité
+   - Français (cinq fois)
+   - NICOLAS Rafael (cinq fois)
+   - 05/09/2025 (cinq fois)
+   - 30/09/2025 (cinq fois)
+   - Éléments par page
+   - 5
+   - 1 - 5 / 5
+
+3. AGENCEMENT : 
+   - Le bandeau noir en haut contient le titre "Administration des News" et un logo.
+   - Deux boutons "Quitter" et "Sauvegarder" sont positionnés à gauche, en dessous du bandeau.
+   - Un tableau avec les colonnes "UTILISATION", "MOT-CLÉ", "LANGUE", "ADMINISTRATEUR", "DATE DE CRÉATION", "DATE DE MODIFICATION", et "ACTION" est centré dans la page.
+   - Le bouton "Ajouter un mot-clé" et "Supprimer" sont à droite, au-dessus du tableau.
+   - Cinq lignes de données sont affichées dans le tableau.
+
+4. ÉTATS / INTERACTIONS :
+   - Le bouton "Quitter" et "Sauvegarder" semblent être des boutons de navigation.
+   - Le bouton "Ajouter un mot-clé" est actif.
+   - Le bouton "Supprimer" est inactif car aucune ligne n'est sélectionnée dans le tableau.
+   - Les champs de sélection dans la colonne "UTILISATION" montrent deux carrés rouges pour les mots-clés utilisés et trois carrés gris pour les mots-clés libres.
+   - Les lignes du tableau ont des icônes d'édition et de suppression dans la colonne "ACTION".

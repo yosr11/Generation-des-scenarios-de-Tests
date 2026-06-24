@@ -1,0 +1,58 @@
+[Image jointe : Formulaire_Multi langue.jpg]
+Voici une description détaillée de l'écran :
+
+1. **CONTEXTE** : L'écran semble être un formulaire de création de news, permettant aux utilisateurs de gérer et de créer des annonces et des actualités.
+
+2. **LIBELLÉS VISIBLES** :
+   - Gestion des News
+   - Quitter
+   - Créer une annonce
+   - Créer une actualité
+   - Sauvegarder
+   - Liste des News
+   - Je crée une News
+   - Type de News *
+   - Actualités
+   - Publication 
+   - Valide
+   - Date de début de publication *
+   - Date de fin de publication *
+   - Contenu 
+   - Langue *
+   - English
+   - Français (avec un X à droite)
+   - Italiano (avec un X à droite)
+   - Confidentialité 
+   - Société *
+   - Etablissement *
+   - Acteur autorisé à voir la News *
+   - Illustration dans le carrousel
+   - Veuillez sélectionner une image
+   - Aperçu de l'illustration
+   - Liste des unités déclaratives (titre d'une section non entièrement visible)
+   - English - Titre dans le carrousel *
+   - English - Texte *
+   - English - Mots-clés *
+   - English - Veuillez sélectionner un Document d’actualité * (avec un i à côté)
+   - Je rédige en English
+   - Je rédige en Français
+   - Je rédige en Italiano
+
+3. **AGENÇEMENT** :
+   - Le haut de l'écran comporte un menu avec les options "Gestion des News", "Quitter", "Créer une annonce", "Créer une actualité", et "Sauvegarder".
+   - Une section "Liste des News" est suivie d'une section "Je crée une News".
+   - La section "Je crée une News" contient plusieurs sous-sections :
+     - Type de News
+     - Publication
+     - Contenu
+     - Confidentialité
+     - Illustration dans le carrousel
+   - Chaque section contient des champs de saisie et/ou des menus déroulants.
+   - Des onglets en bas de page permettent de basculer entre la rédaction en English, Français, et Italiano.
+
+4. **ÉTATS / INTERACTIONS** :
+   - Le champ "Type de News" est rempli avec "Actualités".
+   - Le champ "Langue" a "English" sélectionné par défaut, avec possibilité de choisir "Français" et "Italiano" qui sont barrés, indiquant qu'ils sont peut-être déjà sélectionnés ou utilisés.
+   - Certains champs sont obligatoires, indiqués par un *.
+   - Un champ pour sélectionner une image pour l'illustration dans le carrousel est présent, avec une image (2.png) déjà sélectionnée.
+   - Les boutons "Quitter", "Créer une annonce", "Créer une actualité", et "Sauvegarder" sont visibles en haut.

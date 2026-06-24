@@ -1,0 +1,34 @@
+[Image jointe : Lecteur PDF 2.png]
+Voici la description de l'image :
+
+1. CONTEXTE : Il s'agit d'un aperçu de document PDF, probablement un e-billet pour un cinéma.
+
+2. LIBELLÉS VISIBLES :
+   - APERCU
+   - E-BILLET UGC 28 SEPTEMBRE 2025.PDF
+   - UGC
+   - Réservation n°3360027167196900 du 28/09/2025 à 18h39
+   - Cette réservation vaut pour e-billet en cas de passage au point de contrôle
+   - UNE BATAILLE APRÈS L'AUTRE
+   - LE CIN'HÔCHE
+   - 6 rue Hoche
+   - 78500 SARTROUVILLE
+   - 28 sept. 2025 à 19:45 - VOSTF
+   - Fermer
+   - Lire l'actualité
+   - Télécharger le document
+
+3. AGENCEMENT : 
+   - Le logo UGC est positionné en haut à gauche.
+   - Les informations de réservation sont en haut à droite.
+   - L'affiche du film "UNE BATAILLE APRÈS L'AUTRE" est à gauche, avec les informations du cinéma et de la séance en dessous.
+   - Le QR code est à droite.
+   - Les boutons "Fermer", "Lire l'actualité" et "Télécharger le document" sont en bas.
+
+4. ÉTATS / INTERACTIONS :
+   - Le bouton "Fermer" semble actif.
+   - Le bouton "Lire l'actualité" semble actif.
+   - Le bouton "Télécharger le document" semble actif.
+   - Aucun champ obligatoire n'est visible.
+   - Aucune case n'est cochée.
+   - Auconglet n'est sélectionné.

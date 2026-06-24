@@ -21,6 +21,10 @@ def run_agent2_gap_fill(
     current_tests: List[ManualTestCase],
     rag_context: Optional[List[Dict[str, Any]]],
     model_alias: str,
+    duplicate_pairs: Optional[List[Dict[str, Any]]] = None,
+    ambiguity_findings: Optional[List[Dict[str, Any]]] = None,
+    correction_instructions: Optional[list] = None,
+    legacy_examples: Optional[List[Dict[str, Any]]] = None,
 ) -> ManualTestGenerationResult:
     llm_client, model_name = build_llm_client(model_alias)
     service = ManualTestGeneratorService(llm_client=llm_client, model_name=model_name)
@@ -31,4 +35,8 @@ def run_agent2_gap_fill(
         missing_testable_points=missing_testable_points,
         existing_tests=existing,
         rag_context=rag_context,
+        duplicate_pairs=duplicate_pairs,
+        ambiguity_findings=ambiguity_findings,
+        correction_instructions=correction_instructions,
+        legacy_examples=legacy_examples,
     )

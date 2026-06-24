@@ -1,0 +1,40 @@
+[Image jointe : 2025-06-24_16h06_54.gif]
+Voici la description de l'image :
+
+1. CONTEXTE : Il s'agit d'une capture d'écran d'une application web, probablement un dashboard ou un espace personnel, avec une interface sombre et des éléments graphiques.
+
+2. LIBELLÉS VISIBLES :
+   - Accueil - 4YOU
+   - Mon Espace
+   - TEST RGAA
+   - TEST RGAA2
+   - TEST RGAA3
+   - Flora ISABELLE FRP
+   - CADRE SUPÉRIEUR
+   - Vous n'avez actuellement aucune tâche à traiter.
+   - Mon solde de congés
+   - Mes autres absences
+   - 0 j / 0 j
+   - 0 j pris
+   - Rechercher
+   - Mes questions RH
+   - Le planning de mes collègues
+   - 30°C Ensoleillé
+
+3. AGENCEMENT :
+   - En haut, il y a une barre d'adresse avec des onglets ouverts.
+   - À gauche, il y a un menu ou une liste d'éléments avec des icônes de cloche (TEST RGAA, TEST RGAA2, TEST RGAA3).
+   - Au centre, une grande image ou bannière occupe l'espace.
+   - À droite, il y a un espace avec le nom de la personne (Flora ISABELLE FRP) et son statut (CADRE SUPÉRIEUR).
+   - En bas, il y a trois blocs d'information : "Mon solde de congés", "Mes autres absences", et un champ de recherche.
+   - Un message "Vous n'avez actuellement aucune tâche à traiter." est visible.
+
+4. ÉTATS / INTERACTIONS :
+   - Les éléments de menu (TEST RGAA, TEST RGAA2, TEST RGAA3) semblent être des liens ou des boutons.
+   - Le champ de recherche est probablement interactif.
+   - Les blocs d'information ("Mon solde de congés", "Mes autres absences") semblent afficher des données.
+   - Le message "Vous n'avez actuellement aucune tâche à traiter." est statique.
+   - Il n'y a pas de champs obligatoires indiqués par une étoile (*).
+   - Aucune case n'est cochée.
+   - Aucun onglet n'est sélectionné de manière évidente.
+   - Aucun élément n'est mis en évidence de manière particulière.

@@ -1,0 +1,39 @@
+[Image jointe : 2026-02-27_11h51_17.gif]
+Voici la description de l'écran :
+
+1. CONTEXTE : Il s'agit d'une page web d'administration de news, affichant une liste de news.
+2. LIBELLÉS VISIBLES :
+ * Administration des News
+ * Vous administrez ici les News.
+ * Liste des News
+ * TOUTES (1)
+ * ANNONCES (1)
+ * ACTUALITÉS (0)
+ * PUBLICATION
+ * TITRE
+ * AUTEUR
+ * DATE DE CRÉATION
+ * DATE DE DÉBUT DE PUBLICATION
+ * DATE DE FIN DE PUBLICATION
+ * VALIDE
+ * ACTIONS
+ * Supprimer
+ * En cours de publication (2 occurrences)
+ * sef
+ * ISABELLE DANIA
+ * 11/02/2026 (2 occurrences)
+ * 28/02/2026
+ * Oui
+ * Éléments par page
+ * 5
+ * 1 - 1 / 1
+3. AGENCEMENT :
+ * Le titre "Administration des News" est en haut de l'écran, suivi d'un bandeau noir avec le même titre.
+ * La liste des news est affichée en dessous, avec les colonnes : PUBLICATION, TITRE, AUTEUR, DATE DE CRÉATION, DATE DE DÉBUT DE PUBLICATION, DATE DE FIN DE PUBLICATION, VALIDE et ACTIONS.
+ * Les onglets "TOUTES", "ANNONCES" et "ACTUALITÉS" sont situés au-dessus de la liste.
+ * Le bouton "Supprimer" est situé à droite de l'écran.
+4. ÉTATS / INTERACTIONS :
+ * Le champ "PUBLICATION" contient un indicateur de statut "en cours" avec un vert.
+ * Le bouton "Supprimer" semble actif.
+ * La liste des news affiche un seul élément, avec les valeurs : en cours, sef, ISABELLE DANIA, 11/02/2026, 11/02/2026, 28/02/2026, Oui.
+ * Les flèches de navigation (gauche et droite) sont présentes, mais semblent inactives.

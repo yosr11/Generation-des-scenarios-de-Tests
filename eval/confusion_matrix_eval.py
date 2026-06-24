@@ -1,9 +1,10 @@
 # eval/confusion_matrix_eval.py
+import argparse
 import json
 from sklearn.metrics import confusion_matrix, classification_report, f1_score
 
 def load_json(path):
-    with open(path, encoding="utf-8") as f:
+    with open(path, encoding="utf-8-sig") as f:
         return json.load(f)
 
 def print_confusion_and_report(y_true, y_pred, labels, title):
@@ -14,8 +15,14 @@ def print_confusion_and_report(y_true, y_pred, labels, title):
     print(classification_report(y_true, y_pred, labels=labels, zero_division=0))
 
 def main():
+    parser = argparse.ArgumentParser(description="Évaluation Agent 1 (classification story_type)")
+    parser.add_argument("--gold", default="annotations.json", help="Chemin du fichier d'annotations (gold)")
+    parser.add_argument("--pred", default="results/agent1_classification_output.json",
+                        help="Chemin du fichier de prédictions de l'agent 1")
+    args = parser.parse_args()
+
     # --- Charger gold ---
-    gold_raw = load_json("annotations.json")
+    gold_raw = load_json(args.gold)
 
     # Support {"stories_test_strategy": [...]} ou liste directe
     if isinstance(gold_raw, dict):
@@ -25,7 +32,7 @@ def main():
     gold = {s["story_id"]: s["story_type"] for s in stories}
 
     # --- Charger prédictions ---
-    pred_raw = load_json("results/agent_outputs.json")
+    pred_raw = load_json(args.pred)
 
     # Support {"stories": [...]} ou liste directe
     if isinstance(pred_raw, dict):

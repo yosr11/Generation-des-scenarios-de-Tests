@@ -1,29 +1,94 @@
 # app/api/routes_stories.py
-from fastapi import APIRouter, HTTPException
-from app.services.jira_service import get_story_byID
+from fastapi import APIRouter, HTTPException, Query, Body
+from app.services.jira_service import (
+    get_story_byID,
+    find_stories_with_linked_tests,
+    get_test_byID,
+    enrich_dataset_with_test_details,
+    get_stories_without_description,
+)
 from app.models.story import Story
-from typing import List, Dict, Any
-from app.utils.cleaning import clean_story_dict, enrich_story_for_llm
+from typing import List, Dict, Any, Optional
+from app.utils.cleaning import clean_story_dict, enrich_story_for_llm, flatten_issuelinks
 
 router = APIRouter(prefix="/projects", tags=["User_stories"])
 
 
-def _flatten_issuelinks(raw_links: list) -> List[Dict[str, str]]:
-    """Transforme les issuelinks Jira (très imbriqués) en liste plate."""
-    out: List[Dict[str, str]] = []
-    for link in raw_links:
-        link_type = (link.get("type") or {}).get("name", "")
-        for direction in ("inwardIssue", "outwardIssue"):
-            target = link.get(direction)
-            if target:
-                out.append({
-                    "type": link_type,
-                    "direction": direction.replace("Issue", ""),
-                    "key": target.get("key", ""),
-                    "summary": (target.get("fields") or {}).get("summary", ""),
-                    "status": ((target.get("fields") or {}).get("status") or {}).get("name", ""),
-                })
-    return out
+# -------- Dataset : stories avec tests Xray liés --------
+@router.get("/{project_key}/stories-with-tests")
+def list_stories_with_linked_tests(
+    project_key: str,
+    min_tests: int = Query(1, ge=1, description="Nombre minimum de tests liés"),
+    max_stories: int = Query(50, ge=1, le=500, description="Nombre maximum de stories à retourner"),
+    extra_jql: str = Query("", description="Fragment JQL additionnel (ex: 'AND status = Done')"),
+):
+    """
+    Retourne les User Stories d'un projet qui ont au moins `min_tests` tests Xray liés
+    (via issuelinks de type 'tests' / 'is tested by' ou cible de type Test).
+
+    Utile pour constituer un dataset d'évaluation : comparer les tests générés par
+    le pipeline aux tests humains existants.
+    """
+    result = find_stories_with_linked_tests(
+        project_key=project_key,
+        min_tests=min_tests,
+        max_stories=max_stories,
+        extra_jql=extra_jql,
+    )
+    if result.get("error"):
+        raise HTTPException(
+            status_code=result.get("status_code", 500),
+            detail=result.get("body") or "Jira search failed",
+        )
+    return result
+
+
+# -------- Détail d'un test Xray (étapes, résultat attendu, priorité) --------
+@router.get("/tests/{test_key}")
+def get_test_details(test_key: str):
+    """
+    Récupère le contenu détaillé d'un cas de test Xray (ex: YOUQA-17500).
+    Retourne summary, description, priority, status, labels, et la liste des steps.
+    """
+    result = get_test_byID(test_key)
+    if result.get("error"):
+        raise HTTPException(
+            status_code=result.get("status_code", 500),
+            detail=result.get("body") or "Test fetch failed",
+        )
+    return result
+
+
+# -------- Enrichir un dataset complet avec le contenu de chaque test --------
+@router.post("/dataset/enrich")
+def enrich_dataset(
+    dataset: Dict[str, Any] = Body(..., description="Sortie de /projects/{KEY}/stories-with-tests"),
+    max_tests_per_story: Optional[int] = Query(None, ge=1, description="Limiter le nb de tests par story (debug)"),
+):
+    """
+    Enrichit un dataset (sortie de /projects/{KEY}/stories-with-tests) en récupérant
+    pour chaque test lié : summary, description, priority, status et les étapes Xray.
+
+    Usage : récupérer d'abord la liste, puis poster le JSON ici pour avoir les détails.
+    Le résultat peut être sauvegardé tel quel pour servir de dataset d'évaluation Agent 2.
+    """
+    if "stories" not in dataset:
+        raise HTTPException(status_code=400, detail="Le JSON doit contenir un champ 'stories'.")
+    return enrich_dataset_with_test_details(dataset, max_tests_per_story=max_tests_per_story)
+
+
+# -------- User Stories sans description (renvoie uniquement les IDs) --------
+@router.get("/{project_key}/stories-without-description")
+def list_stories_without_description(
+    project_key: str,
+    extra_jql: str = Query("", description="Fragment JQL additionnel (ex: 'AND status != Done')"),
+):
+    """
+    Retourne uniquement les IDs (clés Jira) des User Stories du projet qui n'ont
+    pas de description (champ description vide).
+    """
+    ids = get_stories_without_description(project_key=project_key, extra_jql=extra_jql)
+    return {"project": project_key, "count": len(ids), "ids": ids}
 
 
 # -------- Route UNITÉ (récupérés les champs nécessaires pour une user story) --------
@@ -47,7 +112,7 @@ def get_story_raw_simplified(issue_key: str):
         "description": fields.get("description") or "",
         "labels": fields.get("labels") or [],
         "components": [c.get("name") for c in (fields.get("components") or [])],
-        "issuelinks": _flatten_issuelinks(fields.get("issuelinks") or []),
+        "issuelinks": flatten_issuelinks(fields.get("issuelinks") or []),
         "priority": (fields.get("priority") or {}).get("name"),
         "status": (fields.get("status") or {}).get("name"),
         "fixVersions": [v.get("name") for v in (fields.get("fixVersions") or [])],
@@ -77,7 +142,7 @@ def debug_story(issue_key: str):
         "description": fields.get("description", ""),
         "labels": fields.get("labels", []) or [],
         "components": [c.get("name") for c in (fields.get("components") or [])],
-        "issuelinks": _flatten_issuelinks(fields.get("issuelinks") or []),
+        "issuelinks": flatten_issuelinks(fields.get("issuelinks") or []),
         "priority": (fields.get("priority") or {}).get("name"),
         "status": (fields.get("status") or {}).get("name"),
         "fixVersions": [v.get("name") for v in (fields.get("fixVersions") or [])],
@@ -130,7 +195,7 @@ def get_cleaned_story(issue_key: str):
         "description": fields.get("description") or "",
         "labels": fields.get("labels") or [],
         "components": [c.get("name") for c in (fields.get("components") or [])],
-        "issuelinks": _flatten_issuelinks(fields.get("issuelinks") or []),
+        "issuelinks": flatten_issuelinks(fields.get("issuelinks") or []),
         "priority": (fields.get("priority") or {}).get("name"),
         "status": (fields.get("status") or {}).get("name"),
         "fixVersions": [v.get("name") for v in (fields.get("fixVersions") or [])],

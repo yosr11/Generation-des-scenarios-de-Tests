@@ -1,0 +1,46 @@
+[Image jointe : 2026-05-20_14h23_15.gif]
+Voici la description de l'écran :
+
+1. CONTEXTE : Il s'agit d'une page de gestion des "News" avec une liste d'éléments et des options pour créer de nouveaux éléments.
+
+2. LIBELLÉS VISIBLES :
+   - Gestion des News
+   - Quitter
+   - Créer une annonce
+   - Créer une actualité
+   - Sauvegarder
+   - Liste des News
+   - Rechercher dans le titre, le corps ou le résumé de la news
+   - TOUTES (2)
+   - ANNONCES (2)
+   - ACTUALITÉS (0)
+   - Publication
+   - Titre
+   - Auteur
+   - Date de création
+   - Date de début de publication
+   - Date de fin de publication
+   - Valide
+   - Actions
+   - KNEWS-ADDANNONCE2
+   - KNEWS-ADDANNONCE1
+   - YAMAL Lamine (deux fois)
+   - 20/05/2026 (trois fois)
+   - 19/07/2026 (deux fois)
+   - Oui (deux fois)
+   - Éléments par page
+   - 5
+
+3. AGENCEMENT : 
+   - En haut : un champ de recherche et des boutons pour créer une annonce ou une actualité.
+   - Un tableau avec les colonnes : Publication, Titre, Auteur, Date de création, Date de début de publication, Date de fin de publication, Valide, Actions.
+   - Deux lignes dans le tableau avec des données.
+
+4. ÉTATS / INTERACTIONS :
+   - Le bouton "Quitter" est visible.
+   - Les boutons "Créer une annonce" et "Créer une actualité" sont visibles.
+   - Le bouton "Sauvegarder" est visible mais semble grisé.
+   - Deux éléments sont listés dans le tableau.
+   - Les champs ne semblent pas être modifiables directement dans cette vue.
+   - Les colonnes du tableau semblent triables.
+   - Des icônes d'action (œil, crayon, poubelle) sont visibles pour chaque ligne du tableau.

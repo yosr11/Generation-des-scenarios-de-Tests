@@ -1,0 +1,37 @@
+[Image jointe : Acces_AdminNews.png]
+Voici la description de l'écran :
+
+1. **CONTEXTE** : L'écran semble être un dashboard ou un tableau de bord d'une application web, probablement une console d'administration. Il comporte un menu latéral et une section principale.
+
+2. **LIBELLÉS VISIBLES** :
+   - Espace gestionnaire
+   - Localisation France secteur privé
+   - Accueil
+   - Gestion administrative/Paie
+   - Gestion des news
+   - Dossier numérique
+   - Administration
+   - Mes préférences
+   - À propos
+   - Déconnexion
+   - ACTIVITÉS NON ATTRIBUÉES
+   - ACTIVITÉS ATTRIBUÉES AUX AUTRES
+   - Console des workflows
+   - Plans de classement
+   - Administration des news
+   - INDICATEUR SPÉCIFIQUE (deux fois)
+   - En cours
+   - Besoin icone de « Gestion des news »
+
+3. **AGENCEMENT** :
+   - Le menu latéral est placé à gauche de l'écran et comporte plusieurs options.
+   - Une sous-partie du menu, avec les options "Console des workflows", "Plans de classement" et "Administration des news", est surlignée.
+   - La section principale de l'écran est divisée en plusieurs sections, certaines avec des indicateurs spécifiques.
+   - Un message "En cours" est superposé sur une section.
+   - Un autre message "Besoin icone de « Gestion des news »" est présenté dans une bulle de dialogue jaune.
+
+4. **ÉTATS / INTERACTIONS** :
+   - Le menu latéral semble être déplié, montrant les différentes sections.
+   - Certaines sections du dashboard ont des nombres et des icônes (par exemple, "ACTIVITÉS NON ATTRIBUÉES" avec le chiffre 2).
+   - Il y a un champ de recherche ou de sélection en haut au centre intitulé "Localisation France secteur privé".
+   - Les boutons ou les éléments interactifs ne sont pas explicitement décrits mais il semble qu'il y ait des éléments cliquables dans le menu et possiblement dans les sections du dashboard.

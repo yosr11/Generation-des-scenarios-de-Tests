@@ -1,0 +1,38 @@
+[Image jointe : Mot-clé_Auteur.png]
+1. CONTEXTE : 
+L'écran semble être un formulaire pour créer une "News" dans un système de gestion. Le formulaire est divisé en plusieurs sections pour saisir les informations relatives à la news.
+
+2. LIBELLÉS VISIBLES :
+   - Gestion des News
+   - Je crée une News
+   - Les champs indiqués par une * sont obligatoires.
+   - Type de News *
+   - Titre dans le carrousel *
+   - Texte *
+   - Illustration dans le carrousel
+   - Veuillez sélectionner une image
+   - Mot-clé
+   - Publication 
+   - Valide
+   - Date de début de publication *
+   - Date de fin de publication *
+   - La localisation de la News est France secteur privé.
+   - La langue de publication de la News est le Français.
+   - Confidentialité 
+   - Société *
+
+3. AGENCEMENT :
+   - Le formulaire est divisé en deux colonnes principales. 
+   - À gauche :
+     - Le titre "Je crée une News" est en haut.
+     - Les champs "Type de News", "Titre dans le carrousel", "Texte", "Illustration dans le carrousel", et "Mot-clé" sont empilés verticalement.
+   - À droite :
+     - La section "Publication" avec le champ "Valide", les champs pour "Date de début de publication" et "Date de fin de publication".
+     - La section "Confidentialité" avec le champ "Société".
+
+4. ÉTATS / INTERACTIONS :
+   - Les champs obligatoires sont indiqués par une étoile (*).
+   - Le champ "Valide" est une case à cocher qui semble être cochée par défaut.
+   - Les champs "Date de début de publication" et "Date de fin de publication" ont des icônes de calendrier à côté d'eux, suggérant une interaction pour sélectionner les dates.
+   - Le champ "Société" a une icône déroulante, indiquant qu'il s'agit d'un menu déroulant.
+   - Le bouton "Veuillez sélectionner une image" pour l'illustration dans le carrousel.

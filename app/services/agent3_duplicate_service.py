@@ -24,7 +24,7 @@ class DuplicateRemovalResult:
 
 def find_semantic_duplicate_removal(
     tests: List[ManualTestCase],
-    duplicate_threshold: float = 0.88,
+    duplicate_threshold: float = 0.8,
     embedding_model: str = "paraphrase-multilingual-MiniLM-L12-v2",
 ) -> DuplicateRemovalResult:
     """
@@ -71,7 +71,7 @@ def find_semantic_duplicate_removal(
 
 def remove_duplicate_tests(
     tests: List[ManualTestCase],
-    duplicate_threshold: float = 0.88,
+    duplicate_threshold: float = 0.8,
     embedding_model: str = "paraphrase-multilingual-MiniLM-L12-v2",
 ) -> Tuple[List[ManualTestCase], DuplicateRemovalResult]:
     dr = find_semantic_duplicate_removal(tests, duplicate_threshold, embedding_model)

@@ -6,8 +6,12 @@ from typing import Dict, Any
 def _strip_llm_wrappers(text: str) -> str:
     text = text.strip()
     text = re.sub(r" międzynarodow\s*json\s*", "", text, flags=re.DOTALL).strip()
+    # Handle triple backticks (``` json ```)
     text = re.sub(r"```json\s*", "", text)
     text = re.sub(r"```\s*", "", text)
+    # Handle single backticks (` json) — Nova/Bedrock format
+    text = re.sub(r"`json\s*", "", text)
+    text = re.sub(r"`\s*$", "", text)  # trailing backtick
     return text.strip()
 
 

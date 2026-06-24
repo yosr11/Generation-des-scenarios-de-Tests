@@ -1,0 +1,37 @@
+{
+  "projects": [
+    {
+      "project": "YOUQA",
+      "extracted": 2407,
+      "errors": 0,
+      "output": "C:\\Users\\yomahfoudh\\Desktop\\Agent_Test\\eval\\data\\legacy_tests\\YOUQA.jsonl"
+    },
+    {
+      "project": "QAGT",
+      "extracted": 1432,
+      "errors": 0,
+      "output": "C:\\Users\\yomahfoudh\\Desktop\\Agent_Test\\eval\\data\\legacy_tests\\QAGT.jsonl"
+    },
+    {
+      "project": "YTINMA",
+      "extracted": 197,
+      "errors": 0,
+      "output": "C:\\Users\\yomahfoudh\\Desktop\\Agent_Test\\eval\\data\\legacy_tests\\YTINMA.jsonl"
+    },
+    {
+      "project": "HRAE2EQA",
+      "extracted": 1869,
+      "errors": 6,
+      "output": "C:\\Users\\yomahfoudh\\Desktop\\Agent_Test\\eval\\data\\legacy_tests\\HRAE2EQA.jsonl"
+    },
+    {
+      "project": "PLD4UE2E",
+      "extracted": 1,
+      "errors": 0,
+      "output": "C:\\Users\\yomahfoudh\\Desktop\\Agent_Test\\eval\\data\\legacy_tests\\PLD4UE2E.jsonl"
+    }
+  ],
+  "total_extracted": 5906,
+  "total_errors": 6,
+  "duration_sec": 11381.970643043518
+}

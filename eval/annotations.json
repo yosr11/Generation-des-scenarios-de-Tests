@@ -3,8 +3,6 @@
   {
     "story_id": "NUXEPM-2377",
     "story_type": "functional"
-   
-    
   },
   {
     "story_id": "NUXEPM-2376",
@@ -14,47 +12,7 @@
     "story_id": "YOU-13659",
     "story_type": "technical"
   },
-  {
-    "story_id": "YOU-13622",
-    "story_type": "functional"
   
-    
-  },
-  {
-    "story_id": "YOU-13618",
-    "story_type": "functional"
-    
-  },
-  {
-    "story_id": "YOU-13617",
-    "story_type": "functional"
-    
-    
-  },
-  {
-    "story_id": "YOU-13579",
-    "story_type": "functional"
-    
-    
-  },
-  {
-    "story_id": "YOU-13545",
-    "story_type": "functional"
-   
-    
-  },
-  {
-    "story_id": "YOU-13544",
-    "story_type": "functional"
-    
-    
-  },
-  {
-    "story_id": "YOU-13543",
-    "story_type": "functional"
-    
-    
-  },
   {
     "story_id": "NUXEPM-2293",
     "story_type": "invalid_or_too_weak"
@@ -91,26 +49,10 @@
     
     
   },
-  {
-    "story_id": "YOU-13432",
-    "story_type": "functional"
-    
-  },
-  {
-    "story_id": "YOU-13388",
-    "story_type": "functional"
-   
-    
-  },
-  {
-    "story_id": "YOU-13356",
-    "story_type": "functional"
-   
-    
-  },
+  
   {
     "story_id": "NUXEPM-2258",
-    "story_type": "poc_or_study"
+    "story_type": "technical"
    
     
   },
@@ -168,7 +110,7 @@
   },
   {
     "story_id": "YOU-13032",
-    "story_type": "poc_or_study"
+    "story_type": "technical"
    
     
   },
@@ -208,28 +150,7 @@
     
     
   },
-  {
-    "story_id": "NUXEPM-1882",
-    "story_type": "functional"
-    
-    
-  },
-  {
-    "story_id": "NUXEPM-1876",
-    "story_type": "functional"
-    
-    
-  },
-  {
-    "story_id": "NUXEPM-1874",
-    "story_type": "functional"
-    
-    
-  },
-  {
-    "story_id": "NUXEPM-1873",
-    "story_type": "functional"
-  },
+  
   {
     "story_id": "NUXEPM-1870",
     "story_type": "functional"
@@ -318,7 +239,7 @@
   },
   {
     "story_id": "YOU-13050",
-    "story_type": "poc_or_study"
+    "story_type": "technical"
   },
   {
     "story_id": "PPBACKLOG-7535",
@@ -334,7 +255,7 @@
   },
   {
     "story_id": "NUXEPM-1879",
-    "story_type": "documentation"
+    "story_type": "functional"
   },
   {
     "story_id": "NUXEPM-1871",
@@ -358,7 +279,7 @@
   },
   {
     "story_id": "NUXEPM-1844",
-    "story_type": "technical"
+    "story_type": "functional"
   },
   {
     "story_id": "NUXEPM-1843",
@@ -402,7 +323,7 @@
   },
   {
     "story_id": "NUXEPM-1741",
-    "story_type": "technical"
+    "story_type": "functional"
   },
   {
     "story_id": "NUXEPM-1732",
@@ -418,7 +339,7 @@
   },
   {
     "story_id": "NUXEPM-1702",
-    "story_type": "poc_or_study"
+    "story_type": "functional"
   },
   {
     "story_id": "NUXEPM-1701",
@@ -438,11 +359,11 @@
   },
   {
     "story_id": "NUXEPM-1665",
-    "story_type": "technical"
+    "story_type": "functional"
   },
   {
     "story_id": "NUXEPM-1662",
-    "story_type": "technical"
+    "story_type": "functional"
   },
   {
     "story_id": "NUXEPM-1659",
@@ -478,23 +399,23 @@
   },
   {
     "story_id": "NUXEPM-1606",
-    "story_type": "technical"
+    "story_type": "functional"
   },
   {
     "story_id": "NUXEPM-1605",
-    "story_type": "technical"
+    "story_type": "functional"
   },
   {
     "story_id": "NUXEPM-1604",
-    "story_type": "technical"
+    "story_type": "functional"
   },
   {
     "story_id": "NUXEPM-1603",
-    "story_type": "technical"
+    "story_type": "functional"
   },
   {
     "story_id": "NUXEPM-1602",
-    "story_type": "technical"
+    "story_type": "functional"
   },
   {
     "story_id": "NUXEPM-1601",
@@ -502,11 +423,11 @@
   },
   {
     "story_id": "NUXEPM-1600",
-    "story_type": "technical"
+    "story_type": "functional"
   },
   {
     "story_id": "NUXEPM-1599",
-    "story_type": "technical"
+    "story_type": "functional"
   },
   {
     "story_id": "NUXEPM-1598",
@@ -514,7 +435,7 @@
   },
   {
     "story_id": "NUXEPM-1597",
-    "story_type": "technical"
+    "story_type": "functional"
   },
   {
     "story_id": "NUXEPM-1596",
@@ -661,16 +582,16 @@
     "story_type": "technical"
   },
   {
-    "story_id": "NUXEPM-1560",
-    "story_type": "functional"
+    "story_id": "NUXEPM-2397",
+    "story_type": "technical"
   },
   {
     "story_id": "NUXEPM-1559",
     "story_type": "functional"
   },
   {
-    "story_id": "NUXEPM-1558",
-    "story_type": "functional"
+    "story_id": "NUXEPM-2416",
+    "story_type": "technical"
   },
   {
     "story_id": "NUXEPM-1532",
@@ -689,8 +610,8 @@
     "story_type": "functional"
   },
   {
-    "story_id": "NUXEPM-1462",
-    "story_type": "functional"
+    "story_id": "NUXEPM-1261",
+    "story_type": "technical"
   },
   {
     "story_id": "OFFREPRIVE-1028",
@@ -714,19 +635,19 @@
   },
   {
     "story_id": "NUXEPM-1428",
-    "story_type": "technical"
+    "story_type": "functional"
   },
   {
     "story_id": "NUXEPM-1427",
-    "story_type": "technical"
+    "story_type": "functional"
   },
   {
     "story_id": "NUXEPM-1425",
-    "story_type": "technical"
+    "story_type": "functional"
   },
   {
     "story_id": "NUXEPM-1424",
-    "story_type": "poc_or_study"
+    "story_type": "functional"
   },
   {
     "story_id": "NUXEPM-1365",
@@ -734,11 +655,11 @@
   },
   {
     "story_id": "NUXEPM-1358",
-    "story_type": "poc_or_study"
+    "story_type": "functional"
   },
   {
     "story_id": "NUXEPM-1347",
-    "story_type": "poc_or_study"
+    "story_type": "functional"
   },
   {
     "story_id": "NUXEPM-1346",
@@ -746,7 +667,7 @@
   },
   {
     "story_id": "NUXEPM-1345",
-    "story_type": "technical"
+    "story_type": "functional"
   },
   {
     "story_id": "NUXEPM-1344",
@@ -770,6 +691,154 @@
   },
   {
     "story_id": "NUXEPM-638",
+    "story_type": "invalid_or_too_weak"
+  },
+   {
+    "story_id": "NUXEPM-248",
+    "story_type": "invalid_or_too_weak"
+  },
+   {
+    "story_id": "NUXEPM-400",
+    "story_type": "invalid_or_too_weak"
+  },
+   {
+    "story_id": "NUXEPM-1611",
+    "story_type": "invalid_or_too_weak"
+  },
+   {
+    "story_id": "NUXEPM-1654",
+    "story_type": "invalid_or_too_weak"
+  },
+   {
+    "story_id": "NUXEPM-1679",
+    "story_type": "invalid_or_too_weak"
+  },
+  {
+    "story_id": "NUXEPM-1519",
+    "story_type": "invalid_or_too_weak"
+  },
+  {
+    "story_id": "NUXEPM-1980",
+    "story_type": "invalid_or_too_weak"
+  },
+  {
+    "story_id": "NUXEPM-1975",
+    "story_type": "invalid_or_too_weak"
+  },
+  {
+    "story_id": "NUXEPM-378",
+    "story_type": "invalid_or_too_weak"
+  },
+   {
+    "story_id": "NUXEPM-2089",
+    "story_type": "invalid_or_too_weak"
+  },
+  {
+    "story_id": "NUXEPM-2091",
+    "story_type": "invalid_or_too_weak"
+  },
+  {
+    "story_id": "NUXEPM-2106",
+    "story_type": "invalid_or_too_weak"
+  },
+  {
+    "story_id": "NUXEPM-2104",
+    "story_type": "invalid_or_too_weak"
+  },
+  {
+    "story_id": "NUXEPM-2103",
+    "story_type": "invalid_or_too_weak"
+  },
+  {
+    "story_id": "NUXEPM-2102",
+    "story_type": "invalid_or_too_weak"
+  },
+  {
+    "story_id": "NUXEPM-2101",
+    "story_type": "invalid_or_too_weak"
+  },
+  {
+    "story_id": "NUXEPM-2100",
+    "story_type": "invalid_or_too_weak"
+  },
+  {
+    "story_id": "NUXEPM-2099",
+    "story_type": "invalid_or_too_weak"
+  },
+  {
+    "story_id": "NUXEPM-2098",
+    "story_type": "invalid_or_too_weak"
+  },
+  {
+    "story_id": "NUXEPM-2097",
+    "story_type": "invalid_or_too_weak"
+  },
+  {
+    "story_id": "NUXEPM-2096",
+    "story_type": "invalid_or_too_weak"
+  },
+  {
+    "story_id": "NUXEPM-2095",
+    "story_type": "invalid_or_too_weak"
+  },
+  {
+    "story_id": "NUXEPM-2094",
+    "story_type": "invalid_or_too_weak"
+  },
+  {
+    "story_id": "NUXEPM-2093",
+    "story_type": "invalid_or_too_weak"
+  },
+  {
+    "story_id": "NUXEPM-2415",
+    "story_type": "invalid_or_too_weak"
+  },
+  {
+    "story_id": "NUXEPM-2398",
+    "story_type": "invalid_or_too_weak"
+  },
+  {
+    "story_id": "NUXEPM-2358",
+    "story_type": "invalid_or_too_weak"
+  },
+  {
+    "story_id": "NUXEPM-2340",
+    "story_type": "invalid_or_too_weak"
+  },
+  {
+    "story_id": "NUXEPM-2313",
+    "story_type": "invalid_or_too_weak"
+  },
+  {
+    "story_id": "NUXEPM-2298",
+    "story_type": "invalid_or_too_weak"
+  },
+  {
+    "story_id": "NUXEPM-2297",
+    "story_type": "invalid_or_too_weak"
+  },
+  {
+    "story_id": "NUXEPM-2296",
+    "story_type": "invalid_or_too_weak"
+  },
+  {
+    "story_id": "NUXEPM-2166",
+    "story_type": "invalid_or_too_weak"
+  },
+  {
+    "story_id": "NUXEPM-2164",
+    "story_type": "invalid_or_too_weak"
+  },
+  {
+    "story_id": "NUXEPM-2161",
+    "story_type": "invalid_or_too_weak"
+  },
+  {
+    "story_id": "NUXEPM-2151",
+    "story_type": "invalid_or_too_weak"
+  },
+  {
+    "story_id": "NUXEPM-2148",
     "story_type": "invalid_or_too_weak"
   }
 ]

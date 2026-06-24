@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 150" width="200" height="150">
+  <!-- Red left arc -->
+  <path d="M 60 30 Q 100 20 120 50 Q 130 70 110 100 Q 80 130 40 120 Q 30 115 35 95 Q 50 70 60 30" fill="#C41E3A"/>
+  
+  <!-- Orange right arc (top) -->
+  <path d="M 100 30 Q 140 40 150 70 Q 155 85 140 95 Q 110 110 90 95 Q 100 60 100 30" fill="#FF8D00"/>
+  
+  <!-- Red right arc (bottom) -->
+  <path d="M 95 90 Q 125 100 140 120 Q 150 135 125 145 Q 95 155 85 130 Q 90 115 95 90" fill="#C41E3A"/>
+  
+  <!-- Orange left arc (bottom) -->
+  <path d="M 45 110 Q 70 125 85 135 Q 55 145 35 130 Q 20 120 35 105 Q 42 110 45 110" fill="#FF8D00"/>
+</svg>

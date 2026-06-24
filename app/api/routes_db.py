@@ -46,7 +46,7 @@ def list_analyses(story_id: str):
 
 
 @db_router.get("/stories/{story_id}/analysis/latest")
-def latest_analysis(story_id: str, model: str = Query(None, description="llama33 | deepseek")):
+def latest_analysis(story_id: str, model: str = Query(None, description="qwen3 | llama4")):
     """Récupère la dernière analyse pour une story (optionnel : par modèle)."""
     analysis = get_latest_analysis(story_id, model)
     if not analysis:

@@ -1,0 +1,48 @@
+[Image jointe : Admin_Suppression.png]
+Voici la description de l'écran :
+
+1. **CONTEXTE** : Il s'agit d'un écran de gestion des actualités (news) dans une application ou un site web, plus précisément un tableau de bord d'administration.
+
+2. **LIBELLÉS VISIBLES** :
+   - Administration des News
+   - Vous administrez ici les News, vous pouvez gérer les mots-clés.
+   - Quitter
+   - Sauvegarder
+   - Liste des News
+   - Formation
+   - Recrutement
+   - TOUTES
+   - ANNONCES
+   - ACTUALITÉS
+   - En cours de publication
+   - PUBLICATION
+   - TITRE
+   - AUTEUR
+   - DATE DE CRÉATION
+   - DATE DE DÉBUT DE PUBLICATION
+   - DATE DE FIN DE PUBLICATION
+   - VALIDE
+   - ACTION
+   - Supprimer
+   - en cours
+   - Test Annonce 1
+   - NICOLAS Rafael
+   - 05/09/2025 (à plusieurs reprises)
+   - 30/09/2025 (à deux reprises)
+   - Test Actualité 1
+   - Éléments par page
+   - 1-2/2
+   - Je gère les mots-clés
+
+3. **AGENCEMENT** :
+   - En haut : Barre de menu noir avec le titre "Administration des News" et des boutons "Quitter" et "Sauvegarder".
+   - Un bandeau avec des onglets "Formation" et "Recrutement" est visible, avec un total de 2 news en cours de publication indiquées.
+   - Un tableau avec les colonnes "PUBLICATION", "TITRE", "AUTEUR", "DATE DE CRÉATION", "DATE DE DÉBUT DE PUBLICATION", "DATE DE FIN DE PUBLICATION", "VALIDE", et "ACTION".
+   - Le tableau affiche deux lignes de données correspondant à "Test Annonce 1" et "Test Actualité 1".
+   - En bas : Un lien vers la gestion des mots-clés.
+
+4. **ÉTATS / INTERACTIONS** :
+   - Les onglets "Formation" et "Recrutement" semblent actifs avec un total de 2 news.
+   - Deux éléments sont listés dans le tableau.
+   - Les champs et boutons semblent inactifs dans la description fournie, mais il y a des cases à cocher vides dans la colonne "ACTION".
+   - Le bouton "Supprimer" est visible.

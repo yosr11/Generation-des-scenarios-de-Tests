@@ -9,10 +9,13 @@ from app.db.database import get_connection
 
 
 def save_manual_tests_snapshot(story_id: str, tests: List[Dict[str, Any]], generation_model: str = "") -> int:
+    """Sauvegarde un snapshot de tests en remplaçant l'ancien (idempotent)."""
     if not story_id:
         return -1
     conn = get_connection()
     try:
+        # Supprimer l'ancien snapshot pour cette story (idempotence)
+        conn.execute("DELETE FROM story_manual_tests WHERE story_id = ?", (story_id,))
         cur = conn.execute(
             """
             INSERT INTO story_manual_tests (story_id, tests_json, generation_model)
@@ -49,3 +52,34 @@ def get_latest_manual_tests(story_id: str) -> Optional[List[Dict[str, Any]]]:
         return None
     finally:
         conn.close()
+
+
+def get_latest_manual_tests_as_pydantic(story_id: str):
+    """Retourne ManualTestGenerationResult (objet Pydantic) au lieu de liste de dicts."""
+    from app.models.test_manual import ManualTestGenerationResult, ManualTestCase, RecommendedTestStrategy, ManualGenerationStatus
+    
+    tests_raw = get_latest_manual_tests(story_id)
+    if not tests_raw:
+        return None
+    
+    try:
+        # Convertir chaque dict en ManualTestCase
+        tests = []
+        for test_dict in tests_raw:
+            try:
+                tests.append(ManualTestCase(**test_dict))
+            except Exception as e:
+                print(f"Error converting test to ManualTestCase: {e}")
+                continue
+        
+        return ManualTestGenerationResult(
+            story_id=story_id,
+            recommended_test_strategy=RecommendedTestStrategy.MANUAL,
+            generation_status=ManualGenerationStatus.GENERATED,
+            message=f"{len(tests)} tests générés",
+            tests=tests,
+            notes=[],
+        )
+    except Exception as e:
+        print(f"Error converting manual tests to Pydantic: {e}")
+        return None

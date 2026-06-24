@@ -1,1 +1,0 @@
-#API pour exécuter les tests (simulation ou Playwright plus tard).

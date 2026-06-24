@@ -1,0 +1,69 @@
+[Image jointe : screenshot-1.png]
+Voici la description de l'image :
+
+**1. CONTEXTE** 
+L'image représente une capture d'écran d'une interface de gestion de projet, probablement dans un environnement de conteneurisation (Kubernetes). L'écran affiche une liste de ressources et des détails sur un projet spécifique nommé "snapshot" avec l'application "All applications".
+
+**2. LIBELLÉS VISIBLES**
+
+*   **Menu de navigation (gauche)** : 
+    *   Home
+    *   Favorites
+    *   Ecosystem
+    *   Helm
+    *   Workloads
+    *   Topology
+    *   Pods
+    *   Deployments
+    *   DeploymentConfigs
+    *   StatefulSets
+    *   Secrets
+    *   ConfigMaps
+    *   CronJobs
+    *   Jobs
+    *   DaemonSets
+    *   ReplicaSets
+    *   ReplicationControllers
+    *   HorizontalPodAutoscalers
+*   **Filtres et options (haut)** : 
+    *   Project: snapshot
+    *   Application: All applications
+    *   Display options
+    *   Filter by resource
+    *   Name
+    *   Rechercher (champ de recherche)
+*   **Ressources (liste)** : 
+    *   Clear all filters
+    *   CronJob
+    *   periodic-build-foryou-hra4u
+    *   periodic-reboot-foryou-hra4u
+    *   Deployment
+    *   dbforyou-foryou-hra4u
+    *   foryou-hra4u
+    *   httpd-foryou-hra4u
+    *   smtp4dev-foryou-hra4u
+    *   foryou-hra4u-8-0
+*   **Détails de la ressource sélectionnée (droite)** : 
+    *   foryou-hra4u
+    *   Details
+    *   Resources
+    *   Observe
+    *   Pods
+    *   foryou-hra4u-575dbf6867-hg6rf
+    *   Builds
+    *   View all 15
+    *   Build #106 was complete (21 hours ago)
+    *   Build #105 was complete (3 days ago)
+    *   Build #104 was complete (8 days ago)
+    *   Services
+    *   foryou-hra4u
+    *   Service port: http → Pod port: http
+
+**3. AGENCEMENT** 
+Le menu de navigation est sur la gauche. Les filtres et les options de visualisation sont en haut. La liste des ressources est à gauche, sous les filtres. Les détails de la ressource sélectionnée sont sur la droite.
+
+**4. ÉTATS / INTERACTIONS** 
+*   Le champ de recherche "Name" contient le texte "foryou-hra4u".
+*   Le filtre "Filter by resource" est sélectionné.
+*   Le bouton "Clear all filters" est visible.
+*   Certaines ressources sont déployées ( Deployments ) avec 1 pod.

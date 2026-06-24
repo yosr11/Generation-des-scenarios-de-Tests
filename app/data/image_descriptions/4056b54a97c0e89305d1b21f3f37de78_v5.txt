@@ -1,0 +1,69 @@
+[Image jointe : autre2.png]
+── Textes détectés (OCR) ──
+Indicateur œ
+> > et Lien de
+44 1E .* 1@ “ P < @ - -
+navigation \
+10 Cesses cacses 3 g [] 140 e
+; ® B P O <vOmnbons
+T 8 - 2 e e .
+w2 T
+| Ss
+ety
+Indicateur
+et Lien de
+40 1E * 1@
+..
+35
+navigation
+10
+L2
+110
+D …romnsous
+msestens
+PE
+oty sA
+412
+m s
+—_—
+572\
+-— —
+2 CXx
+cmt cr
+S ey At se
+V4 ¥
+W I
+── Analyse visuelle (VLM) ──
+### 1. CONTEXTE
+L'écran semble être un dashboard de supervision pour Sopra HR, probablement utilisé pour suivre les activités, le cycle de paie, les habilitations, et les anomalies GTA. Il s'agit d'un écran de tableau de bord.
+
+### 2. ANNOTATIONS AJOUTÉES PAR LE PO
+- Type : Flèche
+- Couleur : Violette
+- Description : La flèche violette est pointée vers un cadre intitulé "NÉOCASE" sur l'écran de gauche et vers un écran de détail sur le côté droit. 
+- Texte désigné : "Indicateur et Lien de navigation"
+
+### 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- **Pastille / Badge** : 
+  - Forme : Rectangulaire
+  - Couleur de fond : Bleue
+  - Texte OCR : Non applicable
+- **Indicateurs** :
+  - Forme : Carrée avec des nombres à l'intérieur
+  - Couleur de fond : Rouge, vert, gris
+  - Texte OCR : Exemple, "44", "1", "10", "110"
+
+### 4. ICÔNES ET PICTOGRAMMES
+- **Logo Sopra HR** : En haut à gauche, probablement une icône représentant le logo de l'entreprise.
+- **Icônes de type d'activités** : Plusieurs petites icônes noires représentant différents types d'activités (ex : alarme, point, etc.).
+- **Icône de lien de navigation** : Une flèche pointant vers un autre écran.
+
+### 5. AGENCEMENT ET RELATIONS
+- L'écran est divisé en sections :
+  - "ACTIVITÉS"
+  - "SUIVI CYCLE DE PAIE"
+  - "EFFECTIF PRÉSENT"
+  - "SUIVI DES HABILITATIONS"
+  - "ANOMALIES GTA"
+- Un cadre "NÉOCASE" en surbrillance avec des informations chiffrées est mis en avant.
+- Le lien de navigation semble indiquer une redirection vers un détail ou un autre écran de suivi.

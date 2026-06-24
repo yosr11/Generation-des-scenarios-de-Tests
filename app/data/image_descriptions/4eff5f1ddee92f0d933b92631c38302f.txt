@@ -1,0 +1,28 @@
+[Image jointe : Lecteur PDF.png]
+Voici la description de l'image :
+
+1. CONTEXTE : Il s'agit d'une popup ou d'une fenêtre modale affichant un document ou une information relative aux vacances de Noël.
+
+2. LIBELLÉS VISIBLES :
+   - Vacances de NOËL
+   - Publié le 08/10/2025
+   - e-billet UGC 28 septembre 2025.pdf
+   - Les vacances scolaires commencent généralement le vendredi soir ou le samedi matin après les cours et se terminent deux semaines plus tard le lundi matin à la reprise des cours. Elles comportent : - Les vacances de la Toussaint (ou d'automne) : en 2012, revenues à deux semaines, les vacances de Toussaint sont généralement situées à la fin du mois d'octobre et au début du mois de novembre. Elles duraient une semaine et demie entre 1981 et 1996 et entre 2003 et 2011, et une semaine entre 1997 et 2002. - Les vacances de Noël (ou de fin d'année) : d'une durée de deux semaines et également communes à toutes les zones. Elles englobent les fêtes de Noël et du jour de l'an et laissent quelques jours de récupération au début du mois de janvier. les vacances de Mardi-gras (ou d'hiver) : situées au mois de février jusqu'à mars. Elles sont divisées en zones et durent deux semaines. - Les vacances de Pâques (ou de printemps) : dernières vacances de l'année scolaire, elles sont également divisées en zones et durent deux semaines. Entre 1977 et 1990, existait une journée de congé supplémentaire désignée sous le nom de « journée de la maire », dont la date était fixée à la demande du maire de la commune, par le recteur d'académie. Celle-ci servait notamment à accompagner, en dehors des congés scolaires et jours fériés légaux, des festivités et commémorations organisées par la commune. Par exemple à Oradour-sur-Glane, la journée du maire tombait le 10 juin, en souvenir évidemment du massacre du 10 juin 1944.
+   - Fermer
+   - Voir le document
+   - Télécharger le document
+
+3. AGENCEMENT :
+   - Le titre "Vacances de NOËL" est affiché en haut de la fenêtre.
+   - La date de publication "Publié le 08/10/2025" est située en dessous du titre.
+   - Une image est présente à gauche du titre.
+   - Le texte principal est affiché en dessous de l'image et de la date de publication.
+   - Trois boutons sont situés en bas de la fenêtre : "Fermer", "Voir le document" et "Télécharger le document".
+
+4. ÉTATS / INTERACTIONS :
+   - Le bouton "Fermer" est probablement actif.
+   - Les boutons "Voir le document" et "Télécharger le document" sont probablement actifs.
+   - Aucun champ obligatoire n'est visible.
+   - Aucune case n'est cochée.
+   - Aucun onglet n'est sélectionné.
+   - Le texte principal est en mode lecture seule.

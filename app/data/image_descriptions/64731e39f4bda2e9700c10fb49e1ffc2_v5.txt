@@ -1,0 +1,134 @@
+[Image jointe : Navigation_4YOU-Neocase.png]
+── Textes détectés (OCR) ──
+.'
+Pt LAMALRE
+TN
+(>
+0 0
+7o | F en e e es e ot e m u
+@ MyHRPortal > My actmties Homepage  Knowledgebase  Documents  Onbaarding
+Mon voite e congés
+60,
+60;
+Roxsnne Paratts - Carees & ot Lo f es Cn é atlen e Erplegeu et ce Érpioque re us HR Systers >
+Bonardel-Mira
+sy et
+‘ ; ,
+Dashboards ‘] 2
+Q ; ‘.' - i
+4 O] ‘i”“ . d —
+f - - A
+[-1 @ Social and econamic cammittee Latest teleworking poiscies starting post Need financing for 3 relocation?
+Personal cequests elections: this Thursday and Friday, No 2024
+2 ®
+Employee’s requests Recommended for you
+Useful links
+@ g My Payships
+e Home office paticy
+e et ot g t st sp
+Legour Maternity Leave et ety Report It Now
+Cotratiatat rrs Vet yan, t st
+L ; SRS W b 5 Prve 5 pou ce T eady Useful Contacts )
+e AR & e A 6 Bnadh Other links.
+uR
+»A
+i‘.n'm
+.l
+ZON
+>)
+20 gétedes e e Lotral de sn equize
+> My a
+nties
+Home page
+Knowledge bar
+bocuments
+Onboardu
+@ My HR Portal
+Mon voèle de congés
+Roxgnne
+*hn
+à atter
+£s
+HR Syt
+Bonardel.htira
+Dashboards
+se
+PR ]
+Social and economic committee
+Latest teleworking policies stortng post
+Need financing for a relocation?
+2024
+Personal requests
+elections: this Thursday and Friday, No
+Employee’s requests
+Recommended for you
+My Payshps
+Home office paticy
+<t
+Jan Opportunities
+1c
+sy
+Wiy e
+yeu
+et 01 e
+ch
+Learming
+>ch
+urat
+ot et
+Legour
+Report It Now
+Maternity Leave
+oty
+1l
+”.
+pous
+reudy
+Useful Contacts
+ce
+vl
+zn p |
+ne
+ez,
+Other links.
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran capture une interface utilisateur d'un portail RH, probablement une page d'accueil ou un tableau de bord pour les activités de l'utilisateur. Il semble s'agir d'un mélange de page d'accueil personnalisée et de portail d'intranet RH.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+- Type : Flèche
+- Couleur : Orange
+- L'annotation (flèche orange) désigne la partie supérieure de l'écran, pointant vers le nom « Patricia LAMALRE » et le statut « RESPONSABLE RH », mais ne semble pas directement liée à un texte spécifique de la liste OCR.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un badge ou pastille de notification :
+  - Forme : Rectangulaire
+  - Couleur de fond : Bleu
+  - Texte OCR : « 0 » (dans le contexte de « Mes tâches (0) »)
+- Un autre badge ou pastille de notification :
+  - Forme : Rectangulaire
+  - Couleur de fond : Bleu
+  - Texte OCR : « 2 » (dans le contexte de « Les demandes de mon équipe (2) »)
+- Un bouton :
+  - Forme : Rectangulaire avec des coins légèrement arrondis
+  - Couleur de fond : Bleu
+  - Texte OCR : « My tasks », « Personal requests », « Employee’s requests », « New request »
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Icône de profil utilisateur (petit cercle avec presumably une photo de profil)
+  - Fonction probable : Profil utilisateur
+  - Position : En haut à droite
+- Icône de recherche :
+  - Fonction probable : Rechercher
+  - Position : Dans la barre de menu supérieur
+- Icône de paramètres ou menu (représenté par trois lignes horizontales ou un engrenage) :
+  - Fonction probable : Menu ou paramètres
+  - Position : Dans la barre de menu supérieur
+
+## 5. AGENCEMENT ET RELATIONS
+- L'écran est divisé en sections :
+  - Une barre de menu supérieur avec des onglets (« My HR Portal », « My activities », « Home page », « Knowledge base », « Documents », « Onboarding »)
+  - Un tableau de bord central avec des sections telles que « Dashboards », « Recommended for you », et « Useful links ».
+- Des éléments sont regroupés sous des titres tels que « Dashboards », « Recommended for you », et « Useful links ».
+- Un champ de recherche est présent en haut à droite.
+- Des liens rapides sont disponibles pour accéder à diverses sections comme « My Pay slips », « Home office policy », « Learning », « Report It Now », etc.

@@ -1,0 +1,32 @@
+[Image jointe : test_keyword.png]
+1. CONTEXTE : 
+L'écran semble être une liste ou un aperçu de publications, possiblement dans un contexte de gestion de contenu ou de réseau social interne comme peut le laisser penser le hashtag #MidiNewsWE. L'interface montre une série de cartes ou de lignes représentant des publications, chacune contenant une image, une date, un sujet, et un texte descriptif.
+
+2. ÉLÉMENTS VISUELLEMENT DISTINCTIFS :
+- "Formation" 
+  - TYPE : texte surligné dans un cadre (le contour du cadre est visiblement surligné en violet).
+  - COULEUR DOMINANTE : violet (surlignage).
+  - POSITION : Dans la troisième ligne de la liste, à droite de la date et du sujet.
+- Une flèche d'annotation jaune/orange est présente, pointant vers le cadre contenant le mot "Formation".
+
+3. LIBELLÉS VISIBLES :
+- "13/10/2024"
+- "Politique RH de la zon..."
+- "Thierry Cabannes reçoit les acteurs de l'info du jour, des experts et nos journalistes dans #MidiNewsWE."
+- "Politique RH"
+- "Formation" (dans le cadre surligné)
+
+4. AGENCEMENT :
+- Chaque publication est représentée par une carte ou une ligne.
+- Chaque carte contient une image d'un homme en costume.
+- La date ("13/10/2024") et le sujet ("Politique RH de la zon...") sont positionnés à droite de l'image.
+- Le texte descriptif est positionné en dessous de la date et du sujet.
+- La troisième carte a le mot "Formation" mis en évidence.
+
+5. ÉTATS / INTERACTIONS :
+- Aucun bouton actif ou inactif n'est clairement visible.
+- Aucun champ obligatoire n'est indiqué.
+- Aucune case n'est cochée.
+- Aucun onglet n'est sélectionné.
+
+L'image semble représenter une liste de publications ou d'articles avec certaines annotations pour attirer l'attention sur des éléments spécifiques, comme le mot "Formation" dans la troisième carte.

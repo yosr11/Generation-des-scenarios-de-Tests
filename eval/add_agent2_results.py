@@ -61,8 +61,6 @@ def normalize_analysis(analysis: dict) -> dict:
         "story_id": analysis.get("story_id", ""),
         "model": analysis.get("model", "llama4"),
         "story_type": analysis.get("story_type", ""),
-        "exploitability": analysis.get("exploitability", ""),
-        "recommended_test_type": analysis.get("recommended_test_type", "manual"),
         "actors": analysis.get("actors", []),
         "actions": analysis.get("actions", []),
         "business_rules": analysis.get("business_rules", []),

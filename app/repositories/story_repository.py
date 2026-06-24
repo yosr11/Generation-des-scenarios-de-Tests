@@ -55,6 +55,11 @@ def _row_to_dict(row) -> Dict[str, Any]:
         d["epic_key"] = ""
         d["epic_summary"] = ""
         d["epic_description"] = ""
+    # Colonne versioning Jira
+    try:
+        d["jira_updated"] = row["jira_updated"] or ""
+    except (IndexError, KeyError):
+        d["jira_updated"] = ""
     return d
 
 
@@ -70,8 +75,8 @@ def save_story(story: Dict[str, Any]) -> str:
                  acceptance_criteria_raw, acceptance_criteria_clean,
                  labels, components, issuelinks, priority, status,
                  fix_versions, requirement_status, references_json, flags,
-                 story_context_llm, epic_key, epic_summary, epic_description)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                 story_context_llm, epic_key, epic_summary, epic_description, jira_updated)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 story.get("id", ""),
@@ -94,6 +99,7 @@ def save_story(story: Dict[str, Any]) -> str:
                 story.get("epic_key", ""),
                 story.get("epic_summary", ""),
                 story.get("epic_description", ""),
+                story.get("jira_updated", ""),
             ),
         )
         conn.commit()
@@ -113,8 +119,8 @@ def save_stories_bulk(stories: List[Dict[str, Any]]) -> int:
                      acceptance_criteria_raw, acceptance_criteria_clean,
                      labels, components, issuelinks, priority, status,
                      fix_versions, requirement_status, references_json, flags,
-                     story_context_llm, epic_key, epic_summary, epic_description)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                     story_context_llm, epic_key, epic_summary, epic_description, jira_updated)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
                     story.get("id", ""),
@@ -137,6 +143,7 @@ def save_stories_bulk(stories: List[Dict[str, Any]]) -> int:
                     story.get("epic_key", ""),
                     story.get("epic_summary", ""),
                     story.get("epic_description", ""),
+                    story.get("jira_updated", ""),
                 ),
             )
         conn.commit()

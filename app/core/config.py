@@ -1,5 +1,5 @@
 #Gère les variables d’environnement (.env).
-#Centralise les chemins JSON ou les credentials API.
+#Centralise les chemins JSON, credentials API, seuils et paramètres agents.
 
 import os
 from pathlib import Path
@@ -7,8 +7,66 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 class Settings:
+    """Configuration centralisée pour tous les agents."""
+
+    # ── Paths ────────────────────────────────────────────────
     STORIES_PATH = os.getenv("STORIES_PATH", "app/data/stories.json")
+    DB_PATH = os.getenv("DB_PATH", "app/data/agent.db")
+
+    # ── LLM / Groq ──────────────────────────────────────────
+    GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
+    LLM_PROVIDER = os.getenv("LLM_PROVIDER", "groq")  # "groq" ou "bedrock"
+    LLM_DEFAULT_MODEL = os.getenv("LLM_DEFAULT_MODEL", "qwen3")
+    LLM_TEMPERATURE = float(os.getenv("LLM_TEMPERATURE", "0.0"))
+    LLM_MAX_TOKENS = int(os.getenv("LLM_MAX_TOKENS", "2000"))
+    LLM_MAX_RETRIES = int(os.getenv("LLM_MAX_RETRIES", "6"))
+    LLM_RETRY_SLEEP = float(os.getenv("LLM_RETRY_SLEEP", "1.5"))
+    LLM_TIMEOUT = int(os.getenv("LLM_TIMEOUT", "60"))
+
+    # ── AWS / Bedrock ────────────────────────────────────────
+    AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID", "")
+    AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY", "")
+    AWS_REGION = os.getenv("AWS_REGION", "eu-west-3")
+    BEDROCK_MODEL_ID = os.getenv("BEDROCK_MODEL_ID", "eu.amazon.nova-lite-v1:0")
+
+    # ── Jira ─────────────────────────────────────────────────
+    # Production Jira: récupération des scénarios (NUXEPM, etc.)
+    JIRA_PROD_URL = os.getenv("JIRA_PROD_URL", "https://hra-jira.ptx.fr.sopra")
+    
+    # Test Jira: création des tests (YOUQA)
+    JIRA_TEST_URL = os.getenv("JIRA_TEST_URL", "https://hra-test-jira.ptx.fr.sopra")
+    
+    # Credentials (partagés entre les 2 instances)
+    JIRA_USERNAME = os.getenv("JIRA_USERNAME", "")
+    JIRA_PASSWORD = os.getenv("JIRA_PASSWORD", "")
+    
+    # Backward compatibility
+    JIRA_BASE_URL = os.getenv("JIRA_BASE_URL", JIRA_PROD_URL)
+
+    # ── Agent 1 — Analysis ───────────────────────────────────
+    AGENT1_DEFAULT_MODEL = os.getenv("AGENT1_DEFAULT_MODEL", "qwen3")
+    # Supported models for Agent 1: "qwen3", "llama4", "gptoss", "gptoss120b", "qwen3.6", "nova-lite-2"
+
+    # ── Agent 2 — Test Generation ────────────────────────────
+    AGENT2_DEFAULT_MODEL = os.getenv("AGENT2_DEFAULT_MODEL", "llama4")
+
+    # ── Agent 3 — Validation ─────────────────────────────────
+    AGENT3_COVERAGE_THRESHOLD = float(os.getenv("AGENT3_COVERAGE_THRESHOLD", "0.70"))
+    AGENT3_COVERAGE_SIMILARITY = float(os.getenv("AGENT3_COVERAGE_SIMILARITY", "0.7"))
+    AGENT3_DUPLICATE_THRESHOLD = float(os.getenv("AGENT3_DUPLICATE_THRESHOLD", "0.8"))
+    AGENT3_EMBEDDING_MODEL = os.getenv(
+        "AGENT3_EMBEDDING_MODEL", "paraphrase-multilingual-MiniLM-L12-v2"
+    )
+    AGENT3_QUALITY_MODEL = os.getenv("AGENT3_QUALITY_MODEL", "llama4")
+
+    # ── Agent 5 — Reporting ──────────────────────────────────
+    AGENT5_DEFAULT_MODEL = os.getenv("AGENT5_DEFAULT_MODEL", "qwen3")
+
+    # ── Orchestrator ─────────────────────────────────────────
+    ORCHESTRATOR_MAX_RETRIES = int(os.getenv("ORCHESTRATOR_MAX_RETRIES", "2"))
+
 
 settings = Settings()
 

@@ -1,0 +1,52 @@
+[Image jointe : Formulaire_Mono langue.jpg]
+Voici la description de l'écran :
+
+**1. CONTEXTE** : 
+L'écran semble être un formulaire de création d'une news. Il s'agit d'un formulaire pour créer une annonce ou une actualité.
+
+**2. LIBELLÉS VISIBLES** :
+
+*   Gestion des News
+*   Quitter
+*   Créer une annonce
+*   Créer une actualité
+*   Sauvegarder
+*   Liste des News
+*   Je crée une News
+*   Les champs indiqués par une \* sont obligatoires.
+*   Type de News \*
+*   Actualités
+*   Publication 
+*   Valide
+*   Date de début de publication \*
+*   Date de fin de publication \*
+*   La localisation de la News est France secteur privé. La langue de publication de la News est l' Anglais.
+*   Contenu 
+*   Langue \*
+*   English (affiché en bleu, semble être sélectionné)
+*   English - Titre dans le carrousel \*
+*   English - Texte \*
+*   English - Mots-clés \*
+*   English - Aperçu du contenu 
+*   English - Veuillez sélectionner un Document d'actualité 
+*   Confidentialité 
+*   Société \*
+*   Etablissement \*
+*   Acteur autorisé à voir la News \*
+*   Illustration dans le carrousel Veuillez sélectionner une image
+*   Liste des unités déclaratives
+*   Aperçu de l'illustration
+
+**3. AGENCEMENT** :
+
+*   Le titre "Gestion des News" est affiché en haut à gauche de l'écran.
+*   Trois boutons "Quitter", "Créer une annonce" et "Créer une actualité" ainsi qu'un champ "Sauvegarder" sont positionnés à côté.
+*   Deux onglets "Liste des News" et "Je crée une News" sont affichés en dessous. 
+*   Le second onglet étant sélectionné, un formulaire est affiché avec des champs répartis sur la page.
+
+**4. ÉTATS / INTERACTIONS** :
+
+*   Le champ "Type de News" est déjà renseigné avec le texte "Actualités" et semble être en mode lecture seule.
+*   Le champ "Langue" est déjà renseigné avec le texte "English" qui est sélectionné.
+*   Un champ "Illustration dans le carrousel" est proposé avec une image déjà sélectionnée nommée "2.png". 
+*   Le bouton "Sauvegarder" est grisé donc inactif.

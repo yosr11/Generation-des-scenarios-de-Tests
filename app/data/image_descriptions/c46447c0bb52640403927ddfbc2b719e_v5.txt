@@ -1,0 +1,40 @@
+[Image jointe : 360_InboxManager.png]
+── Textes détectés (OCR) ──
+@ ABSENCES
+v A
+DATE BUTOIR —
+Mohamed Q11CONGE02 H
+O 3, du 01/07/2026 Valider ) o
+J au 03/07/2026 ‘
+DATE BUTOIR
+[ 4
+Mohamed Q11CONGE02
+du 01/07/2026
+3;
+au 03/07/2026
+── Analyse visuelle (VLM) ──
+Voici mon analyse de l'image :
+
+**1. CONTEXTE**
+L'écran semble être une page de gestion des absences, probablement dans un logiciel de gestion des ressources humaines. Il s'agit d'un formulaire ou d'une fiche de détails pour une absence spécifique.
+
+**2. ANNOTATIONS AJOUTÉES PAR LE PO**
+Aucune annotation détectée.
+
+**3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI**
+- Un badge ou une pastille : forme ronde, couleur bleu clair, sans texte OCR associé, situé à gauche de l'information sur l'absence.
+- Un bouton : forme ovale, couleur verte, texte OCR "Valider".
+
+**4. ICÔNES ET PICTOGRAMMES**
+- Une icône de silhouette de personne : probablement une icône représentant un utilisateur ou un employé, située à gauche de l'information sur l'absence.
+- Une icône de flèche gauche : située dans le coin supérieur gauche, probablement pour naviguer vers l'arrière.
+- Une icône de trois points verticaux : située à droite de l'information sur l'absence, probablement pour un menu contextuel.
+- Une icône de recherche ou de liste déroulante : située à côté du champ "Entrez un nom", probablement pour lancer une recherche ou pour accéder à une liste déroulante.
+
+**5. AGENCEMENT ET RELATIONS**
+L'écran est divisé en sections :
+- Une section d'en-tête avec le titre "ABSENCES" et une icône de flèche gauche.
+- Un champ de recherche avec le libellé "Entrez un nom" et une icône de recherche ou de liste déroulante.
+- Un champ pour la "DATE BUTOIR" avec une icône de calendrier ou de liste déroulante.
+- Une section de détails sur l'absence avec le nom de l'employé, les dates de début et de fin d'absence, et un bouton "Valider".
+Le bouton "Valider" est situé à droite de la section de détails sur l'absence, ce qui suggère qu'il est lié à cette section.

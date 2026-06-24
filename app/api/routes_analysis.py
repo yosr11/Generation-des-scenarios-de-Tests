@@ -5,14 +5,14 @@ from fastapi import APIRouter, HTTPException, Query
 from typing import List, Dict, Any
 
 from app.services.jira_service import get_story_byID, get_epic_for_story
-from app.utils.cleaning import clean_story_dict, enrich_story_for_llm
+from app.utils.cleaning import clean_story_dict, enrich_story_for_llm, flatten_issuelinks
 from app.services.story_analysis_service import analyze_story_with_groq, StoryAnalysisError
 from app.services.llm_client import GROQ_MODELS
 from app.repositories.story_repository import get_story_by_id, save_story
 from app.repositories.analysis_repository import save_analysis
 from app.services.epic_service import JIRA_AC_FIELD, get_stories_by_epic_detailed
-from app.services.document_collector import collect_documents_for_epic
-from app.services.rag_service import index_documents, retrieve_context, is_epic_indexed
+from app.services.document_collector import collect_documents_for_epic, collect_documents_for_story
+from app.services.rag_service import index_documents, retrieve_context, is_epic_indexed, _get_chroma_client
 import logging
 
 logger = logging.getLogger(__name__)
@@ -20,35 +20,46 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/analysis", tags=["Story_Analysis"])
 
 
-def _flatten_issuelinks(raw_links: list) -> List[Dict[str, str]]:
-    out: List[Dict[str, str]] = []
-    for link in raw_links:
-        link_type = (link.get("type") or {}).get("name", "")
-        for direction in ("inwardIssue", "outwardIssue"):
-            target = link.get(direction)
-            if target:
-                out.append({
-                    "type": link_type,
-                    "direction": direction.replace("Issue", ""),
-                    "key": target.get("key", ""),
-                    "summary": (target.get("fields") or {}).get("summary", ""),
-                    "status": ((target.get("fields") or {}).get("status") or {}).get("name", ""),
-                })
-    return out
+def _get_enriched_story(issue_key: str, force_refresh: bool = False) -> Dict[str, Any]:
+    db_story = None if force_refresh else get_story_by_id(issue_key)
 
-
-def _get_enriched_story(issue_key: str) -> Dict[str, Any]:
-    db_story = get_story_by_id(issue_key)
+    # Vérifier si la story en cache est périmée (versioning Jira)
+    need_refresh = False
     if db_story and db_story.get("description_clean"):
-        # S'assurer que l'epic info est toujours présente
-        if not db_story.get("epic_key"):
-            epic_info = get_epic_for_story(issue_key)
-            if epic_info:
-                db_story["epic_key"] = epic_info["key"]
-                db_story["epic_summary"] = epic_info["summary"]
-                db_story["epic_description"] = epic_info.get("description") or ""
-                save_story(db_story)
-        return db_story
+        try:
+            jira_data = get_story_byID(issue_key)
+            if jira_data.get("status") == 200:
+                jira_updated = (jira_data["data"].get("fields") or {}).get("updated", "")
+                cached_updated = db_story.get("jira_updated", "")
+                if jira_updated and jira_updated != cached_updated:
+                    logger.info(
+                        "Story %s modifiée dans Jira (cached=%s, jira=%s) → re-fetch",
+                        issue_key, cached_updated, jira_updated,
+                    )
+                    need_refresh = True
+                else:
+                    # Pas de changement, utiliser le cache
+                    if not db_story.get("epic_key"):
+                        epic_info = get_epic_for_story(issue_key)
+                        if epic_info:
+                            db_story["epic_key"] = epic_info["key"]
+                            db_story["epic_summary"] = epic_info["summary"]
+                            db_story["epic_description"] = epic_info.get("description") or ""
+                            save_story(db_story)
+                    return db_story
+        except Exception:
+            # Jira inaccessible → utiliser le cache
+            if not db_story.get("epic_key"):
+                epic_info = get_epic_for_story(issue_key)
+                if epic_info:
+                    db_story["epic_key"] = epic_info["key"]
+                    db_story["epic_summary"] = epic_info["summary"]
+                    db_story["epic_description"] = epic_info.get("description") or ""
+                    save_story(db_story)
+            return db_story
+
+    if not need_refresh and not db_story:
+        pass  # fall through to Jira fetch below
 
     result = get_story_byID(issue_key)
 
@@ -66,11 +77,12 @@ def _get_enriched_story(issue_key: str) -> Dict[str, Any]:
         "acceptance_criteria_raw": fields.get(JIRA_AC_FIELD) or "",
         "labels": fields.get("labels") or [],
         "components": [c.get("name") for c in (fields.get("components") or [])],
-        "issuelinks": _flatten_issuelinks(fields.get("issuelinks") or []),
+        "issuelinks": flatten_issuelinks(fields.get("issuelinks") or []),
         "priority": (fields.get("priority") or {}).get("name"),
         "status": (fields.get("status") or {}).get("name"),
         "fixVersions": [v.get("name") for v in (fields.get("fixVersions") or [])],
         "requirement_status": fields.get("customfield_14422") or [],
+        "jira_updated": fields.get("updated") or "",
     }
 
     cleaned = clean_story_dict(raw_story)
@@ -91,10 +103,19 @@ def _build_response(enriched, model_alias, model_name, provider, analysis):
     try:
         analysis_dict = analysis.model_dump()
         analysis_dict["model"] = model_alias
-        save_analysis(analysis_dict)
-        logger.info("Analyse sauvegardée pour %s (modèle: %s)", analysis_dict.get("story_id"), model_alias)
+        
+        logger.info(f"[SAVE] Attempting to save analysis for {analysis_dict.get('story_id')}")
+        logger.info(f"[SAVE] Analysis dict keys: {list(analysis_dict.keys())}")
+        
+        rowid = save_analysis(analysis_dict)
+        
+        if rowid > 0:
+            logger.info(f"✅ Analyse sauvegardée pour {analysis_dict.get('story_id')} (modèle: {model_alias}, rowid: {rowid})")
+        else:
+            logger.error(f"❌ Echec sauvegarde analyse pour {analysis_dict.get('story_id')} (rowid: {rowid})")
+            
     except Exception as e:
-        logger.warning("Echec sauvegarde analyse pour %s : %s", enriched.get("id", ""), e)
+        logger.error(f"❌ EXCEPTION lors sauvegarde analyse pour {enriched.get('id', '')}: {e}", exc_info=True)
 
     return {
         "model_alias": model_alias,
@@ -120,17 +141,50 @@ def _build_response(enriched, model_alias, model_name, provider, analysis):
 ALLOWED_MODELS = list(GROQ_MODELS.keys())
 
 
-def _get_rag_context(enriched: Dict[str, Any]) -> list | None:
+def _get_story_attachments(story_id: str) -> list:
+    """
+    Récupère DIRECTEMENT les pièces jointes de la story (PDF → texte,
+    images → OCR+VLM), sans passer par le RAG. Ces documents font partie
+    intégrante de la spec et seront injectés en direct dans le prompt
+    d'Agent 1.
+
+    Retourne la liste des dicts {source, origin_key, filename, text}
+    correspondant aux PJ directement attachées à la story (filtre :
+    source == 'attachment' et origin_key == story_id).
+    """
+    try:
+        docs = collect_documents_for_story(story_id)
+    except Exception as exc:
+        print(f"[ATTACH] Erreur lors de la collecte des PJ de {story_id}: {exc}", flush=True)
+        return []
+
+    # Filtrer : on ne garde que les PJ directement attachées à la story
+    # (pas l'epic, pas les linked, pas les autres stories)
+    story_only = [
+        d for d in docs
+        if d.get("source") == "attachment" and d.get("origin_key") == story_id
+    ]
+    print(f"[ATTACH] {story_id} : {len(story_only)} pièce(s) jointe(s) directe(s)", flush=True)
+    for d in story_only:
+        is_image = "[Image jointe :" in d.get("text", "")
+        kind = "image (OCR+VLM)" if is_image else "doc"
+        print(f"[ATTACH]   - {d.get('filename')} [{kind}, {len(d.get('text',''))} chars]", flush=True)
+    return story_only
+
+
+def _get_rag_context(enriched: Dict[str, Any], force_refresh: bool = False) -> list | None:
     """
     Trouve l'epic parent de la story, indexe ses documents
     s'ils ne le sont pas encore, puis retourne le contexte RAG.
+    Si force_refresh=True : supprime la collection RAG existante et
+    ré-indexe avec VLM scopé sur la story analysée.
     """
     epic_key = enriched.get("epic_key", "")
+    story_id = enriched.get("id", "")
 
     # Fallback : chercher l'epic parent si absent
     if not epic_key:
-        story_id = enriched.get("id", "")
-        logger.info("epic_key absent pour %s, tentative de récupération ...", story_id)
+        print(f"[RAG] epic_key absent pour {story_id}, tentative de récupération ...", flush=True)
         epic_info = get_epic_for_story(story_id)
         if epic_info:
             epic_key = epic_info["key"]
@@ -138,26 +192,57 @@ def _get_rag_context(enriched: Dict[str, Any]) -> list | None:
             enriched["epic_summary"] = epic_info["summary"]
             enriched["epic_description"] = epic_info.get("description") or ""
         else:
-            logger.warning("Pas d'epic parent trouvé pour %s, RAG ignoré", story_id)
+            print(f"[RAG] Pas d'epic parent trouvé pour {story_id}, RAG ignoré", flush=True)
             return None
 
-    logger.info("RAG activé pour %s (epic: %s)", enriched.get("id"), epic_key)
+    print(f"[RAG] activé pour {story_id} (epic: {epic_key}, force_refresh={force_refresh})", flush=True)
 
-    # Indexer si pas déjà fait
+    # Force refresh : drop la collection RAG existante
+    if force_refresh and is_epic_indexed(epic_key):
+        collection_name = epic_key.replace("-", "_").lower()
+        try:
+            _get_chroma_client().delete_collection(collection_name)
+            print(f"[RAG] Force refresh: collection {collection_name} supprimée", flush=True)
+        except Exception as exc:
+            print(f"[RAG] Impossible de supprimer la collection {collection_name}: {exc}", flush=True)
+
+    # Indexer si pas déjà fait (ou si on vient de la supprimer)
     if not is_epic_indexed(epic_key):
-        logger.info("Indexation RAG de l'epic %s ...", epic_key)
-        epic_docs = collect_documents_for_epic(epic_key)
+        print(f"[RAG] Indexation de l'epic {epic_key} (VLM focus={story_id}) ...", flush=True)
+        epic_docs = collect_documents_for_epic(epic_key, vlm_focus_story=story_id)
         all_docs = list(epic_docs.get("epic_documents", []))
         for docs in epic_docs.get("documents_by_story", {}).values():
             all_docs.extend(docs)
+
+        # Compter combien de docs sont des descriptions d'images (OCR+VLM)
+        image_docs = [d for d in all_docs if "[Image jointe :" in d.get("text", "")]
+        print(f"[RAG] Documents collectés : {len(all_docs)} (dont {len(image_docs)} descriptions d'images)", flush=True)
+        for img_doc in image_docs:
+            print(f"[RAG]   - image: {img_doc.get('filename')} (origin={img_doc.get('origin_key')}, {len(img_doc.get('text',''))} chars)", flush=True)
+
         if all_docs:
             index_documents(epic_key, all_docs)
         else:
-            logger.info("Aucun document trouvé pour l'epic %s", epic_key)
+            print(f"[RAG] Aucun document trouvé pour l'epic {epic_key}", flush=True)
             return None
 
     query = f"{enriched.get('summary', '')} {enriched.get('description_clean', '')}"
-    return retrieve_context(epic_key, query)
+    # Les PJ de la story sont injectées en DIRECT comme spec (via _get_story_attachments),
+    # pas via le RAG → on les exclut du top-K sémantique pour ne pas dupliquer.
+    rag_context = retrieve_context(epic_key, query, exclude_origin_keys=[story_id])
+
+    # Logging : confirmer ce qui arrive dans le contexte RAG (sans les PJ de la story)
+    if rag_context:
+        print(f"[RAG→Agent1] {story_id} : {len(rag_context)} chunks RAG (hors PJ story) récupérés", flush=True)
+        origins = {}
+        for c in rag_context:
+            ok = c.get("origin_key", "?")
+            origins[ok] = origins.get(ok, 0) + 1
+        print(f"[RAG→Agent1] {story_id} : origines = {origins}", flush=True)
+    else:
+        print(f"[RAG→Agent1] {story_id} : aucun contexte RAG retourné", flush=True)
+
+    return rag_context
 
 
 # ══════════════════════════════════════════════════════════════
@@ -175,7 +260,10 @@ def analyze_epic_stories(
         False,
         description="Activer le RAG : collecte les documents de l'epic, "
                     "les indexe dans ChromaDB, et injecte le contexte pertinent "
-                    "dans chaque analyse."
+                    "dans chaque analyse. Inclut : PJ de l'epic + PJ de chaque story "
+                    "de l'epic + descriptions et PJ des tickets liés. Les images de "
+                    "chaque story passent par OCR+VLM (uniquement pour la story en cours "
+                    "d'analyse afin de maîtriser le coût)."
     ),
 ):
     """
@@ -235,10 +323,14 @@ def analyze_epic_stories(
             query = f"{enriched.get('summary', '')} {enriched.get('description_clean', '')}"
             rag_context = retrieve_context(epic_key, query)
 
+        # Attachments directs de la story (images + pièces jointes + issuelinks descriptions)
+        story_attachments = _get_story_attachments(story_id)
+
         analysis = analyze_story_with_groq(
             story=enriched,
             model_alias=model_alias,
             rag_context=rag_context,
+            story_attachments=story_attachments,
         )
         return {
             "story_id": story_id,
@@ -292,8 +384,16 @@ def analyze_story(
     ),
     use_rag: bool = Query(
         False,
-        description="Activer le RAG : indexe les documents de l'epic parent "
-                    "et injecte le contexte pertinent dans l'analyse."
+        description="Activer le RAG : indexe tous les documents liés à l'epic parent "
+                    "(PJ de l'epic + PJ de chaque story de l'epic, y compris la story analysée, "
+                    "+ descriptions et PJ des tickets liés) et injecte le contexte pertinent "
+                    "dans l'analyse. Les images de la story analysée passent par OCR+VLM."
+    ),
+    force_refresh: bool = Query(
+        False,
+        description="Forcer le rafraîchissement : re-fetch Jira (ignore le cache story) "
+                    "+ supprime et ré-indexe la collection RAG de l'epic (re-passe par OCR+VLM "
+                    "sur les images de la story)."
     ),
 ):
     if model_alias not in ALLOWED_MODELS:
@@ -301,20 +401,16 @@ def analyze_story(
             status_code=400,
             detail=f"Invalid model_alias '{model_alias}'. Allowed values: {ALLOWED_MODELS}"
         )
-    enriched = _get_enriched_story(issue_key)
+    enriched = _get_enriched_story(issue_key, force_refresh=force_refresh)
 
-    description = (enriched.get("description_clean") or enriched.get("description") or "").strip()
-    if not description:
-        raise HTTPException(
-            status_code=422,
-            detail=f"Story {issue_key} ignorée : pas de description. Contactez le PO pour enrichir la story."
-        )
-
-    rag_context = _get_rag_context(enriched) if use_rag else None
+    # Les PJ de la story sont TOUJOURS injectées en direct (spec), indépendamment de use_rag
+    story_attachments = _get_story_attachments(issue_key)
+    rag_context = _get_rag_context(enriched, force_refresh=force_refresh) if use_rag else None
 
     try:
         analysis = analyze_story_with_groq(
-            story=enriched, model_alias=model_alias, rag_context=rag_context,
+            story=enriched, model_alias=model_alias,
+            rag_context=rag_context, story_attachments=story_attachments,
         )
         model_name = GROQ_MODELS[model_alias]
     except (StoryAnalysisError, ConnectionError, TimeoutError) as e:
@@ -329,17 +425,15 @@ def analyze_story(
 # ══════════════════════════════════════════════════════════════
 
 @router.get("/qwen3/{issue_key}")
-def analyze_story_qwen3(issue_key: str, use_rag: bool = Query(False)):
-    enriched = _get_enriched_story(issue_key)
-    description = (enriched.get("description_clean") or enriched.get("description") or "").strip()
-    if not description:
-        raise HTTPException(
-            status_code=422,
-            detail=f"Story {issue_key} ignorée : pas de description. Contactez le PO pour enrichir la story."
-        )
-    rag_context = _get_rag_context(enriched) if use_rag else None
+def analyze_story_qwen3(issue_key: str, use_rag: bool = Query(False), force_refresh: bool = Query(False)):
+    enriched = _get_enriched_story(issue_key, force_refresh=force_refresh)
+    story_attachments = _get_story_attachments(issue_key)
+    rag_context = _get_rag_context(enriched, force_refresh=force_refresh) if use_rag else None
     try:
-        analysis = analyze_story_with_groq(story=enriched, model_alias="qwen3", rag_context=rag_context)
+        analysis = analyze_story_with_groq(
+            story=enriched, model_alias="qwen3",
+            rag_context=rag_context, story_attachments=story_attachments,
+        )
     except (StoryAnalysisError, ConnectionError, TimeoutError) as e:
         raise HTTPException(status_code=500, detail=str(e))
     except Exception as e:
@@ -348,17 +442,15 @@ def analyze_story_qwen3(issue_key: str, use_rag: bool = Query(False)):
 
 
 @router.get("/gptoss/{issue_key}")
-def analyze_story_gptoss(issue_key: str, use_rag: bool = Query(False)):
-    enriched = _get_enriched_story(issue_key)
-    description = (enriched.get("description_clean") or enriched.get("description") or "").strip()
-    if not description:
-        raise HTTPException(
-            status_code=422,
-            detail=f"Story {issue_key} ignorée : pas de description. Contactez le PO pour enrichir la story."
-        )
-    rag_context = _get_rag_context(enriched) if use_rag else None
+def analyze_story_gptoss(issue_key: str, use_rag: bool = Query(False), force_refresh: bool = Query(False)):
+    enriched = _get_enriched_story(issue_key, force_refresh=force_refresh)
+    story_attachments = _get_story_attachments(issue_key)
+    rag_context = _get_rag_context(enriched, force_refresh=force_refresh) if use_rag else None
     try:
-        analysis = analyze_story_with_groq(story=enriched, model_alias="gptoss", rag_context=rag_context)
+        analysis = analyze_story_with_groq(
+            story=enriched, model_alias="gptoss",
+            rag_context=rag_context, story_attachments=story_attachments,
+        )
     except (StoryAnalysisError, ConnectionError, TimeoutError) as e:
         raise HTTPException(status_code=500, detail=str(e))
     except Exception as e:
@@ -367,18 +459,17 @@ def analyze_story_gptoss(issue_key: str, use_rag: bool = Query(False)):
 
 
 @router.get("/llama4/{issue_key}")
-def analyze_story_llama4(issue_key: str, use_rag: bool = Query(False)):
-    enriched = _get_enriched_story(issue_key)
-
-    # ✅ NE PLUS bloquer ici si la description est vide
-    # Le service analyze_story_with_groq gère ce cas
-    rag_context = _get_rag_context(enriched) if use_rag else None
+def analyze_story_llama4(issue_key: str, use_rag: bool = Query(False), force_refresh: bool = Query(False)):
+    enriched = _get_enriched_story(issue_key, force_refresh=force_refresh)
+    story_attachments = _get_story_attachments(issue_key)
+    rag_context = _get_rag_context(enriched, force_refresh=force_refresh) if use_rag else None
 
     try:
         analysis = analyze_story_with_groq(
             story=enriched,
             model_alias="llama4",
-            rag_context=rag_context
+            rag_context=rag_context,
+            story_attachments=story_attachments,
         )
     except (StoryAnalysisError, ConnectionError, TimeoutError) as e:
         raise HTTPException(status_code=500, detail=str(e))

@@ -43,7 +43,10 @@ _BLOCK_TAGS = {"p", "li", "br", "div", "h1", "h2", "h3", "h4", "h5", "h6", "tr"}
 
 class _HTMLStripper(HTMLParser):
     def __init__(self):
-        super().__init__()
+        # convert_charrefs=False: handle entities ourselves and avoid the
+        # HTMLParser bug where a stray '&' (e.g. "R&D") silently swallows
+        # trailing data when the input ends mid-entity.
+        super().__init__(convert_charrefs=False)
         self._parts: List[str] = []
 
     def handle_starttag(self, tag, attrs):
@@ -58,7 +61,14 @@ class _HTMLStripper(HTMLParser):
         self._parts.append(data)
 
     def handle_entityref(self, name):
-        self._parts.append(html.unescape(f"&{name};"))
+        decoded = html.unescape(f"&{name};")
+        # If unescape returned the literal "&name;" it means the entity is
+        # unknown (e.g. "R&D" -> handle_entityref("D")). Emit the source form
+        # without the synthetic ';' to avoid corrupting plain text.
+        if decoded == f"&{name};":
+            self._parts.append(f"&{name}")
+        else:
+            self._parts.append(decoded)
 
     def handle_charref(self, name):
         self._parts.append(html.unescape(f"&#{name};"))
@@ -72,6 +82,7 @@ def strip_html(text: str) -> str:
         return ""
     stripper = _HTMLStripper()
     stripper.feed(text)
+    stripper.close()
     return stripper.get_text()
 
 
@@ -619,7 +630,29 @@ def build_story_context_for_llm(story: Dict[str, Any]) -> str:
 
 
 # ══════════════════════════════════════════════════════════════
-#  11. ENRICHISSEMENT POUR LE LLM
+#  11. UTILITAIRES JIRA
+# ══════════════════════════════════════════════════════════════
+
+def flatten_issuelinks(raw_links: list) -> List[Dict[str, str]]:
+    """Transforme les issuelinks Jira (très imbriqués) en liste plate."""
+    out: List[Dict[str, str]] = []
+    for link in raw_links:
+        link_type = (link.get("type") or {}).get("name", "")
+        for direction in ("inwardIssue", "outwardIssue"):
+            target = link.get(direction)
+            if target:
+                out.append({
+                    "type": link_type,
+                    "direction": direction.replace("Issue", ""),
+                    "key": target.get("key", ""),
+                    "summary": (target.get("fields") or {}).get("summary", ""),
+                    "status": ((target.get("fields") or {}).get("status") or {}).get("name", ""),
+                })
+    return out
+
+
+# ══════════════════════════════════════════════════════════════
+#  12. ENRICHISSEMENT POUR LE LLM
 # ══════════════════════════════════════════════════════════════
 
 def enrich_story_for_llm(story: Dict[str, Any]) -> Dict[str, Any]:

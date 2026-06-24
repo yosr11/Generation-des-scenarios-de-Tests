@@ -1,0 +1,22 @@
+[Image jointe : Mot-clé sur Carrousel.png]
+1. CONTEXTE : L'écran semble être une liste ou un carrousel d'éléments, possiblement des actualités ou des événements, avec des texte et des images.
+
+2. LIBELLÉS VISIBLES :
+   - "Thierry Cabanne reçoit les acteurs de l'info du jour, des experts et nos journalistes dans #MidiNewsWE." (à gauche)
+   - "13/10/2024 Politique RH de la zon..." (en haut à droite)
+   - "Thierry Cabanne reçoit les acteurs de l'info du jour, des experts et nos journalistes dans #MidiNewsWE." (en haut à droite, dans la deuxième case)
+   - "13/10/2024 Politique RH  Formation..." (en bas à droite, partiellement visible)
+
+3. AGENCEMENT :
+   - Une image d'un homme en costume est visible à gauche de chaque élément de la liste.
+   - Le texte est disposé à droite des images.
+   - Les éléments semblent être alignés horizontalement.
+
+4. ÉTATS / INTERACTIONS :
+   - Il n'y a pas d'information claire sur les boutons actifs/inactifs.
+   - Aucun champ obligatoire n'est indiqué par une étoile (*).
+   - Il n'y a pas de cases cochées visibles.
+   - Aucun onglet n'est sélectionné de manière évidente.
+   - Un élément est mis en évidence avec un rectangle de sélection (possiblement un élément actif ou sélectionné).
+
+L'image semble être une capture d'écran d'une interface utilisateur montrant une liste ou un carrousel d'articles ou d'événements avec des images et des textes associés. L'interface semble être interactive, permettant possiblement à l'utilisateur de naviguer à travers les éléments. Cependant, sans plus de détails ou une image plus claire, certaines interprétations restent incertaines.

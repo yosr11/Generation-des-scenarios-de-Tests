@@ -15,3 +15,15 @@ scikit-learn==1.4.2
 chromadb>=1.5.0
 sentence-transformers>=5.0.0
 google-genai
+groq         # manquant !
+numpy        # manquant !
+langgraph
+langchain-core
+markdown
+xhtml2pdf
+streamlit
+requests
+Pillow
+pytesseract
+boto3          # SDK AWS
+botocore       # Utilitaires AWS

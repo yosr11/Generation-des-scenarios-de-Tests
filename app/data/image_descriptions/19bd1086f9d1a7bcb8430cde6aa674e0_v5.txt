@@ -1,0 +1,34 @@
+[Image jointe : DN.png]
+── Textes détectés (OCR) ──
+— @ Dossier numérique
+S PNV TEST CONF SAL1 TEST CO
+ADEM ADEM
+O\
+FRLFRYRHSUP02
+Dossier numérique
+TEST CONF SAL1 TEST CO
+── Analyse visuelle (VLM) ──
+Voici mon analyse de l'image :
+
+**1. CONTEXTE**
+L'écran semble être une page de recherche ou de consultation de dossiers numériques, probablement dans un contexte de gestion des ressources humaines. L'intention probable est de permettre à l'utilisateur de rechercher et de consulter des dossiers numériques associés à des salariés.
+
+**2. ANNOTATIONS AJOUTÉES PAR LE PO**
+Aucune annotation détectée.
+
+**3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI**
+* Un badge : forme rectangulaire, couleur de fond bleue, texte "SALARIÉ 4YOU".
+* Un logo : cercle avec une silhouette de personne et un "+" rose, situé dans le coin supérieur gauche.
+
+**4. ICÔNES ET PICTOGRAMMES**
+* Une icône de loupe : située à droite du champ de recherche, probablement utilisée pour lancer la recherche.
+* Une icône de silhouette de personne : située à gauche du champ de recherche, probablement utilisée pour représenter le salarié.
+* Une icône de menu : trois lignes horizontales, située dans le coin supérieur gauche, probablement utilisée pour accéder à un menu.
+
+**5. AGENCEMENT ET RELATIONS**
+* La page est organisée en sections :
+ + Un en-tête noir avec le titre "Dossier numérique" et le logo.
+ + Un champ de recherche avec un badge "SALARIÉ 4YOU" et une icône de loupe.
+ + Un champ de filtre avec un texte grisé "Filtre sur arborescence et mots-clés" et une icône de triangle pointant vers le bas.
+ + Un champ pour masquer les emplacements vides avec une case à cocher.
+* Le champ de recherche est probablement le champ principal de la page, et le badge "SALARIÉ 4YOU" semble indiquer que la page est actuellement configurée pour afficher les dossiers numériques des salariés.

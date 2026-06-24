@@ -1,0 +1,36 @@
+[Image jointe : image-2025-09-30-11-15-01-185.png]
+Voici la description de l'image :
+
+1. CONTEXTE : L'écran semble être un formulaire ou une page de configuration pour la gestion de documents et d'illustrations dans un carrousel, avec un pop-up ou une fenêtre contextuelle liée à la configuration de bases de données.
+
+2. LIBELLÉS VISIBLES :
+   - Document d’actualité
+   - Veuillez sélectionner un document *
+   - ConfigDB.jpg
+   - Illustration dans le carrousel
+   - Veuillez sélectionner une image
+   - ConfigDB.jpg
+   - Configurations JDBC
+   - Base de données configurations
+   - Liste des environnements :
+   - FORYOU TEST (PR70)
+   - Type de base de données :
+   - Oracle
+   - Postgres
+   - Nom de la base de données :
+   - FORYOU TEST (PR70)
+   - Environnement par défaut
+   - Java Database Connectivity URL :
+   - Utilisateur Jdbc :
+
+3. AGENCEMENT :
+   - Le titre "Document d’actualité" est en haut à gauche, suivi d'un champ pour sélectionner un document avec une valeur "ConfigDB.jpg" déjà sélectionnée.
+   - En dessous, il y a une section "Illustration dans le carrousel" avec la même image "ConfigDB.jpg" sélectionnée.
+   - Une fenêtre pop-up ou contextuelle est présente en bas à droite, avec un titre "Configurations JDBC" et plusieurs champs pour la configuration de la base de données, notamment pour sélectionner l'environnement, le type de base de données, le nom de la base de données, l'URL de connectivité JDBC, et l'utilisateur JDBC.
+
+4. ÉTATS / INTERACTIONS :
+   - Le champ "Veuillez sélectionner un document *" a une étoile indiquant qu'il est obligatoire.
+   - Le champ "Nom de la base de données :" a une valeur par défaut "FORYOU TEST (PR70)".
+   - Le type de base de données peut être sélectionné entre "Oracle" et "Postgres", mais "Oracle" semble être sélectionné par défaut.
+   - La case "Environnement par défaut" est cochée.
+   - Le champ "Java Database Connectivity URL :" et "Utilisateur Jdbc :" sont vides et attendent des saisies.

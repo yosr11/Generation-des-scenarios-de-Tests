@@ -1,0 +1,56 @@
+[Image jointe : autre.png]
+── Textes détectés (OCR) ──
+= @ Gestion des News o ? O
+Les champs indiqués par une * sont obligatoires.
+Type de News * Publication .
+° ( Valide
+Titre dans le carrousel * -
+Date de début de publication * i.
+Texte * L; -
+Date de fin de publication * ‘i.
+p La localisation de la News est France secteur privé.
+\ Mot-clé La langue de publication de la News est le Français.
+lllustration dans le carrousel 7
+Veuillez sélectionner une image Confidentialité .
+Société *
+Gestion des News
+Q,
+V Je crée une News
+Type de News *
+Publication i.
+Valide
+Titre dans le carrousel *
+p G —
+//
+Texte *
+La localisation de la News est France secteur privé.
+Mot-clé
+La langue de publication de la News est le Frangais.
+lllustration dans le carrousel
+Confidentialité .
+Veuillez sélectionner une image
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran est un formulaire pour créer une nouvelle "News". Il s'agit probablement d'une page d'administration pour gérer les actualités ou les publications sur une plateforme.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+- Une flèche rouge est ajoutée pour indiquer le champ "Illustration dans le carrousel".
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un champ de sélection déroulant pour "Type de News".
+- Un champ de texte pour "Titre dans le carrousel".
+- Un champ de texte multiligne pour "Texte".
+- Un champ de sélection de fichier pour "Illustration dans le carrousel".
+- Des champs de saisie de date pour "Date de début de publication" et "Date de fin de publication".
+- Un champ de sélection déroulant pour "Société".
+- Un champ de texte pour "Mot-clé".
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Une icône de calendrier est présente à côté des champs "Date de début de publication" et "Date de fin de publication".
+- Une icône d'information (point d'interrogation) est présente à côté de "Publication", "Date de début de publication", "Date de fin de publication", et "Confidentialité".
+
+## 5. AGENCEMENT ET RELATIONS
+- Le formulaire est divisé en sections avec des champs étiquetés.
+- Les champs obligatoires sont indiqués par une étoile (*).
+- Le champ "Publication" est accompagné d'une case à cocher pour "Valide".
+- Les informations de localisation et de langue de publication sont fournies en texte brut, sans champ de saisie associé.

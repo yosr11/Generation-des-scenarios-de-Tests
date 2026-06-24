@@ -1,0 +1,25 @@
+[Image jointe : image-2025-04-23-08-10-28-519.png]
+Voici la description de l'image :
+
+1. CONTEXTE : L'écran semble afficher une liste de éléments, potentiellement un résultat de recherche ou une liste de contenu, avec des informations textuelles et des images.
+
+2. LIBELLÉS VISIBLES :
+   - "13/10/2024 Politique RH de la zon..."
+   - "Thierry Cabannes reçoit les acteurs de l'info du jour, des experts et nos journalistes dans #MidiNewsWE" (apparaît trois fois)
+   - "Formation..."
+
+3. AGENCEMENT : 
+   - L'image présente une liste avec trois éléments.
+   - Chaque élément de la liste contient une image d'un homme en costume.
+   - À côté de chaque image, il y a un bloc de texte.
+   - Le texte dans chaque bloc est tronqué mais semble contenir une date, un titre, et une description.
+   - Un petit carré ou rectangle avec le texte "Formation..." est visible en bas à droite, mais son contenu exact et son objectif ne sont pas clairs.
+
+4. ÉTATS / INTERACTIONS :
+   - Aucun bouton ou champ de saisie n'est clairement visible.
+   - Il semble qu'il n'y ait pas de champs obligatoires indiqués par une étoile (*).
+   - Aucune case n'est cochée.
+   - Aucun onglet n'est sélectionné de manière visible.
+   - Un élément semble être surligné ou avoir une interaction avec un pointeur de souris (flèche jaune pointant vers un rectangle).
+
+L'image n'est pas décrite comme étant illisible, floue ou vide.

@@ -1,6 +1,4 @@
-import os
 import logging
-import httpx
 from typing import List, Dict, Any
 from fastapi import APIRouter, HTTPException, Query
 
@@ -9,9 +7,6 @@ from app.services.manual_test_generator import ManualTestGeneratorService
 from app.services.llm_client import GROQ_MODELS, ALL_MODELS, build_llm_client
 from app.repositories.story_repository import get_story_by_id
 from app.repositories.analysis_repository import get_latest_analysis
-from app.services.rag_service import retrieve_context, is_epic_indexed
-from app.services.document_collector import collect_documents_for_epic
-from app.services.rag_service import index_documents
 from app.services.epic_service import get_stories_by_epic_detailed
 from app.utils.cleaning import clean_story_dict, enrich_story_for_llm
 from app.services.story_analysis_service import analyze_story_with_groq, StoryAnalysisError, _is_reference_only_description
@@ -26,11 +21,56 @@ router = APIRouter(prefix="/manual-tests", tags=["Manual Test Generation"])
 ALLOWED_MODELS = list(ALL_MODELS.keys())
 
 
+@router.get("/legacy-rag-preview/{story_id}")
+def preview_legacy_rag_examples(
+    story_id: str,
+    k: int = Query(5, ge=1, le=20, description="Nombre d'exemples à retourner"),
+    min_score: float = Query(0.55, ge=0.0, le=1.0, description="Score minimum (similarité cosinus)"),
+    min_steps: int = Query(2, ge=0, description="Nombre minimum d'étapes du test legacy"),
+    min_action_chars: int = Query(12, ge=0, description="Longueur minimum d'au moins une action"),
+):
+    """
+    Debug : montre exactement quels tests legacy seraient injectés à Agent 2
+    pour cette story (sans déclencher la génération).
+    Permet de comprendre pourquoi le RAG améliore ou dégrade la qualité.
+    """
+    story = get_story_by_id(story_id)
+    if not story:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Story introuvable en base : {story_id}. Lancez d'abord /analysis/{story_id}.",
+        )
+
+    from app.services.legacy_test_rag_service import retrieve_similar
+    examples = retrieve_similar(
+        title=story.get("summary", ""),
+        description=story.get("description_clean", ""),
+        k=k,
+        min_score=min_score,
+        min_steps=min_steps,
+        min_action_chars=min_action_chars,
+    )
+
+    return {
+        "story_id": story_id,
+        "story_summary": story.get("summary", ""),
+        "params": {
+            "k": k,
+            "min_score": min_score,
+            "min_steps": min_steps,
+            "min_action_chars": min_action_chars,
+        },
+        "examples_count": len(examples),
+        "examples": examples,
+    }
+
+
 def generate_manual_tests_for_story_data(
     story: Dict[str, Any],
     analysis: Dict[str, Any],
     model_alias: str,
-    use_rag: bool,
+    rag_context: list = None,
+    legacy_examples: list = None,
 ) -> ManualTestGenerationResult:
     """
     Génère les tests Agent 2 à partir d'une story et d'une analyse déjà chargées (pas d'accès HTTP).
@@ -75,10 +115,14 @@ def generate_manual_tests_for_story_data(
             notes=["Action requise : la story doit être complétée ou reformulée par le PO."],
         )
 
-    rag_context = _get_rag_context(story) if use_rag else None
     llm_client, model_name = build_llm_client(model_alias)
     service = ManualTestGeneratorService(llm_client=llm_client, model_name=model_name)
-    result = service.generate(story=story, analysis=analysis, rag_context=rag_context)
+    result = service.generate(
+        story=story,
+        analysis=analysis,
+        rag_context=rag_context,
+        legacy_examples=legacy_examples,
+    )
     if result.tests and story_id:
         save_manual_tests_snapshot(
             story_id,
@@ -88,41 +132,19 @@ def generate_manual_tests_for_story_data(
     return result
 
 
-def _build_groq_client():
-    """Crée un client Groq SDK (compatible chat.completions.create)."""
-    from groq import Groq
-    transport = httpx.HTTPTransport(verify=False)
-    return Groq(
-        api_key=os.getenv("GROQ_API_KEY"),
-        http_client=httpx.Client(transport=transport, timeout=60.0),
-    )
-
-
-def _get_rag_context(enriched: dict) -> list | None:
-    """Récupère le contexte RAG pour la story (indexe l'epic si nécessaire)."""
-    epic_key = enriched.get("epic_key", "")
-    if not epic_key:
-        return None
-
-    if not is_epic_indexed(epic_key):
-        epic_docs = collect_documents_for_epic(epic_key)
-        all_docs = list(epic_docs.get("epic_documents", []))
-        for docs in epic_docs.get("documents_by_story", {}).values():
-            all_docs.extend(docs)
-        if all_docs:
-            index_documents(epic_key, all_docs)
-        else:
-            return None
-
-    query = f"{enriched.get('summary', '')} {enriched.get('description_clean', '')}"
-    return retrieve_context(epic_key, query)
-
-
 @router.post("/generate/{story_id}", response_model=ManualTestGenerationResult)
 def generate_manual_tests(
     story_id: str,
     model_alias: str = Query("llama4", description=f"Model alias. Allowed: {list(ALL_MODELS.keys())}"),
-    use_rag: bool = Query(True, description="Injecter le contexte RAG dans la génération"),
+    use_legacy_rag: bool = Query(
+        True,
+        description=(
+            "Active le RAG des tests Xray legacy Sopra HR (few-shot Agent 2). "
+            "Recherche sémantique dans la collection Chroma `legacy_tests` (~5900 tests) "
+            "et injecte les top-5 (score >= 0.55) comme exemples dans le prompt. "
+            "Fallback graceful : si rien ne matche, génération normale sans exemples."
+        ),
+    ),
 ):
     if model_alias not in ALLOWED_MODELS:
         raise HTTPException(status_code=400, detail=f"Model alias invalide '{model_alias}'. Allowed: {ALLOWED_MODELS}")
@@ -135,7 +157,28 @@ def generate_manual_tests(
     if not analysis:
         raise HTTPException(status_code=404, detail=f"Aucune analyse trouvée pour {story_id}. Lancez d'abord l'analyse via /analysis/{story_id}.")
 
-    return generate_manual_tests_for_story_data(story, analysis, model_alias, use_rag)
+    legacy_examples = None
+    if use_legacy_rag:
+        try:
+            from app.services.legacy_test_rag_service import retrieve_similar
+            legacy_examples = retrieve_similar(
+                title=story.get("summary", ""),
+                description=story.get("description_clean", ""),
+            )
+            if legacy_examples:
+                logger.info(
+                    f"[/manual-tests/generate/{story_id}] Legacy RAG: {len(legacy_examples)} examples "
+                    f"[{', '.join(e.get('test_id', '?') for e in legacy_examples)}]"
+                )
+            else:
+                logger.info(f"[/manual-tests/generate/{story_id}] Legacy RAG: no example >= min_score")
+        except Exception as e:
+            logger.warning(f"[/manual-tests/generate/{story_id}] Legacy RAG failed: {e}")
+            legacy_examples = None
+
+    return generate_manual_tests_for_story_data(
+        story, analysis, model_alias, legacy_examples=legacy_examples
+    )
 
 
 # ══════════════════════════════════════════════════════════════
@@ -146,13 +189,19 @@ def generate_manual_tests(
 def generate_manual_tests_for_epic(
     epic_key: str,
     analysis_model: str = Query("llama4", description=f"Modèle pour l'Agent 1 (analyse). Allowed: {list(GROQ_MODELS.keys())}"),
-    generation_model: str = Query("deepseek", description=f"Modèle pour l'Agent 2 (génération tests). Allowed: {list(ALL_MODELS.keys())}"),
-    use_rag: bool = Query(True, description="Injecter le contexte RAG dans la génération"),
+    generation_model: str = Query("llama4", description=f"Modèle pour l'Agent 2 (génération tests). Allowed: {list(ALL_MODELS.keys())}"),
+    use_legacy_rag: bool = Query(
+        True,
+        description=(
+            "Active le RAG des tests Xray legacy Sopra HR (few-shot Agent 2) "
+            "pour chaque story de l'epic. Fallback graceful par story."
+        ),
+    ),
 ):
     """
     Pipeline complet pour un Epic :
       1. Récupère toutes les stories de l'epic depuis Jira
-      2. Pour chaque story : nettoie → analyse (Agent 1, llama4) → génère les tests (Agent 2, qwen3)
+      2. Pour chaque story : nettoie → analyse (Agent 1) → génère les tests (Agent 2)
       3. Retourne un résumé global avec tous les résultats
     """
     if analysis_model not in ALLOWED_MODELS:
@@ -166,15 +215,6 @@ def generate_manual_tests_for_epic(
         raise HTTPException(status_code=502, detail="Erreur lors de la communication avec Jira")
     if not raw_stories:
         raise HTTPException(status_code=404, detail=f"Aucune story trouvée pour l'epic {epic_key}")
-
-    # 2) RAG : collecte + indexation (si activé)
-    if use_rag and not is_epic_indexed(epic_key):
-        epic_docs = collect_documents_for_epic(epic_key)
-        all_docs = list(epic_docs.get("epic_documents", []))
-        for docs in epic_docs.get("documents_by_story", {}).values():
-            all_docs.extend(docs)
-        if all_docs:
-            index_documents(epic_key, all_docs)
 
     analysis_model_name = GROQ_MODELS[analysis_model]
     llm_client, generation_model_name = build_llm_client(generation_model)
@@ -225,14 +265,30 @@ def generate_manual_tests_for_epic(
                 skipped.append({"story_id": story_id, "reason": "Story invalide ou trop faible"})
                 continue
 
-            # Contexte RAG
-            rag_context = None
-            if use_rag and is_epic_indexed(epic_key):
-                query = f"{enriched.get('summary', '')} {enriched.get('description_clean', '')}"
-                rag_context = retrieve_context(epic_key, query)
-
             # Agent 2 : Génération des tests
-            test_result = service.generate(story=enriched, analysis=analysis_dict, rag_context=rag_context)
+            legacy_examples = None
+            if use_legacy_rag:
+                try:
+                    from app.services.legacy_test_rag_service import retrieve_similar
+                    legacy_examples = retrieve_similar(
+                        title=enriched.get("summary", ""),
+                        description=enriched.get("description_clean", ""),
+                    )
+                    if legacy_examples:
+                        logger.info(
+                            f"[epic={epic_key}] Story {story_id}: Legacy RAG {len(legacy_examples)} examples "
+                            f"[{', '.join(e.get('test_id', '?') for e in legacy_examples)}]"
+                        )
+                except Exception as e:
+                    logger.warning(f"[epic={epic_key}] Story {story_id}: Legacy RAG failed: {e}")
+                    legacy_examples = None
+
+            test_result = service.generate(
+                story=enriched,
+                analysis=analysis_dict,
+                rag_context=None,
+                legacy_examples=legacy_examples,
+            )
             if test_result.tests and story_id:
                 save_manual_tests_snapshot(
                     story_id,
