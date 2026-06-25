@@ -9,7 +9,8 @@ import {
   Play, Square, GitBranch, CheckCircle2, XCircle,
   Clock, Cpu, AlertTriangle, ChevronRight, Bot,
   FileText, TestTube, BarChart3, FileBarChart2,
-  Sparkles, Hash, ToggleLeft, ToggleRight
+  Sparkles, Hash, ToggleLeft, ToggleRight,
+  Target, Shield, AlertCircle, TrendingUp, List, ChevronDown
 } from 'lucide-react'
 
 /* ──────────────────────────────────────────────────────
@@ -30,11 +31,11 @@ const STEP_TEXT: Record<string, string> = {
 }
 
 const AGENT_INFO: Record<string, { label: string; desc: string; icon: React.ElementType; color: string }> = {
-  'Agent 1': { label: 'Récupération Story',  desc: 'Fetch Jira & RAG context',            icon: FileText,      color: '#7c3aed' },
-  'Agent 2': { label: 'Génération Tests',    desc: 'Scénarios manuels & automatisés',     icon: TestTube,      color: '#f43f5e' },
-  'Agent 3': { label: 'Validation',          desc: 'Couverture & cas limites',             icon: CheckCircle2, color: '#f97316' },
-  'Agent 4': { label: 'Rapport Qualité',     desc: 'Score global & recommandations',       icon: FileBarChart2, color: '#ec4899' },
-  'Agent 5': { label: 'Analyse Avancée',     desc: 'Métriques approfondies',               icon: BarChart3,     color: '#a855f7' },
+  'Agent 1': { label: 'Agent 1 : Analyse',              desc: 'Analyse sémantique de la user story',     icon: FileText,      color: '#3b82f6' },
+  'Agent 2': { label: 'Agent 2 : Génération des tests', desc: 'Création des scénarios de tests manuels', icon: TestTube,      color: '#06b6d4' },
+  'Agent 3': { label: 'Agent 3 : Validation',           desc: 'Couverture, ambiguïtés & cas limites',    icon: CheckCircle2,  color: '#10b981' },
+  'Agent 4': { label: 'Agent 4 : Classification',       desc: 'Classification auto/manuel',              icon: BarChart3,     color: '#6366f1' },
+  'Agent 5': { label: 'Agent 5 : Rapport',              desc: 'Rapport qualité & recommandations',       icon: FileBarChart2, color: '#8b5cf6' },
 }
 
 /* ──────────────────────────────────────────────────────
@@ -55,7 +56,7 @@ const Toggle: React.FC<{
       className={`relative w-11 h-6 rounded-full flex-shrink-0 transition-all duration-200 focus:outline-none ${
         checked ? 'bg-grad-cta shadow-glow-rose' : 'bg-gray-200'
       }`}
-      style={checked ? { background: 'linear-gradient(135deg,#f43f5e,#f97316)' } : {}}
+      style={checked ? { background: 'linear-gradient(135deg,#2563eb,#4f46e5)' } : {}}
     >
       <span
         className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow-sm transition-all duration-200 ${
@@ -73,97 +74,361 @@ const Toggle: React.FC<{
 )
 
 /* ──────────────────────────────────────────────────────
-   Agent Result Card
+   Rich result renderers per agent
 ────────────────────────────────────────────────────── */
-const AgentResultCard: React.FC<{ step: any; index: number }> = ({ step, index }) => {
-  const [expanded, setExpanded] = useState(false)
-  const status = step.status as string
-  const style = STEP_STYLE[status] || STEP_STYLE.pending
-  const textColor = STEP_TEXT[status] || 'text-brand-muted'
-  const Icon = style.icon
-  const agentKey = Object.keys(AGENT_INFO).find(k =>
-    (step.agent || '').toLowerCase().includes(k.toLowerCase().replace('agent ', ''))
-    || (step.agent || '') === k
-  )
-  const info = agentKey ? AGENT_INFO[agentKey] : null
 
+const Agent1Result: React.FC<{ output: any }> = ({ output }) => {
+  if (!output) return null
   return (
-    <div
-      className="rounded-2xl border transition-all duration-300"
-      style={{ background: style.bg, borderColor: style.border }}
-    >
-      <div
-        className="flex items-center gap-3 p-4 cursor-pointer"
-        onClick={() => status === 'completed' && setExpanded(!expanded)}
-      >
-        {/* Index bubble */}
-        <div
-          className="w-8 h-8 rounded-xl flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
-          style={{ background: info ? info.color : 'var(--grad-cta)', opacity: status === 'pending' ? 0.4 : 1 }}
-        >
-          {index + 1}
+    <div className="space-y-3 text-sm">
+      {output.story_type && (
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-bold text-brand-navy/50 uppercase tracking-widest">Type</span>
+          <span className="px-2.5 py-0.5 rounded-full text-xs font-bold" style={{ background: 'rgba(124,58,237,0.1)', color: '#7c3aed' }}>
+            {output.story_type}
+          </span>
         </div>
-
-        {/* Info */}
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2">
-            <p className="font-bold text-brand-navy text-sm">
-              {info?.label || step.agent}
-            </p>
-            {info && (
-              <span className="text-[10px] text-brand-muted font-medium hidden sm:inline">
-                — {info.desc}
-              </span>
-            )}
-          </div>
-          {step.error && (
-            <p className="text-xs text-brand-rose mt-0.5 flex items-center gap-1">
-              <AlertTriangle size={11} /> {step.error}
-            </p>
-          )}
-        </div>
-
-        {/* Status */}
-        <div className="flex items-center gap-2 flex-shrink-0">
-          <Icon
-            size={16}
-            className={`${textColor} ${style.spin ? 'animate-spin-slow' : ''}`}
-          />
-          <Badge
-            variant={status === 'completed' ? 'success' : status === 'failed' ? 'error' : status === 'running' ? 'orange' : 'default'}
-            size="sm"
-            dot
-          >
-            {status}
-          </Badge>
-          {status === 'completed' && (
-            <ChevronRight
-              size={14}
-              className={`text-brand-muted transition-transform ${expanded ? 'rotate-90' : ''}`}
-            />
-          )}
-        </div>
-      </div>
-
-      {/* Expanded output */}
-      {expanded && step.output && (
-        <div className="px-4 pb-4 pt-0 animate-fade-in">
-          <div className="rounded-xl overflow-hidden border border-white/60">
-            <div className="px-3 py-2 bg-white/60 border-b border-white/60 flex items-center gap-2">
-              <Sparkles size={12} className="text-brand-violet" />
-              <span className="text-[10px] font-bold text-brand-navy uppercase tracking-wider">
-                Résultat de l'agent
-              </span>
-            </div>
-            <div className="p-3 bg-white/40 text-xs text-brand-navy font-mono leading-relaxed max-h-48 overflow-y-auto whitespace-pre-wrap">
-              {typeof step.output === 'string'
-                ? step.output
-                : JSON.stringify(step.output, null, 2)}
-            </div>
+      )}
+      {output.actors?.length > 0 && (
+        <div>
+          <p className="text-xs font-bold text-brand-navy/50 uppercase tracking-widest mb-1.5">Acteurs</p>
+          <div className="flex flex-wrap gap-1.5">
+            {output.actors.map((a: string, i: number) => (
+              <span key={i} className="px-2.5 py-0.5 rounded-full text-xs bg-blue-50 text-blue-700 border border-blue-100">{a}</span>
+            ))}
           </div>
         </div>
       )}
+      {output.testable_points?.length > 0 && (
+        <div>
+          <p className="text-xs font-bold text-brand-navy/50 uppercase tracking-widest mb-1.5">Points testables</p>
+          <ul className="space-y-1">
+            {output.testable_points.slice(0, 6).map((p: string, i: number) => (
+              <li key={i} className="flex items-start gap-2 text-brand-navy/80">
+                <Target size={11} className="mt-0.5 flex-shrink-0 text-brand-violet" />
+                <span className="text-xs leading-relaxed">{p}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {output.business_rules?.length > 0 && (
+        <div>
+          <p className="text-xs font-bold text-brand-navy/50 uppercase tracking-widest mb-1.5">Règles métier</p>
+          <ul className="space-y-1">
+            {output.business_rules.slice(0, 4).map((r: string, i: number) => (
+              <li key={i} className="flex items-start gap-2 text-brand-navy/80">
+                <Shield size={11} className="mt-0.5 flex-shrink-0 text-brand-orange" />
+                <span className="text-xs leading-relaxed">{r}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
+  )
+}
+
+const Agent2Result: React.FC<{ output: any }> = ({ output }) => {
+  const tests = Array.isArray(output) ? output : output?.tests || []
+  if (!tests.length) return <p className="text-xs text-brand-muted">Aucun test généré</p>
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center gap-2 mb-2">
+        <span className="px-2.5 py-0.5 rounded-full text-xs font-bold" style={{ background: 'rgba(244,63,94,0.1)', color: '#f43f5e' }}>
+          {tests.length} test{tests.length > 1 ? 's' : ''} générés
+        </span>
+      </div>
+      {tests.slice(0, 5).map((t: any, i: number) => (
+        <div key={i} className="rounded-xl p-3 border" style={{ background: 'rgba(255,255,255,0.7)', borderColor: 'rgba(100,116,139,0.15)' }}>
+          <div className="flex items-start gap-2">
+            <span className="w-5 h-5 rounded-lg flex-shrink-0 flex items-center justify-center text-[10px] font-bold text-white mt-0.5"
+              style={{ background: 'linear-gradient(135deg,#f43f5e,#f97316)' }}>{i + 1}</span>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-bold text-brand-navy truncate">{t.test_name || t.title || `Test ${i + 1}`}</p>
+              {t.scenario_type && (
+                <span className="text-[10px] text-brand-muted capitalize">{t.scenario_type}</span>
+              )}
+              {t.steps?.length > 0 && (
+                <p className="text-[10px] text-brand-muted mt-0.5">{t.steps.length} étapes</p>
+              )}
+            </div>
+          </div>
+        </div>
+      ))}
+      {tests.length > 5 && (
+        <p className="text-xs text-brand-muted text-center">+ {tests.length - 5} autres tests…</p>
+      )}
+    </div>
+  )
+}
+
+const Agent3Result: React.FC<{ output: any }> = ({ output }) => {
+  if (!output) return null
+  const report = output?.report || output
+  const coverage = report?.coverage_rate ?? report?.coverage_percentage
+  const validationStatus = report?.validation_status
+  const ambiguities = report?.ambiguities || []
+  const uncoveredPoints = report?.uncovered_testable_points || []
+  const duplicates = report?.duplicate_tests || report?.duplicates || []
+
+  return (
+    <div className="space-y-3">
+      {/* KPIs row */}
+      <div className="grid grid-cols-3 gap-2">
+        {coverage !== undefined && (
+          <div className="rounded-xl p-3 text-center" style={{ background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.15)' }}>
+            <p className="text-2xl font-extrabold" style={{ color: '#10b981' }}>{Math.round((coverage || 0) * 100)}%</p>
+            <p className="text-[10px] font-bold text-brand-navy/50 uppercase tracking-widest mt-0.5">Couverture</p>
+          </div>
+        )}
+        {ambiguities.length >= 0 && (
+          <div className="rounded-xl p-3 text-center" style={{ background: 'rgba(249,115,22,0.06)', border: '1px solid rgba(249,115,22,0.15)' }}>
+            <p className="text-2xl font-extrabold" style={{ color: '#f97316' }}>{ambiguities.length}</p>
+            <p className="text-[10px] font-bold text-brand-navy/50 uppercase tracking-widest mt-0.5">Ambiguïtés</p>
+          </div>
+        )}
+        {duplicates.length >= 0 && (
+          <div className="rounded-xl p-3 text-center" style={{ background: 'rgba(99,102,241,0.06)', border: '1px solid rgba(99,102,241,0.15)' }}>
+            <p className="text-2xl font-extrabold" style={{ color: '#6366f1' }}>{duplicates.length}</p>
+            <p className="text-[10px] font-bold text-brand-navy/50 uppercase tracking-widest mt-0.5">Doublons</p>
+          </div>
+        )}
+      </div>
+
+      {validationStatus && (
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-bold text-brand-navy/50 uppercase tracking-widest">Statut</span>
+          <span className="px-2.5 py-0.5 rounded-full text-xs font-bold"
+            style={{
+              background: validationStatus === 'valid' ? 'rgba(16,185,129,0.1)' : 'rgba(249,115,22,0.1)',
+              color: validationStatus === 'valid' ? '#10b981' : '#f97316',
+            }}>
+            {validationStatus}
+          </span>
+        </div>
+      )}
+
+      {ambiguities.length > 0 && (
+        <div>
+          <p className="text-xs font-bold text-brand-navy/50 uppercase tracking-widest mb-1.5">Ambiguïtés détectées</p>
+          <ul className="space-y-1">
+            {ambiguities.slice(0, 4).map((a: any, i: number) => (
+              <li key={i} className="flex items-start gap-2 text-xs text-brand-navy/80">
+                <AlertCircle size={11} className="mt-0.5 flex-shrink-0 text-amber-500" />
+                <span className="leading-relaxed">{typeof a === 'string' ? a : a.description || JSON.stringify(a)}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {duplicates.length > 0 && (
+        <div>
+          <p className="text-xs font-bold text-brand-navy/50 uppercase tracking-widest mb-1.5">Tests en doublon</p>
+          <ul className="space-y-1">
+            {duplicates.slice(0, 4).map((d: any, i: number) => (
+              <li key={i} className="flex items-start gap-2 text-xs text-brand-navy/80">
+                <AlertTriangle size={11} className="mt-0.5 flex-shrink-0 text-brand-violet" />
+                <span className="leading-relaxed">{typeof d === 'string' ? d : d.description || JSON.stringify(d)}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {uncoveredPoints.length > 0 && (
+        <div>
+          <p className="text-xs font-bold text-brand-navy/50 uppercase tracking-widest mb-1.5">Points non couverts</p>
+          <ul className="space-y-1">
+            {uncoveredPoints.slice(0, 3).map((p: string, i: number) => (
+              <li key={i} className="flex items-start gap-2 text-xs text-brand-navy/80">
+                <XCircle size={11} className="mt-0.5 flex-shrink-0 text-brand-rose" />
+                <span className="leading-relaxed">{p}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  )
+}
+
+const Agent5Result: React.FC<{ output: any }> = ({ output }) => {
+  if (!output) return null
+  const exec = output?.executive_summary || output
+  const overallScore = exec?.overall_score ?? exec?.quality_score
+  const overallStatus = exec?.overall_status ?? exec?.status
+  const recommendations = exec?.recommendations || output?.recommendations || []
+  const strengths = exec?.key_strengths || []
+
+  return (
+    <div className="space-y-3">
+      {overallScore !== undefined && (
+        <div className="flex items-center gap-4">
+          <div className="relative w-16 h-16 flex-shrink-0">
+            <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
+              <circle cx="18" cy="18" r="15.9" fill="none" stroke="rgba(10,15,46,0.06)" strokeWidth="3.2"/>
+              <circle cx="18" cy="18" r="15.9" fill="none"
+                stroke={overallScore >= 0.8 ? '#10b981' : overallScore >= 0.6 ? '#f97316' : '#f43f5e'}
+                strokeWidth="3.2"
+                strokeDasharray={`${(overallScore * 100).toFixed(0)} 100`}
+                strokeLinecap="round"/>
+            </svg>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="text-sm font-extrabold text-brand-navy">{Math.round(overallScore * 100)}%</span>
+            </div>
+          </div>
+          <div>
+            <p className="font-bold text-brand-navy">Score qualité</p>
+            {overallStatus && (
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold mt-1 inline-block"
+                style={{
+                  background: overallStatus === 'excellent' || overallStatus === 'good' ? 'rgba(16,185,129,0.1)' : 'rgba(249,115,22,0.1)',
+                  color: overallStatus === 'excellent' || overallStatus === 'good' ? '#10b981' : '#f97316',
+                }}>
+                {overallStatus}
+              </span>
+            )}
+          </div>
+        </div>
+      )}
+
+      {recommendations.length > 0 && (
+        <div>
+          <p className="text-xs font-bold text-brand-navy/50 uppercase tracking-widest mb-1.5">Recommandations</p>
+          <ul className="space-y-1">
+            {recommendations.slice(0, 4).map((r: any, i: number) => (
+              <li key={i} className="flex items-start gap-2 text-xs text-brand-navy/80">
+                <TrendingUp size={11} className="mt-0.5 flex-shrink-0 text-brand-violet" />
+                <span className="leading-relaxed">{typeof r === 'string' ? r : r.text || r.description || JSON.stringify(r)}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {strengths.length > 0 && (
+        <div>
+          <p className="text-xs font-bold text-brand-navy/50 uppercase tracking-widest mb-1.5">Points forts</p>
+          <ul className="space-y-1">
+            {strengths.slice(0, 3).map((s: string, i: number) => (
+              <li key={i} className="flex items-start gap-2 text-xs text-brand-navy/80">
+                <CheckCircle2 size={11} className="mt-0.5 flex-shrink-0 text-emerald-500" />
+                <span className="leading-relaxed">{s}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Bouton Télécharger PDF */}
+      <div className="pt-4 border-t border-gray-100 flex justify-end">
+        <button
+          type="button"
+          onClick={() => {
+            window.print()
+          }}
+          className="px-4 py-2 rounded-xl text-sm font-bold text-white flex items-center gap-2 transition-all hover:-translate-y-0.5"
+          style={{ background: 'linear-gradient(135deg,#2563eb,#4f46e5)' }}>
+          📥 Télécharger PDF
+        </button>
+      </div>
+    </div>
+  )
+}
+
+const AgentRichOutput: React.FC<{ agentKey: string; output: any }> = ({ agentKey, output }) => {
+  if (!output) return null
+  if (agentKey === 'Agent 1') return <Agent1Result output={output} />
+  if (agentKey === 'Agent 2') return <Agent2Result output={output} />
+  if (agentKey === 'Agent 3') return <Agent3Result output={output} />
+  if (agentKey === 'Agent 5') return <Agent5Result output={output} />
+  // Agent 4 fallback
+  if (typeof output === 'object') {
+    const pairs = Object.entries(output).filter(([, v]) => typeof v !== 'object' || v === null)
+    return (
+      <div className="space-y-1">
+        {pairs.slice(0, 6).map(([k, v]) => (
+          <div key={k} className="flex items-center gap-2 text-xs">
+            <span className="font-semibold text-brand-navy/60 capitalize">{k.replace(/_/g, ' ')}:</span>
+            <span className="text-brand-navy">{String(v)}</span>
+          </div>
+        ))}
+      </div>
+    )
+  }
+  return <p className="text-xs text-brand-navy">{String(output)}</p>
+}
+
+const AgentResultModal: React.FC<{
+  step: any
+  onClose: () => void
+}> = ({ step, onClose }) => {
+  const info = AGENT_INFO[step.agent] || { label: step.agent, icon: Bot, color: '#3b82f6' }
+  const Icon = info.icon
+
+  return (
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 print:p-0">
+      <div className="absolute inset-0 bg-brand-navy/50 backdrop-blur-sm print:hidden" onClick={onClose} />
+      <div className="relative bg-white rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto flex flex-col shadow-2xl print:shadow-none print:max-h-none print:w-full print:rounded-none">
+        
+        {/* Header */}
+        <div className="px-6 py-4 flex items-center gap-4 sticky top-0 bg-white z-10 border-b border-gray-100 print:relative">
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white flex-shrink-0" style={{ background: info.color }}>
+            <Icon size={20} />
+          </div>
+          <div className="flex-1">
+            <h3 className="text-lg font-bold text-brand-navy">{info.label}</h3>
+            <p className="text-sm text-brand-muted">{step.description || 'Détails du résultat'}</p>
+          </div>
+          <button onClick={onClose} className="p-2 text-brand-muted hover:text-brand-navy rounded-xl hover:bg-gray-100 transition-colors print:hidden">
+            <XCircle size={20} />
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="p-6">
+          <AgentRichOutput agentKey={step.agent} output={step.output} />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const AgentResultCard: React.FC<{ step: any; index: number }> = ({ step, index }) => {
+  const [isOpen, setIsOpen] = useState(false)
+  const info = AGENT_INFO[step.agent] || { label: step.agent, icon: Bot, color: '#3b82f6' }
+  const statusStyle = STEP_STYLE[step.status] || STEP_STYLE.pending
+  const Icon = info.icon
+
+  return (
+    <>
+      <div
+        onClick={() => step.status === 'completed' && setIsOpen(true)}
+        className={`bg-white rounded-2xl border transition-all ${step.status === 'completed' ? 'hover:shadow-md cursor-pointer hover:-translate-y-0.5' : 'opacity-80'}`}
+        style={{ borderColor: statusStyle.border }}
+      >
+        <div className="p-4 flex items-center gap-4">
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: statusStyle.bg, color: info.color }}>
+            {statusStyle.spin ? <statusStyle.icon size={18} className="animate-spin" /> : <Icon size={18} />}
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-bold text-brand-navy">{info.label}</span>
+              <Badge variant={step.status === 'completed' ? 'success' : step.status === 'failed' ? 'error' : step.status === 'running' ? 'orange' : 'gray'} size="sm">
+                {step.status}
+              </Badge>
+            </div>
+            <p className="text-xs text-brand-muted truncate mt-0.5">{step.description || info.desc}</p>
+          </div>
+          <div className="text-brand-muted print:hidden">
+            <ChevronRight size={16} />
+          </div>
+        </div>
+      </div>
+      {isOpen && <AgentResultModal step={step} onClose={() => setIsOpen(false)} />}
+    </>
   )
 }
 
@@ -229,7 +494,7 @@ export const PipelinePage: React.FC = () => {
       {/* ── Header ──────────────────────────────────── */}
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0"
-          style={{ background: 'linear-gradient(135deg,#ef4444,#f43f5e,#f97316)' }}>
+          style={{ background: 'linear-gradient(135deg,#2563eb,#4f46e5)' }}>
           <GitBranch size={18} className="text-white" />
         </div>
         <div>
@@ -248,7 +513,7 @@ export const PipelinePage: React.FC = () => {
       {/* ── Launch Form ─────────────────────────────── */}
       <div className="bg-white rounded-3xl border border-gray-100 shadow-card overflow-hidden">
         {/* Color strip */}
-        <div className="h-1.5" style={{ background: 'linear-gradient(90deg,#ef4444,#f43f5e,#ec4899,#7c3aed,#f97316)' }} />
+        <div className="h-1.5" style={{ background: 'linear-gradient(90deg,#3b82f6,#06b6d4,#10b981,#6366f1,#8b5cf6)' }} />
 
         <div className="p-6">
           <div className="grid md:grid-cols-2 gap-6">
@@ -286,8 +551,8 @@ export const PipelinePage: React.FC = () => {
                     disabled={!inputValue.trim()}
                     className="px-8 py-4 rounded-2xl font-bold text-white flex items-center gap-2 flex-shrink-0 transition-all hover:-translate-y-0.5 disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none"
                     style={{
-                      background: 'linear-gradient(135deg,#ef4444,#f43f5e,#f97316)',
-                      boxShadow: inputValue.trim() ? '0 6px 24px rgba(244,63,94,0.45)' : 'none',
+                      background: 'linear-gradient(135deg,#2563eb,#4f46e5)',
+                      boxShadow: inputValue.trim() ? '0 6px 24px rgba(37,99,235,0.45)' : 'none',
                     }}
                   >
                     <Play size={16} /> Lancer le Pipeline
@@ -361,8 +626,8 @@ export const PipelinePage: React.FC = () => {
                 className="h-full rounded-full transition-all duration-700 relative overflow-hidden"
                 style={{
                   width: `${progress}%`,
-                  background: 'linear-gradient(90deg,#ef4444,#f43f5e,#f97316)',
-                  boxShadow: '0 0 10px rgba(244,63,94,0.4)',
+                  background: 'linear-gradient(90deg,#2563eb,#4f46e5)',
+                  boxShadow: '0 0 10px rgba(37,99,235,0.4)',
                 }}
               >
                 <div className="absolute inset-0"

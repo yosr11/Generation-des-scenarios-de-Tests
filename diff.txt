@@ -1,0 +1,370 @@
+﻿diff --git a/frontend/src/pages/PipelinePage.tsx b/frontend/src/pages/PipelinePage.tsx
+index 4c40a9c..d2293d8 100644
+--- a/frontend/src/pages/PipelinePage.tsx
++++ b/frontend/src/pages/PipelinePage.tsx
+@@ -9,7 +9,8 @@ import {
+   Play, Square, GitBranch, CheckCircle2, XCircle,
+   Clock, Cpu, AlertTriangle, ChevronRight, Bot,
+   FileText, TestTube, BarChart3, FileBarChart2,
+-  Sparkles, Hash, ToggleLeft, ToggleRight
++  Sparkles, Hash, ToggleLeft, ToggleRight,
++  Target, Shield, AlertCircle, TrendingUp, List, ChevronDown
+ } from 'lucide-react'
+ 
+ /* ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+@@ -30,11 +31,11 @@ const STEP_TEXT: Record<string, string> = {
+ }
+ 
+ const AGENT_INFO: Record<string, { label: string; desc: string; icon: React.ElementType; color: string }> = {
+-  'Agent 1': { label: 'R├®cup├®ration Story',  desc: 'Fetch Jira & RAG context',            icon: FileText,      color: '#7c3aed' },
+-  'Agent 2': { label: 'G├®n├®ration Tests',    desc: 'Sc├®narios manuels & automatis├®s',     icon: TestTube,      color: '#f43f5e' },
+-  'Agent 3': { label: 'Validation',          desc: 'Couverture & cas limites',             icon: CheckCircle2, color: '#f97316' },
+-  'Agent 4': { label: 'Rapport Qualit├®',     desc: 'Score global & recommandations',       icon: FileBarChart2, color: '#ec4899' },
+-  'Agent 5': { label: 'Analyse Avanc├®e',     desc: 'M├®triques approfondies',               icon: BarChart3,     color: '#a855f7' },
++  'Agent 1': { label: 'Agent 1 ÔÇö Analyse',              desc: 'Analyse s├®mantique de la user story',     icon: FileText,      color: '#7c3aed' },
++  'Agent 2': { label: 'Agent 2 ÔÇö G├®n├®ration des tests', desc: 'Cr├®ation des sc├®narios de tests manuels', icon: TestTube,      color: '#f43f5e' },
++  'Agent 3': { label: 'Agent 3 ÔÇö Validation',           desc: 'Couverture, ambigu├»t├®s & cas limites',    icon: CheckCircle2,  color: '#f97316' },
++  'Agent 4': { label: 'Agent 4 ÔÇö Classification',       desc: 'Classification auto/manuel',              icon: BarChart3,     color: '#ec4899' },
++  'Agent 5': { label: 'Agent 5 ÔÇö Rapport',              desc: 'Rapport qualit├® & recommandations',       icon: FileBarChart2, color: '#a855f7' },
+ }
+ 
+ /* ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+@@ -73,100 +74,263 @@ const Toggle: React.FC<{
+ )
+ 
+ /* ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+-   Agent Result Card
++   Rich result renderers per agent
+ ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ */
+-const AgentResultCard: React.FC<{ step: any; index: number }> = ({ step, index }) => {
+-  const [expanded, setExpanded] = useState(false)
+-  const status = step.status as string
+-  const style = STEP_STYLE[status] || STEP_STYLE.pending
+-  const textColor = STEP_TEXT[status] || 'text-brand-muted'
+-  const Icon = style.icon
+-  const agentKey = Object.keys(AGENT_INFO).find(k =>
+-    (step.agent || '').toLowerCase().includes(k.toLowerCase().replace('agent ', ''))
+-    || (step.agent || '') === k
++
++const Agent1Result: React.FC<{ output: any }> = ({ output }) => {
++  if (!output) return null
++  return (
++    <div className="space-y-3 text-sm">
++      {output.story_type && (
++        <div className="flex items-center gap-2">
++          <span className="text-xs font-bold text-brand-navy/50 uppercase tracking-widest">Type</span>
++          <span className="px-2.5 py-0.5 rounded-full text-xs font-bold" style={{ background: 'rgba(124,58,237,0.1)', color: '#7c3aed' }}>
++            {output.story_type}
++          </span>
++        </div>
++      )}
++      {output.actors?.length > 0 && (
++        <div>
++          <p className="text-xs font-bold text-brand-navy/50 uppercase tracking-widest mb-1.5">Acteurs</p>
++          <div className="flex flex-wrap gap-1.5">
++            {output.actors.map((a: string, i: number) => (
++              <span key={i} className="px-2.5 py-0.5 rounded-full text-xs bg-blue-50 text-blue-700 border border-blue-100">{a}</span>
++            ))}
++          </div>
++        </div>
++      )}
++      {output.testable_points?.length > 0 && (
++        <div>
++          <p className="text-xs font-bold text-brand-navy/50 uppercase tracking-widest mb-1.5">Points testables</p>
++          <ul className="space-y-1">
++            {output.testable_points.slice(0, 6).map((p: string, i: number) => (
++              <li key={i} className="flex items-start gap-2 text-brand-navy/80">
++                <Target size={11} className="mt-0.5 flex-shrink-0 text-brand-violet" />
++                <span className="text-xs leading-relaxed">{p}</span>
++              </li>
++            ))}
++          </ul>
++        </div>
++      )}
++      {output.business_rules?.length > 0 && (
++        <div>
++          <p className="text-xs font-bold text-brand-navy/50 uppercase tracking-widest mb-1.5">R├¿gles m├®tier</p>
++          <ul className="space-y-1">
++            {output.business_rules.slice(0, 4).map((r: string, i: number) => (
++              <li key={i} className="flex items-start gap-2 text-brand-navy/80">
++                <Shield size={11} className="mt-0.5 flex-shrink-0 text-brand-orange" />
++                <span className="text-xs leading-relaxed">{r}</span>
++              </li>
++            ))}
++          </ul>
++        </div>
++      )}
++    </div>
+   )
+-  const info = agentKey ? AGENT_INFO[agentKey] : null
++}
+ 
++const Agent2Result: React.FC<{ output: any }> = ({ output }) => {
++  const tests = Array.isArray(output) ? output : output?.tests || []
++  if (!tests.length) return <p className="text-xs text-brand-muted">Aucun test g├®n├®r├®</p>
+   return (
+-    <div
+-      className="rounded-2xl border transition-all duration-300"
+-      style={{ background: style.bg, borderColor: style.border }}
+-    >
+-      <div
+-        className="flex items-center gap-3 p-4 cursor-pointer"
+-        onClick={() => status === 'completed' && setExpanded(!expanded)}
+-      >
+-        {/* Index bubble */}
+-        <div
+-          className="w-8 h-8 rounded-xl flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
+-          style={{ background: info ? info.color : 'var(--grad-cta)', opacity: status === 'pending' ? 0.4 : 1 }}
+-        >
+-          {index + 1}
++    <div className="space-y-2">
++      <div className="flex items-center gap-2 mb-2">
++        <span className="px-2.5 py-0.5 rounded-full text-xs font-bold" style={{ background: 'rgba(244,63,94,0.1)', color: '#f43f5e' }}>
++          {tests.length} test{tests.length > 1 ? 's' : ''} g├®n├®r├®s
++        </span>
++      </div>
++      {tests.slice(0, 5).map((t: any, i: number) => (
++        <div key={i} className="rounded-xl p-3 border" style={{ background: 'rgba(255,255,255,0.7)', borderColor: 'rgba(100,116,139,0.15)' }}>
++          <div className="flex items-start gap-2">
++            <span className="w-5 h-5 rounded-lg flex-shrink-0 flex items-center justify-center text-[10px] font-bold text-white mt-0.5"
++              style={{ background: 'linear-gradient(135deg,#f43f5e,#f97316)' }}>{i + 1}</span>
++            <div className="flex-1 min-w-0">
++              <p className="text-xs font-bold text-brand-navy truncate">{t.test_name || t.title || `Test ${i + 1}`}</p>
++              {t.scenario_type && (
++                <span className="text-[10px] text-brand-muted capitalize">{t.scenario_type}</span>
++              )}
++              {t.steps?.length > 0 && (
++                <p className="text-[10px] text-brand-muted mt-0.5">{t.steps.length} ├®tapes</p>
++              )}
++            </div>
++          </div>
+         </div>
++      ))}
++      {tests.length > 5 && (
++        <p className="text-xs text-brand-muted text-center">+ {tests.length - 5} autres testsÔÇª</p>
++      )}
++    </div>
++  )
++}
+ 
+-        {/* Info */}
+-        <div className="flex-1 min-w-0">
+-          <div className="flex items-center gap-2">
+-            <p className="font-bold text-brand-navy text-sm">
+-              {info?.label || step.agent}
+-            </p>
+-            {info && (
+-              <span className="text-[10px] text-brand-muted font-medium hidden sm:inline">
+-                ÔÇö {info.desc}
+-              </span>
+-            )}
++const Agent3Result: React.FC<{ output: any }> = ({ output }) => {
++  if (!output) return null
++  const report = output?.report || output
++  const coverage = report?.coverage_rate ?? report?.coverage_percentage
++  const validationStatus = report?.validation_status
++  const ambiguities = report?.ambiguities || []
++  const uncoveredPoints = report?.uncovered_testable_points || []
++
++  return (
++    <div className="space-y-3">
++      {/* KPIs row */}
++      <div className="grid grid-cols-2 gap-2">
++        {coverage !== undefined && (
++          <div className="rounded-xl p-3 text-center" style={{ background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.15)' }}>
++            <p className="text-2xl font-extrabold" style={{ color: '#10b981' }}>{Math.round((coverage || 0) * 100)}%</p>
++            <p className="text-[10px] font-bold text-brand-navy/50 uppercase tracking-widest mt-0.5">Couverture</p>
+           </div>
+-          {step.error && (
+-            <p className="text-xs text-brand-rose mt-0.5 flex items-center gap-1">
+-              <AlertTriangle size={11} /> {step.error}
+-            </p>
+-          )}
++        )}
++        {ambiguities.length >= 0 && (
++          <div className="rounded-xl p-3 text-center" style={{ background: 'rgba(249,115,22,0.06)', border: '1px solid rgba(249,115,22,0.15)' }}>
++            <p className="text-2xl font-extrabold" style={{ color: '#f97316' }}>{ambiguities.length}</p>
++            <p className="text-[10px] font-bold text-brand-navy/50 uppercase tracking-widest mt-0.5">Ambigu├»t├®s</p>
++          </div>
++        )}
++      </div>
++
++      {validationStatus && (
++        <div className="flex items-center gap-2">
++          <span className="text-xs font-bold text-brand-navy/50 uppercase tracking-widest">Statut</span>
++          <span className="px-2.5 py-0.5 rounded-full text-xs font-bold"
++            style={{
++              background: validationStatus === 'valid' ? 'rgba(16,185,129,0.1)' : 'rgba(249,115,22,0.1)',
++              color: validationStatus === 'valid' ? '#10b981' : '#f97316',
++            }}>
++            {validationStatus}
++          </span>
+         </div>
++      )}
+ 
+-        {/* Status */}
+-        <div className="flex items-center gap-2 flex-shrink-0">
+-          <Icon
+-            size={16}
+-            className={`${textColor} ${style.spin ? 'animate-spin-slow' : ''}`}
+-          />
+-          <Badge
+-            variant={status === 'completed' ? 'success' : status === 'failed' ? 'error' : status === 'running' ? 'orange' : 'default'}
+-            size="sm"
+-            dot
+-          >
+-            {status}
+-          </Badge>
+-          {status === 'completed' && (
+-            <ChevronRight
+-              size={14}
+-              className={`text-brand-muted transition-transform ${expanded ? 'rotate-90' : ''}`}
+-            />
+-          )}
++      {ambiguities.length > 0 && (
++        <div>
++          <p className="text-xs font-bold text-brand-navy/50 uppercase tracking-widest mb-1.5">Ambigu├»t├®s d├®tect├®es</p>
++          <ul className="space-y-1">
++            {ambiguities.slice(0, 4).map((a: any, i: number) => (
++              <li key={i} className="flex items-start gap-2 text-xs text-brand-navy/80">
++                <AlertCircle size={11} className="mt-0.5 flex-shrink-0 text-amber-500" />
++                <span className="leading-relaxed">{typeof a === 'string' ? a : a.description || JSON.stringify(a)}</span>
++              </li>
++            ))}
++          </ul>
+         </div>
+-      </div>
++      )}
+ 
+-      {/* Expanded output */}
+-      {expanded && step.output && (
+-        <div className="px-4 pb-4 pt-0 animate-fade-in">
+-          <div className="rounded-xl overflow-hidden border border-white/60">
+-            <div className="px-3 py-2 bg-white/60 border-b border-white/60 flex items-center gap-2">
+-              <Sparkles size={12} className="text-brand-violet" />
+-              <span className="text-[10px] font-bold text-brand-navy uppercase tracking-wider">
+-                R├®sultat de l'agent
+-              </span>
+-            </div>
+-            <div className="p-3 bg-white/40 text-xs text-brand-navy font-mono leading-relaxed max-h-48 overflow-y-auto whitespace-pre-wrap">
+-              {typeof step.output === 'string'
+-                ? step.output
+-                : JSON.stringify(step.output, null, 2)}
++      {uncoveredPoints.length > 0 && (
++        <div>
++          <p className="text-xs font-bold text-brand-navy/50 uppercase tracking-widest mb-1.5">Points non couverts</p>
++          <ul className="space-y-1">
++            {uncoveredPoints.slice(0, 3).map((p: string, i: number) => (
++              <li key={i} className="flex items-start gap-2 text-xs text-brand-navy/80">
++                <XCircle size={11} className="mt-0.5 flex-shrink-0 text-brand-rose" />
++                <span className="leading-relaxed">{p}</span>
++              </li>
++            ))}
++          </ul>
++        </div>
++      )}
++    </div>
++  )
++}
++
++const Agent5Result: React.FC<{ output: any }> = ({ output }) => {
++  if (!output) return null
++  const exec = output?.executive_summary || output
++  const overallScore = exec?.overall_score ?? exec?.quality_score
++  const overallStatus = exec?.overall_status ?? exec?.status
++  const recommendations = exec?.recommendations || output?.recommendations || []
++  const strengths = exec?.key_strengths || []
++
++  return (
++    <div className="space-y-3">
++      {overallScore !== undefined && (
++        <div className="flex items-center gap-4">
++          <div className="relative w-16 h-16 flex-shrink-0">
++            <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
++              <circle cx="18" cy="18" r="15.9" fill="none" stroke="rgba(10,15,46,0.06)" strokeWidth="3.2"/>
++              <circle cx="18" cy="18" r="15.9" fill="none"
++                stroke={overallScore >= 0.8 ? '#10b981' : overallScore >= 0.6 ? '#f97316' : '#f43f5e'}
++                strokeWidth="3.2"
++                strokeDasharray={`${(overallScore * 100).toFixed(0)} 100`}
++                strokeLinecap="round"/>
++            </svg>
++            <div className="absolute inset-0 flex items-center justify-center">
++              <span className="text-sm font-extrabold text-brand-navy">{Math.round(overallScore * 100)}%</span>
+             </div>
+           </div>
++          <div>
++            <p className="font-bold text-brand-navy">Score qualit├®</p>
++            {overallStatus && (
++              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold mt-1 inline-block"
++                style={{
++                  background: overallStatus === 'excellent' || overallStatus === 'good' ? 'rgba(16,185,129,0.1)' : 'rgba(249,115,22,0.1)',
++                  color: overallStatus === 'excellent' || overallStatus === 'good' ? '#10b981' : '#f97316',
++                }}>
++                {overallStatus}
++              </span>
++            )}
++          </div>
++        </div>
++      )}
++
++      {recommendations.length > 0 && (
++        <div>
++          <p className="text-xs font-bold text-brand-navy/50 uppercase tracking-widest mb-1.5">Recommandations</p>
++          <ul className="space-y-1">
++            {recommendations.slice(0, 4).map((r: any, i: number) => (
++              <li key={i} className="flex items-start gap-2 text-xs text-brand-navy/80">
++                <TrendingUp size={11} className="mt-0.5 flex-shrink-0 text-brand-violet" />
++                <span className="leading-relaxed">{typeof r === 'string' ? r : r.text || r.description || JSON.stringify(r)}</span>
++              </li>
++            ))}
++          </ul>
++        </div>
++      )}
++
++      {strengths.length > 0 && (
++        <div>
++          <p className="text-xs font-bold text-brand-navy/50 uppercase tracking-widest mb-1.5">Points forts</p>
++          <ul className="space-y-1">
++            {strengths.slice(0, 3).map((s: string, i: number) => (
++              <li key={i} className="flex items-start gap-2 text-xs text-brand-navy/80">
++                <CheckCircle2 size={11} className="mt-0.5 flex-shrink-0 text-emerald-500" />
++                <span className="leading-relaxed">{s}</span>
++              </li>
++            ))}
++          </ul>
+         </div>
+       )}
+     </div>
+   )
+ }
+ 
++const AgentRichOutput: React.FC<{ agentKey: string; output: any }> = ({ agentKey, output }) => {
++  if (!output) return null
++  if (agentKey === 'Agent 1') return <Agent1Result output={output} />
++  if (agentKey === 'Agent 2') return <Agent2Result output={output} />
++  if (agentKey === 'Agent 3') return <Agent3Result output={output} />
++  if (agentKey === 'Agent 5') return <Agent5Result output={output} />
++  // Agent 4 fallback
++  if (typeof output === 'object') {
++    const pairs = Object.entries(output).filter(([, v]) => typeof v !== 'object' || v === null)
++    return (
++      <div className="space-y-1">
++        {pairs.slice(0, 6).map(([k, v]) => (
++          <div key={k} className="flex items-center gap-2 text-xs">
++            <span className="font-semibold text-brand-navy/60 capitalize">{k.replace(/_/g, ' ')}:</span>
++            <span className="text-brand-navy">{String(v)}</span>
++          </div>
++        ))}
++      </div>
++    )
++  }
++  return <p className="text-xs text-brand-navy">{String(output)}</p>
++}
++
++/* ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
++   Main Pipeline Page
++ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ */
++
+ /* ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ
+    Main Pipeline Page
+ ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ */

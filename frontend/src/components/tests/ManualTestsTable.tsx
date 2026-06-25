@@ -133,9 +133,13 @@ const TestEditDrawer: React.FC<{
           style={{ background: 'linear-gradient(135deg,#0a0f2e,#1a1f4e)' }}>
           <div className="flex-1 min-w-0">
             <p className="text-[10px] text-white/40 uppercase tracking-widest">Éditer le test</p>
-            <h3 className="font-bold text-white text-sm truncate mt-0.5">
-              {editedTest?.test_name || 'Test manuel'}
-            </h3>
+            <input
+              className="font-bold text-white text-sm bg-white/10 rounded px-2 py-1 mt-0.5 w-full border border-transparent focus:border-white/30 focus:outline-none placeholder:text-white/30"
+              value={editedTest?.test_name || editedTest?.title || ''}
+              placeholder="Test manuel"
+              onChange={(e) => setEditedTest({ ...editedTest, test_name: e.target.value, title: e.target.value })}
+              onClick={(e) => e.stopPropagation()}
+            />
           </div>
           <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); onClose() }}
             className="p-2 rounded-xl text-white/40 hover:text-white hover:bg-white/10 transition-all flex-shrink-0">
@@ -149,7 +153,14 @@ const TestEditDrawer: React.FC<{
           {/* Objective */}
           <div className="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm">
             <p className="text-[10px] font-bold text-brand-muted uppercase tracking-widest mb-2">Objectif</p>
-            <p className="text-sm text-brand-navy leading-relaxed">{editedTest?.objective || '—'}</p>
+            <textarea
+              className="w-full text-sm text-brand-navy leading-relaxed border border-gray-200 rounded p-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none"
+              value={editedTest?.objective || ''}
+              placeholder="Objectif du test..."
+              onChange={(e) => setEditedTest({ ...editedTest, objective: e.target.value })}
+              onClick={(e) => e.stopPropagation()}
+              rows={2}
+            />
           </div>
 
           {/* Steps */}
@@ -163,14 +174,38 @@ const TestEditDrawer: React.FC<{
                 {steps.map((step: any, i: number) => (
                   <li key={i} className="px-4 py-3 flex items-start gap-3">
                     <span className="w-6 h-6 rounded-lg flex items-center justify-center text-white text-[11px] font-bold flex-shrink-0 mt-0.5"
-                      style={{ background: 'linear-gradient(135deg,#ef4444,#f97316)' }}>
+                      style={{ background: 'linear-gradient(135deg,#2563eb,#4f46e5)' }}>
                       {i + 1}
                     </span>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-brand-navy">{step.action || step.titre}</p>
-                      {step.expected_result && (
-                        <p className="text-xs text-brand-muted mt-0.5">→ {step.expected_result}</p>
-                      )}
+                    <div className="flex-1 min-w-0 space-y-2">
+                      <input
+                        className="w-full text-sm font-medium text-brand-navy border border-gray-200 rounded p-1.5 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                        value={step.action || step.titre || ''}
+                        onChange={(e) => {
+                          const newSteps = [...steps]
+                          if (newSteps[i].action !== undefined) newSteps[i].action = e.target.value
+                          else newSteps[i].titre = e.target.value
+                          // Also support flat structure fallback
+                          const newTest = { ...editedTest }
+                          if (newTest.steps) newTest.steps = newSteps
+                          setEditedTest(newTest)
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                        placeholder="Action..."
+                      />
+                      <input
+                        className="w-full text-xs text-brand-muted border border-gray-200 rounded p-1.5 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                        value={step.expected_result || ''}
+                        onChange={(e) => {
+                          const newSteps = [...steps]
+                          newSteps[i].expected_result = e.target.value
+                          const newTest = { ...editedTest }
+                          if (newTest.steps) newTest.steps = newSteps
+                          setEditedTest(newTest)
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                        placeholder="Résultat attendu..."
+                      />
                     </div>
                   </li>
                 ))}
@@ -203,7 +238,7 @@ const TestEditDrawer: React.FC<{
                 onClick={handleRefine}
                 disabled={refining || !message.trim()}
                 className="px-5 py-2.5 rounded-xl text-sm font-bold text-white flex items-center gap-2 transition-all hover:-translate-y-0.5 disabled:opacity-40 disabled:cursor-not-allowed"
-                style={{ background: 'linear-gradient(135deg,#7c3aed,#ec4899)' }}>
+                style={{ background: 'linear-gradient(135deg,#6366f1,#8b5cf6)' }}>
                 {refining ? (
                   <><span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Affinement…</>
                 ) : (<>✨ Affiner</>)}
@@ -223,7 +258,7 @@ const TestEditDrawer: React.FC<{
             onClick={handleSave}
             disabled={saving}
             className="flex-1 py-3 rounded-xl text-sm font-bold text-white flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5 disabled:opacity-50"
-            style={{ background: 'linear-gradient(135deg,#ef4444,#f43f5e,#f97316)', boxShadow: '0 4px 16px rgba(244,63,94,0.35)' }}>
+            style={{ background: 'linear-gradient(135deg,#2563eb,#4f46e5)', boxShadow: '0 4px 16px rgba(37,99,235,0.35)' }}>
             {saving
               ? <><span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Sauvegarde…</>
               : <>💾 Sauvegarder</>}
@@ -391,136 +426,116 @@ export const ManualTestsTable: React.FC<ManualTestsTableProps> = ({
   if (!localTests.length) return null
 
   return (
-    <>
-      <div className="bg-white rounded-3xl border border-gray-100 shadow-card overflow-hidden">
-        {/* Header strip */}
-        <div className="h-1" style={{ background: 'linear-gradient(90deg,#ef4444,#f43f5e,#ec4899,#7c3aed,#f97316)' }} />
-
-        {/* Title bar */}
-        <div className="px-6 py-4 border-b border-gray-100 flex items-center gap-3"
-          style={{ background: 'linear-gradient(135deg,rgba(244,63,94,0.04),rgba(124,58,237,0.03))' }}>
-          <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 text-white"
-            style={{ background: 'linear-gradient(135deg,#ef4444,#f43f5e)' }}>
-            <TestTube size={16} />
-          </div>
-          <div className="flex-1">
-            <h3 className="font-bold text-brand-navy">Tests Manuels Générés</h3>
-            <p className="text-xs text-brand-muted mt-0.5">{localTests.length} test(s) — cliquez sur une ligne pour voir les étapes</p>
-          </div>
-          <Badge variant="rose" dot size="sm">{localTests.length}</Badge>
+    <div className="space-y-6 animate-fade-in">
+      <div className="bg-white rounded-3xl border border-gray-100 shadow-card p-6 flex items-center justify-between">
+        <div>
+          <h3 className="font-bold text-brand-navy flex items-center gap-2">
+            <TestTube size={18} className="text-blue-600" /> Tests Manuels Générés
+          </h3>
+          <p className="text-xs text-brand-muted mt-1">{localTests.length} test(s) généré(s)</p>
         </div>
+        <Badge variant="rose" size="sm">{localTests.length}</Badge>
+      </div>
 
-        {/* Table */}
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-gray-100 bg-gray-50/60">
-                <th className="text-left py-3 px-4 text-[10px] font-bold text-brand-navy/50 uppercase tracking-widest w-8">#</th>
-                <th className="text-left py-3 px-4 text-[10px] font-bold text-brand-navy/50 uppercase tracking-widest">Nom du test</th>
-                <th className="text-left py-3 px-4 text-[10px] font-bold text-brand-navy/50 uppercase tracking-widest">Type</th>
-                <th className="text-left py-3 px-4 text-[10px] font-bold text-brand-navy/50 uppercase tracking-widest">Étapes</th>
-                <th className="text-right py-3 px-4 text-[10px] font-bold text-brand-navy/50 uppercase tracking-widest">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {localTests.map((test, idx) => {
-                const stepCount = test.steps?.length || (test.étapes || []).reduce((a: number, e: any) => a + (e.steps?.length || 0), 0)
-                const typeKey = (test.scenario_type || '').toLowerCase()
-                const typeStyle = TYPE_STYLE[typeKey] || TYPE_STYLE.default
-                const expanded = expandedRow === idx
-                const allSteps = test.steps || test.étapes?.flatMap((e: any) => e.steps || []) || []
+      <div className="space-y-8">
+        {localTests.map((test, idx) => {
+          const allSteps = test.steps || test.étapes?.flatMap((e: any) => e.steps || []) || []
 
-                return (
-                  <React.Fragment key={idx}>
-                    <tr
-                      className="border-b border-gray-50 hover:bg-gray-50/80 transition-colors cursor-pointer group"
-                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); setExpandedRow(expanded ? null : idx) }}
-                    >
-                      <td className="py-3.5 px-4">
-                        <span className="w-6 h-6 rounded-lg flex items-center justify-center text-[11px] font-bold text-brand-muted"
-                          style={{ background: 'rgba(10,15,46,0.05)' }}>
-                          {idx + 1}
-                        </span>
-                      </td>
-                      <td className="py-3.5 px-4">
-                        <div className="flex items-center gap-2">
-                          <span className="font-semibold text-brand-navy">{test.test_name || test.title}</span>
-                          {expanded
-                            ? <ChevronUp size={13} className="text-brand-muted flex-shrink-0" />
-                            : <ChevronDown size={13} className="text-gray-300 group-hover:text-brand-muted transition-colors flex-shrink-0" />
-                          }
-                        </div>
-                      </td>
-                      <td className="py-3.5 px-4" onClick={(e) => e.stopPropagation()}>
-                        {test.scenario_type && (
-                          <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide"
-                            style={{ background: typeStyle.bg, color: typeStyle.text, border: `1px solid ${typeStyle.border}` }}>
-                            {test.scenario_type}
-                          </span>
-                        )}
-                      </td>
-                      <td className="py-3.5 px-4">
-                        <span className="text-sm font-semibold text-brand-muted">{stepCount}</span>
-                      </td>
-                      <td className="py-3.5 px-4" onClick={(e) => e.stopPropagation()}>
-                        <div className="flex items-center justify-end gap-2">
-                          {/* EDIT */}
-                          <button
-                            type="button"
-                            onClick={(e) => handleEditClick(e, test, idx)}
-                            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-brand-navy border-2 border-gray-100 hover:border-brand-violet hover:text-brand-violet hover:bg-brand-violet/5 transition-all"
-                          >
-                            <Pencil size={12} /> Éditer
-                          </button>
-                          {/* INTEGRATE */}
-                          <button
-                            type="button"
-                            disabled={integratingIndex === idx}
-                            onClick={(e) => handleIntegrate(e, test, idx)}
-                            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-white transition-all hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none"
-                            style={{ background: 'linear-gradient(135deg,#ef4444,#f43f5e)', boxShadow: '0 2px 10px rgba(244,63,94,0.3)' }}
-                          >
-                            {integratingIndex === idx
-                              ? <><span className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Xray…</>
-                              : <><Upload size={12} /> Xray</>
-                            }
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
+          return (
+            <div key={idx} className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+              {/* Test Header */}
+              <div className="bg-gray-50 px-6 py-4 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <h4 className="font-bold text-brand-navy text-lg">{test.test_name || test.title || `Test ${idx + 1}`}</h4>
+                <div className="flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={(e) => handleEditClick(e, test, idx)}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-brand-navy bg-white border border-gray-200 hover:border-blue-500 hover:text-blue-600 transition-all shadow-sm"
+                  >
+                    <Pencil size={14} /> Éditer
+                  </button>
+                  <button
+                    type="button"
+                    disabled={integratingIndex === idx}
+                    onClick={(e) => handleIntegrate(e, test, idx)}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold text-white transition-all shadow-sm disabled:opacity-50"
+                    style={{ background: 'linear-gradient(135deg,#2563eb,#4f46e5)' }}
+                  >
+                    {integratingIndex === idx ? <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <Upload size={14} />} Xray
+                  </button>
+                </div>
+              </div>
 
-                    {/* Expanded steps */}
-                    {expanded && (
+              <div className="p-6 space-y-6">
+                {/* Description */}
+                <div>
+                  <h5 className="font-bold text-brand-navy flex items-center gap-1.5 mb-3">
+                    <ChevronDown size={18} className="text-gray-400" /> Description
+                  </h5>
+                  <div className="pl-6 space-y-3">
+                    {allSteps.map((step: any, si: number) => (
+                      <p key={si} className="text-sm text-gray-800 leading-relaxed">
+                        <span className="text-blue-500">[{step.actor || 'Collaborateur'}]</span> {step.titre || step.action}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Steps Table */}
+                <div className="border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+                  <table className="w-full text-sm text-left">
+                    <thead className="bg-[#f4f5f7] border-b border-gray-200">
                       <tr>
-                        <td colSpan={5} className="px-6 py-4 bg-gray-50/60 border-b border-gray-100">
-                          <div className="space-y-2">
-                            {allSteps.slice(0, 6).map((step: any, si: number) => (
-                              <div key={si} className="flex items-start gap-3 text-xs">
-                                <span className="w-5 h-5 rounded-md flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0"
-                                  style={{ background: 'linear-gradient(135deg,#ef4444,#f97316)' }}>
-                                  {si + 1}
-                                </span>
-                                <div className="flex-1">
-                                  <p className="font-medium text-brand-navy">{step.action || step.titre}</p>
-                                  {step.expected_result && (
-                                    <p className="text-brand-muted mt-0.5">→ {step.expected_result}</p>
-                                  )}
-                                </div>
-                              </div>
-                            ))}
-                            {stepCount > 6 && (
-                              <p className="text-xs text-brand-muted pl-8">+ {stepCount - 6} étapes supplémentaires…</p>
-                            )}
-                          </div>
-                        </td>
+                        <th className="w-12 px-4 py-3 font-semibold text-brand-navy border-r border-gray-200 text-center">#</th>
+                        <th className="w-1/3 px-4 py-3 font-semibold text-brand-navy border-r border-gray-200">Action</th>
+                        <th className="w-1/3 px-4 py-3 font-semibold text-brand-navy border-r border-gray-200">Data</th>
+                        <th className="w-1/3 px-4 py-3 font-semibold text-brand-navy">Expected Result</th>
                       </tr>
-                    )}
-                  </React.Fragment>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200">
+                      {allSteps.map((step: any, si: number) => (
+                        <tr key={si} className="align-top bg-white hover:bg-gray-50/50 transition-colors">
+                          <td className="px-4 py-4 border-r border-gray-200 text-center font-bold text-brand-navy bg-[#f4f5f7]">
+                            {si + 1}
+                          </td>
+                          <td className="px-4 py-4 border-r border-gray-200">
+                            <p className="text-sm text-gray-900 mb-3 leading-relaxed">
+                              <span className="text-blue-500">[{step.actor || 'Collaborateur'}]</span> {step.titre || step.action}
+                            </p>
+                            {step.titre && step.action && step.titre !== step.action && (
+                              <div>
+                                <p className="text-xs font-bold uppercase tracking-wider text-brand-navy underline underline-offset-2 mb-2">Action(s):</p>
+                                <ul className="list-disc list-inside text-sm text-gray-700 space-y-1.5 ml-1">
+                                  {step.action.split('\n').map((line: string, i: number) => {
+                                    const cleanLine = line.replace(/^-\s*/, '').trim()
+                                    return cleanLine ? <li key={i}>{cleanLine}</li> : null
+                                  })}
+                                </ul>
+                              </div>
+                            )}
+                          </td>
+                          <td className="px-4 py-4 border-r border-gray-200 whitespace-pre-wrap text-sm text-gray-700 font-mono leading-relaxed bg-[#fbfbfc]">
+                            {step.data || ''}
+                          </td>
+                          <td className="px-4 py-4 whitespace-pre-wrap text-sm text-gray-700 leading-relaxed">
+                            {step.expected_result ? (
+                              <ul className="list-disc list-inside space-y-1.5 ml-1">
+                                {step.expected_result.split('\n').map((line: string, i: number) => {
+                                  const cleanLine = line.replace(/^-\s*/, '').trim()
+                                  return cleanLine ? <li key={i}>{cleanLine}</li> : null
+                                })}
+                              </ul>
+                            ) : ''}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          )
+        })}
       </div>
 
       {/* Modals rendered via Portal-like pattern, outside table DOM */}
