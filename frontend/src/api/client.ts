@@ -4,7 +4,9 @@
  * Provides proper error handling, loading states, and request/response types
  */
 
-import axios, { AxiosInstance, AxiosError, AxiosResponse } from 'axios'
+/// <reference types="vite/client" />
+
+import axios, { AxiosInstance } from 'axios'
 
 // ─────────────────────────────────────────────────────────────
 // API Configuration
@@ -85,9 +87,23 @@ export interface AnalysisRequest {
 
 export interface AnalysisResponse {
   storyId: string
+  model?: string
+  story_title?: string
+  story_type?: string
+  actors?: string[]
+  actions?: string[]
+  business_rules?: string[]
+  technical_scope?: string[]
+  testable_points?: string[]
+  acceptance_criteria_explicit?: string | string[]
+  acceptance_criteria_inferred?: string | string[]
+  clarification_questions?: string[]
+  analysis_reason?: string[]
+  user_flows?: string[]
+  resolved_from_references?: string[]
+  created_at?: string
   enriched_story?: any
   analysis?: any
-  testable_points?: string[]
   scenarios?: any[]
   tests?: any[]
   recommendations?: string[]
@@ -102,6 +118,15 @@ export interface Story {
   priority?: string
   created_at?: string
   updated_at?: string
+}
+
+export interface StoredStory extends Story {
+  summary?: string
+  status?: string
+  description_clean?: string
+  description_raw?: string
+  acceptance_criteria_clean?: string
+  labels?: string[]
 }
 
 // Scenario
@@ -320,9 +345,9 @@ export const apiClient = {
     /**
      * List stored stories
      */
-    async listStories(): Promise<Story[]> {
+    async listStories(): Promise<StoredStory[]> {
       try {
-        const response = await axiosInstance.get<Story[]>('/db/stories')
+        const response = await axiosInstance.get<StoredStory[]>('/db/stories')
         return response.data
       } catch (error) {
         throw handleError(error)
@@ -332,12 +357,20 @@ export const apiClient = {
     /**
      * Get stored story details
      */
-    async getStory(storyId: string): Promise<Story> {
+    async getStory(storyId: string): Promise<StoredStory> {
       try {
-        const response = await axiosInstance.get<Story>(
+        const response = await axiosInstance.get<StoredStory>(
           `/db/stories/${encodeURIComponent(storyId)}`
         )
         return response.data
+      } catch (error) {
+        throw handleError(error)
+      }
+    },
+
+    async deleteStory(storyId: string): Promise<void> {
+      try {
+        await axiosInstance.delete(`/db/stories/${encodeURIComponent(storyId)}`)
       } catch (error) {
         throw handleError(error)
       }
@@ -349,7 +382,7 @@ export const apiClient = {
     async listAnalyses(storyId: string): Promise<AnalysisResponse[]> {
       try {
         const response = await axiosInstance.get<AnalysisResponse[]>(
-          `/db/analyses/${encodeURIComponent(storyId)}`
+          `/db/stories/${encodeURIComponent(storyId)}/analyses`
         )
         return response.data
       } catch (error) {

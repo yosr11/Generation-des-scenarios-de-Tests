@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { apiClient } from '../api/client'
-import { History, GitBranch, ChevronRight, Search, RefreshCw } from 'lucide-react'
+import { History, GitBranch, ChevronRight, Search, RefreshCw, Trash2 } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import { useToast } from '../contexts/ToastContext'
 
-interface Story {
+interface StoredStory {
   id: string
   summary: string
   status: string | null
@@ -12,17 +13,40 @@ interface Story {
 }
 
 export const HistoryPage: React.FC = () => {
-  const [stories, setStories] = useState<Story[]>([])
+  const [stories, setStories] = useState<StoredStory[]>([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
   const navigate = useNavigate()
+  const toast = useToast()
+
+  const loadStories = async () => {
+    setLoading(true)
+    try {
+      const data = await apiClient.db.listStories()
+      setStories((data as unknown as StoredStory[]) || [])
+    } catch (error: any) {
+      toast.error(error?.message || 'Impossible de charger l\'historique')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   useEffect(() => {
-    apiClient.db.listStories()
-      .then((data: any[]) => setStories(data || []))
-      .catch(console.error)
-      .finally(() => setLoading(false))
+    loadStories()
   }, [])
+
+  const handleDelete = async (storyId: string) => {
+    const confirmed = window.confirm(`Supprimer la story ${storyId} et toutes ses données enregistrées ?`)
+    if (!confirmed) return
+
+    try {
+      await apiClient.db.deleteStory(storyId)
+      setStories((current) => current.filter((story) => story.id !== storyId))
+      toast.success(`Story ${storyId} supprimée`)
+    } catch (error: any) {
+      toast.error(error?.message || 'Échec de la suppression')
+    }
+  }
 
   const filtered = stories.filter(s =>
     s.id.toLowerCase().includes(search.toLowerCase()) ||
@@ -89,7 +113,7 @@ export const HistoryPage: React.FC = () => {
             {filtered.map(story => (
               <li key={story.id}
                 className="flex items-center gap-4 px-6 py-4 hover:bg-gray-50/70 transition-colors cursor-pointer group"
-                onClick={() => navigate('/pipeline')}>
+                onClick={() => navigate(`/history/${story.id}`)}>
                 <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
                   style={{ background: 'rgba(244,63,94,0.08)', border: '1px solid rgba(244,63,94,0.15)' }}>
                   <GitBranch size={16} className="text-brand-rose" />
@@ -108,12 +132,25 @@ export const HistoryPage: React.FC = () => {
                     <p className="text-sm text-brand-navy font-medium mt-0.5 truncate">{story.summary}</p>
                   )}
                 </div>
-                <div className="text-right flex-shrink-0">
-                  <p className="text-xs text-brand-muted">
-                    {story.created_at
-                      ? new Date(story.created_at).toLocaleDateString('fr-FR')
-                      : '—'}
-                  </p>
+                <div className="flex items-center gap-3 flex-shrink-0">
+                  <div className="text-right">
+                    <p className="text-xs text-brand-muted">
+                      {story.created_at
+                        ? new Date(story.created_at).toLocaleDateString('fr-FR')
+                        : '—'}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={(event) => {
+                      event.stopPropagation()
+                      handleDelete(story.id)
+                    }}
+                    className="rounded-full p-2 text-brand-muted hover:text-brand-rose hover:bg-red-50 transition"
+                    aria-label={`Supprimer ${story.id}`}
+                  >
+                    <Trash2 size={16} />
+                  </button>
                 </div>
                 <ChevronRight size={16} className="text-gray-300 group-hover:text-brand-muted transition-colors flex-shrink-0" />
               </li>

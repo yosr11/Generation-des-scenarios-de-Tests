@@ -56,7 +56,7 @@ class Settings:
     JIRA_BASE_URL = os.getenv("JIRA_BASE_URL", JIRA_PROD_URL)
 
     # ── Agent 1 — Analysis ───────────────────────────────────
-    AGENT1_DEFAULT_MODEL = os.getenv("AGENT1_DEFAULT_MODEL", "qwen3")
+    AGENT1_DEFAULT_MODEL = os.getenv("AGENT1_DEFAULT_MODEL", "llama4")
 
     # ── Agent 2 — Test Generation ────────────────────────────
     AGENT2_DEFAULT_MODEL = os.getenv("AGENT2_DEFAULT_MODEL", "llama4")
@@ -68,7 +68,7 @@ class Settings:
     AGENT3_EMBEDDING_MODEL = os.getenv(
         "AGENT3_EMBEDDING_MODEL", "paraphrase-multilingual-MiniLM-L12-v2"
     )
-    AGENT3_QUALITY_MODEL = os.getenv("AGENT3_QUALITY_MODEL", "llama4")
+    AGENT3_QUALITY_MODEL = os.getenv("AGENT3_QUALITY_MODEL", "qwen3")
 
     # ── Agent 5 — Reporting ──────────────────────────────────
     AGENT5_DEFAULT_MODEL = os.getenv("AGENT5_DEFAULT_MODEL", "qwen3")

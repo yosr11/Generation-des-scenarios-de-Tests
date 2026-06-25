@@ -34,6 +34,27 @@ def get_stored_story(story_id: str):
     return story
 
 
+@db_router.delete("/stories/{story_id}")
+def delete_stored_story(story_id: str):
+    """Supprime une story et toutes les données associées de la base."""
+    from app.db.database import get_connection
+
+    conn = get_connection()
+    try:
+        conn.execute("DELETE FROM story_analysis WHERE story_id = ?", (story_id,))
+        conn.execute("DELETE FROM story_manual_tests WHERE story_id = ?", (story_id,))
+        conn.execute("DELETE FROM agent3_validations WHERE story_id = ?", (story_id,))
+        conn.execute("DELETE FROM automation_classifications WHERE story_id = ?", (story_id,))
+        conn.execute("DELETE FROM generated_scenarios WHERE story_id = ?", (story_id,))
+        deleted = conn.execute("DELETE FROM stories WHERE id = ?", (story_id,)).rowcount
+        conn.commit()
+        if deleted == 0:
+            raise HTTPException(status_code=404, detail=f"Story {story_id} introuvable en base")
+        return {"status": "ok", "story_id": story_id}
+    finally:
+        conn.close()
+
+
 # ══════════════════════════════════════════════════════
 #  ANALYSES
 # ══════════════════════════════════════════════════════
@@ -41,8 +62,7 @@ def get_stored_story(story_id: str):
 @db_router.get("/stories/{story_id}/analyses")
 def list_analyses(story_id: str):
     """Récupère toutes les analyses LLM pour une story."""
-    analyses = get_analyses_by_story(story_id)
-    return {"story_id": story_id, "count": len(analyses), "analyses": analyses}
+    return get_analyses_by_story(story_id)
 
 
 @db_router.get("/stories/{story_id}/analysis/latest")

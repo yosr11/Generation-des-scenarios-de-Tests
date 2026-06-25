@@ -25,7 +25,7 @@ def validate_and_improve_tests(
     duplicate_similarity_threshold: float = 0.8,
     embedding_model: str = "paraphrase-multilingual-MiniLM-L12-v2",
     run_llm_quality_feedback: bool = False,
-    quality_model_alias: str = "llama4",
+    quality_model_alias: str = "qwen3",
     run_llm_ambiguity_detection: bool = True,
 ) -> Agent3ValidationResult:
 

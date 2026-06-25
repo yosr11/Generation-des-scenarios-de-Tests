@@ -8,6 +8,7 @@ import { LoginPage } from './pages/LoginPage'
 import { ProjectSelectPage } from './pages/ProjectSelectPage'
 import { LandingPage } from './pages/LandingPage'
 import { PipelinePage, HistoryPage } from './pages'
+import { StoryDetailPage } from './pages/StoryDetailPage'
 import { AdminDashboardPage } from './pages/admin/AdminDashboardPage'
 import { UsersPage } from './pages/admin/UsersPage'
 import { PipelineHistoryPage } from './pages/admin/PipelineHistoryPage'
@@ -51,6 +52,14 @@ function App() {
                 element={
                   <ProtectedRoute roles={['tester']}>
                     <HistoryPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/history/:storyId"
+                element={
+                  <ProtectedRoute roles={['tester']}>
+                    <StoryDetailPage />
                   </ProtectedRoute>
                 }
               />

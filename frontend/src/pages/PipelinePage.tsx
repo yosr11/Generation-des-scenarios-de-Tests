@@ -175,6 +175,7 @@ export const PipelinePage: React.FC = () => {
   const [inputValue, setInputValue] = useState('')
   const [useRag, setUseRag] = useState(true)
   const [useLegacyRag, setUseLegacyRag] = useState(false)
+  const [forceRefresh, setForceRefresh] = useState(false)
   const [runAgent4, setRunAgent4] = useState(true)
   const [manualTests, setManualTests] = useState<any[]>([])
   const [hasLaunched, setHasLaunched] = useState(false)
@@ -196,7 +197,12 @@ export const PipelinePage: React.FC = () => {
     if (!storyId || !hasLaunched) return
     const launch = async () => {
       try {
-        const resp = await run({ use_rag: useRag, use_legacy_rag: useLegacyRag, run_agent4: runAgent4, force_refresh: false })
+        const resp = await run({
+          use_rag: useRag,
+          use_legacy_rag: useLegacyRag,
+          run_agent4: runAgent4,
+          force_refresh: forceRefresh,
+        })
         const tests = (resp as any)?.agent2_tests || (resp as any)?.result?.agent2_tests || []
         setManualTests(tests)
         if ((resp as any)?.status === 'completed') toast.success('Pipeline terminé avec succès !')
@@ -297,30 +303,11 @@ export const PipelinePage: React.FC = () => {
               <div className="space-y-2">
                 <Toggle checked={useRag}       onChange={setUseRag}       label="Contexte RAG"    desc="Enrichissement par la base de connaissances" />
                 <Toggle checked={useLegacyRag} onChange={setUseLegacyRag} label="RAG Legacy"       desc="Ancien système de récupération" />
+                <Toggle checked={forceRefresh} onChange={setForceRefresh} label="Renforcer l'enrichissement" desc="Force le rechargement des données et l'enrichissement complet" />
                 <Toggle checked={runAgent4}    onChange={setRunAgent4}    label="Rapport Agent 4"  desc="Génération du rapport qualité final" />
               </div>
             </div>
 
-            {/* How it works */}
-            <div className="rounded-2xl p-4" style={{ background: 'linear-gradient(135deg,rgba(124,58,237,0.06),rgba(244,63,94,0.04))', border: '1px solid rgba(124,58,237,0.12)' }}>
-              <p className="text-xs font-bold text-brand-violet uppercase tracking-widest mb-3 flex items-center gap-1.5">
-                <Bot size={12} /> Comment ça fonctionne
-              </p>
-              {[
-                { n: 1, t: 'Récupération', c: '#7c3aed' },
-                { n: 2, t: 'Génération des tests', c: '#f43f5e' },
-                { n: 3, t: 'Validation', c: '#f97316' },
-                { n: 4, t: 'Rapport final', c: '#ec4899' },
-              ].map(step => (
-                <div key={step.n} className="flex items-center gap-2 mb-2 last:mb-0">
-                  <span className="w-5 h-5 rounded-md flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0"
-                    style={{ background: step.c }}>
-                    {step.n}
-                  </span>
-                  <span className="text-xs text-brand-navy font-medium">{step.t}</span>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </div>

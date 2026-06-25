@@ -22,9 +22,9 @@ interface StoryFormProps {
 
 const defaultValues: StoryFormValues = {
   mode: 'analysis',
-  modelAgent1: 'qwen3',
+  modelAgent1: 'llama4',
   modelAgent2: 'llama4',
-  modelAgent3: 'llama4',
+  modelAgent3: 'qwen3',
   modelAgent4: 'qwen3',
   modelAgent5: 'qwen3',
   useRag: false,

@@ -45,7 +45,7 @@ def llm_quality_feedback(
     testable_points: List[str],
     tests: List[Dict[str, Any]],
     metrics: Dict[str, Any],
-    model_alias: str = "llama4",
+    model_alias: str = "qwen3",
 ) -> Optional[Dict[str, Any]]:
     system = (
         "You are a senior QA reviewer. "

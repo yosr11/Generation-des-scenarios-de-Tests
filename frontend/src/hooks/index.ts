@@ -246,12 +246,12 @@ export function useStories(storedOnly = false) {
   return useAsync(asyncFn, true)
 }
 
-export function useStory(storyId: string, stored = false) {
+export function useStory<T extends import('../api/client').Story = import('../api/client').Story>(storyId: string, stored = false) {
   const asyncFn = useCallback(
     () =>
       stored
-        ? apiClient.db.getStory(storyId)
-        : apiClient.stories.fetch(storyId),
+        ? apiClient.db.getStory(storyId) as Promise<T>
+        : apiClient.stories.fetch(storyId) as Promise<T>,
     [storyId, stored]
   )
 
