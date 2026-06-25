@@ -7,7 +7,11 @@ import { ProtectedRoute } from './components/auth/ProtectedRoute'
 import { LoginPage } from './pages/LoginPage'
 import { ProjectSelectPage } from './pages/ProjectSelectPage'
 import { LandingPage } from './pages/LandingPage'
-import { DashboardPage, PipelinePage, AnalysisPage, HistoryPage } from './pages'
+import { PipelinePage, HistoryPage } from './pages'
+import { AdminDashboardPage } from './pages/admin/AdminDashboardPage'
+import { UsersPage } from './pages/admin/UsersPage'
+import { PipelineHistoryPage } from './pages/admin/PipelineHistoryPage'
+import { AuditPage } from './pages/admin/AuditPage'
 
 function AuthenticatedLayout() {
   return (
@@ -29,23 +33,76 @@ function App() {
 
             {/* Authenticated Routes */}
             <Route element={<AuthenticatedLayout />}>
+
+              {/* ── Redirect /home to role-aware default ── */}
               <Route path="/home" element={<Navigate to="/pipeline" replace />} />
+
+              {/* ── Tester Routes ── */}
               <Route
                 path="/pipeline"
                 element={
-                  <ProtectedRoute requireProject>
+                  <ProtectedRoute requireProject roles={['tester']}>
                     <PipelinePage />
                   </ProtectedRoute>
                 }
               />
-              <Route path="/analysis"  element={<AnalysisPage />} />
-              <Route path="/dashboard" element={<DashboardPage />} />
-              <Route path="/history"   element={<HistoryPage />} />
+              <Route
+                path="/history"
+                element={
+                  <ProtectedRoute roles={['tester']}>
+                    <HistoryPage />
+                  </ProtectedRoute>
+                }
+              />
               <Route
                 path="/projects"
                 element={
                   <ProtectedRoute roles={['tester']}>
                     <ProjectSelectPage />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* ── Admin Routes ── */}
+              <Route
+                path="/admin/dashboard"
+                element={
+                  <ProtectedRoute roles={['admin']}>
+                    <AdminDashboardPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/users"
+                element={
+                  <ProtectedRoute roles={['admin']}>
+                    <UsersPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/pipelines"
+                element={
+                  <ProtectedRoute roles={['admin']}>
+                    <PipelineHistoryPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/audit"
+                element={
+                  <ProtectedRoute roles={['admin']}>
+                    <AuditPage />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* ── Admin default redirect ── */}
+              <Route
+                path="/admin"
+                element={
+                  <ProtectedRoute roles={['admin']}>
+                    <Navigate to="/admin/dashboard" replace />
                   </ProtectedRoute>
                 }
               />

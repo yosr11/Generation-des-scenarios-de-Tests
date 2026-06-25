@@ -556,9 +556,6 @@ export const apiClient = {
 
   // ─── Health Check ───
   health: {
-    /**
-     * Check API health
-     */
     async check(): Promise<{ status: string }> {
       try {
         const response = await axiosInstance.get('/')
@@ -568,7 +565,45 @@ export const apiClient = {
       }
     },
   },
+
+  // ─── Admin ───
+  admin: {
+    async getStats(): Promise<any> {
+      try { return (await axiosInstance.get('/admin/stats')).data } catch (e) { throw handleError(e) }
+    },
+    async listUsers(): Promise<any[]> {
+      try { return (await axiosInstance.get('/admin/users')).data } catch (e) { throw handleError(e) }
+    },
+    async createUser(data: {
+      email: string; password: string; role: string;
+      display_name?: string; jira_username?: string;
+    }): Promise<any> {
+      try { return (await axiosInstance.post('/admin/users', data)).data } catch (e) { throw handleError(e) }
+    },
+    async updateUser(id: number, data: {
+      display_name?: string; jira_username?: string;
+      password?: string; role?: string;
+    }): Promise<any> {
+      try { return (await axiosInstance.patch(`/admin/users/${id}`, data)).data } catch (e) { throw handleError(e) }
+    },
+    async deleteUser(id: number): Promise<void> {
+      try { await axiosInstance.delete(`/admin/users/${id}`) } catch (e) { throw handleError(e) }
+    },
+    async activateUser(id: number): Promise<any> {
+      try { return (await axiosInstance.post(`/admin/users/${id}/activate`)).data } catch (e) { throw handleError(e) }
+    },
+    async deactivateUser(id: number): Promise<any> {
+      try { return (await axiosInstance.post(`/admin/users/${id}/deactivate`)).data } catch (e) { throw handleError(e) }
+    },
+    async getPipelineHistory(params?: { limit?: number; offset?: number; launched_by?: string }): Promise<any> {
+      try { return (await axiosInstance.get('/admin/pipelines', { params })).data } catch (e) { throw handleError(e) }
+    },
+    async getAuditLog(params?: { limit?: number; offset?: number }): Promise<any> {
+      try { return (await axiosInstance.get('/admin/audit', { params })).data } catch (e) { throw handleError(e) }
+    },
+  },
 }
+
 
 // Interceptors for adding authentication or logging
 axiosInstance.interceptors.response.use(

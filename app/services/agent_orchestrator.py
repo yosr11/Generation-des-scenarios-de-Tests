@@ -17,6 +17,13 @@ from app.services.token_tracker import track_agent, track_pipeline
 
 logger = logging.getLogger(__name__)
 
+def _safe_update_step(story_id: str, agent_name: str, status: str, output: Any = None, error: str = None, progress: int = None):
+    try:
+        from app.utils.job_manager import update_job_step
+        update_job_step(story_id, agent_name, status, output, error, progress)
+    except Exception as exc:
+        logger.warning(f"Could not update step {agent_name}: {exc}")
+
 # ── Cache RAG legacy tests (session-level) ──
 # Évite les appels RAG répétés pour la même story
 _legacy_rag_cache: Dict[str, List[Dict[str, Any]]] = {}
@@ -77,6 +84,7 @@ def node_enrich_story(state: PipelineState) -> dict:
 
     story_id = state["story_id"]
     force_refresh = bool(state.get("force_refresh"))
+    _safe_update_step(story_id, "Agent 1", "running", progress=10)
     logger.info(f"[Orchestrator] Enriching story {story_id} (force_refresh={force_refresh})")
 
     # Vérifier le cache (sauf si force_refresh demande un re-fetch Jira complet)
@@ -214,6 +222,7 @@ def node_agent1_analyze(state: PipelineState) -> dict:
     story_id = state["story_id"]
     model = state.get("model_agent1", "llama4")
     rag_context = state.get("rag_context")
+    _safe_update_step(story_id, "Agent 1", "running", progress=15)
 
     # ── Récupérer les pièces jointes de la story (spec directe) ──
     story_attachments = collect_documents_for_story(story_id)
@@ -260,6 +269,9 @@ def node_agent1_analyze(state: PipelineState) -> dict:
         analysis_dict["model"] = model
         save_analysis(analysis_dict)
 
+        _safe_update_step(story_id, "Agent 1", "completed", output=analysis_dict, progress=25)
+        _safe_update_step(story_id, "Agent 2", "running", progress=30)
+
         return {
             "analysis": analysis,
             "analysis_dict": analysis_dict,
@@ -267,6 +279,7 @@ def node_agent1_analyze(state: PipelineState) -> dict:
 
     except Exception as e:
         logger.error(f"[Orchestrator] Agent 1 failed for {story_id}: {e}")
+        _safe_update_step(story_id, "Agent 1", "failed", error=str(e), progress=25)
         return {
             "status": "failed",
             "errors": [f"Agent 1 failed: {e}"],
@@ -283,6 +296,7 @@ def node_agent2_generate(state: PipelineState) -> dict:
     story_id = state["story_id"]
     model = state.get("model_agent2", "llama4")
     rag_context = state.get("rag_context")
+    _safe_update_step(story_id, "Agent 2", "running", progress=35)
 
     # ── RAG tests legacy Sopra HR (few-shot) ──
     legacy_examples: Optional[list] = state.get("legacy_examples")
@@ -334,6 +348,10 @@ def node_agent2_generate(state: PipelineState) -> dict:
                 generation_model=model,
             )
 
+        tests_out = [t.model_dump() if hasattr(t, "model_dump") else dict(t) for t in result.tests] if result.tests else []
+        _safe_update_step(story_id, "Agent 2", "completed", output=tests_out, progress=50)
+        _safe_update_step(story_id, "Agent 3", "running", progress=55)
+
         return {
             "generation_result": result,
             "tests": list(result.tests),
@@ -344,6 +362,7 @@ def node_agent2_generate(state: PipelineState) -> dict:
 
     except Exception as e:
         logger.error(f"[Orchestrator] Agent 2 failed for {story_id}: {e}")
+        _safe_update_step(story_id, "Agent 2", "failed", error=str(e), progress=50)
         return {
             "status": "failed",
             "errors": [f"Agent 2 failed: {e}"],
@@ -364,6 +383,7 @@ def node_agent3_validate(state: PipelineState) -> dict:
 
     testable_points = list(analysis.testable_points) if analysis else []
     story_summary = story.get("summary", "") if isinstance(story, dict) else ""
+    _safe_update_step(story_id, "Agent 3", "running", progress=60)
 
     logger.info(
         f"[Orchestrator] Agent 3 validating {story_id} "
@@ -385,10 +405,21 @@ def node_agent3_validate(state: PipelineState) -> dict:
         # Persister
         save_validation_result(story_id, result)
 
+        val_out = result.model_dump() if hasattr(result, "model_dump") else dict(result)
+        _safe_update_step(story_id, "Agent 3", "completed", output=val_out, progress=75)
+        
+        # If Agent 4 is run, mark it as running, else complete/skip
+        if state.get("run_agent4"):
+            _safe_update_step(story_id, "Agent 4", "running", progress=80)
+        else:
+            _safe_update_step(story_id, "Agent 4", "completed", output={"status": "desactive"}, progress=80)
+        _safe_update_step(story_id, "Agent 5", "running", progress=85)
+
         return {"validation": result}
 
     except Exception as e:
         logger.error(f"[Orchestrator] Agent 3 failed for {story_id}: {e}")
+        _safe_update_step(story_id, "Agent 3", "failed", error=str(e), progress=75)
         return {
             "status": "failed",
             "errors": [f"Agent 3 failed: {e}"],
@@ -490,6 +521,7 @@ def node_agent5_report(state: PipelineState) -> dict:
     generation_result = state.get("generation_result")
     validation = state.get("validation")
     model = state.get("model_agent5", "qwen3")
+    _safe_update_step(story_id, "Agent 5", "running", progress=90)
 
     logger.info(f"[Orchestrator] Agent 5 generating report for {story_id}")
 
@@ -507,6 +539,9 @@ def node_agent5_report(state: PipelineState) -> dict:
                 correction_iterations=state.get("correction_iteration", 0),
                 max_correction_iterations=state.get("max_correction_iterations", 0),
             )
+        rep_out = report.model_dump() if hasattr(report, "model_dump") else dict(report)
+        _safe_update_step(story_id, "Agent 5", "completed", output=rep_out, progress=100)
+
         return {
             "report": report,
             "status": "completed",
@@ -514,6 +549,7 @@ def node_agent5_report(state: PipelineState) -> dict:
 
     except Exception as e:
         logger.error(f"[Orchestrator] Agent 5 failed for {story_id}: {e}")
+        _safe_update_step(story_id, "Agent 5", "failed", error=str(e), progress=100)
         return {
             "status": "completed",
             "errors": [f"Agent 5 failed (non-bloquant): {e}"],
@@ -528,6 +564,7 @@ def node_agent4_classify(state: PipelineState) -> dict:
     story_id = state["story_id"]
     tests = state.get("tests", []) or []
     model = state.get("model_agent4", "llama4")
+    _safe_update_step(story_id, "Agent 4", "running", progress=80)
 
     if not tests:
         logger.info(f"[Orchestrator] Agent 4 skipped for {story_id} (no tests)")
@@ -543,9 +580,14 @@ def node_agent4_classify(state: PipelineState) -> dict:
         with track_agent("agent4"):
             result = classify_tests_for_story(story_id, tests_dicts, model_alias=model)
         save_classifications(result)
+        
+        class_out = result.model_dump() if hasattr(result, "model_dump") else dict(result)
+        _safe_update_step(story_id, "Agent 4", "completed", output=class_out, progress=88)
+
         return {"classification_result": result}
     except Exception as e:
         logger.error(f"[Orchestrator] Agent 4 failed for {story_id}: {e}")
+        _safe_update_step(story_id, "Agent 4", "failed", error=str(e), progress=88)
         return {"errors": (state.get("errors") or []) + [f"Agent 4 failed (non-bloquant): {e}"]}
 
 
@@ -647,11 +689,17 @@ def route_after_agent3(state: PipelineState) -> str:
 
 def node_skip(state: PipelineState) -> dict:
     """Story non exploitable → fin avec statut skipped."""
+    story_id = state["story_id"]
+    _safe_update_step(story_id, "Agent 2", "failed", error="Story non exploitable", progress=100)
+    _safe_update_step(story_id, "Agent 3", "failed", error="Story non exploitable")
+    _safe_update_step(story_id, "Agent 4", "failed", error="Story non exploitable")
+    _safe_update_step(story_id, "Agent 5", "failed", error="Story non exploitable")
     return {"status": "skipped"}
 
 
 def node_not_functional(state: PipelineState) -> dict:
     """Story hors périmètre (non fonctionnelle) → court-circuit avec message explicite."""
+    story_id = state["story_id"]
     analysis = state.get("analysis")
     story_type = analysis.story_type if analysis else "unknown"
     msg = (
@@ -659,12 +707,19 @@ def node_not_functional(state: PipelineState) -> dict:
         f"Seules les User Stories fonctionnelles (forme \"En tant que… je veux…\") sont traitées. "
         f"Recommandation : pour une story technique, prévoir des tests d'intégration / unitaires côté développement."
     )
-    logger.info(f"[Orchestrator] {state['story_id']} → not_functional ({story_type})")
+    logger.info(f"[Orchestrator] {story_id} → not_functional ({story_type})")
+    
+    _safe_update_step(story_id, "Agent 2", "failed", error="Story non fonctionnelle", progress=100)
+    _safe_update_step(story_id, "Agent 3", "failed", error="Story non fonctionnelle")
+    _safe_update_step(story_id, "Agent 4", "failed", error="Story non fonctionnelle")
+    _safe_update_step(story_id, "Agent 5", "failed", error="Story non fonctionnelle")
+    
     return {"status": "skipped", "errors": [msg]}
 
 
 def node_no_tests(state: PipelineState) -> dict:
     """Aucun test généré → fin avec statut failed."""
+    story_id = state["story_id"]
     errors = ["Agent 2 n'a pas pu générer de tests"]
     gen = state.get("generation_result")
     if gen:
@@ -676,6 +731,12 @@ def node_no_tests(state: PipelineState) -> dict:
             note_text = (note or "").strip()
             if note_text and note_text not in errors:
                 errors.append(note_text)
+                
+    _safe_update_step(story_id, "Agent 2", "failed", error="\n".join(errors), progress=100)
+    _safe_update_step(story_id, "Agent 3", "failed", error="Pas de tests generes")
+    _safe_update_step(story_id, "Agent 4", "failed", error="Pas de tests generes")
+    _safe_update_step(story_id, "Agent 5", "failed", error="Pas de tests generes")
+    
     return {"status": "failed", "errors": errors}
 
 

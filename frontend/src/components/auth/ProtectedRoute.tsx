@@ -30,7 +30,8 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   }
 
   if (roles && !roles.includes(user.role)) {
-    return <Navigate to="/pipeline" replace />
+    // Redirect to role-appropriate default
+    return <Navigate to={user.role === 'admin' ? '/admin/dashboard' : '/pipeline'} replace />
   }
 
   if (requireProject && user.role === 'tester' && !selectedProject) {

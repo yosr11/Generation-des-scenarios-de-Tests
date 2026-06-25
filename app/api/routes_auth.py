@@ -13,6 +13,7 @@ from app.core.deps import CurrentUser, get_client_ip, get_current_user
 from app.db.postgres import get_db
 from app.services.audit_service import log_action
 from app.services.auth_service import authenticate_admin, authenticate_tester, build_admin_token, logout_tester
+from app.services.user_service import get_user_by_jira_username, update_last_login
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
@@ -64,10 +65,14 @@ async def login_admin(
 ):
     user = await authenticate_admin(db, body.email, body.password)
     if not user:
-        raise HTTPException(status_code=401, detail="Invalid email or password")
+        raise HTTPException(status_code=401, detail="Email ou mot de passe invalide.")
+    if not user.is_active:
+        raise HTTPException(status_code=403, detail="Ce compte est désactivé. Contactez un administrateur.")
 
     token = build_admin_token(user)
     _set_auth_cookie(response, token)
+
+    await update_last_login(db, user.id)
 
     await log_action(
         db,
@@ -78,7 +83,12 @@ async def login_admin(
     )
 
     return LoginResponse(
-        user={"email": user.email, "role": "admin", "display_name": user.email.split("@")[0]},
+        user={
+            "id": user.id,
+            "email": user.email,
+            "role": "admin",
+            "display_name": user.display_name or user.email.split("@")[0],
+        },
     )
 
 
@@ -94,6 +104,20 @@ async def login_tester(
         if result.get("no_projects"):
             raise HTTPException(status_code=403, detail=result["error"])
         raise HTTPException(status_code=401, detail=result.get("error", "Authentication failed"))
+
+    # Update last_login if the tester is registered in the DB
+    db_tester = await get_user_by_jira_username(db, body.username)
+    if not db_tester:
+        raise HTTPException(
+            status_code=403,
+            detail="Votre compte n'est pas autorisé sur cette application. Contactez votre administrateur.",
+        )
+    if not db_tester.is_active:
+        raise HTTPException(
+            status_code=403,
+            detail="Ce compte est désactivé. Contactez votre administrateur.",
+        )
+    await update_last_login(db, db_tester.id)
 
     _set_auth_cookie(response, result["access_token"])
 

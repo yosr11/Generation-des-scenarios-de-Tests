@@ -1,16 +1,13 @@
-"""
-Routes FastAPI pour l'orchestrateur LangGraph.
-
-Expose le pipeline complet : story → Agent 1 → Agent 2 → Agent 3 (+ gap-fill) → Agent 5.
-"""
-
+import asyncio
 import logging
-from typing import Any, List, Optional
+from datetime import datetime, timezone
+from typing import Any, List, Optional, Dict
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import PlainTextResponse, HTMLResponse
 from pydantic import BaseModel, Field
 
+from app.core.deps import CurrentUser, get_current_user
 from app.services.agent_orchestrator import run_pipeline, PipelineState
 from app.services.agent5_report_service import Agent5ReportGeneratorService
 from app.services.epic_service import get_stories_by_epic
@@ -18,6 +15,42 @@ from app.services.epic_service import get_stories_by_epic
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/orchestrator", tags=["Orchestrator — Full Pipeline"])
+
+
+# ── PipelineRun logging helper ─────────────────────────────
+
+async def _log_pipeline_run(
+    story_id: str,
+    launched_by: str,
+    status: str,
+    use_rag: bool,
+    use_legacy_rag: bool,
+    run_agent4: bool,
+    tests_count: int = 0,
+    error_message: Optional[str] = None,
+    started_at: Optional[datetime] = None,
+) -> None:
+    """Persist a PipelineRun record to PostgreSQL (fire-and-forget)."""
+    try:
+        from app.db.postgres import AsyncSessionLocal
+        from app.models.pg_models import PipelineRun
+        async with AsyncSessionLocal() as db:
+            run = PipelineRun(
+                story_id=story_id,
+                launched_by=launched_by,
+                status=status,
+                use_rag=use_rag,
+                use_legacy_rag=use_legacy_rag,
+                run_agent4=run_agent4,
+                tests_count=tests_count,
+                error_message=error_message,
+                started_at=started_at or datetime.now(timezone.utc),
+                finished_at=datetime.now(timezone.utc),
+            )
+            db.add(run)
+            await db.commit()
+    except Exception as exc:
+        logger.warning("[PipelineRun] Failed to log run: %s", exc)
 
 
 # ═══════════════════════════════════════════════════════════════
@@ -46,6 +79,23 @@ class PipelineRequest(BaseModel):
         ),
     )
     run_agent4: bool = Field(default=False, description="Activer la classification Agent 4 (AUTO/MANUEL)")
+
+
+class PipelineStepSchema(BaseModel):
+    agent: str
+    status: str
+    output: Optional[Any] = None
+    result: Optional[Any] = None
+    error: Optional[str] = None
+
+
+class OrchestratorResponseSchema(BaseModel):
+    storyId: str
+    status: str
+    progress: int
+    steps: List[PipelineStepSchema]
+    result: Optional[Any] = None
+    error: Optional[str] = None
 
 
 class PipelineStoryResult(BaseModel):
@@ -163,49 +213,151 @@ def _state_to_result(state: PipelineState, include_markdown: bool = False) -> Pi
     return result
 
 
+# Store for running background tasks
+running_tasks: Dict[str, asyncio.Task] = {}
+
+
 # ═══════════════════════════════════════════════════════════════
 #  Routes
 # ═══════════════════════════════════════════════════════════════
 
 @router.post(
     "/run/{story_id}",
-    response_model=PipelineStoryResult,
-    summary="Pipeline complet pour une story (Agent 1 → 2 → 3 → 4)",
+    response_model=OrchestratorResponseSchema,
+    summary="Pipeline complet pour une story (Agent 1 → 2 → 3 → 4) en arrière-plan",
 )
-def run_story_pipeline(story_id: str, body: PipelineRequest = None):
-    """
-    Lance le pipeline complet :
-    1. Enrichit la story depuis Jira
-    2. Agent 1 : analyse
-    3. Agent 2 : génération de tests
-    4. Agent 3 : validation (+ boucle corrective gap-fill si couverture insuffisante)
-    5. Agent 5 : rapport final
-    """
+async def run_story_pipeline(
+    story_id: str,
+    request: Request,
+    body: PipelineRequest = None,
+    current_user: CurrentUser = Depends(get_current_user),
+):
+    sid = story_id.strip().upper()
     params = body or PipelineRequest()
+    launched_by = (
+        getattr(current_user, "jira_username", None)
+        or getattr(current_user, "email", None)
+        or "unknown"
+    )
+    started_at = datetime.now(timezone.utc)
 
-    logger.info(f"[Route] Pipeline started for {story_id}")
+    # Cancel previous run task if any
+    if sid in running_tasks:
+        try:
+            running_tasks[sid].cancel()
+        except Exception:
+            pass
 
-    try:
-        final_state = run_pipeline(
-            story_id=story_id,
-            use_rag=params.use_rag,
-            use_legacy_rag=params.use_legacy_rag,
-            model_agent1=params.model_agent1,
-            model_agent2=params.model_agent2,
-            model_agent3_quality=params.model_agent3_quality,
-            model_agent5=params.model_agent5,
-            model_agent4=params.model_agent4,
-            coverage_threshold=params.coverage_threshold,
-            max_correction_iterations=params.max_correction_iterations,
-            force_refresh=params.force_refresh,
-            run_agent4=params.run_agent4,
-        )
+    from app.utils.job_manager import create_job
+    job = create_job(sid)
 
-        return _state_to_result(final_state, include_markdown=False)
+    async def run_task():
+        from app.utils.job_manager import jobs_db
+        status = "failed"
+        tests_count = 0
+        error_msg = None
+        
+        try:
+            import anyio
+            final_state = await anyio.to_thread.run_sync(
+                lambda: run_pipeline(
+                    story_id=sid,
+                    use_rag=params.use_rag,
+                    use_legacy_rag=params.use_legacy_rag,
+                    model_agent1=params.model_agent1,
+                    model_agent2=params.model_agent2,
+                    model_agent3_quality=params.model_agent3_quality,
+                    model_agent5=params.model_agent5,
+                    model_agent4=params.model_agent4,
+                    coverage_threshold=params.coverage_threshold,
+                    max_correction_iterations=params.max_correction_iterations,
+                    force_refresh=params.force_refresh,
+                    run_agent4=params.run_agent4,
+                )
+            )
+            result = _state_to_result(final_state, include_markdown=False)
+            status = result.status
+            tests_count = result.tests_count
+            
+            if sid in jobs_db:
+                jobs_db[sid]["status"] = "completed" if status == "completed" else "failed"
+                jobs_db[sid]["progress"] = 100
+                jobs_db[sid]["result"] = result.model_dump()
+        except asyncio.CancelledError:
+            logger.info(f"Pipeline run for {sid} was cancelled.")
+            if sid in jobs_db:
+                jobs_db[sid]["status"] = "failed"
+                jobs_db[sid]["error"] = "Annulé par l'utilisateur."
+            raise
+        except Exception as exc:
+            error_msg = str(exc)
+            logger.error(f"Pipeline error for {sid}: {exc}", exc_info=True)
+            if sid in jobs_db:
+                jobs_db[sid]["status"] = "failed"
+                jobs_db[sid]["error"] = error_msg
+        finally:
+            await _log_pipeline_run(
+                story_id=sid,
+                launched_by=launched_by,
+                status=jobs_db[sid]["status"] if sid in jobs_db else status,
+                use_rag=params.use_rag,
+                use_legacy_rag=params.use_legacy_rag,
+                run_agent4=params.run_agent4,
+                tests_count=tests_count,
+                error_message=error_msg,
+                started_at=started_at,
+            )
+            running_tasks.pop(sid, None)
 
-    except Exception as e:
-        logger.error(f"[Route] Pipeline error for {story_id}: {e}", exc_info=True)
-        raise HTTPException(status_code=500, detail=f"Pipeline error: {e}")
+    task = asyncio.create_task(run_task())
+    running_tasks[sid] = task
+
+    return job
+
+
+@router.get(
+    "/status/{story_id}",
+    response_model=OrchestratorResponseSchema,
+    summary="Récupère le statut et la progression en temps réel d'un run",
+)
+def get_pipeline_status(
+    story_id: str,
+    current_user: CurrentUser = Depends(get_current_user),
+):
+    from app.utils.job_manager import jobs_db
+    sid = story_id.strip().upper()
+    if sid not in jobs_db:
+        return {
+            "storyId": sid,
+            "status": "failed",
+            "progress": 0,
+            "steps": [],
+            "error": "Aucune exécution enregistrée pour cette story."
+        }
+    return jobs_db[sid]
+
+
+@router.post(
+    "/cancel/{story_id}",
+    summary="Annule une exécution en cours",
+)
+def cancel_pipeline(
+    story_id: str,
+    current_user: CurrentUser = Depends(get_current_user),
+):
+    sid = story_id.strip().upper()
+    if sid in running_tasks:
+        running_tasks[sid].cancel()
+        from app.utils.job_manager import jobs_db
+        if sid in jobs_db:
+            jobs_db[sid]["status"] = "failed"
+            jobs_db[sid]["error"] = "Annulé par l'utilisateur."
+            for step in jobs_db[sid]["steps"]:
+                if step["status"] == "running":
+                    step["status"] = "failed"
+                    step["error"] = "Annulé par l'utilisateur."
+        return {"status": "ok"}
+    return {"status": "not_running"}
 
 
 @router.post(

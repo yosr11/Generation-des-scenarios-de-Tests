@@ -1,211 +1,125 @@
-import React from 'react'
-import { useAnalysisHistory } from '../hooks'
-import { SkeletonLoader } from '../components/ui/Loader'
-import { Badge } from '../components/ui/Badge'
-import { Alert } from '../components/ui/Alert'
-import { Button } from '../components/ui/Button'
-import { Card, CardBody, CardHeader } from '../components/ui/Card'
-import { useToast } from '../contexts/ToastContext'
-import { History, Calendar, Cpu, ChevronRight, Clock, SearchX } from 'lucide-react'
+import React, { useEffect, useState } from 'react'
+import { apiClient } from '../api/client'
+import { History, GitBranch, ChevronRight, Search, RefreshCw } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+
+interface Story {
+  id: string
+  summary: string
+  status: string | null
+  created_at: string
+  tests_count?: number
+}
 
 export const HistoryPage: React.FC = () => {
-  const [selectedStoryId, setSelectedStoryId] = React.useState<string>('')
-  const [storySearch, setStorySearch] = React.useState('')
-  const toast = useToast()
+  const [stories, setStories] = useState<Story[]>([])
+  const [loading, setLoading] = useState(true)
+  const [search, setSearch] = useState('')
+  const navigate = useNavigate()
 
-  const { data: analyses, loading: analysesLoading, error: analysesError } = useAnalysisHistory(
-    selectedStoryId
+  useEffect(() => {
+    apiClient.db.listStories()
+      .then((data: any[]) => setStories(data || []))
+      .catch(console.error)
+      .finally(() => setLoading(false))
+  }, [])
+
+  const filtered = stories.filter(s =>
+    s.id.toLowerCase().includes(search.toLowerCase()) ||
+    (s.summary || '').toLowerCase().includes(search.toLowerCase())
   )
 
-  const handleLoadHistory = () => {
-    if (storySearch.trim()) {
-      setSelectedStoryId(storySearch.trim().toUpperCase())
-      toast.info(`Chargement de l'historique pour ${storySearch.trim().toUpperCase()}`)
-    }
-  }
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') handleLoadHistory()
-  }
-
   return (
-    <div className="max-w-6xl mx-auto space-y-6 animate-fade-in">
-
-      {/* Page Header */}
+    <div className="space-y-5 animate-fade-in">
+      {/* Controls */}
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0"
-          style={{ background: 'linear-gradient(135deg, #ec4899, #f97316)' }}>
-          <History size={18} className="text-white" />
+        <div className="relative flex-1 max-w-sm">
+          <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+          <input type="text" value={search} onChange={e => setSearch(e.target.value)}
+            placeholder="Rechercher une story…"
+            className="w-full pl-10 pr-4 py-2.5 border-2 border-gray-100 rounded-xl text-sm text-brand-navy focus:border-brand-rose transition-all" />
         </div>
-        <div>
-          <h1 className="text-2xl font-extrabold text-brand-navy">Historique</h1>
-          <p className="text-sm text-brand-muted">Consultez les analyses passées et leurs résultats</p>
-        </div>
+        <button type="button" onClick={() => { setLoading(true); apiClient.db.listStories().then((data: any) => setStories(data || [])).finally(() => setLoading(false)) }}
+          className="p-2.5 rounded-xl border-2 border-gray-100 text-brand-muted hover:text-brand-navy hover:border-gray-200 transition-all">
+          <RefreshCw size={15} className={loading ? 'animate-spin' : ''} />
+        </button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      {/* List */}
+      <div className="bg-white rounded-3xl border border-gray-100 shadow-card overflow-hidden">
+        <div className="h-1" style={{ background: 'linear-gradient(90deg,#ef4444,#f43f5e,#f97316)' }} />
+        <div className="px-6 py-4 border-b border-gray-100 flex items-center gap-3">
+          <History size={16} className="text-brand-rose" />
+          <h3 className="font-bold text-brand-navy">Stories Traitées</h3>
+          <span className="ml-auto px-2.5 py-0.5 rounded-full text-xs font-bold"
+            style={{ background: 'rgba(244,63,94,0.08)', color: '#f43f5e' }}>
+            {filtered.length}
+          </span>
+        </div>
 
-        {/* Search Panel */}
-        <div className="lg:col-span-1 space-y-4">
-          <Card>
-            <CardHeader title="Rechercher" accent />
-            <CardBody className="space-y-4">
-              <div>
-                <label className="block text-xs font-bold text-brand-navy/70 uppercase tracking-widest mb-2">
-                  Story ID
-                </label>
-                <input
-                  type="text"
-                  id="history-story-search"
-                  placeholder="ex : NUXEPM-2144"
-                  value={storySearch}
-                  onChange={(e) => setStorySearch(e.target.value.toUpperCase())}
-                  onKeyDown={handleKeyDown}
-                  className="w-full px-4 py-3 border-2 border-gray-100 rounded-xl text-sm font-mono font-semibold text-brand-navy placeholder:text-gray-300 focus:border-brand-pink transition-all bg-white shadow-sm"
-                />
-              </div>
-              <Button
-                variant="primary"
-                fullWidth
-                onClick={handleLoadHistory}
-                disabled={!storySearch.trim()}
-                size="lg"
-              >
-                <History size={16} />
-                Voir l'historique
-              </Button>
-
-              {selectedStoryId && (
-                <div className="p-3 rounded-xl flex items-center gap-2"
-                  style={{
-                    background: 'rgba(236,72,153,0.06)',
-                    border: '1px solid rgba(236,72,153,0.15)',
-                  }}>
-                  <Clock size={13} className="text-brand-pink flex-shrink-0" />
-                  <div className="min-w-0">
-                    <p className="text-[10px] text-brand-muted">Story active</p>
-                    <p className="text-sm font-bold text-brand-navy font-mono truncate">{selectedStoryId}</p>
-                  </div>
-                </div>
-              )}
-            </CardBody>
-          </Card>
-
-          <div className="p-4 rounded-2xl text-sm"
-            style={{
-              background: 'linear-gradient(135deg, rgba(236,72,153,0.07), rgba(249,115,22,0.05))',
-              border: '1px solid rgba(236,72,153,0.12)',
-            }}>
-            <p className="font-bold text-brand-navy mb-1 text-xs uppercase tracking-wider">📋 Historique</p>
-            <p className="text-brand-muted text-xs leading-relaxed">
-              Retrouvez toutes les analyses passées, leurs modèles utilisés et leurs statuts.
-            </p>
+        {loading ? (
+          <div className="py-16 text-center">
+            <div className="w-8 h-8 mx-auto border-2 border-t-brand-rose border-transparent rounded-full animate-spin mb-3" />
+            <p className="text-brand-muted text-sm">Chargement…</p>
           </div>
-        </div>
-
-        {/* Results */}
-        <div className="lg:col-span-3">
-          {selectedStoryId ? (
-            <>
-              {analysesError && (
-                <Alert type="error" title="Erreur de chargement" description={analysesError.message} />
-              )}
-              {analysesLoading ? (
-                <Card>
-                  <CardBody className="p-6">
-                    <SkeletonLoader />
-                  </CardBody>
-                </Card>
-              ) : analyses && analyses.length > 0 ? (
-                <Card>
-                  <CardHeader
-                    title={`Analyses — ${selectedStoryId}`}
-                    accent
-                    action={
-                      <Badge variant="rose" dot size="sm">
-                        {analyses.length} résultats
-                      </Badge>
-                    }
-                  />
-                  <div className="overflow-hidden">
-                    <table className="premium-table w-full">
-                      <thead>
-                        <tr>
-                          <th className="text-left">Modèle</th>
-                          <th className="text-left">Date & Heure</th>
-                          <th className="text-left">Statut</th>
-                          <th className="text-left" />
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {analyses.map((analysis: any, idx: number) => (
-                          <tr key={idx} className="group">
-                            <td>
-                              <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                                  style={{ background: 'linear-gradient(135deg, rgba(124,58,237,0.1), rgba(244,63,94,0.08))' }}>
-                                  <Cpu size={13} className="text-brand-violet" />
-                                </div>
-                                <span className="font-semibold text-brand-navy text-sm">
-                                  {analysis.model || 'N/A'}
-                                </span>
-                              </div>
-                            </td>
-                            <td>
-                              <div className="flex items-center gap-2 text-brand-muted">
-                                <Calendar size={13} className="text-gray-300" />
-                                <span className="text-sm">
-                                  {new Date(analysis.created_at).toLocaleString('fr-FR', {
-                                    day: '2-digit', month: 'short', year: 'numeric',
-                                    hour: '2-digit', minute: '2-digit',
-                                  })}
-                                </span>
-                              </div>
-                            </td>
-                            <td>
-                              <Badge
-                                variant={analysis.status === 'success' ? 'success' : 'warning'}
-                                dot
-                                size="sm"
-                              >
-                                {analysis.status || 'en attente'}
-                              </Badge>
-                            </td>
-                            <td>
-                              <ChevronRight
-                                size={14}
-                                className="text-gray-200 group-hover:text-brand-violet transition-colors ml-auto"
-                              />
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </Card>
-              ) : (
-                <Card>
-                  <CardBody className="py-20 text-center">
-                    <SearchX size={40} className="text-gray-200 mx-auto mb-3" />
-                    <p className="text-brand-navy font-semibold mb-1">Aucune analyse trouvée</p>
-                    <p className="text-brand-muted text-sm">Aucun résultat pour la story <span className="font-mono font-bold">{selectedStoryId}</span></p>
-                  </CardBody>
-                </Card>
-              )}
-            </>
-          ) : (
-            <Card>
-              <CardBody className="py-24 text-center">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-3xl flex items-center justify-center"
-                  style={{ background: 'linear-gradient(135deg, rgba(236,72,153,0.1), rgba(249,115,22,0.08))' }}>
-                  <History size={28} className="text-brand-pink/50" />
+        ) : filtered.length === 0 ? (
+          <div className="py-20 text-center">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-3xl flex items-center justify-center"
+              style={{ background: 'rgba(244,63,94,0.06)' }}>
+              <GitBranch size={28} className="text-brand-rose/40" />
+            </div>
+            <p className="text-brand-navy font-semibold mb-1">
+              {search ? 'Aucun résultat' : 'Aucune story traitée'}
+            </p>
+            <p className="text-brand-muted text-sm">
+              {search
+                ? 'Modifiez votre recherche.'
+                : 'Lancez votre premier pipeline pour voir l\'historique ici.'}
+            </p>
+            {!search && (
+              <button type="button" onClick={() => navigate('/pipeline')}
+                className="mt-5 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all hover:-translate-y-0.5"
+                style={{ background: 'linear-gradient(135deg,#ef4444,#f43f5e,#f97316)', boxShadow: '0 4px 16px rgba(244,63,94,0.35)' }}>
+                → Lancer un pipeline
+              </button>
+            )}
+          </div>
+        ) : (
+          <ul className="divide-y divide-gray-50">
+            {filtered.map(story => (
+              <li key={story.id}
+                className="flex items-center gap-4 px-6 py-4 hover:bg-gray-50/70 transition-colors cursor-pointer group"
+                onClick={() => navigate('/pipeline')}>
+                <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                  style={{ background: 'rgba(244,63,94,0.08)', border: '1px solid rgba(244,63,94,0.15)' }}>
+                  <GitBranch size={16} className="text-brand-rose" />
                 </div>
-                <p className="text-brand-navy font-semibold mb-1">Sélectionnez une story</p>
-                <p className="text-brand-muted text-sm">Entrez un ID de story pour consulter son historique d'analyses</p>
-              </CardBody>
-            </Card>
-          )}
-        </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono text-xs font-bold px-2 py-0.5 rounded-lg"
+                      style={{ background: 'rgba(244,63,94,0.08)', color: '#f43f5e' }}>
+                      {story.id}
+                    </span>
+                    {story.status && (
+                      <span className="text-xs text-brand-muted capitalize">{story.status}</span>
+                    )}
+                  </div>
+                  {story.summary && (
+                    <p className="text-sm text-brand-navy font-medium mt-0.5 truncate">{story.summary}</p>
+                  )}
+                </div>
+                <div className="text-right flex-shrink-0">
+                  <p className="text-xs text-brand-muted">
+                    {story.created_at
+                      ? new Date(story.created_at).toLocaleDateString('fr-FR')
+                      : '—'}
+                  </p>
+                </div>
+                <ChevronRight size={16} className="text-gray-300 group-hover:text-brand-muted transition-colors flex-shrink-0" />
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   )
