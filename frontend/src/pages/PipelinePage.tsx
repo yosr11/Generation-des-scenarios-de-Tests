@@ -79,86 +79,163 @@ const Toggle: React.FC<{
 
 const Agent1Result: React.FC<{ output: any }> = ({ output }) => {
   if (!output) return null
+  
+  const entries = Object.entries(output)
+  
   return (
-    <div className="space-y-3 text-sm">
-      {output.story_type && (
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-bold text-brand-navy/50 uppercase tracking-widest">Type</span>
-          <span className="px-2.5 py-0.5 rounded-full text-xs font-bold" style={{ background: 'rgba(124,58,237,0.1)', color: '#7c3aed' }}>
-            {output.story_type}
-          </span>
-        </div>
-      )}
-      {output.actors?.length > 0 && (
-        <div>
-          <p className="text-xs font-bold text-brand-navy/50 uppercase tracking-widest mb-1.5">Acteurs</p>
-          <div className="flex flex-wrap gap-1.5">
-            {output.actors.map((a: string, i: number) => (
-              <span key={i} className="px-2.5 py-0.5 rounded-full text-xs bg-blue-50 text-blue-700 border border-blue-100">{a}</span>
-            ))}
-          </div>
-        </div>
-      )}
-      {output.testable_points?.length > 0 && (
-        <div>
-          <p className="text-xs font-bold text-brand-navy/50 uppercase tracking-widest mb-1.5">Points testables</p>
-          <ul className="space-y-1">
-            {output.testable_points.slice(0, 6).map((p: string, i: number) => (
-              <li key={i} className="flex items-start gap-2 text-brand-navy/80">
-                <Target size={11} className="mt-0.5 flex-shrink-0 text-brand-violet" />
-                <span className="text-xs leading-relaxed">{p}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-      {output.business_rules?.length > 0 && (
-        <div>
-          <p className="text-xs font-bold text-brand-navy/50 uppercase tracking-widest mb-1.5">Règles métier</p>
-          <ul className="space-y-1">
-            {output.business_rules.slice(0, 4).map((r: string, i: number) => (
-              <li key={i} className="flex items-start gap-2 text-brand-navy/80">
-                <Shield size={11} className="mt-0.5 flex-shrink-0 text-brand-orange" />
-                <span className="text-xs leading-relaxed">{r}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+    <div className="space-y-6 text-sm bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+      {entries.map(([key, val]) => {
+        const label = key.replace(/_/g, ' ').toUpperCase()
+        
+        if (typeof val === 'string' || typeof val === 'number') {
+          return (
+            <div key={key} className="flex items-center gap-3">
+              <p className="text-[10px] font-bold text-brand-navy/50 tracking-widest w-24 flex-shrink-0">{label}</p>
+              <span className="px-3 py-1 rounded-lg font-bold text-xs" style={{ background: 'rgba(124,58,237,0.1)', color: '#7c3aed' }}>
+                {String(val)}
+              </span>
+            </div>
+          )
+        }
+        
+        if (Array.isArray(val) && val.length > 0) {
+          // Simple string array like actors
+          if (key === 'actors' || key === 'acteurs') {
+            return (
+              <div key={key}>
+                <p className="text-[10px] font-bold text-brand-navy/50 tracking-widest mb-2">{label}</p>
+                <div className="flex flex-wrap gap-2">
+                  {val.map((a: any, i: number) => (
+                    <span key={i} className="px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-100">
+                      {String(a)}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )
+          }
+          
+          // Regular list (testable points, rules, etc.)
+          return (
+            <div key={key}>
+              <p className="text-[10px] font-bold text-brand-navy/50 tracking-widest mb-2">{label}</p>
+              <ul className="space-y-2">
+                {val.map((item: any, i: number) => (
+                  <li key={i} className="flex items-start gap-2.5 text-brand-navy/80">
+                    <Target size={14} className="mt-0.5 flex-shrink-0 text-brand-violet" />
+                    <span className="text-sm leading-relaxed">
+                      {typeof item === 'string' ? item : item?.description || JSON.stringify(item)}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+        
+        if (typeof val === 'object' && val !== null) {
+          return (
+             <div key={key}>
+               <p className="text-[10px] font-bold text-brand-navy/50 tracking-widest mb-2">{label}</p>
+               <pre className="text-xs bg-gray-50 p-3 rounded-xl border border-gray-200 overflow-x-auto text-gray-700 font-mono">
+                 {JSON.stringify(val, null, 2)}
+               </pre>
+             </div>
+          )
+        }
+        
+        return null
+      })}
     </div>
   )
 }
 
 const Agent2Result: React.FC<{ output: any }> = ({ output }) => {
   const tests = Array.isArray(output) ? output : output?.tests || []
-  if (!tests.length) return <p className="text-xs text-brand-muted">Aucun test généré</p>
+  if (!tests.length) return <p className="text-sm text-gray-500 italic p-4 text-center">Aucun test généré</p>
+
   return (
-    <div className="space-y-2">
-      <div className="flex items-center gap-2 mb-2">
-        <span className="px-2.5 py-0.5 rounded-full text-xs font-bold" style={{ background: 'rgba(244,63,94,0.1)', color: '#f43f5e' }}>
-          {tests.length} test{tests.length > 1 ? 's' : ''} générés
-        </span>
-      </div>
-      {tests.slice(0, 5).map((t: any, i: number) => (
-        <div key={i} className="rounded-xl p-3 border" style={{ background: 'rgba(255,255,255,0.7)', borderColor: 'rgba(100,116,139,0.15)' }}>
-          <div className="flex items-start gap-2">
-            <span className="w-5 h-5 rounded-lg flex-shrink-0 flex items-center justify-center text-[10px] font-bold text-white mt-0.5"
-              style={{ background: 'linear-gradient(135deg,#f43f5e,#f97316)' }}>{i + 1}</span>
-            <div className="flex-1 min-w-0">
-              <p className="text-xs font-bold text-brand-navy truncate">{t.test_name || t.title || `Test ${i + 1}`}</p>
-              {t.scenario_type && (
-                <span className="text-[10px] text-brand-muted capitalize">{t.scenario_type}</span>
-              )}
-              {t.steps?.length > 0 && (
-                <p className="text-[10px] text-brand-muted mt-0.5">{t.steps.length} étapes</p>
-              )}
+    <div className="space-y-8 print:space-y-8">
+      {tests.map((test: any, idx: number) => {
+        const allSteps = test.steps || test.étapes?.flatMap((e: any) => e.steps || []) || []
+
+        return (
+          <div key={idx} className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden print:border-gray-300 print:shadow-none print:break-inside-avoid">
+            {/* Test Header */}
+            <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">
+              <h4 className="font-bold text-brand-navy text-lg">{test.test_name || test.title || `Test ${idx + 1}`}</h4>
+            </div>
+
+            <div className="p-6 space-y-6">
+              {/* Description */}
+              <div>
+                <h5 className="font-bold text-brand-navy flex items-center gap-1.5 mb-3">
+                  <ChevronDown size={18} className="text-gray-400" /> Description
+                </h5>
+                <div className="pl-6 space-y-3">
+                  {allSteps.map((step: any, si: number) => (
+                    <p key={si} className="text-sm text-gray-800 leading-relaxed">
+                      <span className="text-blue-500 font-medium">[{step.actor || 'Collaborateur'}]</span> {step.titre || step.action}
+                    </p>
+                  ))}
+                </div>
+              </div>
+
+              {/* Steps Table */}
+              <div className="border border-gray-200 rounded-xl overflow-hidden shadow-sm print:border-gray-300 print:shadow-none">
+                <table className="w-full text-sm text-left">
+                  <thead className="bg-[#f4f5f7] border-b border-gray-200">
+                    <tr>
+                      <th className="w-12 px-4 py-3 font-semibold text-brand-navy border-r border-gray-200 text-center">#</th>
+                      <th className="w-1/3 px-4 py-3 font-semibold text-brand-navy border-r border-gray-200">Action</th>
+                      <th className="w-1/3 px-4 py-3 font-semibold text-brand-navy border-r border-gray-200">Data</th>
+                      <th className="w-1/3 px-4 py-3 font-semibold text-brand-navy">Expected Result</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    {allSteps.map((step: any, si: number) => (
+                      <tr key={si} className="align-top bg-white hover:bg-gray-50/50 transition-colors print:bg-white">
+                        <td className="px-4 py-4 border-r border-gray-200 text-center font-bold text-brand-navy bg-[#f4f5f7]">
+                          {si + 1}
+                        </td>
+                        <td className="px-4 py-4 border-r border-gray-200">
+                          <p className="text-sm text-gray-900 mb-3 leading-relaxed">
+                            <span className="text-blue-500 font-medium">[{step.actor || 'Collaborateur'}]</span> {step.titre || step.action}
+                          </p>
+                          {step.titre && step.action && step.titre !== step.action && (
+                            <div>
+                              <p className="text-xs font-bold uppercase tracking-wider text-brand-navy underline underline-offset-2 mb-2">Action(s):</p>
+                              <ul className="list-disc list-inside text-sm text-gray-700 space-y-1.5 ml-1">
+                                {step.action.split('\n').map((line: string, i: number) => {
+                                  const cleanLine = line.replace(/^-\s*/, '').trim()
+                                  return cleanLine ? <li key={i}>{cleanLine}</li> : null
+                                })}
+                              </ul>
+                            </div>
+                          )}
+                        </td>
+                        <td className="px-4 py-4 border-r border-gray-200 whitespace-pre-wrap text-sm text-gray-700 font-mono leading-relaxed bg-[#fbfbfc]">
+                          {step.data || ''}
+                        </td>
+                        <td className="px-4 py-4 whitespace-pre-wrap text-sm text-gray-700 leading-relaxed">
+                          {step.expected_result ? (
+                            <ul className="list-disc list-inside space-y-1.5 ml-1">
+                              {step.expected_result.split('\n').map((line: string, i: number) => {
+                                const cleanLine = line.replace(/^-\s*/, '').trim()
+                                return cleanLine ? <li key={i}>{cleanLine}</li> : null
+                              })}
+                            </ul>
+                          ) : ''}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
-        </div>
-      ))}
-      {tests.length > 5 && (
-        <p className="text-xs text-brand-muted text-center">+ {tests.length - 5} autres tests…</p>
-      )}
+        )
+      })}
     </div>
   )
 }
@@ -256,80 +333,61 @@ const Agent3Result: React.FC<{ output: any }> = ({ output }) => {
 
 const Agent5Result: React.FC<{ output: any }> = ({ output }) => {
   if (!output) return null
-  const exec = output?.executive_summary || output
-  const overallScore = exec?.overall_score ?? exec?.quality_score
-  const overallStatus = exec?.overall_status ?? exec?.status
-  const recommendations = exec?.recommendations || output?.recommendations || []
-  const strengths = exec?.key_strengths || []
+
+  // Recursive renderer for generating a clean document-like text flow
+  const renderDocumentSection = (val: any): React.ReactNode => {
+    if (typeof val === 'string') {
+      return <p className="text-sm text-gray-800 leading-relaxed whitespace-pre-wrap mb-4">{val}</p>
+    }
+    if (typeof val === 'number' || typeof val === 'boolean') {
+      return <p className="text-sm text-gray-800 mb-4">{String(val)}</p>
+    }
+    if (Array.isArray(val)) {
+      return (
+        <ul className="list-disc list-inside space-y-2 mb-6 ml-2">
+          {val.map((item, idx) => (
+            <li key={idx} className="text-sm text-gray-800">
+              {typeof item === 'string' ? item : JSON.stringify(item)}
+            </li>
+          ))}
+        </ul>
+      )
+    }
+    if (typeof val === 'object' && val !== null) {
+      return (
+        <div className="space-y-4 mb-6">
+          {Object.entries(val).map(([k, v]) => {
+            const heading = k.replace(/_/g, ' ').toUpperCase()
+            return (
+              <div key={k} className="mt-2">
+                <h5 className="text-xs font-bold text-brand-navy/60 tracking-widest mb-2 border-b border-gray-100 pb-1">{heading}</h5>
+                {renderDocumentSection(v)}
+              </div>
+            )
+          })}
+        </div>
+      )
+    }
+    return null
+  }
 
   return (
-    <div className="space-y-3">
-      {overallScore !== undefined && (
-        <div className="flex items-center gap-4">
-          <div className="relative w-16 h-16 flex-shrink-0">
-            <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
-              <circle cx="18" cy="18" r="15.9" fill="none" stroke="rgba(10,15,46,0.06)" strokeWidth="3.2"/>
-              <circle cx="18" cy="18" r="15.9" fill="none"
-                stroke={overallScore >= 0.8 ? '#10b981' : overallScore >= 0.6 ? '#f97316' : '#f43f5e'}
-                strokeWidth="3.2"
-                strokeDasharray={`${(overallScore * 100).toFixed(0)} 100`}
-                strokeLinecap="round"/>
-            </svg>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-sm font-extrabold text-brand-navy">{Math.round(overallScore * 100)}%</span>
-            </div>
-          </div>
-          <div>
-            <p className="font-bold text-brand-navy">Score qualité</p>
-            {overallStatus && (
-              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold mt-1 inline-block"
-                style={{
-                  background: overallStatus === 'excellent' || overallStatus === 'good' ? 'rgba(16,185,129,0.1)' : 'rgba(249,115,22,0.1)',
-                  color: overallStatus === 'excellent' || overallStatus === 'good' ? '#10b981' : '#f97316',
-                }}>
-                {overallStatus}
-              </span>
-            )}
-          </div>
-        </div>
-      )}
+    <div className="space-y-6 bg-white p-2 sm:p-6 border border-gray-100 rounded-2xl shadow-sm print:shadow-none print:border-none print:p-0">
+      <div className="border-b border-gray-200 pb-4 mb-6 print:pb-2 print:mb-4">
+        <h2 className="text-2xl font-bold text-brand-navy">Rapport Final</h2>
+        <p className="text-sm text-gray-500 mt-1">Généré automatiquement à partir de l'analyse et de la validation</p>
+      </div>
 
-      {recommendations.length > 0 && (
-        <div>
-          <p className="text-xs font-bold text-brand-navy/50 uppercase tracking-widest mb-1.5">Recommandations</p>
-          <ul className="space-y-1">
-            {recommendations.slice(0, 4).map((r: any, i: number) => (
-              <li key={i} className="flex items-start gap-2 text-xs text-brand-navy/80">
-                <TrendingUp size={11} className="mt-0.5 flex-shrink-0 text-brand-violet" />
-                <span className="leading-relaxed">{typeof r === 'string' ? r : r.text || r.description || JSON.stringify(r)}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      <div className="prose prose-sm max-w-none">
+        {renderDocumentSection(output)}
+      </div>
 
-      {strengths.length > 0 && (
-        <div>
-          <p className="text-xs font-bold text-brand-navy/50 uppercase tracking-widest mb-1.5">Points forts</p>
-          <ul className="space-y-1">
-            {strengths.slice(0, 3).map((s: string, i: number) => (
-              <li key={i} className="flex items-start gap-2 text-xs text-brand-navy/80">
-                <CheckCircle2 size={11} className="mt-0.5 flex-shrink-0 text-emerald-500" />
-                <span className="leading-relaxed">{s}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {/* Bouton Télécharger PDF */}
-      <div className="pt-4 border-t border-gray-100 flex justify-end">
+      {/* Bouton Télécharger PDF - hidden in print */}
+      <div className="pt-6 border-t border-gray-100 flex justify-end print:hidden">
         <button
           type="button"
-          onClick={() => {
-            window.print()
-          }}
-          className="px-4 py-2 rounded-xl text-sm font-bold text-white flex items-center gap-2 transition-all hover:-translate-y-0.5"
+          onClick={() => window.print()}
+          className="px-6 py-2.5 rounded-xl text-sm font-bold text-white flex items-center gap-2 transition-all hover:-translate-y-0.5 shadow-md"
           style={{ background: 'linear-gradient(135deg,#2563eb,#4f46e5)' }}>
           📥 Télécharger PDF
         </button>
