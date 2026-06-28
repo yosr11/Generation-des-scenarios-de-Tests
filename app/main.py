@@ -15,7 +15,6 @@ from app.api.routes_agent3 import router as agent3_router
 from app.db.init_db import init_tables
 from app.db.init_postgres import init_postgres
 from app.api.manual_test_generation import router as manual_test_generation_router
-from app.api.routes_agent4 import router as agent4_router
 from app.api.routes_agent5 import router as agent5_router
 from app.api.routes_orchestrator import router as orchestrator_router
 from app.api.routes_legacy_tests import router as legacy_tests_router
@@ -77,7 +76,6 @@ app.include_router(db_router)
 app.include_router(documents_router)
 app.include_router(manual_test_generation_router)
 app.include_router(agent3_router)
-app.include_router(agent4_router)
 app.include_router(agent5_router)
 app.include_router(orchestrator_router)
 app.include_router(legacy_tests_router)

@@ -12,9 +12,8 @@ import axios, { AxiosInstance } from 'axios'
 // API Configuration
 // ─────────────────────────────────────────────────────────────
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
 
-// Create Axios instance with default config
 const axiosInstance: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
   headers: {
@@ -42,22 +41,45 @@ export interface ApiError {
 }
 
 // ─────────────────────────────────────────────────────────────
-// Request/Response Types for All Endpoints
+// Request/Response Types
 // ─────────────────────────────────────────────────────────────
 
-// Orchestrator
+// ── Auth ──────────────────────────────────────────────────────
+
+export interface ProjectInfo {
+  key:           string
+  name:          string
+  id?:           string
+  project_type?: string
+}
+
+export interface UserInfo {
+  id?:            number
+  email:          string
+  role:           'admin' | 'tester'
+  display_name?:  string
+  jira_username?: string
+}
+
+/** Réponse du POST /auth/login unifié */
+export interface LoginResponse {
+  user:      UserInfo
+  role:      'admin' | 'tester'
+  projects?: ProjectInfo[]
+}
+
+// ── Orchestrator ──────────────────────────────────────────────
+
 export interface OrchestratorRequest {
   use_rag?: boolean
   use_legacy_rag?: boolean
   model_agent1?: string
   model_agent2?: string
   model_agent3_quality?: string
-  model_agent4?: string
   model_agent5?: string
   coverage_threshold?: number
   max_correction_iterations?: number
   force_refresh?: boolean
-  run_agent4?: boolean
 }
 
 export interface PipelineStep {
@@ -78,7 +100,8 @@ export interface OrchestratorResponse {
   error?: string
 }
 
-// Analysis
+// ── Analysis ──────────────────────────────────────────────────
+
 export interface AnalysisRequest {
   model_alias?: string
   use_rag?: boolean
@@ -109,7 +132,8 @@ export interface AnalysisResponse {
   recommendations?: string[]
 }
 
-// Story
+// ── Story ─────────────────────────────────────────────────────
+
 export interface Story {
   id: string
   title: string
@@ -129,7 +153,8 @@ export interface StoredStory extends Story {
   labels?: string[]
 }
 
-// Scenario
+// ── Scenario ──────────────────────────────────────────────────
+
 export interface Scenario {
   id: string
   storyId: string
@@ -145,7 +170,8 @@ export interface ScenarioStep {
   expected_result: string
 }
 
-// Manual Test
+// ── Manual Test ───────────────────────────────────────────────
+
 export interface ManualTest {
   id: string
   storyId: string
@@ -160,7 +186,8 @@ export interface TestStep {
   expected_result: string
 }
 
-// Agent5 Report
+// ── Agent5 Report ─────────────────────────────────────────────
+
 export interface Agent5ReportRequest {
   include_recommendations?: boolean
   format?: 'json' | 'markdown'
@@ -175,12 +202,12 @@ export interface Agent5ReportResponse {
 }
 
 // ─────────────────────────────────────────────────────────────
-// Error Handling Utilities
+// Error Handling
 // ─────────────────────────────────────────────────────────────
 
 function handleError(error: unknown): ApiError {
   if (axios.isAxiosError(error)) {
-    const status = error.response?.status
+    const status  = error.response?.status
     const message = error.response?.data?.detail || error.message || 'API request failed'
     return {
       message: typeof message === 'string' ? message : JSON.stringify(message),
@@ -194,51 +221,56 @@ function handleError(error: unknown): ApiError {
 }
 
 // ─────────────────────────────────────────────────────────────
-// API Client Methods
+// API Client
 // ─────────────────────────────────────────────────────────────
 
 export const apiClient = {
-  // ─── Auth Endpoints ───
+
+  // ── Auth ────────────────────────────────────────────────────
+  //
+  // Un seul endpoint POST /auth/login.
+  // Le backend détecte le rôle (admin | tester) depuis l'identifier.
+  // loginAdmin() et loginTester() sont supprimés.
+  //
   auth: {
-    async loginAdmin(email: string, password: string) {
+    /**
+     * Connexion unifiée admin + testeur.
+     * @param identifier  Email admin  OU  username Jira du testeur
+     * @param password    Mot de passe correspondant
+     */
+    async login(identifier: string, password: string): Promise<LoginResponse> {
       try {
-        const response = await axiosInstance.post('/auth/login/admin', { email, password })
+        const response = await axiosInstance.post<LoginResponse>('/auth/login', {
+          identifier,
+          password,
+        })
         return response.data
       } catch (error) {
         throw handleError(error)
       }
     },
 
-    async loginTester(username: string, password: string) {
+    async me(): Promise<UserInfo> {
       try {
-        const response = await axiosInstance.post('/auth/login/tester', { username, password })
+        const response = await axiosInstance.get<UserInfo>('/auth/me')
         return response.data
       } catch (error) {
         throw handleError(error)
       }
     },
 
-    async me() {
+    async projects(): Promise<{ projects: ProjectInfo[] }> {
       try {
-        const response = await axiosInstance.get('/auth/me')
+        const response = await axiosInstance.get<{ projects: ProjectInfo[] }>('/auth/projects')
         return response.data
       } catch (error) {
         throw handleError(error)
       }
     },
 
-    async projects() {
+    async logout(): Promise<{ status: string }> {
       try {
-        const response = await axiosInstance.get('/auth/projects')
-        return response.data
-      } catch (error) {
-        throw handleError(error)
-      }
-    },
-
-    async logout() {
-      try {
-        const response = await axiosInstance.post('/auth/logout')
+        const response = await axiosInstance.post<{ status: string }>('/auth/logout')
         return response.data
       } catch (error) {
         throw handleError(error)
@@ -246,11 +278,8 @@ export const apiClient = {
     },
   },
 
-  // ─── Orchestrator Endpoints ───
+  // ── Orchestrator ─────────────────────────────────────────────
   orchestrator: {
-    /**
-     * Run full pipeline for a story
-     */
     async run(storyId: string, options: OrchestratorRequest): Promise<OrchestratorResponse> {
       try {
         const response = await axiosInstance.post<OrchestratorResponse>(
@@ -263,21 +292,17 @@ export const apiClient = {
       }
     },
 
-    /**
-     * Get status of running orchestrator job
-     */
     async getStatus(jobId: string): Promise<OrchestratorResponse> {
       try {
-        const response = await axiosInstance.get<OrchestratorResponse>(`/orchestrator/status/${jobId}`)
+        const response = await axiosInstance.get<OrchestratorResponse>(
+          `/orchestrator/status/${jobId}`
+        )
         return response.data
       } catch (error) {
         throw handleError(error)
       }
     },
 
-    /**
-     * Cancel running orchestrator job
-     */
     async cancel(jobId: string): Promise<{ status: string }> {
       try {
         const response = await axiosInstance.post(`/orchestrator/cancel/${jobId}`)
@@ -288,18 +313,14 @@ export const apiClient = {
     },
   },
 
-  // ─── Analysis Endpoints ───
+  // ── Analysis ─────────────────────────────────────────────────
   analysis: {
-    /**
-     * Run analysis for a story
-     */
     async run(storyId: string, options: AnalysisRequest): Promise<AnalysisResponse> {
       try {
         const params = new URLSearchParams()
-        if (options.model_alias) params.append('model_alias', options.model_alias)
-        if (options.use_rag !== undefined) params.append('use_rag', String(options.use_rag))
-        if (options.force_refresh !== undefined)
-          params.append('force_refresh', String(options.force_refresh))
+        if (options.model_alias)                params.append('model_alias', options.model_alias)
+        if (options.use_rag !== undefined)       params.append('use_rag', String(options.use_rag))
+        if (options.force_refresh !== undefined) params.append('force_refresh', String(options.force_refresh))
 
         const response = await axiosInstance.get<AnalysisResponse>(
           `/analysis/${encodeURIComponent(storyId)}?${params.toString()}`
@@ -311,25 +332,17 @@ export const apiClient = {
     },
   },
 
-  // ─── Stories Endpoints ───
+  // ── Stories ───────────────────────────────────────────────────
   stories: {
-    /**
-     * Fetch story from Jira by ID
-     */
     async fetch(storyId: string): Promise<Story> {
       try {
-        const response = await axiosInstance.get<Story>(
-          `/stories/${encodeURIComponent(storyId)}`
-        )
+        const response = await axiosInstance.get<Story>(`/stories/${encodeURIComponent(storyId)}`)
         return response.data
       } catch (error) {
         throw handleError(error)
       }
     },
 
-    /**
-     * List all stories
-     */
     async list(): Promise<Story[]> {
       try {
         const response = await axiosInstance.get<Story[]>('/stories')
@@ -340,11 +353,8 @@ export const apiClient = {
     },
   },
 
-  // ─── Database/Stored Stories ───
+  // ── Database / Stored Stories ─────────────────────────────────
   db: {
-    /**
-     * List stored stories
-     */
     async listStories(): Promise<StoredStory[]> {
       try {
         const response = await axiosInstance.get<StoredStory[]>('/db/stories')
@@ -354,9 +364,6 @@ export const apiClient = {
       }
     },
 
-    /**
-     * Get stored story details
-     */
     async getStory(storyId: string): Promise<StoredStory> {
       try {
         const response = await axiosInstance.get<StoredStory>(
@@ -376,9 +383,6 @@ export const apiClient = {
       }
     },
 
-    /**
-     * List analyses for a story
-     */
     async listAnalyses(storyId: string): Promise<AnalysisResponse[]> {
       try {
         const response = await axiosInstance.get<AnalysisResponse[]>(
@@ -390,13 +394,7 @@ export const apiClient = {
       }
     },
 
-    /**
-     * Get latest analysis for a story
-     */
-    async getLatestAnalysis(
-      storyId: string,
-      model?: string
-    ): Promise<AnalysisResponse> {
+    async getLatestAnalysis(storyId: string, model?: string): Promise<AnalysisResponse> {
       try {
         const url = `/db/analyses/${encodeURIComponent(storyId)}/latest${
           model ? `?model=${encodeURIComponent(model)}` : ''
@@ -408,9 +406,6 @@ export const apiClient = {
       }
     },
 
-    /**
-     * List scenarios for a story
-     */
     async listScenarios(storyId: string): Promise<Scenario[]> {
       try {
         const response = await axiosInstance.get<Scenario[]>(
@@ -422,9 +417,6 @@ export const apiClient = {
       }
     },
 
-    /**
-     * List all scenarios
-     */
     async getAllScenarios(): Promise<Scenario[]> {
       try {
         const response = await axiosInstance.get<Scenario[]>('/db/scenarios')
@@ -435,15 +427,9 @@ export const apiClient = {
     },
   },
 
-  // ─── Agent5 Report Endpoints ───
+  // ── Agent5 Report ─────────────────────────────────────────────
   agent5: {
-    /**
-     * Generate report for a story
-     */
-    async generateReport(
-      storyId: string,
-      options: Agent5ReportRequest
-    ): Promise<Agent5ReportResponse> {
+    async generateReport(storyId: string, options: Agent5ReportRequest): Promise<Agent5ReportResponse> {
       try {
         const response = await axiosInstance.post<Agent5ReportResponse>(
           `/agent5/story/${encodeURIComponent(storyId)}/report`,
@@ -455,9 +441,6 @@ export const apiClient = {
       }
     },
 
-    /**
-     * Get report as Markdown
-     */
     async getReportMarkdown(storyId: string): Promise<string> {
       try {
         const response = await axiosInstance.get(
@@ -469,9 +452,6 @@ export const apiClient = {
       }
     },
 
-    /**
-     * Get report summary
-     */
     async getReportSummary(storyId: string): Promise<Agent5ReportResponse> {
       try {
         const response = await axiosInstance.get<Agent5ReportResponse>(
@@ -483,9 +463,6 @@ export const apiClient = {
       }
     },
 
-    /**
-     * Generate reports for multiple stories (batch)
-     */
     async generateBatchReports(storyIds: string[]): Promise<Agent5ReportResponse[]> {
       try {
         const response = await axiosInstance.post<Agent5ReportResponse[]>(
@@ -498,9 +475,6 @@ export const apiClient = {
       }
     },
 
-    /**
-     * Health check
-     */
     async health(): Promise<{ status: string }> {
       try {
         const response = await axiosInstance.get('/agent5/health')
@@ -511,7 +485,7 @@ export const apiClient = {
     },
   },
 
-  // ─── Test Editing Endpoints ───
+  // ── Test Editing ──────────────────────────────────────────────
   testEditing: {
     async refineChat(body: {
       test: any
@@ -531,10 +505,10 @@ export const apiClient = {
 
     async saveEdited(storyId: string, tests: any[]) {
       try {
-        const response = await axiosInstance.post(`/manual-tests/save-edited/${encodeURIComponent(storyId)}`, {
-          tests,
-          generation_model: 'manual-edit',
-        })
+        const response = await axiosInstance.post(
+          `/manual-tests/save-edited/${encodeURIComponent(storyId)}`,
+          { tests, generation_model: 'manual-edit' }
+        )
         return response.data
       } catch (error) {
         throw handleError(error)
@@ -566,7 +540,7 @@ export const apiClient = {
     },
   },
 
-  // ─── Integration Endpoints ───
+  // ── Integration ───────────────────────────────────────────────
   integration: {
     async integrateTest(test: { project_key?: string; test: any }): Promise<any> {
       try {
@@ -577,9 +551,15 @@ export const apiClient = {
       }
     },
 
-    async addStepToTest(testKey: string, step: { action: string; expected_result: string }): Promise<any> {
+    async addStepToTest(
+      testKey: string,
+      step: { action: string; expected_result: string }
+    ): Promise<any> {
       try {
-        const response = await axiosInstance.post(`/tests/${encodeURIComponent(testKey)}/add-step`, step)
+        const response = await axiosInstance.post(
+          `/tests/${encodeURIComponent(testKey)}/add-step`,
+          step
+        )
         return response.data
       } catch (error) {
         throw handleError(error)
@@ -587,7 +567,7 @@ export const apiClient = {
     },
   },
 
-  // ─── Health Check ───
+  // ── Health ────────────────────────────────────────────────────
   health: {
     async check(): Promise<{ status: string }> {
       try {
@@ -599,7 +579,7 @@ export const apiClient = {
     },
   },
 
-  // ─── Admin ───
+  // ── Admin ─────────────────────────────────────────────────────
   admin: {
     async getStats(): Promise<any> {
       try { return (await axiosInstance.get('/admin/stats')).data } catch (e) { throw handleError(e) }
@@ -608,14 +588,19 @@ export const apiClient = {
       try { return (await axiosInstance.get('/admin/users')).data } catch (e) { throw handleError(e) }
     },
     async createUser(data: {
-      email: string; password: string; role: string;
-      display_name?: string; jira_username?: string;
+      email: string
+      password: string
+      role: string
+      display_name?: string
+      jira_username?: string
     }): Promise<any> {
       try { return (await axiosInstance.post('/admin/users', data)).data } catch (e) { throw handleError(e) }
     },
     async updateUser(id: number, data: {
-      display_name?: string; jira_username?: string;
-      password?: string; role?: string;
+      display_name?: string
+      jira_username?: string
+      password?: string
+      role?: string
     }): Promise<any> {
       try { return (await axiosInstance.patch(`/admin/users/${id}`, data)).data } catch (e) { throw handleError(e) }
     },
@@ -628,7 +613,11 @@ export const apiClient = {
     async deactivateUser(id: number): Promise<any> {
       try { return (await axiosInstance.post(`/admin/users/${id}/deactivate`)).data } catch (e) { throw handleError(e) }
     },
-    async getPipelineHistory(params?: { limit?: number; offset?: number; launched_by?: string }): Promise<any> {
+    async getPipelineHistory(params?: {
+      limit?: number
+      offset?: number
+      launched_by?: string
+    }): Promise<any> {
       try { return (await axiosInstance.get('/admin/pipelines', { params })).data } catch (e) { throw handleError(e) }
     },
     async getAuditLog(params?: { limit?: number; offset?: number }): Promise<any> {
@@ -637,8 +626,10 @@ export const apiClient = {
   },
 }
 
+// ─────────────────────────────────────────────────────────────
+// Interceptors
+// ─────────────────────────────────────────────────────────────
 
-// Interceptors for adding authentication or logging
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {

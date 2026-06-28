@@ -1,10 +1,14 @@
-"""Routes d'authentification : admin (PostgreSQL) et testeur (Jira)."""
+"""Routes d'authentification — endpoint unique POST /auth/login."""
 
 from __future__ import annotations
 
 from typing import List, Optional
 
+from urllib.parse import urlencode, urlparse
+
+import httpx
 from fastapi import APIRouter, Depends, HTTPException, Request, Response
+from fastapi.responses import HTMLResponse, RedirectResponse
 from pydantic import BaseModel, Field
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -12,33 +16,40 @@ from app.core.config import settings
 from app.core.deps import CurrentUser, get_client_ip, get_current_user
 from app.db.postgres import get_db
 from app.services.audit_service import log_action
-from app.services.auth_service import authenticate_admin, authenticate_tester, build_admin_token, logout_tester
-from app.services.user_service import get_user_by_jira_username, update_last_login
+from app.services.auth_service import authenticate_user, build_admin_token, build_user_token, logout_tester
+from app.services.user_service import get_user_by_email, get_user_by_jira_username, update_last_login
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 
-class AdminLoginRequest(BaseModel):
-    email: str = Field(..., description="Admin email")
-    password: str = Field(..., min_length=1)
+# ── Schemas ───────────────────────────────────────────────────────────────────
 
+class LoginRequest(BaseModel):
+    """
+    Corps de la requête de connexion unifiée.
 
-class TesterLoginRequest(BaseModel):
-    username: str = Field(..., min_length=1, description="Jira username")
-    password: str = Field(..., min_length=1, description="Jira password")
+    - Pour un admin    : identifier = email,          password = mot de passe DB.
+    - Pour un testeur  : identifier = username Jira,  password = mot de passe Jira.
+    Le backend détecte le rôle automatiquement.
+    """
+    identifier: str = Field(..., min_length=1, description="Email admin ou username Jira")
+    password: str   = Field(..., min_length=1)
 
 
 class ProjectInfo(BaseModel):
-    key: str
-    name: str
-    id: Optional[str] = None
+    key:          str
+    name:         str
+    id:           Optional[str] = None
     project_type: Optional[str] = None
 
 
 class LoginResponse(BaseModel):
-    user: dict
+    user:     dict
+    role:     str
     projects: Optional[List[ProjectInfo]] = None
 
+
+# ── Cookie helpers ────────────────────────────────────────────────────────────
 
 def _set_auth_cookie(response: Response, token: str) -> None:
     response.set_cookie(
@@ -56,96 +67,209 @@ def _clear_auth_cookie(response: Response) -> None:
     response.delete_cookie(key=settings.COOKIE_NAME, path="/")
 
 
-@router.post("/login/admin", response_model=LoginResponse)
-async def login_admin(
-    body: AdminLoginRequest,
+def _is_microsoft_oauth_ready() -> bool:
+    return bool(
+        settings.MICROSOFT_CLIENT_ID
+        and settings.MICROSOFT_CLIENT_SECRET
+        and settings.MICROSOFT_TENANT_ID
+        and settings.MICROSOFT_REDIRECT_URI
+    )
+
+
+def _resolve_frontend_redirect(state: str | None) -> str:
+    if not state:
+        return f"{settings.FRONTEND_BASE_URL.rstrip('/')}/pipeline"
+
+    parsed = urlparse(state)
+    if parsed.scheme or parsed.netloc:
+        return f"{settings.FRONTEND_BASE_URL.rstrip('/')}/pipeline"
+
+    if not state.startswith('/'):
+        state = f"/{state}"
+
+    return f"{settings.FRONTEND_BASE_URL.rstrip('/')}{state}"
+
+
+def _build_microsoft_authorize_url(next_path: str = "/pipeline") -> str:
+    params = {
+        "client_id": settings.MICROSOFT_CLIENT_ID,
+        "response_type": "code",
+        "redirect_uri": settings.MICROSOFT_REDIRECT_URI,
+        "response_mode": "query",
+        "scope": settings.MICROSOFT_SCOPES,
+        "state": next_path,
+        "prompt": "select_account",
+    }
+    return (
+        f"https://login.microsoftonline.com/{settings.MICROSOFT_TENANT_ID}"
+        f"/oauth2/v2.0/authorize?{urlencode(params)}"
+    )
+
+
+# ── Unified login ─────────────────────────────────────────────────────────────
+
+@router.post("/login", response_model=LoginResponse)
+async def login(
+    body: LoginRequest,
     request: Request,
     response: Response,
     db: AsyncSession = Depends(get_db),
 ):
-    user = await authenticate_admin(db, body.email, body.password)
-    if not user:
-        raise HTTPException(status_code=401, detail="Email ou mot de passe invalide.")
-    if not user.is_active:
-        raise HTTPException(status_code=403, detail="Ce compte est désactivé. Contactez un administrateur.")
+    """
+    Endpoint de connexion unique.
+    Le backend tente d'abord une authentification admin (email + bcrypt),
+    puis une authentification testeur Jira si l'admin échoue.
+    """
+    result = await authenticate_user(db, identifier=body.identifier, password=body.password)
 
-    token = build_admin_token(user)
-    _set_auth_cookie(response, token)
-
-    await update_last_login(db, user.id)
-
-    await log_action(
-        db,
-        user_identifier=user.email,
-        role="admin",
-        action="login",
-        ip_address=get_client_ip(request),
-    )
-
-    return LoginResponse(
-        user={
-            "id": user.id,
-            "email": user.email,
-            "role": "admin",
-            "display_name": user.display_name or user.email.split("@")[0],
-        },
-    )
-
-
-@router.post("/login/tester", response_model=LoginResponse)
-async def login_tester(
-    body: TesterLoginRequest,
-    request: Request,
-    response: Response,
-    db: AsyncSession = Depends(get_db),
-):
-    result = await authenticate_tester(body.username, body.password)
     if not result.get("success"):
-        if result.get("no_projects"):
-            raise HTTPException(status_code=403, detail=result["error"])
-        raise HTTPException(status_code=401, detail=result.get("error", "Authentication failed"))
+        # no_projects → 403, autres erreurs → 401
+        status = 403 if result.get("no_projects") else 401
+        raise HTTPException(status_code=status, detail=result.get("error", "Échec de connexion."))
 
-    # Update last_login if the tester is registered in the DB
-    db_tester = await get_user_by_jira_username(db, body.username)
-    if not db_tester:
-        raise HTTPException(
-            status_code=403,
-            detail="Votre compte n'est pas autorisé sur cette application. Contactez votre administrateur.",
-        )
-    if not db_tester.is_active:
-        raise HTTPException(
-            status_code=403,
-            detail="Ce compte est désactivé. Contactez votre administrateur.",
-        )
-    await update_last_login(db, db_tester.id)
+    role = result["role"]
 
+    # ── Post-auth side effects ────────────────────────────────────────────────
+    if role == "admin":
+        user_id = result["user"]["id"]
+        await update_last_login(db, user_id)
+
+    elif role == "tester":
+        db_tester = await get_user_by_jira_username(db, body.identifier)
+        if db_tester:
+            await update_last_login(db, db_tester.id)
+
+    # Pose le cookie JWT
     _set_auth_cookie(response, result["access_token"])
 
+    # Audit
     await log_action(
         db,
-        user_identifier=body.username,
-        role="tester",
+        user_identifier=body.identifier,
+        role=role,
         action="login",
-        details=f"Projects: {len(result['projects'])}",
+        details=f"Projects: {len(result['projects'])}" if result.get("projects") else None,
         ip_address=get_client_ip(request),
     )
 
     return LoginResponse(
         user=result["user"],
-        projects=[ProjectInfo(**p) for p in result["projects"]],
+        role=role,
+        projects=[ProjectInfo(**p) for p in result["projects"]] if result.get("projects") else None,
     )
 
+
+# ── Microsoft OAuth login ─────────────────────────────────────────────────────
+
+@router.get("/microsoft/login")
+async def microsoft_login(next: str | None = "/pipeline"):
+    if not _is_microsoft_oauth_ready():
+        raise HTTPException(status_code=500, detail="Microsoft OAuth is not configured.")
+    authorize_url = _build_microsoft_authorize_url(next_path=next or "/pipeline")
+    return RedirectResponse(url=authorize_url)
+
+
+@router.get("/microsoft/callback")
+async def microsoft_callback(
+    request: Request,
+    code: str | None = None,
+    state: str | None = None,
+    error: str | None = None,
+    db: AsyncSession = Depends(get_db),
+):
+    if not _is_microsoft_oauth_ready():
+        raise HTTPException(status_code=500, detail="Microsoft OAuth is not configured.")
+
+    if error:
+        raise HTTPException(status_code=400, detail=f"Microsoft OAuth error: {error}")
+    if not code:
+        raise HTTPException(status_code=400, detail="Missing authorization code from Microsoft.")
+
+    token_url = (
+        f"https://login.microsoftonline.com/{settings.MICROSOFT_TENANT_ID}"
+        "/oauth2/v2.0/token"
+    )
+    token_payload = {
+        "client_id": settings.MICROSOFT_CLIENT_ID,
+        "client_secret": settings.MICROSOFT_CLIENT_SECRET,
+        "grant_type": "authorization_code",
+        "code": code,
+        "redirect_uri": settings.MICROSOFT_REDIRECT_URI,
+        "scope": settings.MICROSOFT_SCOPES,
+    }
+
+    async with httpx.AsyncClient() as client:
+        token_resp = await client.post(token_url, data=token_payload, headers={"Accept": "application/json"})
+    if token_resp.status_code != 200:
+        raise HTTPException(
+            status_code=502,
+            detail=f"Failed to exchange Microsoft OAuth token: {token_resp.text}",
+        )
+
+    token_data = token_resp.json()
+    access_token = token_data.get("access_token")
+    if not access_token:
+        raise HTTPException(status_code=502, detail="No access token received from Microsoft.")
+
+    graph_url = "https://graph.microsoft.com/v1.0/me"
+    async with httpx.AsyncClient() as client:
+        user_resp = await client.get(
+            graph_url,
+            headers={"Authorization": f"Bearer {access_token}", "Accept": "application/json"},
+        )
+
+    if user_resp.status_code != 200:
+        raise HTTPException(
+            status_code=502,
+            detail=f"Failed to fetch Microsoft profile: {user_resp.text}",
+        )
+
+    microsoft_user = user_resp.json()
+    email = microsoft_user.get("mail") or microsoft_user.get("userPrincipalName")
+    display_name = microsoft_user.get("displayName")
+    if not email:
+        raise HTTPException(status_code=502, detail="Microsoft profile did not return an email.")
+
+    user = await get_user_by_email(db, email)
+    if not user:
+        raise HTTPException(status_code=401, detail="Votre compte Microsoft n'est pas autorisé.")
+    if not user.is_active:
+        raise HTTPException(status_code=403, detail="Ce compte est désactivé. Contactez un administrateur.")
+    if user.role not in {"admin", "tester"}:
+        raise HTTPException(status_code=403, detail="Ce compte n'est pas autorisé.")
+
+    token = build_user_token(user)
+    frontend_redirect = _resolve_frontend_redirect(state)
+    response = RedirectResponse(url=frontend_redirect)
+    _set_auth_cookie(response, token)
+
+    await update_last_login(db, user.id)
+    await log_action(
+        db,
+        user_identifier=email,
+        role=user.role,
+        action="microsoft_login",
+        details=f"Microsoft login redirected to {frontend_redirect}",
+        ip_address=get_client_ip(request),
+    )
+
+    return response
+
+
+# ── /me ───────────────────────────────────────────────────────────────────────
 
 @router.get("/me")
 async def get_me(user: CurrentUser = Depends(get_current_user)):
     return {
-        "user_id": user.user_id,
-        "email": user.email,
-        "role": user.role,
+        "user_id":      user.user_id,
+        "email":        user.email,
+        "role":         user.role,
         "jira_username": user.jira_username,
         "display_name": user.display_name,
     }
 
+
+# ── /projects ─────────────────────────────────────────────────────────────────
 
 @router.get("/projects")
 async def get_my_projects(
@@ -154,23 +278,23 @@ async def get_my_projects(
 ):
     """Projets Jira accessibles (testeur uniquement, fetch live)."""
     if not user.is_tester:
-        raise HTTPException(status_code=403, detail="Only testers have Jira projects")
+        raise HTTPException(status_code=403, detail="Only testers have Jira projects.")
 
     from app.services.credential_store import get_credentials
     from app.services.jira_auth_service import get_accessible_projects
 
     creds = get_credentials(user.session_id or "")
     if not creds:
-        raise HTTPException(status_code=401, detail="Jira session expired. Please log in again.")
+        raise HTTPException(status_code=401, detail="Session Jira expirée. Veuillez vous reconnecter.")
 
     projects = await get_accessible_projects(creds.username, creds.password)
     if not projects:
-        raise HTTPException(
-            status_code=403,
-            detail="No project access. Contact your administrator.",
-        )
+        raise HTTPException(status_code=403, detail="Aucun projet accessible. Contactez votre administrateur.")
+
     return {"projects": projects}
 
+
+# ── /logout ───────────────────────────────────────────────────────────────────
 
 @router.post("/logout")
 async def logout(
@@ -184,7 +308,7 @@ async def logout(
 
     await log_action(
         db,
-        user_identifier=user.email or user.jira_username or user.user_id,
+        user_identifier=user.email or user.jira_username or str(user.user_id),
         role=user.role,
         action="logout",
         ip_address=get_client_ip(request),

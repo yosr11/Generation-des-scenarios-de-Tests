@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import { useNavigate, Navigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { useToast } from '../contexts/ToastContext'
-import { apiClient } from '../api/client'
-import { Zap, Mail, Lock, User, Eye, EyeOff, ArrowRight, Shield } from 'lucide-react'
+import { apiClient, API_BASE_URL } from '../api/client'
+import { Mail, Lock, User, Eye, EyeOff, ArrowRight, Shield } from 'lucide-react'
 
 type LoginMode = 'tester' | 'admin'
 
@@ -33,24 +33,33 @@ export const LoginPage: React.FC = () => {
     e.preventDefault()
     setLoading(true)
     try {
-      if (mode === 'admin') {
-        const resp = await apiClient.auth.loginAdmin(email, password)
-        setAuth(resp.user)
+      const identifier = mode === 'admin' ? email : username
+      const { user: loginUser, role, projects } = await apiClient.auth.login(identifier, password)
+      setAuth(loginUser, projects || [])
+
+      if (role === 'admin') {
         toast.success('Connexion admin réussie')
         navigate('/pipeline')
+        return
+      }
+
+      toast.success(`Bienvenue, ${loginUser.display_name || loginUser.jira_username}`)
+      if ((projects?.length || 0) > 1) {
+        navigate('/projects')
+      } else if ((projects?.length || 0) === 1) {
+        navigate('/pipeline')
       } else {
-        const resp = await apiClient.auth.loginTester(username, password)
-        setAuth(resp.user, resp.projects || [])
-        toast.success(`Bienvenue, ${resp.user.display_name || resp.user.jira_username}`)
-        if ((resp.projects?.length || 0) > 1) navigate('/projects')
-        else if ((resp.projects?.length || 0) === 1) navigate('/pipeline')
-        else toast.error('Aucun projet accessible. Contactez votre administrateur.')
+        toast.error('Aucun projet accessible. Contactez votre administrateur.')
       }
     } catch (err: any) {
       toast.error(err?.message || 'Échec de connexion')
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleMicrosoftLogin = () => {
+    window.location.href = `${API_BASE_URL}/auth/microsoft/login?next=${encodeURIComponent('/pipeline')}`
   }
 
   return (
@@ -97,17 +106,7 @@ export const LoginPage: React.FC = () => {
             </p>
 
             {/* Feature Chips */}
-            <div className="flex flex-wrap gap-3">
-              {['Multi-agent', 'Automatisé', 'LangGraph', 'RAG Context'].map((tag, i) => (
-                <span
-                  key={tag}
-                  className="glass-card px-4 py-2 text-sm text-white/80 font-medium animate-fade-in"
-                  style={{ animationDelay: `${i * 0.1 + 0.3}s` }}
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
+            
           </div>
 
           {/* Stats Row */}
@@ -128,7 +127,7 @@ export const LoginPage: React.FC = () => {
         {/* Bottom Brand */}
         <div className="relative z-10 animate-fade-in delay-500">
           <p className="text-white/30 text-xs">
-            © 2025 · <span className="text-brand-rose font-semibold">Sopra HR Software</span> · Synaptest Platform
+            © 2026 · <span className="text-brand-rose font-semibold">Sopra HR Software</span> · Synaptest Platform
           </p>
         </div>
       </div>
@@ -158,26 +157,7 @@ export const LoginPage: React.FC = () => {
             <p className="text-brand-muted">Connectez-vous pour continuer</p>
           </div>
 
-          {/* Role Tabs */}
-          <div className="flex gap-2 p-1.5 bg-brand-navy/08 rounded-2xl mb-8">
-            {(['tester', 'admin'] as LoginMode[]).map((m) => (
-              <button
-                key={m}
-                type="button"
-                onClick={() => setMode(m)}
-                className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-semibold transition-all duration-250 ${
-                  mode === m
-                    ? m === 'tester'
-                      ? 'bg-brand-navy text-white shadow-card'
-                      : 'bg-grad-cta text-white shadow-glow-rose'
-                    : 'text-brand-navy/60 hover:text-brand-navy'
-                }`}
-              >
-                {m === 'tester' ? <User size={15} /> : <Shield size={15} />}
-                {m === 'tester' ? 'Testeur' : 'Admin'}
-              </button>
-            ))}
-          </div>
+          
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -286,20 +266,31 @@ export const LoginPage: React.FC = () => {
 
           {/* Toggle */}
           <button
-            type="button"
-            onClick={() => setMode(mode === 'tester' ? 'admin' : 'tester')}
-            className="w-full py-3.5 px-4 border-2 border-gray-100 rounded-xl text-sm font-semibold text-brand-navy hover:border-brand-violet hover:text-brand-violet hover:bg-brand-violet/5 transition-all flex items-center justify-center gap-2"
-          >
-            {mode === 'tester' ? (
-              <><Shield size={15} /> Connexion Admin</>
-            ) : (
-              <><User size={15} /> Connexion Testeur</>
-            )}
-          </button>
-
+  type="button"
+  onClick={handleMicrosoftLogin}
+  className="w-full py-3.5 px-4 border-2 border-gray-100 rounded-xl text-sm font-semibold text-brand-navy hover:border-brand-violet hover:text-brand-violet hover:bg-brand-violet/5 transition-all flex items-center justify-center gap-2"
+>
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 21 21"
+    fill="currentColor"
+    className="text-brand-navy"
+  >
+    <path d="M19.4 9.5h-8.9v2.3h5.1c-.2 1.2-1.5 3.5-5.1 3.5-3.1 0-5.7-2.6-5.7-5.8s2.6-5.8 5.7-5.8c1.8 0 3 .8 3.7 1.5l2.5-2.4C15.1 2.3 13 1.5 11 1.5 6.4 1.5 2.6 5.3 2.6 10s3.8 8.5 8.4 8.5c4.8 0 8-3.3 8-8 0-.5-.1-.8-.2-1z"/>
+  </svg>
+  Se connecter avec Microsoft
+</button>
+<div className="mt-3 p-3 border border-amber-200 bg-amber-50 text-amber-900 text-xs flex items-start gap-2 rounded-lg">
+  <span className="text-amber-600 font-bold">!</span>
+  <p>
+    Vous n’avez pas de compte ? Contactez l’administrateur pour obtenir vos identifiants.
+  </p>
+</div>
+          
           {/* Footer */}
           <p className="text-center text-xs text-gray-400 mt-8">
-            Accès sécurisé · <span className="font-bold text-brand-navy">Sopra HR Software</span> · 2025
+            Accès sécurisé · <span className="font-bold text-brand-navy">Sopra HR Software</span> · 2026
           </p>
         </div>
       </div>

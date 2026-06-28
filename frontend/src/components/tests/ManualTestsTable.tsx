@@ -8,7 +8,7 @@ import { useAuth } from '../../contexts/AuthContext'
 /* ── types ── */
 interface ManualTestsTableProps {
   tests: any[]
-  storyId: string
+  storyId?: string
   onTestsChange?: (tests: any[]) => void
 }
 
@@ -554,6 +554,6 @@ export const ManualTestsTable: React.FC<ManualTestsTableProps> = ({
           onClose={() => setIntegrationResult(null)}
         />
       )}
-    </>
+    </div>
   )
 }

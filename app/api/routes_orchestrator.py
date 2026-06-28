@@ -25,7 +25,6 @@ async def _log_pipeline_run(
     status: str,
     use_rag: bool,
     use_legacy_rag: bool,
-    run_agent4: bool,
     tests_count: int = 0,
     error_message: Optional[str] = None,
     started_at: Optional[datetime] = None,
@@ -41,7 +40,6 @@ async def _log_pipeline_run(
                 status=status,
                 use_rag=use_rag,
                 use_legacy_rag=use_legacy_rag,
-                run_agent4=run_agent4,
                 tests_count=tests_count,
                 error_message=error_message,
                 started_at=started_at or datetime.now(timezone.utc),
@@ -68,7 +66,6 @@ class PipelineRequest(BaseModel):
     model_agent2: str = Field(default="llama4", description="Modèle LLM pour Agent 2 (génération)")
     model_agent3_quality: str = Field(default="qwen3", description="Modèle LLM pour Agent 3 (qualité)")
     model_agent5: str = Field(default="qwen3", description="Modèle LLM pour Agent 5 (rapport)")
-    model_agent4: str = Field(default="qwen3", description="Modèle LLM pour Agent 4 (classifieur auto/manuel)")
     coverage_threshold: float = Field(default=0.70, ge=0.0, le=1.0, description="Seuil de couverture")
     max_correction_iterations: int = Field(default=2, ge=0, le=5, description="Max itérations gap-fill")
     force_refresh: bool = Field(
@@ -78,7 +75,6 @@ class PipelineRequest(BaseModel):
             "de l'epic (utile après ajout de nouveaux mockups / activation du VLM)."
         ),
     )
-    run_agent4: bool = Field(default=False, description="Activer la classification Agent 4 (AUTO/MANUEL)")
 
 
 class PipelineStepSchema(BaseModel):
@@ -122,7 +118,6 @@ class PipelineStoryResult(BaseModel):
     )
     agent2_message: Optional[str] = Field(default=None, description="Message Agent 2")
     agent3_validation: Optional[dict] = Field(default=None, description="Sortie Agent 3 (validation/couverture)")
-    agent4_classification: Optional[dict] = Field(default=None, description="Sortie Agent 4 (classification AUTO/MANUEL)")
     agent5_report: Optional[dict] = Field(default=None, description="Sortie Agent 5 (rapport final)")
 
     # ── Métriques de consommation LLM ──
@@ -178,7 +173,6 @@ def _state_to_result(state: PipelineState, include_markdown: bool = False) -> Pi
     analysis = state.get("analysis")
     validation = state.get("validation")
     report = state.get("report")
-    classification = state.get("classification_result")
     tests = state.get("tests", []) or []
 
     result = PipelineStoryResult(
@@ -197,7 +191,6 @@ def _state_to_result(state: PipelineState, include_markdown: bool = False) -> Pi
         agent2_golden_rule_warnings=state.get("agent2_golden_rule_warnings") or None,
         agent2_message=state.get("agent2_message"),
         agent3_validation=_dump(validation),
-        agent4_classification=_dump(classification),
         agent5_report=_dump(report),
         token_usage=state.get("token_usage"),
         legacy_examples=state.get("legacy_examples") or None,
@@ -224,7 +217,7 @@ running_tasks: Dict[str, asyncio.Task] = {}
 @router.post(
     "/run/{story_id}",
     response_model=OrchestratorResponseSchema,
-    summary="Pipeline complet pour une story (Agent 1 → 2 → 3 → 4) en arrière-plan",
+    summary="Pipeline complet pour une story (Agent 1 → 2 → 3 → 5) en arrière-plan",
 )
 async def run_story_pipeline(
     story_id: str,
@@ -268,11 +261,9 @@ async def run_story_pipeline(
                     model_agent2=params.model_agent2,
                     model_agent3_quality=params.model_agent3_quality,
                     model_agent5=params.model_agent5,
-                    model_agent4=params.model_agent4,
                     coverage_threshold=params.coverage_threshold,
                     max_correction_iterations=params.max_correction_iterations,
                     force_refresh=params.force_refresh,
-                    run_agent4=params.run_agent4,
                 )
             )
             result = _state_to_result(final_state, include_markdown=False)
@@ -302,7 +293,6 @@ async def run_story_pipeline(
                 status=jobs_db[sid]["status"] if sid in jobs_db else status,
                 use_rag=params.use_rag,
                 use_legacy_rag=params.use_legacy_rag,
-                run_agent4=params.run_agent4,
                 tests_count=tests_count,
                 error_message=error_msg,
                 started_at=started_at,
@@ -378,15 +368,11 @@ def run_story_pipeline_with_markdown(story_id: str, body: PipelineRequest = None
             model_agent2=params.model_agent2,
             model_agent3_quality=params.model_agent3_quality,
             model_agent5=params.model_agent5,
-            model_agent4=params.model_agent4,
             coverage_threshold=params.coverage_threshold,
             max_correction_iterations=params.max_correction_iterations,
             force_refresh=params.force_refresh,
-            run_agent4=params.run_agent4,
         )
-
         return _state_to_result(final_state, include_markdown=True)
-
     except Exception as e:
         logger.error(f"[Route] Pipeline error for {story_id}: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail=f"Pipeline error: {e}")
@@ -413,18 +399,45 @@ def run_story_pipeline_report_md(story_id: str, body: PipelineRequest = None):
             model_agent2=params.model_agent2,
             model_agent3_quality=params.model_agent3_quality,
             model_agent5=params.model_agent5,
-            model_agent4=params.model_agent4,
             coverage_threshold=params.coverage_threshold,
             max_correction_iterations=params.max_correction_iterations,
             force_refresh=params.force_refresh,
-            run_agent4=params.run_agent4,
         )
         report = final_state.get("report")
         if not report:
             raise HTTPException(status_code=500, detail="Aucun rapport généré")
         service = Agent5ReportGeneratorService(model_name=params.model_agent5)
         md = service.export_to_markdown(report)
-        return PlainTextResponse(content=md, media_type="text/markdown; charset=utf-8")
+        try:
+            import markdown as md_lib  # type: ignore
+            body_html = md_lib.markdown(md, extensions=["tables", "fenced_code"])
+        except ImportError:
+            # Fallback minimal si la lib markdown n'est pas installée
+            from html import escape
+            body_html = f"<pre>{escape(md)}</pre>"
+
+        html = f"""<!doctype html>
+<html lang=\"fr\">
+<head>
+<meta charset=\"utf-8\">
+<title>Rapport QA — {story_id}</title>
+<style>
+  body {{ font-family: -apple-system, Segoe UI, Roboto, sans-serif; max-width: 920px;
+         margin: 2rem auto; padding: 0 1rem; color: #24292f; line-height: 1.55; }}
+  h1, h2, h3 {{ border-bottom: 1px solid #d0d7de; padding-bottom: .3rem; }}
+  code {{ background: #f6f8fa; padding: .15em .4em; border-radius: 4px; }}
+  pre {{ background: #f6f8fa; padding: 1rem; border-radius: 6px; overflow-x: auto; }}
+  table {{ border-collapse: collapse; margin: 1rem 0; }}
+  th, td {{ border: 1px solid #d0d7de; padding: .4rem .8rem; text-align: left; }}
+  th {{ background: #f6f8fa; }}
+  blockquote {{ color: #57606a; border-left: 4px solid #d0d7de; padding: 0 1rem; margin: 0; }}
+</style>
+</head>
+<body>
+{body_html}
+</body>
+</html>"""
+        return HTMLResponse(content=html)
     except HTTPException:
         raise
     except Exception as e:
@@ -449,11 +462,9 @@ def run_story_pipeline_report_html(story_id: str, body: PipelineRequest = None):
             model_agent2=params.model_agent2,
             model_agent3_quality=params.model_agent3_quality,
             model_agent5=params.model_agent5,
-            model_agent4=params.model_agent4,
             coverage_threshold=params.coverage_threshold,
             max_correction_iterations=params.max_correction_iterations,
             force_refresh=params.force_refresh,
-            run_agent4=params.run_agent4,
         )
         report = final_state.get("report")
         if not report:
@@ -540,11 +551,9 @@ def run_epic_pipeline(epic_key: str, body: PipelineRequest = None):
                 model_agent2=params.model_agent2,
                 model_agent3_quality=params.model_agent3_quality,
                 model_agent5=params.model_agent5,
-                model_agent4=params.model_agent4,
                 coverage_threshold=params.coverage_threshold,
                 max_correction_iterations=params.max_correction_iterations,
                 force_refresh=params.force_refresh,
-                run_agent4=params.run_agent4,
             )
 
             result = _state_to_result(final_state)

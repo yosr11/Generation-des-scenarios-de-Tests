@@ -4,16 +4,6 @@ from typing import Dict, Any, List, Optional, Tuple
 
 
 # ── Pré-traitement des étapes legacy Xray ──────────────────────────
-# Les tests Xray Sopra HR utilisent des "méga-étapes" du style :
-#   action = 'ETAPE : [Collaborateur] Accéder à la démarche "X" ACTION(S) :\n
-#            Se connecter avec un collaborateur\nAccéder à la démarche...'
-#   expected_result = 'Affichage de la page X\nPositionnement sur l\'onglet "Créer"\n
-#                      Affichage des boutons...'
-# Si on injecte ça tel quel comme exemple few-shot, le LLM imite le bloc brut
-# et produit une seule action monolexicale ("Accéder"). Pour qu'il imite la BONNE
-# structure (1 étape = 1 interaction), on éclate ces blocs en sous-étapes a/b/c
-# avant de les passer au prompt.
-
 _RE_ACTOR_PREFIX = re.compile(r"^\s*ETAPE\s*\d*\s*:?\s*", re.IGNORECASE)
 _RE_ACTION_MARKER = re.compile(r"\bACTION\s*\(?S?\)?\s*:\s*", re.IGNORECASE)
 _RE_BULLET = re.compile(r"^\s*[-•*]\s*")
@@ -24,21 +14,17 @@ def _split_into_atoms(raw: str, max_atoms: int = 6) -> List[str]:
     if not raw:
         return []
     text = raw.strip()
-    # Retirer le préfixe "ETAPE : [Acteur] titre ACTION(S) :" pour ne garder
-    # que le contenu actionnable.
     text = _RE_ACTOR_PREFIX.sub("", text)
     m = _RE_ACTION_MARKER.search(text)
     if m:
         text = text[m.end():]
 
-    # Découper sur les retours à la ligne ET sur les puces inline
     raw_lines = re.split(r"\n+|(?<=[a-zé])(?=[A-Z][a-zé])", text)
     atoms: List[str] = []
     for ln in raw_lines:
         ln = _RE_BULLET.sub("", ln).strip()
         if not ln:
             continue
-        # Garder les phrases significatives (au moins un verbe + complément)
         if len(ln) < 6:
             continue
         atoms.append(ln)
@@ -52,17 +38,11 @@ def _explode_legacy_step(
     raw_expected: str,
     raw_data: str = "",
 ) -> List[Tuple[str, str]]:
-    """
-    Éclate une méga-étape legacy en N (action, expected) atomiques.
-
-    On essaie d'apparier action_i ↔ expected_i. Si les longueurs diffèrent,
-    on accole le reste des expected à la dernière action (pour ne rien perdre).
-    """
+    """Éclate une méga-étape legacy en N (action, expected) atomiques."""
     actions = _split_into_atoms(raw_action, max_atoms=6)
     expecteds = _split_into_atoms(raw_expected, max_atoms=6)
 
     if not actions:
-        # Cas dégénéré : on garde l'étape originale brute (compacte)
         compact_action = (raw_action or "").strip().replace("\n", " ")[:200]
         compact_expected = (raw_expected or "").strip().replace("\n", " ")[:300]
         if not compact_action and not compact_expected:
@@ -75,16 +55,13 @@ def _explode_legacy_step(
         if i < len(expecteds):
             exp = expecteds[i]
         elif expecteds:
-            # Plus d'actions que d'expecteds → on prend le dernier expected
             exp = expecteds[-1] if i == n - 1 else ""
         else:
             exp = ""
-        # Ajouter le data si fourni à la première action
         if i == 0 and raw_data:
             act = f"{act} (data : {raw_data[:120].strip()})"
         pairs.append((act, exp))
 
-    # Si trop d'expecteds non utilisés, on les concatène à la dernière paire
     if len(expecteds) > n and pairs:
         leftover = " | ".join(expecteds[n:])
         last_act, last_exp = pairs[-1]
@@ -95,16 +72,7 @@ def _explode_legacy_step(
 
 
 def _format_legacy_examples_block(legacy_examples: Optional[List[Dict[str, Any]]]) -> str:
-    """
-    Formate les exemples de tests legacy Sopra HR (issus du RAG Chroma `legacy_tests`)
-    en bloc few-shot lisible pour Agent 2.
-
-    IMPORTANT : on éclate les "méga-étapes" Xray en sous-étapes atomiques (1 action =
-    1 interaction) pour que le LLM imite la BONNE structure, pas le format brut.
-
-    Chaque exemple : {"test_id", "title", "score", "project", "module_root", "pivot": {...}}.
-    Retourne "" si liste vide / None.
-    """
+    """Formate les exemples de tests legacy Sopra HR en bloc few-shot."""
     if not legacy_examples:
         return ""
 
@@ -147,7 +115,7 @@ def _format_legacy_examples_block(legacy_examples: Optional[List[Dict[str, Any]]
                 exploded = _explode_legacy_step(raw_action, raw_expected, raw_data)
                 for atomic_action, atomic_expected in exploded:
                     step_counter += 1
-                    if step_counter > 12:  # cap : pas plus de 12 sous-étapes par exemple
+                    if step_counter > 12:
                         break
                     line = f"  {step_counter}. {atomic_action}"
                     if atomic_expected:
@@ -173,20 +141,12 @@ def _format_legacy_examples_block(legacy_examples: Optional[List[Dict[str, Any]]
         "   et réutilise le vocabulaire métier (noms de boutons, libellés, intitulés) UNIQUEMENT s'ils\n"
         "   apparaissent dans la story analysée.\n"
         "3. Si la story décrit du backend / config / règles métier sans UI, NE FORCE PAS de l'UI.\n"
-        "   Des actions du type \"Configurer le paramètre X à la valeur Y\", \"Déclencher le calcul Z\",\n"
-        "   \"Vérifier la valeur retournée par le service\" sont valides — il faut juste qu'elles\n"
-        "   restent atomiques et précises (verbe + objet + complément).\n"
         "4. Préfère des actions précises (verbe + objet + complément) mais une action courte ou un\n"
         "   champ data vide est ACCEPTABLE — le QA complétera après génération.\n"
         "5. Nombre d'étapes : adapte-le à la complexité réelle du scénario décrit dans la story.\n"
-        "   Pas de remplissage artificiel, pas de squelette à 1 étape pour un scénario riche.\n"
-        "6. Ton des expected_result : reprends les tournures legacy quand pertinent (\"Affichage de…\",\n"
-        "   \"Activation du bouton…\", \"Positionnement sur l'onglet…\") UNIQUEMENT si la story parle\n"
-        "   d'éléments d'écran. Sinon, formule l'observable réel (\"La valeur retournée est X\",\n"
-        "   \"Le paramètre Y est persisté en base\", \"Le champ Z n'est plus exposé par l'API\").\n"
-        "7. NE COPIE PAS le contenu d'un exemple. Si la story dit qu'un champ est supprimé,\n"
-        "   l'expected DOIT refléter cette suppression (\"absent\", \"masqué\", \"n'apparait plus\",\n"
-        "   \"n'est plus exposé\"), même si l'exemple legacy montrait ce champ comme présent.\n"
+        "6. Ton des expected_result : reprends les tournures legacy quand pertinent UNIQUEMENT si\n"
+        "   la story parle d'éléments d'écran.\n"
+        "7. NE COPIE PAS le contenu d'un exemple.\n"
     )
     return intro + "\n" + "\n\n".join(blocks)
 
@@ -276,19 +236,44 @@ IMPORTANT: `data` peut rester vide ("") lorsque l'acteur, le contexte ou les val
   * NO justification ("car", "parce que")
   * Concise, unambiguous (not "correctement", "normalement")
   * Do NOT paraphrase the action or restate it in past tense
+
+  * EXPECTED RESULT DETAIL LEVEL — RÈGLE CLÉ :
+    Les résultats attendus doivent être aussi précis et vérifiables que possible en se basant
+    UNIQUEMENT sur les informations disponibles dans la user story.
+    - Si la story mentionne des éléments d'interface (labels de boutons, noms d'onglets, titres
+      de sections, icônes, messages), les inclure EXPLICITEMENT dans le résultat attendu.
+    - Si la story décrit des comportements conditionnels (ex: "X s'affiche uniquement si Y"),
+      le résultat attendu DOIT refléter cette condition.
+    - Si la story liste des données affichées (format, ordre, regroupement), les reprendre.
+    - Éviter les formulations génériques comme "l'interface s'affiche correctement" ou
+      "les données sont affichées" — préférer décrire CE QUI CONCRÈTEMENT doit être
+      visible ou vérifiable par le testeur.
+    - Ne PAS inventer d'éléments UI absents de la story. Si la story est haut niveau,
+      un résultat attendu court mais précis est préférable à un résultat inventé.
+
 - 1 action = 1 interaction. Consistent vocabulary (same action = same verb).
-- Do not merge unrelated verbs in the same action. Each action should represent one discrete interaction, for example "Consulter le document" or "Saisir le code".
-- A step may contain one or several closely related actions only when they are part of the same user interaction, but never mix distinct behaviors like "Consulter" and "Saisir" in the same action.
+- Do not merge unrelated verbs in the same action.
 - A step MUST NOT duplicate a precondition.
 
-4. SEQUENCE
+4. ACTOR SEPARATION — RÈGLE IMPORTANTE
+- Si la user story implique plusieurs acteurs distincts (ex: RRH de proximité, Gestionnaire RH,
+  Collaborateur), générer des scénarios de test SÉPARÉS par acteur principal.
+- Chaque test ne doit couvrir qu'UN SEUL rôle à la fois, SAUF si l'interaction entre deux acteurs
+  est le cœur même du scénario à tester (ex: "un acteur A répond à une demande créée par l'acteur B").
+- Ne PAS forcer la séparation si la story n'implique qu'un seul acteur — dans ce cas, un seul
+  test par scénario suffit.
+- Quand plusieurs rôles doivent être testés séparément sur le même scénario, créer un test
+  par rôle avec les mêmes étapes adaptées au rôle concerné.
+- Exemple : story avec RRH + Gestionnaire RH → générer TEST_RRH et TEST_GESTIONNAIRE_RH distincts.
+
+5. SEQUENCE
 - Realistic flow: login → navigation → action → result.
 - Do NOT condense a normal scenario into 1 step. For a feature-level story, generate at least 2-4 steps per test, ideally 3-6 when the story describes multiple interactions.
 - If the story truly only describes a single interaction, 1 step may be acceptable; otherwise, a single-step test is too generic and must be expanded.
 - Mutually exclusive alternatives → SEPARATE tests.
 - 1 test = 1 business objective, 1 role. Role change = explicit step.
 
-5. COVERAGE
+6. COVERAGE
 - NOM = Nominal, cas standard (flux principal). ALT = Alternatif, variante valide. EXC = Exception, cas d'erreur.
 - Proportionality: 1-2 actions → 1-2 tests, 3-5 → 3-5, 6+ → 5-8 minimum.
 - Every action/capability covered by 1+ test. Restriction → 1 EXC test ONLY if the story explicitly describes a restriction. Variant → 1 ALT test ONLY if the story explicitly describes an alternative flow. Do NOT force ALT or EXC if the story does not require them.
@@ -296,10 +281,10 @@ IMPORTANT: `data` peut rester vide ("") lorsque l'acteur, le contexte ou les val
 - MANDATORY: map each testable_point from the analysis to at least one test. If a testable_point is not covered by any test, add a test for it.
 - notes: uncovered elements (secondary roles, untestable constraints, ambiguities).
 
-6. DECISION
+7. DECISION
 - manual/generated | automated/not_generated | needs_refinement/not_generated
 
-7. JSON
+8. JSON
 {"story_id":"...","recommended_test_strategy":"manual|automated|needs_refinement","generation_status":"generated|not_generated","message":"...","tests":[{"story_id":"...","test_name":"...","objective":"...","description":"...","execution_context":"...","preconditions":["..."],"scenario_type":"NOM|ALT|EXC","priority":"High|Medium|Low","labels":["..."],"étapes":[{"titre":"...","actor":"...","steps":[{"index":1,"action":"...","data":"...","actor":"...","expected_result":"...","revision_po":""}]}],"steps":[]}],"notes":["..."]}
 
 IMPORTANT FOR "étapes" STRUCTURE:
@@ -310,7 +295,7 @@ IMPORTANT FOR "étapes" STRUCTURE:
 - Each étape should have a meaningful title like "Accéder à l'application", "Consulter les paramètres", "Valider les modifications"
 - The description field should list all étape titles with actors: "ÉTAPE 1: [ACTEUR] Titre_étape\nÉTAPE 2: [ACTEUR] Titre_étape"
 
-8. SELF-CHECK — verify before answering:
+9. SELF-CHECK — verify before answering:
 □ All actions/objectives use French infinitive when possible
 □ No invented data (URL, file, interaction)
 □ expected_result: meaning is preserved (no inverted polarity vs source)
@@ -319,6 +304,8 @@ IMPORTANT FOR "étapes" STRUCTURE:
 □ execution_context and preconditions filled when known
 □ Coverage: each testable_point from the analysis is mapped to a test
 □ Empty `data` fields are OK — do not refuse to generate because of missing data
+□ ACTOR SEPARATION: si plusieurs acteurs distincts → tests séparés par acteur
+□ EXPECTED RESULT DETAIL: résultats attendus basés sur la story, pas génériques
 
 JSON only.
 """.strip()
@@ -431,24 +418,28 @@ def build_manual_test_generation_user_prompt(
         "description_clean": story.get("description_clean", ""),
         "priority": story.get("priority", ""),
     }
-    # Include optional fields only if non-empty
     for key in ["acceptance_criteria_clean", "epic_key", "epic_summary", "epic_description", "labels", "components", "issuelinks"]:
         val = story.get(key, "")
         if val and val != []:
             story_data[key] = val
 
-    payload = {
-        "story": story_data,
-        "analysis": analysis,
-    }
-
-    # Compter les actions et restrictions pour rappeler la couverture attendue
     actions = analysis.get("actions", [])
     testable_points = analysis.get("testable_points", [])
     business_rules = analysis.get("business_rules", [])
+    actors = analysis.get("actors", [])
 
-    # Détecter les restrictions (business rules négatives)
     restrictions = [r for r in business_rules if any(neg in r.lower() for neg in ["n'est pas", "ne peut pas", "n'accede pas", "pas un acteur", "interdit", "ne doit pas"])]
+
+    # ── NOUVEAU : détection multi-acteurs pour rappel de séparation ──
+    actor_reminder = ""
+    if actors and len(actors) > 1:
+        actors_list = ", ".join(f'"{a}"' for a in actors[:5])
+        actor_reminder = (
+            f"\n\nMULTI-ACTOR REMINDER:\n"
+            f"Cette story implique {len(actors)} acteurs distincts : {actors_list}.\n"
+            f"Générer des tests SÉPARÉS par acteur principal conformément à la règle 4 du system prompt.\n"
+            f"Ne pas mélanger les rôles dans un même test sauf si l'interaction entre eux est le cœur du scénario.\n"
+        )
 
     coverage_reminder = (
         f"\n\nMANDATORY COVERAGE REMINDER:\n"
@@ -459,10 +450,8 @@ def build_manual_test_generation_user_prompt(
         coverage_reminder += f"- {len(restrictions)} restriction(s) detected in business rules → generate 1 EXC test per restriction:\n"
         for r in restrictions:
             coverage_reminder += f"  * \"{r}\"\n"
-    
     coverage_reminder += "- If any action or testable_point is not covered by a test, it is an error.\n"
 
-    # Build a compact payload to reduce token usage while preserving essential info
     def _trunc(text: str, n: int = 300) -> str:
         if not text:
             return ""
@@ -476,6 +465,7 @@ def build_manual_test_generation_user_prompt(
             "priority": story_data.get("priority", ""),
         },
         "analysis": {
+            "actors": actors,
             "actions_count": len(actions),
             "testable_points": testable_points[:20],
             "business_rules": business_rules[:20],
@@ -489,7 +479,9 @@ def build_manual_test_generation_user_prompt(
         coverage_reminder,
     ]
 
-    # RAG: include only top-3 items, truncated to 200 chars each, and label as semantic support only
+    if actor_reminder:
+        prompt_lines.append(actor_reminder)
+
     if rag_context:
         top_rag = (rag_context or [])[:3]
         rag_summaries = []
@@ -512,7 +504,6 @@ Do NOT use this RAG context to:
 """)
         prompt_lines.append("\n".join(rag_summaries))
 
-    # Legacy examples: limit to 2 (style references only)
     legacy_block = ""
     if legacy_examples:
         try:
@@ -548,8 +539,7 @@ def build_manual_test_gap_coverage_user_prompt(
 ) -> str:
     """
     User prompt for Agent 2 when Agent 3 requests supplementary tests for uncovered
-    testable_points only. Reuses the standard user payload then adds explicit gap instructions
-    and Agent 3 feedback (duplicates, ambiguities, correction instructions).
+    testable_points only.
     """
     base = build_manual_test_generation_user_prompt(
         story, analysis, rag_context, legacy_examples=legacy_examples
@@ -628,6 +618,10 @@ Génère UNIQUEMENT des tests NOUVEAUX (complémentaires) qui couvrent explicite
 Respecte le schéma JSON complet (story_id, recommended_test_strategy, generation_status, message, tests, notes).
 Ne duplique pas les scénarios déjà couverts ; complète la couverture.
 
+RAPPEL RÈGLES QUALITÉ pour ces nouveaux tests :
+- Séparation par acteur : si plusieurs acteurs → tests séparés (règle 4 du system prompt)
+- Résultats attendus : précis et basés sur la story, pas génériques (règle 3, EXPECTED RESULT DETAIL)
+
 Tests déjà présents (résumé) :
 {summaries_text}
 
@@ -682,7 +676,6 @@ JSON to fix (return final JSON only):
 
 Return ONLY the corrected JSON.
 """.strip()
-
 
 
 def build_manual_test_json_reformat_prompt(raw_response: str, parse_error: str) -> str:

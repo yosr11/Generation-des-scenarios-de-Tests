@@ -12,6 +12,16 @@ StoryType = Literal[
 ]
 
 
+class StoryClassificationResult(BaseModel):
+    story_id: str = Field(..., description="Jira issue key / story id")
+    story_title: str = Field("", description="Title / summary of the story")
+    story_type: StoryType = Field(..., description="Main type of the story")
+    analysis_reason: List[str] = Field(
+        default_factory=list,
+        description="Short reasons explaining the classification decision",
+    )
+
+
 class StoryAnalysisResult(BaseModel):
     story_id: str = Field(..., description="Jira issue key / story id")
     story_title: str = Field("", description="Title / summary of the story")

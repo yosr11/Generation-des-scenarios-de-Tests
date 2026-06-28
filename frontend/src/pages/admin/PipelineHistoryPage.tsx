@@ -10,7 +10,6 @@ interface PipelineRun {
   status: string
   use_rag: boolean
   use_legacy_rag: boolean
-  run_agent4: boolean
   started_at: string
   finished_at: string | null
   tests_count: number
@@ -136,10 +135,6 @@ export const PipelineHistoryPage: React.FC = () => {
                           {run.use_rag && (
                             <span className="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase"
                               style={{ background: 'rgba(124,58,237,0.08)', color: '#7c3aed' }}>RAG</span>
-                          )}
-                          {run.run_agent4 && (
-                            <span className="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase"
-                              style={{ background: 'rgba(249,115,22,0.08)', color: '#f97316' }}>A4</span>
                           )}
                         </div>
                       </td>

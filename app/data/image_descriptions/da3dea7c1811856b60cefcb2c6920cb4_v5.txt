@@ -1,0 +1,81 @@
+[Image jointe : image-2025-04-22-18-11-52-953.png]
+── Textes détectés (OCR) ──
+= 51558 ;
+= @ =— à ? 0
+A Acven —.
+ACTES DF GESTION 4+, MES CCIABORATEURS
+; 2* roRorrer H0ssen AESTUAN
+o Actes de gestion 14 a37 reckrre 24 a v 2 a
+K3 Mes collaborateurs “éter es temps paia « 1a Ç Frrdeniuc 2ARBIES za
+8 1 e 0 g e tihe e M SR
+BR _ Dossier numenque & 1 5 B Re 1 e o G L0710t S srav el 14 ,n Mrher 14
+Sensizelet une pétisde p'oba:. 1€ 14 _-ä Jeuss VT AN 14
+O Mes préférences » ï LECHIN
+X Apropos
+Q) Léconnexion
+i &y soprobhr
+ASSENCES À CONTROLER
+3 dossiers
+A Acven
+ACTES DF GFSTION
+MES CCLABORATEURS
+Htsien AESILAN
+37 é cFrer
+24
+FROTITONT
+2 A
+o Actes de gestion
+14
+érer|és temps partie <
+Fridertzuc ZARBIE=
+Mes collaborateurs
+8777017
+Rev s r G1 OL dl ZE 110 el
+Lhrhe E o)
+GQ
+84
+150
+(R LI
+Dossier numérique
+ICUES VL AR |
+Renad.elzt une périsdep'obs:21€
+(S FAGER
+Mes préférences
+À propos
+Léconnexion
+Ly soprohr
+ABSENCES À CCNTROLER
+── Analyse visuelle (VLM) ──
+Voici mon analyse de l'interface :
+
+**1. CONTEXTE**
+L'écran semble être un tableau de bord ou un dashboard d'une application de gestion des ressources humaines, probablement Sopra HR. Il affiche des informations sur les actes de gestion, les collaborateurs et les absences à contrôler.
+
+**2. ANNOTATIONS AJOUTÉES PAR LE PO**
+Aucune annotation détectée.
+
+**3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI**
+Il y a plusieurs éléments graphiques natifs de l'UI :
+- Un badge avec le chiffre "14" de couleur blanche sur fond bleu clair dans la section "Actes de gestion".
+- Un badge avec les chiffres "8" et "15" de couleur noire sur fond bleu clair dans la section "Actes de gestion".
+- Des puces colorées (pastilles) rouges à côté des noms des collaborateurs dans la section "Mes collaborateurs".
+
+**4. ICÔNES ET PICTOGRAMMES**
+Il y a plusieurs icônes et pictogrammes :
+- Une icône de maison dans le menu de navigation.
+- Une icône de personne dans le menu de navigation.
+- Une icône de roue dentée dans le menu de navigation.
+- Une icône de dossier dans le menu de navigation.
+- Une icône de paramètres dans le menu de navigation.
+- Une icône de informations dans le menu de navigation.
+- Une icône de déconnexion dans le menu de navigation.
+- Une icône de triangle de warning à côté des badges dans la section "Actes de gestion".
+- Des icônes de photo de profil pour chaque collaborateur dans la section "Mes collaborateurs".
+
+**5. AGENCEMENT ET RELATIONS**
+L'écran est divisé en plusieurs sections :
+- Un menu de navigation vertical à gauche avec plusieurs options.
+- Un tableau de bord central avec des informations sur les actes de gestion et les collaborateurs.
+- Une section "Mes collaborateurs" avec une liste de collaborateurs et des informations sur leurs absences.
+- Une section "Absences à contrôler" avec un chiffre indiquant le nombre de dossiers à contrôler.
+Il y a une hiérarchie visuelle avec des titres et des sous-titres. Les champs obligatoires sont indiqués par une étoile (*), mais il n'y en a pas dans cette capture d'écran. Les éléments sont organisés de manière logique et facile à comprendre.

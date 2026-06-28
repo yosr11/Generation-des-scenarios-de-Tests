@@ -93,9 +93,6 @@ export default function ResultsPanel({ result }: ResultsPanelProps) {
                 <strong>Agent 3 :</strong> {result.requestOptions?.modelAgent3}
               </p>
               <p>
-                <strong>Agent 4 :</strong> {result.requestOptions?.runAgent4 ? `activé (${result.requestOptions?.modelAgent4})` : 'désactivé'}
-              </p>
-              <p>
                 <strong>Agent 5 :</strong> {result.requestOptions?.modelAgent5}
               </p>
               <p>

@@ -253,7 +253,7 @@ def _get_rag_context(enriched: Dict[str, Any], force_refresh: bool = False) -> l
 def analyze_epic_stories(
     epic_key: str,
     model_alias: str = Query(
-        "qwen3",
+        "llama4",
         description="Model alias. Allowed: qwen3, gptoss, llama4"
     ),
     use_rag: bool = Query(
@@ -379,7 +379,7 @@ def analyze_epic_stories(
 def analyze_story(
     issue_key: str,
     model_alias: str = Query(
-        "qwen3",
+        "llama4",
         description="Model alias. Allowed: qwen3, gptoss, llama4"
     ),
     use_rag: bool = Query(

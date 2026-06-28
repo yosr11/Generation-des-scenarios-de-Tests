@@ -46,14 +46,14 @@ class PipelineState(TypedDict, total=False):
     max_correction_iterations: int
     force_reanalyze: bool
     force_refresh: bool                  # bypass des caches story + RAG epic (refetch Jira + ré-indexation)
-    run_agent4: bool                     # active/désactive la classification Agent 4
 
     # ── Données accumulées ──
     story: Dict[str, Any]               # Story Jira enrichie
     rag_context: Optional[list]          # Contexte RAG (optionnel)
     legacy_examples: Optional[list]      # Tests legacy similaires (few-shot Agent 2)
-    analysis: Optional[Any]              # StoryAnalysisResult
+    analysis: Optional[Any]              # StoryAnalysisResult (merged final output)
     analysis_dict: Optional[Dict]        # Version dict pour Agent 2
+    classification: Optional[Any]        # StoryClassificationResult (classification-only output)
     tests: List[Any]                     # List[ManualTestCase]
     generation_result: Optional[Any]     # ManualTestGenerationResult
     agent2_golden_rule_warnings: List[str]
@@ -61,7 +61,6 @@ class PipelineState(TypedDict, total=False):
     validation: Optional[Any]            # Agent3ValidationResult
     report: Optional[Any]               # Agent5Report
     classification_result: Optional[Any] # Agent4 — StoryAutomationClassificationResult
-    model_agent4: str
 
     # ── Contrôle ──
     correction_iteration: int
@@ -212,9 +211,12 @@ def node_build_rag_context(state: PipelineState) -> dict:
     return {"rag_context": rag_context, "story": enriched}
 
 
-def node_agent1_analyze(state: PipelineState) -> dict:
-    """Agent 1 : analyse de la story via LLM."""
-    from app.services.story_analysis_service import analyze_story_with_adaptive_llm
+def node_classify_story(state: PipelineState) -> dict:
+    """Classification Agent : décide du type de story et prépare le résultat final."""
+    from app.services.story_analysis_service import (
+        classify_story_with_adaptive_llm,
+        merge_story_analysis,
+    )
     from app.repositories.analysis_repository import save_analysis
     from app.services.document_collector import collect_documents_for_story
 
@@ -224,47 +226,80 @@ def node_agent1_analyze(state: PipelineState) -> dict:
     rag_context = state.get("rag_context")
     _safe_update_step(story_id, "Agent 1", "running", progress=15)
 
-    # ── Récupérer les pièces jointes de la story (spec directe) ──
     story_attachments = collect_documents_for_story(story_id)
     if story_attachments:
-        logger.info(f"[Orchestrator] Agent 1: {story_id} has {len(story_attachments)} attachment(s)")
+        logger.info(f"[Orchestrator] Classification Agent: {story_id} has {len(story_attachments)} attachment(s)")
 
-    logger.info(f"[Orchestrator] Agent 1 analyzing {story_id} (model={model})")
+    logger.info(f"[Orchestrator] Classifying {story_id} (model={model})")
 
     try:
         with track_agent("agent1"):
-            analysis = analyze_story_with_adaptive_llm(
+            classification = classify_story_with_adaptive_llm(
                 story=story,
                 model_alias=model,
                 rag_context=rag_context,
                 story_attachments=story_attachments,
             )
 
-        # Garde-fou : seules les stories fonctionnelles sont traitees.
-        # Si le LLM a renvoye autre chose, on court-circuite : on vide les listes "test"
-        # mais on PRESERVE analysis_reason (la vraie raison fournie par le LLM).
-        if analysis.story_type != "functional":
-            logger.info(f"[Orchestrator] Agent 1 court-circuit pour {story_id} (type={analysis.story_type})")
+        analysis = merge_story_analysis(classification=classification, analysis=None, story=story)
+        analysis_dict = analysis.model_dump()
+        analysis_dict["model"] = model
+        save_analysis(analysis_dict)
 
-            # Conserver la raison du LLM ; sinon fallback explicite
-            llm_reasons = [r for r in (analysis.analysis_reason or []) if r and r.strip()]
-            if not llm_reasons:
-                llm_reasons = [
-                    f"Story classee '{analysis.story_type}' mais aucune raison detaillee fournie par l'analyse."
-                ]
+        _safe_update_step(story_id, "Agent 1", "completed", output=analysis_dict, progress=25)
 
-            analysis.actors = []
-            analysis.actions = []
-            analysis.business_rules = []
-            analysis.technical_scope = []
-            analysis.testable_points = []
-            analysis.user_flows = []
-            analysis.acceptance_criteria_explicit = []
-            analysis.acceptance_criteria_inferred = []
-            analysis.clarification_questions = []
-            analysis.analysis_reason = llm_reasons
+        return {
+            "classification": classification,
+            "analysis": analysis,
+            "analysis_dict": analysis_dict,
+        }
 
-        # Persister
+    except Exception as e:
+        logger.error(f"[Orchestrator] Classification Agent failed for {story_id}: {e}")
+        _safe_update_step(story_id, "Agent 1", "failed", error=str(e), progress=25)
+        return {
+            "status": "failed",
+            "errors": [f"Classification Agent failed: {e}"],
+        }
+
+
+def node_extract_analysis(state: PipelineState) -> dict:
+    """Analysis Agent : extrait les champs fonctionnels uniquement pour les stories fonctionnelles."""
+    from app.services.story_analysis_service import (
+        extract_story_analysis_with_adaptive_llm,
+        merge_story_analysis,
+    )
+    from app.repositories.analysis_repository import save_analysis
+    from app.services.document_collector import collect_documents_for_story
+
+    story = state["story"]
+    story_id = state["story_id"]
+    model = state.get("model_agent1", "llama4")
+    rag_context = state.get("rag_context")
+    classification = state.get("classification")
+    _safe_update_step(story_id, "Agent 1", "running", progress=20)
+
+    if classification is None:
+        logger.error(f"[Orchestrator] Missing classification for {story_id}")
+        return {"status": "failed", "errors": ["Missing classification output"]}
+
+    story_attachments = collect_documents_for_story(story_id)
+    logger.info(f"[Orchestrator] Analysis Agent extracting {story_id} (model={model})")
+
+    try:
+        with track_agent("agent1"):
+            extracted = extract_story_analysis_with_adaptive_llm(
+                story=story,
+                model_alias=model,
+                rag_context=rag_context,
+                story_attachments=story_attachments,
+            )
+
+        analysis = merge_story_analysis(
+            classification=classification,
+            analysis=extracted,
+            story=story,
+        )
         analysis_dict = analysis.model_dump()
         analysis_dict["model"] = model
         save_analysis(analysis_dict)
@@ -278,11 +313,11 @@ def node_agent1_analyze(state: PipelineState) -> dict:
         }
 
     except Exception as e:
-        logger.error(f"[Orchestrator] Agent 1 failed for {story_id}: {e}")
+        logger.error(f"[Orchestrator] Analysis Agent failed for {story_id}: {e}")
         _safe_update_step(story_id, "Agent 1", "failed", error=str(e), progress=25)
         return {
             "status": "failed",
-            "errors": [f"Agent 1 failed: {e}"],
+            "errors": [f"Analysis Agent failed: {e}"],
         }
 
 
@@ -408,11 +443,6 @@ def node_agent3_validate(state: PipelineState) -> dict:
         val_out = result.model_dump() if hasattr(result, "model_dump") else dict(result)
         _safe_update_step(story_id, "Agent 3", "completed", output=val_out, progress=75)
         
-        # If Agent 4 is run, mark it as running, else complete/skip
-        if state.get("run_agent4"):
-            _safe_update_step(story_id, "Agent 4", "running", progress=80)
-        else:
-            _safe_update_step(story_id, "Agent 4", "completed", output={"status": "desactive"}, progress=80)
         _safe_update_step(story_id, "Agent 5", "running", progress=85)
 
         return {"validation": result}
@@ -556,63 +586,27 @@ def node_agent5_report(state: PipelineState) -> dict:
         }
 
 
-def node_agent4_classify(state: PipelineState) -> dict:
-    """Agent 4 : classifie chaque test généré en AUTOMATISER / MANUEL (suggestion pour le PO)."""
-    from app.services.agent4_automation_classifier_service import classify_tests_for_story
-    from app.repositories.automation_classifier_repository import save_classifications
-
-    story_id = state["story_id"]
-    tests = state.get("tests", []) or []
-    model = state.get("model_agent4", "llama4")
-    _safe_update_step(story_id, "Agent 4", "running", progress=80)
-
-    if not tests:
-        logger.info(f"[Orchestrator] Agent 4 skipped for {story_id} (no tests)")
-        return {}
-
-    logger.info(f"[Orchestrator] Agent 4 classifying {len(tests)} tests for {story_id} (model={model})")
-
-    try:
-        tests_dicts = [
-            t.model_dump() if hasattr(t, "model_dump") else dict(t)
-            for t in tests
-        ]
-        with track_agent("agent4"):
-            result = classify_tests_for_story(story_id, tests_dicts, model_alias=model)
-        save_classifications(result)
-        
-        class_out = result.model_dump() if hasattr(result, "model_dump") else dict(result)
-        _safe_update_step(story_id, "Agent 4", "completed", output=class_out, progress=88)
-
-        return {"classification_result": result}
-    except Exception as e:
-        logger.error(f"[Orchestrator] Agent 4 failed for {story_id}: {e}")
-        _safe_update_step(story_id, "Agent 4", "failed", error=str(e), progress=88)
-        return {"errors": (state.get("errors") or []) + [f"Agent 4 failed (non-bloquant): {e}"]}
-
-
 # ═══════════════════════════════════════════════════════════════
 #  3. ARÊTES CONDITIONNELLES — décisions de routage
 # ═══════════════════════════════════════════════════════════════
 
 def route_after_enrich(state: PipelineState) -> str:
-    """Après enrichissement : si échec → END, sinon → Agent 1."""
+    """Après enrichissement : si échec → END, sinon → Classification Agent."""
     if state.get("status") == "failed":
         return END
-    return "agent1_analyze"
+    return "build_rag_context"
 
 
 def route_after_agent1(state: PipelineState) -> str:
-    """Après Agent 1 : on ne traite que les stories fonctionnelles. Sinon court-circuit explicite."""
+    """Après classification : on ne traite que les stories fonctionnelles."""
     if state.get("status") == "failed":
         return END
 
-    analysis = state.get("analysis")
-    if analysis is None:
-        return "agent2_generate"
+    classification = state.get("classification")
+    if classification is None:
+        return "skip"
 
-    story_type = analysis.story_type
-
+    story_type = getattr(classification, "story_type", None) or ""
     if story_type == "invalid_or_too_weak":
         logger.info(f"[Orchestrator] Story {state['story_id']} is invalid_or_too_weak → skipping")
         return "skip"
@@ -623,7 +617,7 @@ def route_after_agent1(state: PipelineState) -> str:
         )
         return "not_functional"
 
-    return "agent2_generate"
+    return "analysis_agent"
 
 
 def route_after_agent2(state: PipelineState) -> str:
@@ -639,12 +633,11 @@ def route_after_agent2(state: PipelineState) -> str:
 
 
 def route_after_agent3(state: PipelineState) -> str:
-    """Après Agent 3 : VALID → Agent 4 (ou 5), sinon → gap-fill (si itérations restantes et issues actionnables)."""
+    """Après Agent 3 : VALID → Agent 5, sinon → gap-fill (si itérations restantes et issues actionnables)."""
     if state.get("status") == "failed":
         return END
 
-    # Si Agent 4 est désactivé, on saute directement au rapport final.
-    next_after_validation = "agent4_classify" if state.get("run_agent4", False) else "agent5_report"
+    next_after_validation = "agent5_report"
 
     validation = state.get("validation")
     if not validation:
@@ -692,7 +685,6 @@ def node_skip(state: PipelineState) -> dict:
     story_id = state["story_id"]
     _safe_update_step(story_id, "Agent 2", "failed", error="Story non exploitable", progress=100)
     _safe_update_step(story_id, "Agent 3", "failed", error="Story non exploitable")
-    _safe_update_step(story_id, "Agent 4", "failed", error="Story non exploitable")
     _safe_update_step(story_id, "Agent 5", "failed", error="Story non exploitable")
     return {"status": "skipped"}
 
@@ -711,7 +703,6 @@ def node_not_functional(state: PipelineState) -> dict:
     
     _safe_update_step(story_id, "Agent 2", "failed", error="Story non fonctionnelle", progress=100)
     _safe_update_step(story_id, "Agent 3", "failed", error="Story non fonctionnelle")
-    _safe_update_step(story_id, "Agent 4", "failed", error="Story non fonctionnelle")
     _safe_update_step(story_id, "Agent 5", "failed", error="Story non fonctionnelle")
     
     return {"status": "skipped", "errors": [msg]}
@@ -734,7 +725,6 @@ def node_no_tests(state: PipelineState) -> dict:
                 
     _safe_update_step(story_id, "Agent 2", "failed", error="\n".join(errors), progress=100)
     _safe_update_step(story_id, "Agent 3", "failed", error="Pas de tests generes")
-    _safe_update_step(story_id, "Agent 4", "failed", error="Pas de tests generes")
     _safe_update_step(story_id, "Agent 5", "failed", error="Pas de tests generes")
     
     return {"status": "failed", "errors": errors}
@@ -752,12 +742,12 @@ def build_pipeline_graph() -> StateGraph:
     # Ajouter les nœuds
     graph.add_node("enrich_story", node_enrich_story)
     graph.add_node("build_rag_context", node_build_rag_context)
-    graph.add_node("agent1_analyze", node_agent1_analyze)
+    graph.add_node("classify_story", node_classify_story)
+    graph.add_node("analysis_agent", node_extract_analysis)
     graph.add_node("agent2_generate", node_agent2_generate)
     graph.add_node("agent3_validate", node_agent3_validate)
     graph.add_node("agent2_gap_fill", node_agent2_gap_fill)
     graph.add_node("agent5_report", node_agent5_report)
-    graph.add_node("agent4_classify", node_agent4_classify)
     graph.add_node("skip", node_skip)
     graph.add_node("no_tests", node_no_tests)
     graph.add_node("not_functional", node_not_functional)
@@ -767,18 +757,20 @@ def build_pipeline_graph() -> StateGraph:
 
     # Arêtes conditionnelles
     graph.add_conditional_edges("enrich_story", route_after_enrich, {
-        "agent1_analyze": "build_rag_context",
+        "build_rag_context": "build_rag_context",
         END: END,
     })
 
-    graph.add_edge("build_rag_context", "agent1_analyze")
+    graph.add_edge("build_rag_context", "classify_story")
 
-    graph.add_conditional_edges("agent1_analyze", route_after_agent1, {
-        "agent2_generate": "agent2_generate",
+    graph.add_conditional_edges("classify_story", route_after_agent1, {
+        "analysis_agent": "analysis_agent",
         "skip": "skip",
         "not_functional": "not_functional",
         END: END,
     })
+
+    graph.add_edge("analysis_agent", "agent2_generate")
 
     graph.add_conditional_edges("agent2_generate", route_after_agent2, {
         "agent3_validate": "agent3_validate",
@@ -787,7 +779,6 @@ def build_pipeline_graph() -> StateGraph:
     })
 
     graph.add_conditional_edges("agent3_validate", route_after_agent3, {
-        "agent4_classify": "agent4_classify",
         "agent5_report": "agent5_report",
         "agent2_gap_fill": "agent2_gap_fill",
         END: END,
@@ -796,8 +787,7 @@ def build_pipeline_graph() -> StateGraph:
     # Après gap-fill → re-validation
     graph.add_edge("agent2_gap_fill", "agent3_validate")
 
-    # Pipeline final : classify (Agent 4) → report (Agent 5) → END
-    graph.add_edge("agent4_classify", "agent5_report")
+    # Pipeline final : report (Agent 5) → END
     graph.add_edge("agent5_report", END)
     graph.add_edge("skip", END)
     graph.add_edge("no_tests", END)
@@ -830,13 +820,11 @@ def run_pipeline(
     model_agent1: str = "llama4",
     model_agent2: str = "llama4",
     model_agent3_quality: str = "qwen3",
-    model_agent4: str = "qwen3",
     model_agent5: str = "qwen3",
     coverage_threshold: float = 0.70,
     max_correction_iterations: int = 2,
     force_reanalyze: bool = False,
     force_refresh: bool = False,
-    run_agent4: bool = False,
 ) -> PipelineState:
     """
     Lance le pipeline complet pour une story.
@@ -852,14 +840,12 @@ def run_pipeline(
         "use_legacy_rag": use_legacy_rag,
         "model_agent1": model_agent1,
         "model_agent2": model_agent2,
-        "model_agent4": model_agent4,
         "model_agent3_quality": model_agent3_quality,
         "model_agent5": model_agent5,
         "coverage_threshold": coverage_threshold,
         "max_correction_iterations": max_correction_iterations,
         "force_reanalyze": force_reanalyze,
         "force_refresh": force_refresh,
-        "run_agent4": run_agent4,
         "correction_iteration": 0,
         "status": "running",
         "errors": [],

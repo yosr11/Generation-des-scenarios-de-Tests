@@ -6,7 +6,7 @@ from typing import Any, Callable, Dict, List, Optional, Tuple
 
 from pydantic import ValidationError
 
-from app.models.analysis import StoryAnalysisResult
+from app.models.analysis import StoryAnalysisResult, StoryClassificationResult
 from app.prompts.story_analysis_prompt import (
     build_story_analysis_system_prompt,
     build_story_analysis_user_prompt,
@@ -212,16 +212,92 @@ def extract_json_object(text: str) -> Dict[str, Any]:
         raise StoryAnalysisError(f"Invalid JSON returned by LLM: {e}")
 
 
-def analyze_story_with_llm(
+def merge_story_analysis(
+    classification: StoryClassificationResult,
+    analysis: Optional[StoryAnalysisResult],
+    story: Optional[Dict[str, Any]] = None,
+) -> StoryAnalysisResult:
+    """Merge classification output and extraction output while preserving the public JSON contract."""
+    story = story or {}
+    story_id = getattr(classification, "story_id", None) or story.get("id", "") or ""
+    story_title = (
+        getattr(classification, "story_title", None)
+        or story.get("summary")
+        or story.get("title")
+        or ""
+    )
+
+    classification_reasons = [
+        str(item).strip()
+        for item in (getattr(classification, "analysis_reason", None) or [])
+        if str(item).strip()
+    ]
+
+    if classification.story_type != "functional":
+        return StoryAnalysisResult(
+            story_id=story_id,
+            story_title=story_title,
+            story_type=classification.story_type,
+            actors=[],
+            actions=[],
+            business_rules=[],
+            technical_scope=[],
+            testable_points=[],
+            user_flows=[],
+            acceptance_criteria_explicit=[],
+            acceptance_criteria_inferred=[],
+            clarification_questions=[],
+            analysis_reason=classification_reasons,
+            resolved_from_references=[],
+        )
+
+    if analysis is None:
+        return StoryAnalysisResult(
+            story_id=story_id,
+            story_title=story_title,
+            story_type="functional",
+            actors=[],
+            actions=[],
+            business_rules=[],
+            technical_scope=[],
+            testable_points=[],
+            user_flows=[],
+            acceptance_criteria_explicit=[],
+            acceptance_criteria_inferred=[],
+            clarification_questions=[],
+            analysis_reason=classification_reasons,
+            resolved_from_references=[],
+        )
+
+    return StoryAnalysisResult(
+        story_id=story_id,
+        story_title=story_title,
+        story_type=classification.story_type,
+        actors=list(getattr(analysis, "actors", []) or []),
+        actions=list(getattr(analysis, "actions", []) or []),
+        business_rules=list(getattr(analysis, "business_rules", []) or []),
+        technical_scope=list(getattr(analysis, "technical_scope", []) or []),
+        testable_points=list(getattr(analysis, "testable_points", []) or []),
+        user_flows=list(getattr(analysis, "user_flows", []) or []),
+        acceptance_criteria_explicit=list(getattr(analysis, "acceptance_criteria_explicit", []) or []),
+        acceptance_criteria_inferred=list(getattr(analysis, "acceptance_criteria_inferred", []) or []),
+        clarification_questions=list(getattr(analysis, "clarification_questions", []) or []),
+        analysis_reason=classification_reasons or [
+            str(item).strip()
+            for item in (getattr(analysis, "analysis_reason", None) or [])
+            if str(item).strip()
+        ],
+        resolved_from_references=list(getattr(analysis, "resolved_from_references", []) or []),
+    )
+
+
+def classify_story_with_llm(
     story: Dict[str, Any],
     llm_callable: Callable[[str, str], str],
     rag_context: list = None,
     story_attachments: list = None,
-) -> StoryAnalysisResult:
-    """
-    Generic analyzer using any llm_callable(system_prompt, user_prompt) -> str
-    """
-    # Court-circuit : description vide → pas d'appel LLM
+) -> StoryClassificationResult:
+    """Classify a story into functional/technical/invalid_or_too_weak."""
     description = (
         story.get("description_clean")
         or story.get("description")
@@ -229,35 +305,108 @@ def analyze_story_with_llm(
     ).strip()
 
     if not description:
-        return StoryAnalysisResult(
-        story_id=story.get("id", ""),
-        story_title=story.get("summary") or story.get("title") or "",
+        return StoryClassificationResult(
+            story_id=story.get("id", ""),
+            story_title=story.get("summary") or story.get("title") or "",
+            story_type="invalid_or_too_weak",
+            analysis_reason=[
+                "La story ne contient pas de description exploitable.",
+                "Aucun comportement testable ne peut être identifié.",
+            ],
+        )
 
-        story_type="invalid_or_too_weak",
+    enriched_story = story
+    if _is_reference_only_description(description):
+        ticket_keys = _extract_ticket_keys(description)
+        if ticket_keys:
+            logger.info(
+                f"Story {story.get('id', '?')} : description = référence seule. "
+                f"Résolution automatique des tickets : {ticket_keys}"
+            )
+            referenced = _fetch_referenced_stories(ticket_keys)
+            if referenced and any(r["description"] for r in referenced):
+                enriched_story = _enrich_story_with_references(story, referenced)
+            else:
+                logger.warning(
+                    f"Story {story.get('id', '?')} : impossible de résoudre les tickets "
+                    f"référencés {ticket_keys}. Classification invalid_or_too_weak."
+                )
+                return StoryClassificationResult(
+                    story_id=story.get("id", ""),
+                    story_title=story.get("summary") or story.get("title") or "",
+                    story_type="invalid_or_too_weak",
+                    analysis_reason=[
+                        f"La description ne contient qu'une référence aux tickets {ticket_keys}.",
+                        "Le contenu de ces tickets n'a pas pu être récupéré depuis Jira.",
+                    ],
+                )
+        else:
+            return StoryClassificationResult(
+                story_id=story.get("id", ""),
+                story_title=story.get("summary") or story.get("title") or "",
+                story_type="invalid_or_too_weak",
+                analysis_reason=[
+                    "La description est trop vague pour identifier un comportement utilisateur.",
+                    f"Description reçue : \"{description[:100]}\"",
+                ],
+            )
 
-        actors=[],
-        actions=[],
-        business_rules=[],
-        technical_scope=[],
-        testable_points=[],
-        user_flows=[],
-        acceptance_criteria_explicit=[],
-        acceptance_criteria_inferred=[],
 
-        analysis_reason=[
-            "La story ne contient pas de description exploitable.",
-            "Aucun comportement testable ne peut être identifié.",
-            "Action requise : contacter le Product Owner pour enrichir la story."
-        ],
-        clarification_questions=[
-            "Pouvez-vous compléter la description de la story ?",
-            "Pouvez-vous ajouter des critères d’acceptation clairs ?"
-        ]
+    # Use the analysis prompt as the single canonical prompt for story understanding.
+    # The analysis prompt contains story_type and analysis_reason fields which we use
+    # to derive the classification result.
+    system_prompt = build_story_analysis_system_prompt()
+    user_prompt = build_story_analysis_user_prompt(
+        enriched_story,
+        rag_context=rag_context,
+        story_attachments=story_attachments,
     )
 
-    # ── Résolution automatique des descriptions "référence seule" ──
-    # Si la description ne contient que des références à d'autres tickets
-    # (ex: "Continuer YOU-13730"), on tente de récupérer le contenu depuis Jira.
+    raw_response = llm_callable(system_prompt, user_prompt)
+    data = extract_json_object(raw_response)
+
+    if not data.get("story_id"):
+        data["story_id"] = story.get("id", "")
+    if not data.get("story_title"):
+        data["story_title"] = story.get("summary") or story.get("title") or ""
+    # If the analysis prompt did not provide a story_type, conservatively mark as invalid/too weak
+    if not data.get("story_type"):
+        data["story_type"] = "invalid_or_too_weak"
+    if not data.get("analysis_reason"):
+        data["analysis_reason"] = [
+            f"Story classée '{data.get('story_type')}' sans justification détaillée."
+        ]
+
+    # The analysis prompt may return many keys; only keep the ones
+    # required by StoryClassificationResult to avoid pydantic extra-field errors.
+    classification_data = {
+        "story_id": data.get("story_id", story.get("id", "")),
+        "story_title": data.get("story_title", story.get("summary") or story.get("title") or ""),
+        "story_type": data.get("story_type", "invalid_or_too_weak"),
+        "analysis_reason": data.get("analysis_reason") or [
+            f"Story classée '{data.get('story_type','invalid_or_too_weak')}' sans justification détaillée."
+        ],
+    }
+
+    try:
+        return StoryClassificationResult(**classification_data)
+    except ValidationError as e:
+        raise StoryAnalysisError(f"Classification LLM output does not match expected schema: {e}")
+
+
+def extract_story_analysis_with_llm(
+    story: Dict[str, Any],
+    llm_callable: Callable[[str, str], str],
+    rag_context: list = None,
+    story_attachments: list = None,
+) -> StoryAnalysisResult:
+    """Extract analysis fields for a functional story without re-running classification."""
+    description = (
+        story.get("description_clean")
+        or story.get("description")
+        or ""
+    ).strip()
+
     enriched_story = story
     resolved_refs: list[str] = []
     if _is_reference_only_description(description):
@@ -269,65 +418,8 @@ def analyze_story_with_llm(
             )
             referenced = _fetch_referenced_stories(ticket_keys)
             if referenced and any(r["description"] for r in referenced):
-                # On a récupéré du contenu exploitable → enrichir la story
                 enriched_story = _enrich_story_with_references(story, referenced)
                 resolved_refs = [r["key"] for r in referenced]
-                logger.info(
-                    f"Story {story.get('id', '?')} : enrichie avec le contenu de "
-                    f"{resolved_refs}"
-                )
-            else:
-                # Jira inaccessible ou tickets sans description → invalid_or_too_weak
-                logger.warning(
-                    f"Story {story.get('id', '?')} : impossible de résoudre les tickets "
-                    f"référencés {ticket_keys}. Classification invalid_or_too_weak."
-                )
-                return StoryAnalysisResult(
-                    story_id=story.get("id", ""),
-                    story_title=story.get("summary") or story.get("title") or "",
-                    story_type="invalid_or_too_weak",
-                    actors=[],
-                    actions=[],
-                    business_rules=[],
-                    technical_scope=[],
-                    testable_points=[],
-                    user_flows=[],
-                    acceptance_criteria_explicit=[],
-                    acceptance_criteria_inferred=[],
-                    analysis_reason=[
-                        f"La description ne contient qu'une référence aux tickets {ticket_keys}.",
-                        "Le contenu de ces tickets n'a pas pu être récupéré depuis Jira.",
-                        "Aucun comportement testable ne peut être identifié.",
-                    ],
-                    clarification_questions=[
-                        f"La description fait référence à {', '.join(ticket_keys)}. "
-                        "Veuillez fournir le contenu fonctionnel détaillé de ces tickets."
-                    ],
-                )
-        else:
-            # Description vague sans référence ticket identifiable
-            return StoryAnalysisResult(
-                story_id=story.get("id", ""),
-                story_title=story.get("summary") or story.get("title") or "",
-                story_type="invalid_or_too_weak",
-                actors=[],
-                actions=[],
-                business_rules=[],
-                technical_scope=[],
-                testable_points=[],
-                user_flows=[],
-                acceptance_criteria_explicit=[],
-                acceptance_criteria_inferred=[],
-                analysis_reason=[
-                    "La description est trop vague pour identifier un comportement utilisateur.",
-                    f"Description reçue : \"{description[:100]}\"",
-                ],
-                clarification_questions=[
-                    "La description ne fournit aucun détail fonctionnel exploitable. "
-                    "Veuillez préciser les actions attendues, les écrans concernés "
-                    "et les résultats observables."
-                ],
-            )
 
     system_prompt = build_story_analysis_system_prompt()
     user_prompt = build_story_analysis_user_prompt(
@@ -339,7 +431,6 @@ def analyze_story_with_llm(
     raw_response = llm_callable(system_prompt, user_prompt)
     data = extract_json_object(raw_response)
 
-    # Fallback: extract actors from description if LLM returned empty actors
     if not data.get("actors"):
         data["actors"] = _extract_actors_from_description(story)
 
@@ -348,11 +439,9 @@ def analyze_story_with_llm(
     if not data.get("story_title"):
         data["story_title"] = story.get("summary") or story.get("title") or ""
 
-    # Fix empty required fields with safe defaults
     if not data.get("story_type"):
-        data["story_type"] = "invalid_or_too_weak"
+        data["story_type"] = "functional"
 
-    # Aplatir user_flows si le LLM renvoie des sous-listes
     raw_flows = data.get("user_flows", [])
     if raw_flows and isinstance(raw_flows, list):
         flat = []
@@ -368,11 +457,43 @@ def analyze_story_with_llm(
     except ValidationError as e:
         raise StoryAnalysisError(f"LLM output does not match expected schema: {e}")
 
-    # Ajouter les métadonnées de résolution de références
     if resolved_refs:
         validated.resolved_from_references = resolved_refs
 
     return validated
+
+
+def analyze_story_with_llm(
+    story: Dict[str, Any],
+    llm_callable: Callable[[str, str], str],
+    rag_context: list = None,
+    story_attachments: list = None,
+) -> StoryAnalysisResult:
+    """
+    Generic analyzer that first classifies the story, then only extracts for functional stories.
+    """
+    classification = classify_story_with_llm(
+        story=story,
+        llm_callable=llm_callable,
+        rag_context=rag_context,
+        story_attachments=story_attachments,
+    )
+
+    if classification.story_type != "functional":
+        return merge_story_analysis(classification=classification, analysis=None, story=story)
+
+    analysis = extract_story_analysis_with_llm(
+        story=story,
+        llm_callable=llm_callable,
+        rag_context=rag_context,
+        story_attachments=story_attachments,
+    )
+
+    return merge_story_analysis(
+        classification=classification,
+        analysis=analysis,
+        story=story,
+    )
 
 
 def analyze_story_with_groq(
@@ -394,6 +515,88 @@ def analyze_story_with_groq(
     return analyze_story_with_adaptive_llm(
         story=story,
         model_alias=model_alias,
+        rag_context=rag_context,
+        story_attachments=story_attachments,
+    )
+
+
+def classify_story_with_adaptive_llm(
+    story: Dict[str, Any],
+    model_alias: str = "llama4",
+    rag_context: list = None,
+    story_attachments: list = None,
+) -> StoryClassificationResult:
+    """Classification-only helper using the same provider selection as the analysis service."""
+    if model_alias in BEDROCK_MODELS:
+        def _bedrock_callable(system_prompt: str, user_prompt: str) -> str:
+            return call_bedrock(
+                system_prompt=system_prompt,
+                user_prompt=user_prompt,
+                model_alias=model_alias,
+                temperature=0.0,
+                max_tokens=2000,
+            )
+
+        return classify_story_with_llm(
+            story=story,
+            llm_callable=_bedrock_callable,
+            rag_context=rag_context,
+            story_attachments=story_attachments,
+        )
+
+    def _groq_callable(system_prompt: str, user_prompt: str) -> str:
+        return call_groq(
+            system_prompt=system_prompt,
+            user_prompt=user_prompt,
+            model_alias=model_alias,
+            temperature=0.0,
+            max_tokens=2000,
+        )
+
+    return classify_story_with_llm(
+        story=story,
+        llm_callable=_groq_callable,
+        rag_context=rag_context,
+        story_attachments=story_attachments,
+    )
+
+
+def extract_story_analysis_with_adaptive_llm(
+    story: Dict[str, Any],
+    model_alias: str = "llama4",
+    rag_context: list = None,
+    story_attachments: list = None,
+) -> StoryAnalysisResult:
+    """Extraction-only helper using the same provider selection as the analysis service."""
+    if model_alias in BEDROCK_MODELS:
+        def _bedrock_callable(system_prompt: str, user_prompt: str) -> str:
+            return call_bedrock(
+                system_prompt=system_prompt,
+                user_prompt=user_prompt,
+                model_alias=model_alias,
+                temperature=0.0,
+                max_tokens=2000,
+            )
+
+        return extract_story_analysis_with_llm(
+            story=story,
+            llm_callable=_bedrock_callable,
+            rag_context=rag_context,
+            story_attachments=story_attachments,
+        )
+
+    def _groq_callable(system_prompt: str, user_prompt: str) -> str:
+        return call_groq(
+            system_prompt=system_prompt,
+            user_prompt=user_prompt,
+            model_alias=model_alias,
+            temperature=0.0,
+            max_tokens=2000,
+        )
+
+    return extract_story_analysis_with_llm(
+        story=story,
+        llm_callable=_groq_callable,
         rag_context=rag_context,
         story_attachments=story_attachments,
     )

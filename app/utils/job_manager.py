@@ -20,7 +20,6 @@ def create_job(story_id: str) -> Dict[str, Any]:
             {"agent": "Agent 1", "status": "pending", "output": None, "error": None},
             {"agent": "Agent 2", "status": "pending", "output": None, "error": None},
             {"agent": "Agent 3", "status": "pending", "output": None, "error": None},
-            {"agent": "Agent 4", "status": "pending", "output": None, "error": None},
             {"agent": "Agent 5", "status": "pending", "output": None, "error": None},
         ],
         "result": None,

@@ -10,9 +10,9 @@ export interface StoryFormValues {
   useRag: boolean
   useLegacyRag: boolean
   forceRefresh: boolean
-  runAgent4: boolean
   coverageThreshold: number
   maxCorrectionIterations: number
+  runAgent4?: boolean
 }
 
 interface StoryFormProps {
@@ -30,9 +30,9 @@ const defaultValues: StoryFormValues = {
   useRag: false,
   useLegacyRag: true,
   forceRefresh: false,
-  runAgent4: false,
   coverageThreshold: 0.7,
   maxCorrectionIterations: 2,
+  runAgent4: false,
 }
 
 export default function StoryForm({ onAnalyze, isLoading }: StoryFormProps) {
@@ -162,8 +162,12 @@ export default function StoryForm({ onAnalyze, isLoading }: StoryFormProps) {
                   </select>
                 )}
               </div>
-            </>
-          )}
+
+              <div className="grid gap-3">
+                <label className="block text-sm font-semibold text-slate-700">Agent 5</label>
+                <p className="text-sm text-slate-500">Le pipeline se termine désormais avec Agent 5 pour générer le rapport final.</p>
+              </div>
+            )}
 
           <div className="grid gap-3">
             <label className="block text-sm font-semibold text-slate-700">Options</label>

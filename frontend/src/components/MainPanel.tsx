@@ -29,12 +29,10 @@ export default function MainPanel() {
             model_agent1: options.modelAgent1,
             model_agent2: options.modelAgent2,
             model_agent3_quality: options.modelAgent3,
-            model_agent4: options.modelAgent4,
             model_agent5: options.modelAgent5,
             coverage_threshold: options.coverageThreshold,
             max_correction_iterations: options.maxCorrectionIterations,
             force_refresh: options.forceRefresh,
-            run_agent4: options.runAgent4,
           }),
         })
       } else {

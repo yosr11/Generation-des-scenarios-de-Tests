@@ -15,7 +15,7 @@ const features = [
   },
   {
     icon: Zap,
-    title: 'Automatisation Totale',
+    title: 'Automatisation avancée',
     desc: 'Du user story Jira aux scénarios de test en quelques secondes, sans effort manuel.',
     gradient: 'from-orange-500 to-red-500',
     glow: 'rgba(249,115,22,0.3)',
@@ -95,7 +95,7 @@ export const LandingPage: React.FC = () => {
         {/* Headline */}
         <h1 className="animate-slide-up delay-100 text-6xl md:text-7xl font-extrabold text-white leading-[1.1] mb-6">
           Générez vos<br />
-          <span className="text-gradient-hero">tests IA</span><br />
+          <span className="text-gradient-hero">tests avec IA</span><br />
           en secondes
         </h1>
 
@@ -138,21 +138,21 @@ export const LandingPage: React.FC = () => {
             <div className="space-y-2 font-mono text-sm">
               <div className="flex items-center gap-3">
                 <span className="text-brand-violet">[Agent 1]</span>
-                <span className="text-white/70">Fetching story NUXEPM-2144 from Jira...</span>
+                <span className="text-white/70">Classifying story NUXEPM-2144...</span>
                 <span className="ml-auto text-green-400 text-xs">✓ done</span>
               </div>
               <div className="flex items-center gap-3">
                 <span className="text-brand-pink">[Agent 2]</span>
-                <span className="text-white/70">Generating test scenarios via RAG...</span>
+                <span className="text-white/70">Analysing user story details...</span>
                 <span className="ml-auto text-green-400 text-xs">✓ done</span>
               </div>
               <div className="flex items-center gap-3">
                 <span className="text-brand-orange">[Agent 3]</span>
-                <span className="text-white/70">Validating coverage & edge cases...</span>
+                <span className="text-white/70">Generating test scenarios via RAG...</span>
                 <span className="ml-auto animate-pulse text-brand-orange text-xs">● running</span>
               </div>
               <div className="flex items-center gap-3 opacity-40">
-                <span className="text-brand-rose">[Agent 4]</span>
+                <span className="text-brand-rose">[Agent 5]</span>
                 <span className="text-white/50">Quality report generation...</span>
                 <span className="ml-auto text-white/30 text-xs">waiting</span>
               </div>
@@ -243,7 +243,7 @@ export const LandingPage: React.FC = () => {
 
         {/* Footer */}
         <p className="mt-12 text-white/25 text-sm">
-          © 2025 · <span className="text-brand-rose font-semibold">Sopra HR Software</span> · Synaptest Platform
+          © 2026 · <span className="text-brand-rose font-semibold">Sopra HR Software</span> · Synaptest Platform
         </p>
       </section>
     </div>

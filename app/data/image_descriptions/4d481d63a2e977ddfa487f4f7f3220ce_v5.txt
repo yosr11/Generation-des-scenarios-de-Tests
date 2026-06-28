@@ -1,0 +1,105 @@
+[Image jointe : image-2025-04-22-18-09-22-227.png]
+── Textes détectés (OCR) ──
+= ® o 20
+MES ACTIVITÉS D
+6A 1E s* 156
+Y Atribuée(s) amoi Ÿ En cours, En attente d... Par Daenrecrearce V Ë ° v
+Par échéance >
+Ç Fredenque BARBIER Congés exceptionnels En cours
+% FALTETCIO
+Par catégorie > Activite crvigue (mandat électoral) du 07.05 2021 au __
+Par collaborateur v A ecoermecte DE IEIIN @
+O a F A B
+Houssem ABSOUANI
+» ERLTETON o
+Frédérique BARBIER
+D frTETO:O o
+Congés ; - - .
+Aute - R . .
+Michèle LOMBARD
+» fecrerion o
+ldriss MONTAMARD
+Y RRLTETHSO o
+Ludovic STUAN ARD
+» rkarrrice o
+Martine VEGUIN RD
+Y ererrrin o
++ Nouvel acte 1 aement o Nombre aerements oar sage - 12 v
+Q ?0
+MES ACTIVITÉS
+64
+8h
+158
+1=
+Pa
+5a
+éarie
+1° E CENCENTS
+Par échéance
+Fredenque BARBIER
+Congés exceptionnels
+En cours
+FRATETC10
+Activite civique (mandat electoral} du 07.05 2021 su
+07.05.2021
+A F
+=]
+FRLTETO
+FRITETOIC
+Congés
+FRATET1:1
+Idriss MONTAMARD
+FRATETI:0
+FRATTTI:0
+FRATTT1:1
+<+ Nouvel acte
+12
+ivrede
+19073
+── Analyse visuelle (VLM) ──
+### 1. CONTEXTE
+L'écran semble être une page de gestion des activités ou des tâches, probablement dans un contexte de gestion des ressources humaines ou de suivi des activités. Il affiche une liste d'activités avec des filtres et des options de gestion.
+
+### 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+### 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- **Boutons** :
+  - **Forme** : Rectangulaires
+  - **Couleur de fond** : Variés (par exemple, bleu pour les boutons d'action)
+  - **Texte OCR** :
+    - "Nouvel acte"
+    - "Valider"
+    - "Refuser"
+    - "Valider en attente de justificatif"
+- **Badges/Etiquettes** :
+  - **Forme** : Ovales ou carrées
+  - **Couleur de fond** : Par exemple, bleu, rouge
+  - **Texte OCR** :
+    - "En cours"
+    - "Congés exceptionnels"
+    - "Activité civique (mandat électoral)"
+
+### 4. ICÔNES ET PICTOGRAMMES
+- **Icône de menu** (3 lignes horizontales) : En haut à gauche, probablement pour ouvrir le menu de navigation.
+- **Icône de recherche** (loupe) : En haut à droite, probablement pour rechercher des activités.
+- **Icône de notification** (cloche) : En haut à droite, probablement pour afficher les notifications.
+- **Icône de profil** (poignée de profil) : En haut à droite, probablement pour accéder au profil utilisateur.
+- **Icônes de statut** :
+  - **Forme** : Petits cercles ou carrés
+  - **Position** : À côté des noms des collaborateurs
+  - **Fonction probable** : Indiquer le statut des activités (par exemple, "En cours", "Terminé")
+
+### 5. AGENCEMENT ET RELATIONS
+- **Structure** : L'écran est divisé en sections :
+  - Une barre de menu en haut avec des onglets ("MES ACTIVITÉS", etc.)
+  - Un tableau ou liste des activités avec des filtres (par échéance, catégorie, collaborateur)
+  - Des boutons d'action en haut à droite pour gérer les activités
+- **Regroupements visuels** :
+  - Les activités sont regroupées par collaborateur
+  - Les filtres sont regroupés dans une section dédiée
+- **Hiérarchie** :
+  - Les titres des sections sont mis en évidence (par exemple, "MES ACTIVITÉS")
+  - Les sous-titres et les champs obligatoires sont clairement identifiés
+- **États** :
+  - Les activités sont mar

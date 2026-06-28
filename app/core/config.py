@@ -29,6 +29,19 @@ class Settings:
     COOKIE_SECURE = os.getenv("COOKIE_SECURE", "false").lower() == "true"
     COOKIE_SAMESITE = os.getenv("COOKIE_SAMESITE", "lax")
 
+    MICROSOFT_CLIENT_ID = os.getenv("MICROSOFT_CLIENT_ID", "")
+    MICROSOFT_CLIENT_SECRET = os.getenv("MICROSOFT_CLIENT_SECRET", "")
+    MICROSOFT_TENANT_ID = os.getenv("MICROSOFT_TENANT_ID", "common")
+    MICROSOFT_REDIRECT_URI = os.getenv(
+        "MICROSOFT_REDIRECT_URI",
+        "http://localhost:8000/auth/microsoft/callback",
+    )
+    MICROSOFT_SCOPES = os.getenv(
+        "MICROSOFT_SCOPES",
+        "openid profile email User.Read offline_access",
+    )
+    FRONTEND_BASE_URL = os.getenv("FRONTEND_BASE_URL", "http://localhost:5173")
+
     ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "yomahfoudh@soprahr.com")
     ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "soprahr2026")
 
