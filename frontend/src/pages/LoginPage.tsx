@@ -5,13 +5,9 @@ import { useToast } from '../contexts/ToastContext'
 import { apiClient, API_BASE_URL } from '../api/client'
 import { Mail, Lock, User, Eye, EyeOff, ArrowRight, Shield } from 'lucide-react'
 
-type LoginMode = 'tester' | 'admin'
-
 export const LoginPage: React.FC = () => {
-  const [mode, setMode] = useState<LoginMode>('tester')
-  const [username, setUsername] = useState('')
+  const [identifier, setIdentifier] = useState('')
   const [password, setPassword] = useState('')
-  const [email, setEmail] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const { setAuth, user, loading: authLoading } = useAuth()
@@ -50,7 +46,6 @@ export const LoginPage: React.FC = () => {
     e.preventDefault()
     setLoading(true)
     try {
-      const identifier = mode === 'admin' ? email : username
       const { user: loginUser, role, projects } = await apiClient.auth.login(identifier, password)
       setAuth(loginUser, projects || [])
 
@@ -169,56 +164,30 @@ export const LoginPage: React.FC = () => {
           </div>
 
           {/* Header */}
-          <div className="mb-8">
+          <div className="mb-6">
             <h2 className="text-3xl font-extrabold text-brand-navy mb-2">Bienvenue 👋</h2>
             <p className="text-brand-muted">Connectez-vous pour continuer</p>
           </div>
 
-          
-
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
-            {mode === 'tester' ? (
-              <div className="animate-fade-in space-y-5">
-                <div>
-                  <label className="block text-xs font-bold text-brand-navy/70 uppercase tracking-widest mb-2">
-                    Identifiant Jira
-                  </label>
-                  <div className="relative">
-                    <User size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-muted" />
-                    <input
-                      type="text"
-                      id="login-username"
-                      placeholder="yomahfoudh"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
-                      required
-                      className="w-full pl-11 pr-4 py-3.5 bg-white border-2 border-gray-100 rounded-xl text-sm font-medium text-brand-navy placeholder:text-gray-300 focus:border-brand-violet transition-all shadow-sm"
-                    />
-                  </div>
-                </div>
+            <div>
+              <label className="block text-xs font-bold text-brand-navy/70 uppercase tracking-widest mb-2">
+                Identifiant Jira ou Email Admin
+              </label>
+              <div className="relative">
+                <User size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-muted" />
+                <input
+                  type="text"
+                  id="login-identifier"
+                  placeholder="yomahfoudh ou admin@soprahr.com"
+                  value={identifier}
+                  onChange={(e) => setIdentifier(e.target.value)}
+                  required
+                  className="w-full pl-11 pr-4 py-3.5 bg-white border-2 border-gray-100 rounded-xl text-sm font-medium text-brand-navy placeholder:text-gray-300 focus:border-brand-violet transition-all shadow-sm"
+                />
               </div>
-            ) : (
-              <div className="animate-fade-in space-y-5">
-                <div>
-                  <label className="block text-xs font-bold text-brand-navy/70 uppercase tracking-widest mb-2">
-                    Email Admin
-                  </label>
-                  <div className="relative">
-                    <Mail size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-muted" />
-                    <input
-                      type="email"
-                      id="login-email"
-                      placeholder="admin@soprahr.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                      className="w-full pl-11 pr-4 py-3.5 bg-white border-2 border-gray-100 rounded-xl text-sm font-medium text-brand-navy placeholder:text-gray-300 focus:border-brand-rose transition-all shadow-sm"
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
+            </div>
 
             {/* Password */}
             <div>
@@ -234,9 +203,7 @@ export const LoginPage: React.FC = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className={`w-full pl-11 pr-12 py-3.5 bg-white border-2 border-gray-100 rounded-xl text-sm font-medium text-brand-navy placeholder:text-gray-300 transition-all shadow-sm ${
-                    mode === 'tester' ? 'focus:border-brand-violet' : 'focus:border-brand-rose'
-                  }`}
+                  className="w-full pl-11 pr-12 py-3.5 bg-white border-2 border-gray-100 rounded-xl text-sm font-medium text-brand-navy placeholder:text-gray-300 transition-all shadow-sm focus:border-brand-violet"
                 />
                 <button
                   type="button"
@@ -266,7 +233,7 @@ export const LoginPage: React.FC = () => {
                 </>
               ) : (
                 <>
-                  {mode === 'tester' ? <User size={16} /> : <Shield size={16} />}
+                  <User size={16} />
                   Se connecter
                   <ArrowRight size={15} />
                 </>

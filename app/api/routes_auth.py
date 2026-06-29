@@ -166,7 +166,9 @@ async def microsoft_login(next: str | None = "/pipeline"):
     if not _is_microsoft_oauth_ready():
         raise HTTPException(status_code=500, detail="Microsoft OAuth is not configured.")
     authorize_url = _build_microsoft_authorize_url(next_path=next or "/pipeline")
-    return RedirectResponse(url=authorize_url)
+    response = RedirectResponse(url=authorize_url)
+    _clear_auth_cookie(response)
+    return response
 
 
 @router.get("/microsoft/callback")
