@@ -18,6 +18,23 @@ export const LoginPage: React.FC = () => {
   const toast = useToast()
   const navigate = useNavigate()
 
+  React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const err = params.get('error')
+    if (err) {
+      if (err === 'unauthorized') {
+        toast.error("Votre compte Microsoft n'est pas autorisé.")
+      } else if (err === 'disabled') {
+        toast.error("Ce compte est désactivé. Contactez un administrateur.")
+      } else if (err === 'oauth_failed') {
+        toast.error("Échec de l'authentification Microsoft.")
+      } else {
+        toast.error("Une erreur est survenue lors de la connexion.")
+      }
+      navigate('/login', { replace: true })
+    }
+  }, [toast, navigate])
+
   if (authLoading) return (
     <div className="min-h-screen flex items-center justify-center bg-brand-navy">
       <div className="flex flex-col items-center gap-4">
@@ -273,11 +290,14 @@ export const LoginPage: React.FC = () => {
   <svg
     width="16"
     height="16"
-    viewBox="0 0 21 21"
+    viewBox="0 0 23 23"
     fill="currentColor"
-    className="text-brand-navy"
+    className="mr-2"
   >
-    <path d="M19.4 9.5h-8.9v2.3h5.1c-.2 1.2-1.5 3.5-5.1 3.5-3.1 0-5.7-2.6-5.7-5.8s2.6-5.8 5.7-5.8c1.8 0 3 .8 3.7 1.5l2.5-2.4C15.1 2.3 13 1.5 11 1.5 6.4 1.5 2.6 5.3 2.6 10s3.8 8.5 8.4 8.5c4.8 0 8-3.3 8-8 0-.5-.1-.8-.2-1z"/>
+    <path fill="#F25022" d="M1 1h10v10H1z"/>
+    <path fill="#7FBA00" d="M12 1h10v10H12z"/>
+    <path fill="#00A4EF" d="M1 12h10v10H1z"/>
+    <path fill="#FFB900" d="M12 12h10v10H12z"/>
   </svg>
   Se connecter avec Microsoft
 </button>

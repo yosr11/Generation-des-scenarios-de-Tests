@@ -181,9 +181,13 @@ async def microsoft_callback(
         raise HTTPException(status_code=500, detail="Microsoft OAuth is not configured.")
 
     if error:
-        raise HTTPException(status_code=400, detail=f"Microsoft OAuth error: {error}")
+        response = RedirectResponse(url=f"{settings.FRONTEND_BASE_URL.rstrip('/')}/login?error=oauth_failed")
+        _clear_auth_cookie(response)
+        return response
     if not code:
-        raise HTTPException(status_code=400, detail="Missing authorization code from Microsoft.")
+        response = RedirectResponse(url=f"{settings.FRONTEND_BASE_URL.rstrip('/')}/login?error=oauth_failed")
+        _clear_auth_cookie(response)
+        return response
 
     token_url = (
         f"https://login.microsoftonline.com/{settings.MICROSOFT_TENANT_ID}"
@@ -201,15 +205,16 @@ async def microsoft_callback(
     async with httpx.AsyncClient() as client:
         token_resp = await client.post(token_url, data=token_payload, headers={"Accept": "application/json"})
     if token_resp.status_code != 200:
-        raise HTTPException(
-            status_code=502,
-            detail=f"Failed to exchange Microsoft OAuth token: {token_resp.text}",
-        )
+        response = RedirectResponse(url=f"{settings.FRONTEND_BASE_URL.rstrip('/')}/login?error=oauth_failed")
+        _clear_auth_cookie(response)
+        return response
 
     token_data = token_resp.json()
     access_token = token_data.get("access_token")
     if not access_token:
-        raise HTTPException(status_code=502, detail="No access token received from Microsoft.")
+        response = RedirectResponse(url=f"{settings.FRONTEND_BASE_URL.rstrip('/')}/login?error=oauth_failed")
+        _clear_auth_cookie(response)
+        return response
 
     graph_url = "https://graph.microsoft.com/v1.0/me"
     async with httpx.AsyncClient() as client:
@@ -219,24 +224,32 @@ async def microsoft_callback(
         )
 
     if user_resp.status_code != 200:
-        raise HTTPException(
-            status_code=502,
-            detail=f"Failed to fetch Microsoft profile: {user_resp.text}",
-        )
+        response = RedirectResponse(url=f"{settings.FRONTEND_BASE_URL.rstrip('/')}/login?error=oauth_failed")
+        _clear_auth_cookie(response)
+        return response
 
     microsoft_user = user_resp.json()
     email = microsoft_user.get("mail") or microsoft_user.get("userPrincipalName")
     display_name = microsoft_user.get("displayName")
     if not email:
-        raise HTTPException(status_code=502, detail="Microsoft profile did not return an email.")
+        response = RedirectResponse(url=f"{settings.FRONTEND_BASE_URL.rstrip('/')}/login?error=oauth_failed")
+        _clear_auth_cookie(response)
+        return response
 
-    user = await get_user_by_email(db, email)
+    # Search in a case-insensitive way
+    user = await get_user_by_email(db, email.strip().lower())
     if not user:
-        raise HTTPException(status_code=401, detail="Votre compte Microsoft n'est pas autorisé.")
+        response = RedirectResponse(url=f"{settings.FRONTEND_BASE_URL.rstrip('/')}/login?error=unauthorized")
+        _clear_auth_cookie(response)
+        return response
     if not user.is_active:
-        raise HTTPException(status_code=403, detail="Ce compte est désactivé. Contactez un administrateur.")
+        response = RedirectResponse(url=f"{settings.FRONTEND_BASE_URL.rstrip('/')}/login?error=disabled")
+        _clear_auth_cookie(response)
+        return response
     if user.role not in {"admin", "tester"}:
-        raise HTTPException(status_code=403, detail="Ce compte n'est pas autorisé.")
+        response = RedirectResponse(url=f"{settings.FRONTEND_BASE_URL.rstrip('/')}/login?error=unauthorized")
+        _clear_auth_cookie(response)
+        return response
 
     token = build_user_token(user)
 
