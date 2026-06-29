@@ -440,3 +440,208 @@ input[type="checkbox"] {
    ═══════════════════════════════════════════════════ */
 .toast-enter { animation: slideUp 0.3s ease-out; }
 .toast-exit  { animation: fadeIn 0.2s ease-in reverse; }
+
+/* ═══════════════════════════════════════════════════
+   PIPELINE & TESTS — Surfaces partagées
+   ═══════════════════════════════════════════════════ */
+.syn-surface {
+  background: var(--white);
+  border-radius: 1rem;
+  border: 1px solid rgba(11, 30, 62, 0.08);
+  box-shadow: var(--shadow-card);
+}
+
+.syn-surface-lg {
+  background: var(--white);
+  border-radius: 1.5rem;
+  border: 1px solid rgba(11, 30, 62, 0.08);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.syn-strip {
+  height: 3px;
+  background: var(--grad-violet);
+}
+
+.syn-strip-hero {
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    var(--navy),
+    var(--navy-light),
+    var(--violet),
+    var(--rose),
+    var(--orange)
+  );
+}
+
+.syn-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.syn-agent-tab {
+  background: var(--white);
+  border-radius: 1rem;
+  border: 1px solid rgba(11, 30, 62, 0.1);
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.syn-agent-tab:not(.syn-agent-tab--disabled):hover {
+  box-shadow: var(--shadow-card);
+  transform: translateY(-2px);
+  border-color: rgba(29, 78, 216, 0.22);
+}
+
+.syn-agent-tab--active {
+  border-color: rgba(29, 78, 216, 0.35);
+  box-shadow: 0 8px 32px rgba(11, 30, 62, 0.12);
+  transform: translateY(-2px);
+}
+
+.syn-agent-tab--active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--agent-accent, var(--grad-violet));
+}
+
+.syn-agent-tab--disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.syn-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--navy);
+  background: var(--off-white);
+  border: 1px solid rgba(11, 30, 62, 0.08);
+  transition: all 0.2s ease;
+}
+
+.syn-btn-ghost:hover {
+  border-color: rgba(124, 58, 237, 0.35);
+  color: #7c3aed;
+}
+
+.syn-btn-xray {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 0.875rem;
+  border-radius: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: white;
+  background: var(--grad-violet);
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.28);
+}
+
+.syn-btn-xray:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.38);
+}
+
+.syn-btn-xray:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.syn-table-head {
+  background: linear-gradient(135deg, var(--navy), var(--navy-light), var(--violet));
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.syn-test-card {
+  background: var(--white);
+  border-radius: 1rem;
+  border: 1px solid rgba(11, 30, 62, 0.08);
+  overflow: hidden;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.syn-test-card:hover {
+  box-shadow: var(--shadow-card);
+}
+
+.syn-test-card--expanded {
+  border-color: rgba(29, 78, 216, 0.22);
+  box-shadow: 0 8px 32px rgba(11, 30, 62, 0.1);
+}
+
+.syn-test-card--expanded .syn-test-card-header {
+  background: linear-gradient(90deg, rgba(29, 78, 216, 0.04), rgba(219, 39, 119, 0.03));
+}
+
+.syn-badge {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.5rem;
+  border-radius: 9999px;
+}
+
+.syn-badge--violet {
+  background: rgba(124, 58, 237, 0.1);
+  color: #7c3aed;
+}
+
+.syn-badge--rose {
+  background: rgba(244, 63, 94, 0.1);
+  color: #f43f5e;
+}
+
+.syn-badge--orange {
+  background: rgba(249, 115, 22, 0.1);
+  color: #f97316;
+}
+
+.syn-badge--navy {
+  background: rgba(11, 30, 62, 0.08);
+  color: var(--navy);
+}
+
+.syn-empty {
+  text-align: center;
+  padding: 3.5rem 1.5rem;
+  background: linear-gradient(180deg, white, var(--off-white));
+  border-radius: 1.5rem;
+  border: 1px dashed rgba(11, 30, 62, 0.12);
+}
+
+.syn-icon-box {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: var(--grad-violet);
+  box-shadow: 0 4px 16px rgba(29, 78, 216, 0.25);
+}
+
+.syn-icon-box svg {
+  color: white;
+}

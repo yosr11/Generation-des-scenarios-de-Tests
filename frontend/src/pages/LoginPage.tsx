@@ -56,13 +56,7 @@ export const LoginPage: React.FC = () => {
       }
 
       toast.success(`Bienvenue, ${loginUser.display_name || loginUser.jira_username}`)
-      if ((projects?.length || 0) > 1) {
-        navigate('/projects')
-      } else if ((projects?.length || 0) === 1) {
-        navigate('/pipeline')
-      } else {
-        toast.error('Aucun projet accessible. Contactez votre administrateur.')
-      }
+      navigate('/pipeline')
     } catch (err: any) {
       toast.error(err?.message || 'Échec de connexion')
     } finally {

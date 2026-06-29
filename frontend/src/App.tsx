@@ -42,7 +42,7 @@ function App() {
               <Route
                 path="/pipeline"
                 element={
-                  <ProtectedRoute requireProject roles={['tester']}>
+                  <ProtectedRoute roles={['tester']}>
                     <PipelinePage />
                   </ProtectedRoute>
                 }

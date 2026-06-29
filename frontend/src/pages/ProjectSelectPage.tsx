@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { FolderOpen, FolderKanban, ChevronRight, Layers, Sparkles } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import { useToast } from '../contexts/ToastContext'
@@ -18,11 +17,10 @@ const PROJECT_COLORS = [
 ]
 
 export const ProjectSelectPage: React.FC = () => {
-  const { user, projects, setSelectedProject, setAuth } = useAuth()
+  const { user, projects, selectedProject, setSelectedProject, setAuth } = useAuth()
   const [loading, setLoading] = useState(false)
   const [search, setSearch] = useState('')
   const toast = useToast()
-  const navigate = useNavigate()
 
   useEffect(() => {
     if (user?.role !== 'tester') return
@@ -46,8 +44,7 @@ export const ProjectSelectPage: React.FC = () => {
 
   const handleSelect = (project: (typeof projects)[0]) => {
     setSelectedProject(project)
-    toast.success(`Projet ${project.key} sélectionné`)
-    navigate('/pipeline')
+    toast.success(`Projet ${project.key} défini pour l'intégration Xray`)
   }
 
   const filtered = projects.filter(
@@ -92,8 +89,10 @@ export const ProjectSelectPage: React.FC = () => {
           <FolderKanban size={18} className="text-white" />
         </div>
         <div>
-          <h1 className="text-2xl font-extrabold text-brand-navy">Projets Jira</h1>
-          <p className="text-sm text-brand-muted">Choisissez le projet sur lequel vous souhaitez travailler</p>
+          <h1 className="text-2xl font-extrabold text-brand-navy">Mes projets Jira</h1>
+          <p className="text-sm text-brand-muted">
+            Projets accessibles avec votre compte — utilisés pour l'intégration Xray uniquement
+          </p>
         </div>
         <div className="ml-auto">
           <Badge variant="violet" dot>
@@ -118,12 +117,15 @@ export const ProjectSelectPage: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {filtered.map((project, idx) => {
           const colors = PROJECT_COLORS[idx % PROJECT_COLORS.length]
+          const isActive = selectedProject?.key === project.key
           return (
             <button
               key={project.key}
               type="button"
               onClick={() => handleSelect(project)}
-              className="bg-white rounded-2xl border border-gray-100 p-5 text-left group transition-all duration-250 hover:-translate-y-1 animate-scale-in"
+              className={`bg-white rounded-2xl border p-5 text-left group transition-all duration-250 hover:-translate-y-1 animate-scale-in ${
+                isActive ? 'border-brand-violet ring-2 ring-brand-violet/30' : 'border-gray-100'
+              }`}
               style={{
                 animationDelay: `${idx * 0.06}s`,
                 boxShadow: '0 2px 12px rgba(10,15,46,0.06)',
@@ -173,7 +175,7 @@ export const ProjectSelectPage: React.FC = () => {
 
               <div className="mt-4 pt-3 border-t border-gray-50 flex items-center gap-1">
                 <Sparkles size={11} className="text-gray-300" />
-                <p className="text-[11px] text-gray-400">Cliquez pour sélectionner ce projet</p>
+                <p className="text-[11px] text-gray-400">Projet par défaut pour l'export Xray</p>
               </div>
             </button>
           )

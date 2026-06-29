@@ -7,7 +7,7 @@ import {
   Play, Square, GitBranch, CheckCircle2, XCircle,
   Clock, Cpu, AlertTriangle, AlertCircle, ChevronRight, Bot,
   FileText, TestTube, BarChart3, FileBarChart2,
-  Sparkles, Hash,
+  Sparkles, Hash, Maximize2,
   ChevronDown, ChevronUp, Edit2, Upload, Printer
 } from 'lucide-react'
 
@@ -52,12 +52,12 @@ const STEP_STYLE: Record<string, { bg: string; border: string; icon: React.Eleme
   pending:   { bg: 'rgba(10,22,40,0.02)',   border: 'rgba(10,22,40,0.08)',  icon: Clock },
 }
 
-const AGENT_INFO: Record<string, { label: string; desc: string; icon: React.ElementType; gradient: string }> = {
-  'Agent 1': { label: 'Agent 1 — Analyse',              desc: 'Analyse sémantique de la user story',     icon: FileText,      gradient: CARD_GRADIENT },
-  'Agent 2': { label: 'Agent 2 — Génération des tests', desc: 'Création des scénarios de tests manuels', icon: TestTube,      gradient: CARD_GRADIENT },
-  'Agent 3': { label: 'Agent 3 — Validation',           desc: 'Couverture, ambiguïtés & cas limites',    icon: CheckCircle2,  gradient: CARD_GRADIENT },
-  'Agent 4': { label: 'Agent 4 — Classification',       desc: 'Classification auto/manuel',              icon: BarChart3,     gradient: CARD_GRADIENT },
-  'Agent 5': { label: 'Agent 5 — Rapport',              desc: 'Rapport qualité & recommandations',       icon: FileBarChart2, gradient: CARD_GRADIENT },
+const AGENT_INFO: Record<string, { label: string; desc: string; icon: React.ElementType; gradient: string; accent: string }> = {
+  'Agent 1': { label: 'Agent 1 — Analyse',              desc: 'Analyse sémantique de la user story',     icon: FileText,      gradient: `linear-gradient(135deg, ${NAV}, ${VIOLET})`, accent: VIOLET },
+  'Agent 2': { label: 'Agent 2 — Génération des tests', desc: 'Création des scénarios de tests manuels', icon: TestTube,      gradient: `linear-gradient(135deg, ${VIOLET}, ${ROSE})`, accent: ROSE },
+  'Agent 3': { label: 'Agent 3 — Validation',           desc: 'Couverture, ambiguïtés & cas limites',    icon: CheckCircle2,  gradient: `linear-gradient(135deg, ${ORANGE}, ${ROSE})`, accent: ORANGE },
+  'Agent 4': { label: 'Agent 4 — Classification',       desc: 'Classification auto/manuel',              icon: BarChart3,     gradient: CARD_GRADIENT, accent: '#7c3aed' },
+  'Agent 5': { label: 'Agent 5 — Rapport',              desc: 'Rapport qualité & recommandations',       icon: FileBarChart2, gradient: CARD_GRADIENT, accent: NAV },
 }
 
 const MODEL_OPTIONS = [
@@ -611,10 +611,15 @@ const TestAccordion: React.FC<{
 
 // ── Agent 2 Result ────────────────────────────────────────────────────────────
 
-const Agent2Result: React.FC<{ output: any; storyId?: string }> = ({ output, storyId }) => {
+const Agent2Result: React.FC<{ output: any; storyId?: string; onTestsChange?: (tests: any[]) => void }> = ({ output, storyId, onTestsChange }) => {
   const [tests, setTests] = useState<any[]>(
     Array.isArray(output) ? output : output?.tests || output?.agent2_tests || []
   )
+
+  const handleChange = (next: any[]) => {
+    setTests(next)
+    onTestsChange?.(next)
+  }
 
   if (!tests.length) return (
     <div className="py-12 text-center">
@@ -623,7 +628,16 @@ const Agent2Result: React.FC<{ output: any; storyId?: string }> = ({ output, sto
     </div>
   )
 
-  return <ManualTestsTable tests={tests} storyId={storyId} onTestsChange={setTests} />
+  return (
+    <ManualTestsTable
+      tests={tests}
+      storyId={storyId}
+      onTestsChange={handleChange}
+      expandable
+      defaultExpandedIndex={0}
+      showProjectPicker
+    />
+  )
 }
 
 // ── Agent 3 Result ────────────────────────────────────────────────────────────
@@ -1371,10 +1385,10 @@ const Agent5Result: React.FC<{ output: any; storyId?: string }> = ({ output, sto
 
 // ── Agent dispatcher ──────────────────────────────────────────────────────────
 
-const AgentRichOutput: React.FC<{ agentKey: string; output: any; storyId?: string }> = ({ agentKey, output, storyId }) => {
+const AgentRichOutput: React.FC<{ agentKey: string; output: any; storyId?: string; onTestsChange?: (tests: any[]) => void }> = ({ agentKey, output, storyId, onTestsChange }) => {
   if (!output) return null
   if (agentKey === 'Agent 1') return <Agent1Result output={output} />
-  if (agentKey === 'Agent 2') return <Agent2Result output={output} storyId={storyId} />
+  if (agentKey === 'Agent 2') return <Agent2Result output={output} storyId={storyId} onTestsChange={onTestsChange} />
   if (agentKey === 'Agent 3') return <Agent3Result output={output} />
   if (agentKey === 'Agent 5') return <Agent5Result output={output} storyId={storyId} />
   if (typeof output === 'object') {
@@ -1441,40 +1455,143 @@ const AgentResultModal: React.FC<{
   )
 }
 
-const AgentResultCard: React.FC<{ step: any; storyId?: string; onOpen: () => void }> = ({ step, onOpen }) => {
-  const info        = AGENT_INFO[step.agent] || { label: step.agent, icon: Bot, gradient: CARD_GRADIENT }
+const AgentResultCard: React.FC<{
+  step: any
+  isSelected: boolean
+  onSelect: () => void
+  onExpand: () => void
+}> = ({ step, isSelected, onSelect, onExpand }) => {
+  const info        = AGENT_INFO[step.agent] || { label: step.agent, icon: Bot, gradient: CARD_GRADIENT, accent: VIOLET }
   const statusStyle = STEP_STYLE[step.status] || STEP_STYLE.pending
   const Icon        = info.icon
-  const isClickable = step.status === 'completed'
+  const isReady     = step.status === 'completed' && step.output
+
+  const statusBadgeClass =
+    step.status === 'completed' ? 'syn-badge--navy'
+    : step.status === 'failed' ? 'syn-badge--rose'
+    : step.status === 'running' ? 'syn-badge--orange'
+    : 'syn-badge--navy'
 
   return (
     <div
-      onClick={() => isClickable && onOpen()}
-      className={`bg-white rounded-2xl border transition-all duration-200 ${isClickable ? 'hover:shadow-lg cursor-pointer hover:-translate-y-0.5' : 'opacity-70'}`}
-      style={{ borderColor: statusStyle.border }}
+      className={`syn-agent-tab ${isSelected ? 'syn-agent-tab--active' : ''} ${isReady ? 'cursor-pointer' : 'syn-agent-tab--disabled'}`}
+      style={{ ['--agent-accent' as string]: info.gradient }}
+      onClick={() => isReady && onSelect()}
     >
-      <div className="p-4 flex items-center gap-4">
-        <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
-          style={{ background: isClickable ? CARD_GRADIENT : statusStyle.bg }}>
+      <div className="p-4 flex items-center gap-3">
+        <div
+          className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+          style={{
+            background: isReady ? info.gradient : statusStyle.bg,
+            boxShadow: isReady ? `0 4px 14px ${info.accent}35` : undefined,
+          }}
+        >
           {statusStyle.spin
-            ? <statusStyle.icon size={18} className="animate-spin text-white" />
-            : <Icon size={18} className={isClickable ? 'text-white' : ''} style={{ color: isClickable ? 'white' : NAV }} />
+            ? <statusStyle.icon size={16} className="animate-spin text-white" />
+            : <Icon size={16} className={isReady ? 'text-white' : ''} style={{ color: isReady ? 'white' : NAV }} />
           }
         </div>
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2.5">
-            <span className="text-sm font-bold" style={{ color: NAV }}>{info.label}</span>
-            <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider"
-              style={{
-                background: step.status === 'completed' ? `${NAV}12` : step.status === 'failed' ? `${ROSE}15` : step.status === 'running' ? `${ORANGE}15` : 'rgba(10,22,40,0.06)',
-                color:      step.status === 'completed' ? NAV : step.status === 'failed' ? ROSE : step.status === 'running' ? ORANGE : `${NAV}60`,
-              }}>
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold truncate text-brand-navy">
+              {step.agent}
+            </span>
+            <span className={`syn-badge ${statusBadgeClass}`}>
               {step.status}
             </span>
           </div>
-          <p className="text-xs mt-0.5 truncate" style={{ color: `${NAV}55` }}>{step.description || info.desc}</p>
+          <p className="text-[11px] mt-1 truncate text-brand-muted">
+            {step.agent === 'Agent 2' && step.status === 'completed'
+              ? 'Voir les tests générés'
+              : (step.description || info.desc)}
+          </p>
         </div>
-        {isClickable && <div style={{ color: `${NAV}40` }}><ChevronRight size={16} /></div>}
+        {isReady && (
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); onExpand() }}
+            className="p-1.5 rounded-lg hover:bg-brand-violet/8 text-brand-muted hover:text-brand-violet transition-colors flex-shrink-0"
+            title="Ouvrir en plein écran"
+          >
+            <Maximize2 size={14} />
+          </button>
+        )}
+      </div>
+    </div>
+  )
+}
+
+const AgentWorkspace: React.FC<{
+  step: any | null
+  storyId?: string
+  manualTests: any[]
+  onTestsChange: (tests: any[]) => void
+}> = ({ step, storyId, manualTests, onTestsChange }) => {
+  if (!step) {
+    return (
+      <div className="syn-empty">
+        <div className="syn-icon-box mx-auto mb-4 opacity-60">
+          <Bot size={22} />
+        </div>
+        <p className="text-sm font-semibold text-brand-navy">Aucun agent sélectionné</p>
+        <p className="text-xs text-brand-muted mt-1">
+          Cliquez sur une carte agent ci-dessus pour afficher ses résultats
+        </p>
+      </div>
+    )
+  }
+
+  const info = AGENT_INFO[step.agent] || { label: step.agent, icon: Bot, gradient: CARD_GRADIENT, desc: '', accent: VIOLET }
+  const Icon = info.icon
+
+  const agent2Output = step.agent === 'Agent 2' && manualTests.length
+    ? manualTests
+    : step.output
+
+  return (
+    <div className="syn-surface-lg animate-fade-in">
+      <div className="syn-strip" style={{ background: info.gradient }} />
+      <div className="px-6 py-4 flex items-center gap-4 border-b border-brand-navy/[0.06] bg-gradient-to-r from-brand-offwhite/80 to-white">
+        <div
+          className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+          style={{ background: info.gradient, boxShadow: `0 4px 16px ${info.accent}30` }}
+        >
+          <Icon size={18} className="text-white" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <h3 className="text-base font-extrabold text-brand-navy">{info.label}</h3>
+          <p className="text-xs truncate text-brand-muted">{info.desc}</p>
+        </div>
+        {step.agent === 'Agent 2' && manualTests.length > 0 && (
+          <span className="syn-badge syn-badge--rose">
+            {manualTests.length} test{manualTests.length > 1 ? 's' : ''}
+          </span>
+        )}
+      </div>
+      <div className="p-6 bg-gradient-to-b from-white to-brand-offwhite/30">
+        {step.status === 'running' && (
+          <div className="py-10 text-center">
+            <Cpu size={24} className="mx-auto mb-3 animate-spin opacity-40" style={{ color: ORANGE }} />
+            <p className="text-sm font-medium" style={{ color: `${NAV}60` }}>Exécution en cours…</p>
+          </div>
+        )}
+        {step.status === 'failed' && (
+          <div className="rounded-2xl p-4" style={{ background: `${ROSE}08`, border: `1px solid ${ROSE}20` }}>
+            <p className="text-sm font-semibold" style={{ color: ROSE }}>Échec de l'agent</p>
+            <p className="text-sm mt-1" style={{ color: `${NAV}70` }}>{step.error || 'Erreur inconnue'}</p>
+          </div>
+        )}
+        {step.status === 'completed' && (
+          <AgentRichOutput
+            agentKey={step.agent}
+            output={agent2Output}
+            storyId={storyId}
+            onTestsChange={onTestsChange}
+          />
+        )}
+        {step.status === 'pending' && (
+          <p className="text-sm text-center py-8" style={{ color: `${NAV}50` }}>En attente d'exécution</p>
+        )}
       </div>
     </div>
   )
@@ -1497,9 +1614,11 @@ export const PipelinePage: React.FC = () => {
   const [modelAgent4,   setModelAgent4]   = useState<ModelOption>('qwen3')
   const [modelAgent5,   setModelAgent5]   = useState<ModelOption>('qwen3')
   const [manualTests,   setManualTests]   = useState<any[]>([])
+  const [selectedAgent, setSelectedAgent] = useState<string | null>(null)
 
   // FIX #4 — single open-modal slot tracked in the page, not inside cards
   const [openModalStep, setOpenModalStep] = useState<any | null>(null)
+  const workspaceRef = useRef<HTMLDivElement>(null)
 
   const toast        = useToast()
   const orchestrator = useOrchestrator(storyId)
@@ -1576,6 +1695,20 @@ export const PipelinePage: React.FC = () => {
   const tokenUsage     = (pipelineResult?.token_usage || {}) as Record<string, any>
   const agent1Step     = steps.find((s: any) => s.agent === 'Agent 1')
   const agent2Step     = steps.find((s: any) => s.agent === 'Agent 2')
+  const selectedStep   = steps.find((s: any) => s.agent === selectedAgent) || null
+
+  useEffect(() => {
+    if (agent2Step?.status === 'completed' && agent2Step.output) {
+      setSelectedAgent('Agent 2')
+    }
+  }, [agent2Step?.status, agent2Step?.output])
+
+  const handleSelectAgent = useCallback((agent: string) => {
+    setSelectedAgent(agent)
+    setTimeout(() => {
+      workspaceRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 80)
+  }, [])
 
   const pipelineWarnings = useMemo(() => {
     const warnings: Array<{ title: string; description: string }> = []
@@ -1622,21 +1755,19 @@ export const PipelinePage: React.FC = () => {
   }, [data, pipelineResult, agent1Step, agent2Step])
 
   return (
-    <div className="max-w-5xl mx-auto space-y-6 animate-fade-in">
+    <div className="max-w-6xl mx-auto space-y-6 animate-fade-in">
 
       {/* Header */}
       <div className="flex items-center gap-4">
-        <div className="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0"
-          style={{ background: CARD_GRADIENT, boxShadow: `0 4px 16px ${NAV}35` }}>
-          <GitBranch size={20} className="text-white" />
+        <div className="syn-icon-box">
+          <GitBranch size={20} />
         </div>
         <div>
-          <h1 className="text-2xl font-extrabold" style={{ color: NAV }}>Pipeline IA</h1>
-          <p className="text-sm" style={{ color: `${NAV}60` }}>Génération automatique de tests depuis vos user stories Jira</p>
+          <h1 className="text-2xl font-extrabold text-brand-navy">Pipeline IA</h1>
+          <p className="text-sm text-brand-muted">Génération automatique de tests depuis vos user stories Jira</p>
         </div>
         {storyId && (
-          <div className="ml-auto flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold font-mono"
-            style={{ background: `${ROSE}10`, border: `1px solid ${ROSE}25`, color: ROSE }}>
+          <div className="ml-auto flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold font-mono bg-brand-rose/10 border border-brand-rose/20 text-brand-rose">
             <Hash size={13} />
             {storyId}
           </div>
@@ -1644,30 +1775,24 @@ export const PipelinePage: React.FC = () => {
       </div>
 
       {/* Launch Form */}
-      <div className="bg-white rounded-3xl border overflow-hidden"
-        style={{ borderColor: 'rgba(10,22,40,0.08)', boxShadow: '0 2px 16px rgba(10,22,40,0.06)' }}>
-        <div className="h-1.5" style={{ background: MAIN_GRADIENT }} />
+      <div className="syn-surface-lg">
+        <div className="syn-strip-hero" />
         <div className="p-6 space-y-6">
           <div className="grid md:grid-cols-2 gap-6">
             <div className="md:col-span-2">
-              <label className="block text-xs font-bold uppercase tracking-widest mb-3" style={{ color: `${NAV}60` }}>
-                🎯 Identifiant de la Story Jira
+              <label className="syn-label block mb-3">
+                Identifiant de la Story Jira
               </label>
               <div className="flex gap-3">
                 <div className="relative flex-1">
-                  <Hash size={16} className="absolute left-4 top-1/2 -translate-y-1/2" style={{ color: ROSE }} />
+                  <Hash size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-rose" />
                   <input
                     type="text"
                     placeholder="ex : NUXEPM-2144"
                     value={inputValue}
                     onChange={e => setInputValue(e.target.value.toUpperCase())}
                     onKeyDown={e => e.key === 'Enter' && !loading && handleRun()}
-                    className="w-full pl-11 pr-4 py-4 border-2 rounded-2xl text-base font-mono font-bold placeholder:text-gray-300 focus:outline-none transition-all bg-white"
-                    style={{
-                      borderColor: inputValue ? `${NAV}30` : '#e2e8f0',
-                      color: NAV,
-                      boxShadow: inputValue ? `0 0 0 3px ${NAV}08` : 'none',
-                    }}
+                    className="w-full pl-11 pr-4 py-4 border-2 rounded-2xl text-base font-mono font-bold text-brand-navy placeholder:text-gray-300 focus:outline-none transition-all bg-white border-gray-200 focus:border-brand-violet focus:shadow-[0_0_0_3px_rgba(124,58,237,0.12)]"
                   />
                 </div>
                 {loading ? (
@@ -1679,11 +1804,7 @@ export const PipelinePage: React.FC = () => {
                 ) : (
                   <button type="button" onClick={handleRun}
                     disabled={!inputValue.trim()}
-                    className="px-8 py-4 rounded-2xl font-bold text-white flex items-center gap-2 flex-shrink-0 transition-all hover:-translate-y-0.5 disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none"
-                    style={{
-                      background: CARD_GRADIENT,
-                      boxShadow: inputValue.trim() ? `0 6px 24px ${NAV}40` : 'none',
-                    }}>
+                    className="px-8 py-4 rounded-2xl font-bold text-white flex items-center gap-2 flex-shrink-0 transition-all hover:-translate-y-0.5 disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none syn-btn-xray !text-sm !py-4 !px-8">
                     <Play size={16} /> Lancer le Pipeline
                   </button>
                 )}
@@ -1733,48 +1854,45 @@ export const PipelinePage: React.FC = () => {
       )}
 
       {!data && !loading && !storyId && (
-        <div className="bg-white rounded-3xl border py-20 text-center"
-          style={{ borderColor: 'rgba(10,22,40,0.08)', boxShadow: '0 2px 16px rgba(10,22,40,0.04)' }}>
-          <div className="w-20 h-20 mx-auto mb-5 rounded-3xl flex items-center justify-center"
-            style={{ background: `linear-gradient(135deg,${NAV}10,${NAV_LIGHT}08)`, border: `1px solid ${NAV}12` }}>
-            <GitBranch size={32} style={{ color: `${NAV}35` }} />
+        <div className="syn-empty py-16">
+          <div className="syn-icon-box mx-auto mb-4 opacity-50">
+            <GitBranch size={22} />
           </div>
-          <p className="font-bold text-lg mb-2" style={{ color: NAV }}>Entrez un ID de Story pour commencer</p>
-          <p className="text-sm" style={{ color: `${NAV}55` }}>Les agents IA vont analyser, générer et valider vos tests automatiquement</p>
+          <p className="font-bold text-lg text-brand-navy mb-2">Entrez un ID de Story pour commencer</p>
+          <p className="text-sm text-brand-muted">Les agents IA vont analyser, générer et valider vos tests automatiquement</p>
         </div>
       )}
 
       {(loading || data) && (
         <div className="space-y-4">
           {/* Progress bar */}
-          <div className="bg-white rounded-3xl border p-5"
-            style={{ borderColor: 'rgba(10,22,40,0.08)', boxShadow: '0 2px 16px rgba(10,22,40,0.05)' }}>
+          <div className="syn-surface p-5">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
-                <span className="text-sm font-bold" style={{ color: NAV }}>Exécution du Pipeline</span>
+                <span className="text-sm font-bold text-brand-navy">Exécution du pipeline</span>
                 {loading && (
-                  <span className="flex items-center gap-1.5 text-xs font-semibold animate-pulse" style={{ color: ORANGE }}>
-                    <span className="w-1.5 h-1.5 rounded-full inline-block" style={{ background: ORANGE }} />
+                  <span className="flex items-center gap-1.5 text-xs font-semibold animate-pulse text-brand-orange">
+                    <span className="w-1.5 h-1.5 rounded-full inline-block bg-brand-orange" />
                     En cours…
                   </span>
                 )}
               </div>
               <div className="flex items-center gap-3">
-                <span className="text-2xl font-extrabold" style={{ color: NAV }}>{progress}%</span>
+                <span className="text-2xl font-extrabold text-brand-navy">{progress}%</span>
                 {data && (
-                  <span className="px-3 py-1 rounded-full text-xs font-bold"
-                    style={{
-                      background: isCompleted ? `${NAV}12` : isFailed ? `${ROSE}15` : `${ORANGE}15`,
-                      color:      isCompleted ? NAV : isFailed ? ROSE : ORANGE,
-                    }}>
+                  <span className={`syn-badge ${
+                    isCompleted ? 'syn-badge--navy' : isFailed ? 'syn-badge--rose' : 'syn-badge--orange'
+                  }`}>
                     {(data as any).status}
                   </span>
                 )}
               </div>
             </div>
-            <div className="h-2.5 rounded-full overflow-hidden" style={{ background: 'rgba(10,22,40,0.06)' }}>
-              <div className="h-full rounded-full transition-all duration-700"
-                style={{ width: `${progress}%`, background: MAIN_GRADIENT, boxShadow: `0 0 12px rgba(99,102,241,0.4)` }} />
+            <div className="h-2.5 rounded-full overflow-hidden bg-brand-navy/[0.06]">
+              <div
+                className="h-full rounded-full transition-all duration-700 syn-strip-hero"
+                style={{ width: `${progress}%`, height: '100%' }}
+              />
             </div>
             {data && (
               <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -1793,20 +1911,36 @@ export const PipelinePage: React.FC = () => {
             )}
           </div>
 
-          {/* Agent cards */}
+          {/* Agent tabs + workspace */}
           {steps.length > 0 && (
-            <div className="space-y-3">
-              <p className="text-xs font-bold uppercase tracking-widest px-1" style={{ color: `${NAV}50` }}>
-                Résultats des Agents
-              </p>
-              {steps.map((step: any, idx: number) => (
-                <AgentResultCard
-                  key={idx}
-                  step={step}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between px-1">
+                <p className="syn-label">Résultats des agents</p>
+                <p className="text-[11px] text-brand-muted">
+                  Cliquez sur un agent · icône ⛶ pour le plein écran
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+                {steps.map((step: any, idx: number) => (
+                  <AgentResultCard
+                    key={idx}
+                    step={step}
+                    isSelected={selectedAgent === step.agent}
+                    onSelect={() => handleSelectAgent(step.agent)}
+                    onExpand={() => setOpenModalStep(step)}
+                  />
+                ))}
+              </div>
+
+              <div ref={workspaceRef}>
+                <AgentWorkspace
+                  step={selectedStep}
                   storyId={storyId}
-                  onOpen={() => setOpenModalStep(step)}   // FIX #4
+                  manualTests={manualTests}
+                  onTestsChange={setManualTests}
                 />
-              ))}
+              </div>
             </div>
           )}
 
@@ -1878,9 +2012,7 @@ export const PipelinePage: React.FC = () => {
         </div>
       )}
 
-      {/* Tests edited in Agent 2 modal — no duplicate table here */}
-
-      {/* FIX #4 — single modal instance at page level */}
+      {/* Modal plein écran (optionnel) */}
       {openModalStep && (
         <AgentResultModal
           step={openModalStep}

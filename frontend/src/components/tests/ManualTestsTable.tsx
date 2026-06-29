@@ -1,15 +1,19 @@
 import React, { useState, useCallback } from 'react'
-import { Pencil, Upload, TestTube, ChevronDown, X } from 'lucide-react'
+import { Pencil, Upload, TestTube, ChevronDown, ChevronRight, X, Target, ListChecks } from 'lucide-react'
 import { Badge } from '../ui/Badge'
 import { apiClient } from '../../api/client'
 import { useToast } from '../../contexts/ToastContext'
-import { useAuth } from '../../contexts/AuthContext'
+import { useAuth, JiraProject } from '../../contexts/AuthContext'
+import { ProjectPicker } from '../projects/ProjectPicker'
 
 /* ── types ── */
 interface ManualTestsTableProps {
   tests: any[]
   storyId?: string
   onTestsChange?: (tests: any[]) => void
+  expandable?: boolean
+  showProjectPicker?: boolean
+  defaultExpandedIndex?: number | null
 }
 
 export interface IntegrationResult {
@@ -486,23 +490,41 @@ export const ManualTestsTable: React.FC<ManualTestsTableProps> = ({
   tests,
   storyId,
   onTestsChange,
+  expandable = true,
+  showProjectPicker = true,
+  defaultExpandedIndex = 0,
 }) => {
   const [localTests, setLocalTests] = useState(tests)
   const [editingTest, setEditingTest] = useState<any | null>(null)
   const [editingIndex, setEditingIndex] = useState<number | null>(null)
   const [integratingIndex, setIntegratingIndex] = useState<number | null>(null)
   const [integrationResult, setIntegrationResult] = useState<IntegrationResult | null>(null)
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(defaultExpandedIndex)
+  const [xrayProjectKey, setXrayProjectKey] = useState<string | undefined>(undefined)
   const toast = useToast()
   const { selectedProject } = useAuth()
 
   React.useEffect(() => { setLocalTests(tests) }, [tests])
+  React.useEffect(() => {
+    if (defaultExpandedIndex !== null && defaultExpandedIndex !== undefined) {
+      setExpandedIndex(defaultExpandedIndex)
+    }
+  }, [defaultExpandedIndex, tests.length])
 
-  const projectKey = selectedProject?.key || 'YOUQA'
+  const projectKey = xrayProjectKey || selectedProject?.key || ''
+
+  const handleProjectChange = useCallback((project: JiraProject) => {
+    setXrayProjectKey(project.key)
+  }, [])
 
   const handleIntegrate = useCallback(
     async (e: React.MouseEvent, test: any, index: number) => {
       e.preventDefault()
       e.stopPropagation()
+      if (!projectKey) {
+        toast.error('Sélectionnez un projet Jira pour l\'intégration Xray')
+        return
+      }
       setIntegratingIndex(index)
       try {
         const payload = buildPayload(test)
@@ -552,140 +574,195 @@ export const ManualTestsTable: React.FC<ManualTestsTableProps> = ({
     [editingIndex, localTests, onTestsChange]
   )
 
+  const toggleExpanded = useCallback((idx: number) => {
+    if (!expandable) return
+    setExpandedIndex((current) => (current === idx ? null : idx))
+  }, [expandable])
+
   if (!localTests.length) return null
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-5 animate-fade-in">
 
       {/* Header */}
-      <div className="bg-white rounded-3xl border border-gray-100 shadow-card p-6 flex items-center justify-between">
-        <div>
-          <h3 className="font-bold text-brand-navy flex items-center gap-2">
-            <TestTube size={18} className="text-blue-600" /> Tests Manuels Générés
-          </h3>
-          <p className="text-xs text-brand-muted mt-1">{localTests.length} test(s) généré(s)</p>
+      <div className="syn-surface overflow-hidden">
+        <div className="syn-strip" />
+        <div className="p-5">
+        <div className="flex flex-col lg:flex-row lg:items-start gap-5">
+          <div className="flex-1">
+            <h3 className="font-bold text-brand-navy flex items-center gap-2 text-base">
+              <span className="w-8 h-8 rounded-lg bg-grad-violet flex items-center justify-center">
+                <TestTube size={15} className="text-white" />
+              </span>
+              Tests manuels générés
+            </h3>
+            <p className="text-xs text-brand-muted mt-2 ml-10">
+              {localTests.length} test{localTests.length > 1 ? 's' : ''} — cliquez sur un titre pour voir le détail
+            </p>
+          </div>
+          <Badge variant="violet" size="sm">{localTests.length}</Badge>
         </div>
-        <Badge variant="rose" size="sm">{localTests.length}</Badge>
+        {showProjectPicker && (
+          <div className="mt-4 pt-4 border-t border-brand-navy/[0.06] max-w-md">
+            <ProjectPicker
+              value={projectKey || undefined}
+              onChange={handleProjectChange}
+            />
+          </div>
+        )}
+        </div>
       </div>
 
       {/* Tests */}
-      <div className="space-y-8">
+      <div className="space-y-3">
         {localTests.map((test, idx) => {
           const allSteps =
             test.steps ||
             test.étapes?.flatMap((e: any) => e.steps || []) ||
             []
+          const isExpanded = !expandable || expandedIndex === idx
+          const title = test.test_name || test.title || `Test ${idx + 1}`
 
           return (
-            <div key={idx} className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-
-              {/* Test Header */}
-              <div className="bg-gray-50 px-6 py-4 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <h4 className="font-bold text-brand-navy text-lg">
-                  {test.test_name || test.title || `Test ${idx + 1}`}
-                </h4>
-                <div className="flex items-center gap-3">
+            <div
+              key={idx}
+              className={`syn-test-card ${isExpanded ? 'syn-test-card--expanded' : ''}`}
+            >
+              <div className={`px-5 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 syn-test-card-header transition-colors`}>
+                <button
+                  type="button"
+                  onClick={() => toggleExpanded(idx)}
+                  className={`flex items-start gap-3 text-left flex-1 min-w-0 group ${
+                    expandable ? 'cursor-pointer' : 'cursor-default'
+                  }`}
+                >
+                  {expandable && (
+                    <span className={`mt-1 flex-shrink-0 transition-colors ${isExpanded ? 'text-brand-violet' : 'text-brand-muted'}`}>
+                      {isExpanded ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
+                    </span>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-bold text-brand-navy text-base leading-snug group-hover:text-brand-violet transition-colors">
+                      {title}
+                    </h4>
+                    <div className="flex flex-wrap items-center gap-2 mt-1.5">
+                      {test.scenario_type && (
+                        <span className="syn-badge syn-badge--violet">
+                          {test.scenario_type}
+                        </span>
+                      )}
+                      <span className="text-[11px] text-brand-muted">
+                        {allSteps.length} étape{allSteps.length !== 1 ? 's' : ''}
+                      </span>
+                    </div>
+                    {!isExpanded && test.objective && (
+                      <p className="text-xs text-brand-muted mt-2 line-clamp-2 leading-relaxed">
+                        {test.objective}
+                      </p>
+                    )}
+                  </div>
+                </button>
+                <div className="flex items-center gap-2 flex-shrink-0 sm:ml-4">
                   <button
                     type="button"
                     onClick={(e) => handleEditClick(e, test, idx)}
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-brand-navy bg-white border border-gray-200 hover:border-blue-500 hover:text-blue-600 transition-all shadow-sm"
+                    className="syn-btn-ghost"
                   >
-                    <Pencil size={14} /> Éditer
+                    <Pencil size={13} /> Éditer
                   </button>
                   <button
                     type="button"
-                    disabled={integratingIndex === idx}
+                    disabled={integratingIndex === idx || !projectKey}
+                    title={!projectKey ? 'Sélectionnez un projet Jira' : 'Exporter vers Xray'}
                     onClick={(e) => handleIntegrate(e, test, idx)}
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold text-white transition-all shadow-sm disabled:opacity-50"
-                    style={{ background: 'linear-gradient(135deg,#2563eb,#4f46e5)' }}
+                    className="syn-btn-xray"
                   >
                     {integratingIndex === idx ? (
                       <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                     ) : (
-                      <Upload size={14} />
+                      <Upload size={13} />
                     )}
                     Xray
                   </button>
                 </div>
               </div>
 
-              <div className="p-6 space-y-6">
+              {isExpanded && (
+                <div className="px-5 pb-5 space-y-5 border-t border-brand-navy/[0.05] pt-5 bg-gradient-to-b from-brand-offwhite/40 to-white">
 
-                {/* Description */}
-                <div>
-                  <h5 className="font-bold text-brand-navy flex items-center gap-1.5 mb-3">
-                    <ChevronDown size={18} className="text-gray-400" /> Description
-                  </h5>
-                  <div className="pl-6 space-y-3">
-                    {allSteps.map((step: any, si: number) => (
-                      <p key={si} className="text-sm text-gray-800 leading-relaxed">
-                        <span className="text-blue-500">[{step.actor || 'Collaborateur'}]</span>{' '}
-                        {step.titre || step.action}
+                  {test.objective && (
+                    <div className="rounded-xl border border-brand-violet/10 bg-brand-violet/[0.03] p-4">
+                      <h5 className="syn-label flex items-center gap-1.5 mb-2 text-brand-violet">
+                        <Target size={13} /> Objectif
+                      </h5>
+                      <p className="text-sm text-brand-navy leading-relaxed">{test.objective}</p>
+                    </div>
+                  )}
+
+                  {test.description && (
+                    <div className="rounded-xl border border-brand-navy/[0.08] bg-white p-4">
+                      <h5 className="syn-label mb-2">Description</h5>
+                      <p className="text-sm text-brand-navy leading-relaxed whitespace-pre-wrap">
+                        {test.description}
                       </p>
-                    ))}
-                  </div>
-                </div>
+                    </div>
+                  )}
 
-                {/* Steps Table */}
-                <div className="border border-gray-200 rounded-xl overflow-hidden shadow-sm">
-                  <table className="w-full text-sm text-left">
-                    <thead className="bg-[#f4f5f7] border-b border-gray-200">
-                      <tr>
-                        <th className="w-12 px-4 py-3 font-semibold text-brand-navy border-r border-gray-200 text-center">#</th>
-                        <th className="w-1/3 px-4 py-3 font-semibold text-brand-navy border-r border-gray-200">Action</th>
-                        <th className="w-1/3 px-4 py-3 font-semibold text-brand-navy border-r border-gray-200">Data</th>
-                        <th className="w-1/3 px-4 py-3 font-semibold text-brand-navy">Expected Result</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-200">
-                      {allSteps.map((step: any, si: number) => (
-                        <tr key={si} className="align-top bg-white hover:bg-gray-50/50 transition-colors">
-                          <td className="px-4 py-4 border-r border-gray-200 text-center font-bold text-brand-navy bg-[#f4f5f7]">
-                            {si + 1}
-                          </td>
-                          <td className="px-4 py-4 border-r border-gray-200">
-                            <p className="text-sm text-gray-900 mb-3 leading-relaxed">
-                              <span className="text-blue-500">[{step.actor || 'Collaborateur'}]</span>{' '}
-                              {step.titre || step.action}
-                            </p>
-                            {step.titre && step.action && step.titre !== step.action && (
-                              <div>
-                                <p className="text-xs font-bold uppercase tracking-wider text-brand-navy underline underline-offset-2 mb-2">
-                                  Action(s) :
-                                </p>
-                                <ul className="list-disc list-inside text-sm text-gray-700 space-y-1.5 ml-1">
-                                  {step.action.split('\n').map((line: string, i: number) => {
-                                    const cleanLine = line.replace(/^-\s*/, '').trim()
-                                    return cleanLine ? <li key={i}>{cleanLine}</li> : null
-                                  })}
-                                </ul>
-                              </div>
-                            )}
-                          </td>
-                          <td className="px-4 py-4 border-r border-gray-200 whitespace-pre-wrap text-sm text-gray-700 font-mono leading-relaxed bg-[#fbfbfc]">
-                            {step.data || ''}
-                          </td>
-                          <td className="px-4 py-4 whitespace-pre-wrap text-sm text-gray-700 leading-relaxed">
-                            {step.expected_result ? (
-                              <ul className="list-disc list-inside space-y-1.5 ml-1">
-                                {step.expected_result.split('\n').map((line: string, i: number) => {
-                                  const cleanLine = line.replace(/^-\s*/, '').trim()
-                                  return cleanLine ? <li key={i}>{cleanLine}</li> : null
-                                })}
-                              </ul>
-                            ) : ''}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                  {allSteps.length > 0 && (
+                    <div>
+                      <h5 className="syn-label flex items-center gap-1.5 mb-3">
+                        <ListChecks size={13} /> Étapes ({allSteps.length})
+                      </h5>
+                      <div className="border border-brand-navy/[0.08] rounded-xl overflow-hidden shadow-sm">
+                        <table className="w-full text-sm text-left">
+                          <thead className="syn-table-head">
+                            <tr>
+                              <th className="w-10 px-3 py-2.5 text-center">#</th>
+                              <th className="px-3 py-2.5">Action</th>
+                              <th className="px-3 py-2.5 hidden md:table-cell">Données</th>
+                              <th className="px-3 py-2.5">Résultat attendu</th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-brand-navy/[0.05]">
+                            {allSteps.map((step: any, si: number) => (
+                              <tr key={si} className="align-top bg-white hover:bg-brand-offwhite/60 transition-colors">
+                                <td className="px-3 py-3 text-center font-bold text-brand-violet text-xs bg-brand-offwhite/50">
+                                  {si + 1}
+                                </td>
+                                <td className="px-3 py-3">
+                                  <span className="syn-badge syn-badge--violet !text-[9px]">
+                                    {step.actor || 'Collaborateur'}
+                                  </span>
+                                  <p className="text-sm text-brand-navy mt-1.5 leading-relaxed">
+                                    {step.titre || step.action}
+                                  </p>
+                                </td>
+                                <td className="px-3 py-3 text-xs text-brand-muted font-mono whitespace-pre-wrap hidden md:table-cell">
+                                  {step.data || '—'}
+                                </td>
+                                <td className="px-3 py-3 text-sm text-brand-navy leading-relaxed">
+                                  {step.expected_result ? (
+                                    <ul className="list-disc list-inside space-y-1">
+                                      {step.expected_result.split('\n').map((line: string, i: number) => {
+                                        const clean = line.replace(/^-\s*/, '').trim()
+                                        return clean ? <li key={i}>{clean}</li> : null
+                                      })}
+                                    </ul>
+                                  ) : '—'}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  )}
                 </div>
-
-              </div>{/* fin p-6 */}
-            </div>/* fin test card */
+              )}
+            </div>
           )
         })}
-      </div>{/* fin space-y-8 */}
+      </div>
 
       {/* Modals */}
       {editingTest !== null && editingIndex !== null && (

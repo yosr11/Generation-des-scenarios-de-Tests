@@ -71,16 +71,30 @@ export const Sidebar: React.FC = () => {
             <p className="text-xs font-bold text-white">Espace Administrateur</p>
           </div>
         ) : selectedProject ? (
-          <div className="px-3 py-2.5 rounded-xl flex items-center gap-2"
-            style={{ background: 'rgba(244,63,94,0.12)', border: '1px solid rgba(244,63,94,0.2)' }}>
+          <button
+            type="button"
+            onClick={() => navigate('/projects')}
+            className="w-full px-3 py-2.5 rounded-xl flex items-center gap-2 text-left transition-colors hover:bg-white/5"
+            style={{ background: 'rgba(244,63,94,0.12)', border: '1px solid rgba(244,63,94,0.2)' }}
+          >
             <FolderKanban size={14} className="text-brand-rose flex-shrink-0" />
             <div className="flex-1 min-w-0">
-              <p className="text-[10px] text-white/40 leading-none">Projet actif</p>
+              <p className="text-[10px] text-white/40 leading-none">Projet Xray</p>
               <p className="text-xs font-bold text-white truncate mt-0.5">{selectedProject.key}</p>
             </div>
             <ChevronRight size={12} className="text-white/30" />
-          </div>
-        ) : null}
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={() => navigate('/projects')}
+            className="w-full px-3 py-2.5 rounded-xl flex items-center gap-2 text-left transition-colors hover:bg-white/5"
+            style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
+          >
+            <FolderKanban size={14} className="text-white/50 flex-shrink-0" />
+            <p className="text-xs text-white/50">Choisir un projet Xray</p>
+          </button>
+        )}
       </div>
 
       {/* Navigation */}

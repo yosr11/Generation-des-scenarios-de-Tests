@@ -7,7 +7,7 @@ import { useAuth } from '../../contexts/AuthContext'
 const PAGE_TITLES: Record<string, { title: string; subtitle: string }> = {
   '/pipeline':          { title: 'Pipeline IA', subtitle: 'Générez vos tests depuis vos user stories Jira' },
   '/history':           { title: 'Historique', subtitle: 'Stories déjà traitées' },
-  '/projects':          { title: 'Projets Jira', subtitle: 'Sélectionnez votre projet' },
+  '/projects':          { title: 'Mes projets Jira', subtitle: 'Projets accessibles — utilisés pour l\'intégration Xray' },
   '/admin/dashboard':   { title: 'Dashboard Admin', subtitle: 'Vue d\'ensemble de la plateforme' },
   '/admin/users':       { title: 'Gestion Utilisateurs', subtitle: 'Créer, modifier, activer/désactiver les comptes' },
   '/admin/pipelines':   { title: 'Historique Pipelines', subtitle: 'Qui a lancé quoi, quand et avec quel résultat' },
