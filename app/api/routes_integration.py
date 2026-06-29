@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel, Field
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.config import settings
 from app.core.deps import CurrentUser, get_client_ip, get_current_user, get_tester_jira_credentials
 from app.db.postgres import get_db
 from app.services.audit_service import log_action
@@ -57,6 +58,11 @@ def _resolve_jira_session(user: CurrentUser):
         creds = get_tester_jira_credentials(user)
         return create_user_jira_session(creds.username, creds.password)
     return None
+
+
+def _use_test_jira() -> bool:
+    """Keep Xray integration on the same Jira instance as auth/project selection."""
+    return settings.JIRA_BASE_URL.rstrip("/") == settings.JIRA_TEST_URL.rstrip("/")
 
 
 def _build_description(test_case: IntegrationTestCase) -> str:
@@ -116,6 +122,7 @@ async def integrate_tests(
         )
 
     jira_session = _resolve_jira_session(user)
+    use_test_jira = _use_test_jira()
     created_keys: List[str] = []
     errors: List[str] = []
 
@@ -130,7 +137,7 @@ async def integrate_tests(
             existing = search_test_issue_by_summary(
                 project_key=body.project_key,
                 summary=test_case.test_name,
-                use_test_jira=True,
+                use_test_jira=use_test_jira,
                 session=jira_session,
             )
 
@@ -148,7 +155,7 @@ async def integrate_tests(
                 description=desc,
                 issue_type="Test",
                 steps=step_payload,
-                use_test_jira=True,
+                use_test_jira=use_test_jira,
                 session=jira_session,
             )
 
@@ -212,6 +219,7 @@ async def integrate_test_single(
     logger = logging.getLogger(__name__)
 
     jira_session = _resolve_jira_session(user)
+    use_test_jira = _use_test_jira()
     created_keys: List[str] = []
     errors: List[str] = []
 
@@ -223,7 +231,7 @@ async def integrate_test_single(
         existing = search_test_issue_by_summary(
             project_key=body.project_key,
             summary=test_case.test_name,
-            use_test_jira=True,
+            use_test_jira=use_test_jira,
             session=jira_session,
         )
 
@@ -241,7 +249,7 @@ async def integrate_test_single(
                 description=desc,
                 issue_type="Test",
                 steps=step_payload,
-                use_test_jira=True,
+                use_test_jira=use_test_jira,
                 session=jira_session,
             )
 
@@ -319,7 +327,7 @@ def add_step_to_test(
         res = add_xray_test_steps(
             test_key=test_key,
             steps=step_payload,
-            use_test_jira=True,
+            use_test_jira=_use_test_jira(),
         )
 
         if res.get("error"):
