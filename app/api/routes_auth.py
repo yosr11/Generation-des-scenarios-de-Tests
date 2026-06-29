@@ -239,6 +239,35 @@ async def microsoft_callback(
         raise HTTPException(status_code=403, detail="Ce compte n'est pas autorisé.")
 
     token = build_user_token(user)
+
+    # ── Provide Jira session for Microsoft users ─────────────────────────────
+    # Microsoft-authenticated testers don't have per-user Jira creds.
+    # Assign them a session that uses the global JIRA_USERNAME / JIRA_PASSWORD
+    # so that /auth/projects works immediately after OAuth redirect.
+    if user.role == "tester" and settings.JIRA_USERNAME and settings.JIRA_PASSWORD:
+        try:
+            from app.services.credential_store import store_credentials
+            from app.services.jira_auth_service import create_tester_session_id
+            from app.services.auth_service import build_user_token as _build
+            from app.core.security import create_access_token
+            import uuid
+
+            ms_session_id = str(uuid.uuid4())
+            store_credentials(ms_session_id, settings.JIRA_USERNAME, settings.JIRA_PASSWORD)
+
+            # Rebuild token with session_id so /auth/projects can find the creds
+            token_payload = {
+                "sub":        str(user.id),
+                "email":      user.email,
+                "role":       user.role,
+                "session_id": ms_session_id,
+                "jira_username": settings.JIRA_USERNAME,
+                "display_name":  user.display_name or display_name,
+            }
+            token = create_access_token(token_payload)
+        except Exception as _e:
+            pass  # Fall back to token without session_id — AuthContext will handle gracefully
+
     frontend_redirect = _resolve_frontend_redirect(state)
     response = RedirectResponse(url=frontend_redirect)
     _set_auth_cookie(response, token)
@@ -284,10 +313,21 @@ async def get_my_projects(
     from app.services.jira_auth_service import get_accessible_projects
 
     creds = get_credentials(user.session_id or "")
-    if not creds:
+    if not creds and settings.JIRA_USERNAME and settings.JIRA_PASSWORD:
+        # Microsoft-auth users: fall back to global Jira credentials
+        from app.services.credential_store import store_credentials
+        import uuid
+        fallback_sid = str(uuid.uuid4())
+        store_credentials(fallback_sid, settings.JIRA_USERNAME, settings.JIRA_PASSWORD)
+        creds_username = settings.JIRA_USERNAME
+        creds_password = settings.JIRA_PASSWORD
+    elif not creds:
         raise HTTPException(status_code=401, detail="Session Jira expirée. Veuillez vous reconnecter.")
+    else:
+        creds_username = creds.username
+        creds_password = creds.password
 
-    projects = await get_accessible_projects(creds.username, creds.password)
+    projects = await get_accessible_projects(creds_username, creds_password)
     if not projects:
         raise HTTPException(status_code=403, detail="Aucun projet accessible. Contactez votre administrateur.")
 

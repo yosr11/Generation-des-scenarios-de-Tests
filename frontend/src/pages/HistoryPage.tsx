@@ -71,26 +71,26 @@ export const HistoryPage: React.FC = () => {
 
       {/* List */}
       <div className="bg-white rounded-3xl border border-gray-100 shadow-card overflow-hidden">
-        <div className="h-1" style={{ background: 'linear-gradient(90deg,#ef4444,#f43f5e,#f97316)' }} />
+        <div className="h-1" style={{ background: 'linear-gradient(90deg,#0B1E3E,#EA580C,#DB2777)' }} />
         <div className="px-6 py-4 border-b border-gray-100 flex items-center gap-3">
-          <History size={16} className="text-brand-rose" />
+          <History size={16} style={{ color: '#DB2777' }} />
           <h3 className="font-bold text-brand-navy">Stories Traitées</h3>
           <span className="ml-auto px-2.5 py-0.5 rounded-full text-xs font-bold"
-            style={{ background: 'rgba(244,63,94,0.08)', color: '#f43f5e' }}>
+            style={{ background: 'rgba(219,39,119,0.08)', color: '#DB2777' }}>
             {filtered.length}
           </span>
         </div>
 
         {loading ? (
           <div className="py-16 text-center">
-            <div className="w-8 h-8 mx-auto border-2 border-t-brand-rose border-transparent rounded-full animate-spin mb-3" />
+            <div className="w-8 h-8 mx-auto border-2 border-t-brand-rose border-transparent rounded-full animate-spin mb-3" style={{ borderTopColor: '#DB2777' }} />
             <p className="text-brand-muted text-sm">Chargement…</p>
           </div>
         ) : filtered.length === 0 ? (
           <div className="py-20 text-center">
             <div className="w-16 h-16 mx-auto mb-4 rounded-3xl flex items-center justify-center"
-              style={{ background: 'rgba(244,63,94,0.06)' }}>
-              <GitBranch size={28} className="text-brand-rose/40" />
+              style={{ background: 'rgba(219,39,119,0.06)' }}>
+              <GitBranch size={28} style={{ color: 'rgba(219,39,119,0.4)' }} />
             </div>
             <p className="text-brand-navy font-semibold mb-1">
               {search ? 'Aucun résultat' : 'Aucune story traitée'}
@@ -103,7 +103,7 @@ export const HistoryPage: React.FC = () => {
             {!search && (
               <button type="button" onClick={() => navigate('/pipeline')}
                 className="mt-5 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all hover:-translate-y-0.5"
-                style={{ background: 'linear-gradient(135deg,#ef4444,#f43f5e,#f97316)', boxShadow: '0 4px 16px rgba(244,63,94,0.35)' }}>
+                style={{ background: 'linear-gradient(135deg,#0B1E3E,#EA580C,#DB2777)', boxShadow: '0 4px 16px rgba(219,39,119,0.35)' }}>
                 → Lancer un pipeline
               </button>
             )}
@@ -115,13 +115,13 @@ export const HistoryPage: React.FC = () => {
                 className="flex items-center gap-4 px-6 py-4 hover:bg-gray-50/70 transition-colors cursor-pointer group"
                 onClick={() => navigate(`/history/${story.id}`)}>
                 <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style={{ background: 'rgba(244,63,94,0.08)', border: '1px solid rgba(244,63,94,0.15)' }}>
-                  <GitBranch size={16} className="text-brand-rose" />
+                  style={{ background: 'rgba(219,39,119,0.08)', border: '1px solid rgba(219,39,119,0.15)' }}>
+                  <GitBranch size={16} style={{ color: '#DB2777' }} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="font-mono text-xs font-bold px-2 py-0.5 rounded-lg"
-                      style={{ background: 'rgba(244,63,94,0.08)', color: '#f43f5e' }}>
+                      style={{ background: 'rgba(219,39,119,0.08)', color: '#DB2777' }}>
                       {story.id}
                     </span>
                     {story.status && (

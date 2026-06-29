@@ -85,8 +85,29 @@ def list_scenarios(story_id: str):
     return {"story_id": story_id, "count": len(scenarios), "scenarios": scenarios}
 
 
+@db_router.get("/stories/{story_id}/manual-tests")
+def get_manual_tests(story_id: str):
+    """Récupère les tests manuels enregistrés pour une story."""
+    from app.repositories.manual_tests_repository import get_latest_manual_tests
+    tests = get_latest_manual_tests(story_id)
+    if not tests:
+        raise HTTPException(status_code=404, detail=f"Aucun test manuel trouvé pour {story_id}")
+    return {"story_id": story_id, "tests": tests}
+
+
+@db_router.get("/stories/{story_id}/validations")
+def get_validations(story_id: str):
+    """Récupère la validation enregistrée pour une story."""
+    from app.repositories.validation_repository import fetch_validation_by_story_id
+    val = fetch_validation_by_story_id(story_id)
+    if not val:
+        raise HTTPException(status_code=404, detail=f"Aucune validation trouvée pour {story_id}")
+    return val
+
+
 @db_router.get("/scenarios")
 def list_all_scenarios():
     """Liste tous les scénarios générés."""
     scenarios = get_all_scenarios()
     return {"count": len(scenarios), "scenarios": scenarios}
+

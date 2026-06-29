@@ -61,17 +61,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const { apiClient } = await import('../api/client')
       const me = await apiClient.auth.me()
-      setUser({
+      const authUser: AuthUser = {
         email: me.email,
         role: me.role as UserRole,
         display_name: me.display_name,
         jira_username: me.jira_username,
-      })
+      }
+      setUser(authUser)
+
       if (me.role === 'tester') {
-        const projResp = await apiClient.auth.projects()
-        setProjects(projResp.projects || [])
+        // Try to load Jira projects, but DON'T log the user out if it fails.
+        // Microsoft OAuth users don't have a Jira session — they'll be redirected
+        // to /projects by ProtectedRoute instead of being booted to /login.
+        try {
+          const projResp = await apiClient.auth.projects()
+          setProjects(projResp.projects || [])
+        } catch {
+          // No Jira session — keep user logged in, projects will be empty.
+          setProjects([])
+        }
       }
     } catch {
+      // /auth/me failed → token invalid or missing → truly log out
       setUser(null)
       setProjects([])
     } finally {

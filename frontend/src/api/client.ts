@@ -408,10 +408,10 @@ export const apiClient = {
 
     async listScenarios(storyId: string): Promise<Scenario[]> {
       try {
-        const response = await axiosInstance.get<Scenario[]>(
-          `/db/scenarios/${encodeURIComponent(storyId)}`
+        const response = await axiosInstance.get<any>(
+          `/db/stories/${encodeURIComponent(storyId)}/scenarios`
         )
-        return response.data
+        return response.data.scenarios || response.data
       } catch (error) {
         throw handleError(error)
       }
@@ -419,7 +419,29 @@ export const apiClient = {
 
     async getAllScenarios(): Promise<Scenario[]> {
       try {
-        const response = await axiosInstance.get<Scenario[]>('/db/scenarios')
+        const response = await axiosInstance.get<any>('/db/scenarios')
+        return response.data.scenarios || response.data
+      } catch (error) {
+        throw handleError(error)
+      }
+    },
+
+    async getManualTests(storyId: string): Promise<any> {
+      try {
+        const response = await axiosInstance.get<any>(
+          `/db/stories/${encodeURIComponent(storyId)}/manual-tests`
+        )
+        return response.data.tests || response.data
+      } catch (error) {
+        throw handleError(error)
+      }
+    },
+
+    async getValidations(storyId: string): Promise<any> {
+      try {
+        const response = await axiosInstance.get<any>(
+          `/db/stories/${encodeURIComponent(storyId)}/validations`
+        )
         return response.data
       } catch (error) {
         throw handleError(error)

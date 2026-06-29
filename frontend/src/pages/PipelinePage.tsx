@@ -13,11 +13,11 @@ import {
 
 // ── Constants ──────────────────────────────────────────────────────────────────
 
-const NAV       = '#0a1628'
-const NAV_LIGHT = '#1e3a5f'
-const ROSE      = '#f43f5e'
-const ORANGE    = '#f97316'
-const VIOLET    = '#6366f1'
+const NAV       = '#0B1E3E'
+const NAV_LIGHT = '#1A3A6B'
+const ROSE      = '#DB2777'
+const ORANGE    = '#EA580C'
+const VIOLET    = '#1D4ED8'
 
 const MAIN_GRADIENT = `linear-gradient(90deg, ${NAV}, ${NAV_LIGHT}, ${VIOLET}, ${ROSE}, ${ORANGE})`
 const CARD_GRADIENT = `linear-gradient(135deg, ${NAV}, ${NAV_LIGHT}, ${VIOLET})`
@@ -244,6 +244,8 @@ const TestEditModal: React.FC<{
   const [objective, setObjective] = useState(test.objective || test.objectif || '')
   const [aiPrompt, setAiPrompt]   = useState('')
   const [aiLoading, setAiLoading] = useState(false)
+  const [aiReply, setAiReply]     = useState<string | null>(null)
+  const [chatHistory, setChatHistory] = useState<{role: string; content: string}[]>([])
 
   const allSteps = test.steps || test.étapes?.flatMap((e: any) => e.steps || []) || []
   const [steps, setSteps] = useState<any[]>(allSteps)
@@ -252,20 +254,33 @@ const TestEditModal: React.FC<{
     setSteps(prev => prev.map((s, i) => i === idx ? { ...s, [field]: value } : s))
   }
 
-  // FIX #1 — real AI-refine stub: clears prompt after "call", shows proper state
   const handleAiRefine = useCallback(async () => {
     if (!aiPrompt.trim()) return
     setAiLoading(true)
+    setAiReply(null)
+    const userMsg = aiPrompt.trim()
     try {
-      // TODO: replace with real API call, e.g.:
-      // const result = await refineTestWithAI(test, aiPrompt)
-      // setSteps(result.steps)
-      await new Promise((res) => setTimeout(res, 1500)) // placeholder
+      const { apiClient } = await import('../api/client')
+      const result = await apiClient.testEditing.refineChat({
+        test: { ...test, steps },
+        message: userMsg,
+        chat_history: chatHistory,
+      })
+      const newHistory = [
+        ...chatHistory,
+        { role: 'user', content: userMsg },
+        { role: 'assistant', content: result.assistant_message || result.message || 'Test mis à jour.' },
+      ]
+      setChatHistory(newHistory)
+      if (result.test?.steps) setSteps(result.test.steps)
+      setAiReply(result.assistant_message || result.message || 'Test mis à jour par l\'IA.')
       setAiPrompt('')
+    } catch (err: any) {
+      setAiReply(`Erreur : ${err?.message || 'Impossible de contacter le service IA.'}`)
     } finally {
       setAiLoading(false)
     }
-  }, [aiPrompt])
+  }, [aiPrompt, test, steps, chatHistory])
 
   const handleSave = () => {
     onSave({ ...test, test_name: title, objective, steps })
@@ -311,12 +326,12 @@ const TestEditModal: React.FC<{
           {/* AI refine */}
           <div className="rounded-2xl p-4 space-y-3"
             style={{
-              background: `linear-gradient(135deg, rgba(10,22,40,0.03), rgba(99,102,241,0.06))`,
-              border: `1.5px solid rgba(99,102,241,0.22)`,
+              background: `linear-gradient(135deg, rgba(11,30,62,0.03), rgba(29,78,216,0.06))`,
+              border: `1.5px solid rgba(29,78,216,0.22)`,
             }}>
             <div className="flex items-center gap-2">
               <div className="w-6 h-6 rounded-lg flex items-center justify-center"
-                style={{ background: `linear-gradient(135deg, ${VIOLET}, #8b5cf6)` }}>
+                style={{ background: `linear-gradient(135deg, ${VIOLET}, #2563EB)` }}>
                 <Sparkles size={12} className="text-white" />
               </div>
               <p className="text-xs font-bold uppercase tracking-widest" style={{ color: VIOLET }}>
@@ -325,13 +340,41 @@ const TestEditModal: React.FC<{
               <span className="w-2 h-2 rounded-full ml-auto"
                 style={{ background: VIOLET, animation: 'pulse 1.8s ease-in-out infinite', opacity: .7 }} />
             </div>
+
+            {/* Chat history */}
+            {chatHistory.length > 0 && (
+              <div className="space-y-2 max-h-40 overflow-y-auto rounded-xl p-2"
+                style={{ background: 'rgba(29,78,216,0.03)', border: '1px solid rgba(29,78,216,0.1)' }}>
+                {chatHistory.map((msg, i) => (
+                  <div key={i} className={`flex gap-2 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                    <div className="max-w-[80%] px-3 py-1.5 rounded-xl text-xs leading-relaxed"
+                      style={msg.role === 'user'
+                        ? { background: VIOLET, color: 'white' }
+                        : { background: 'rgba(11,30,62,0.06)', color: NAV }
+                      }>
+                      {msg.content}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* AI reply */}
+            {aiReply && (
+              <div className="rounded-xl px-3 py-2 text-xs leading-relaxed"
+                style={{ background: `${VIOLET}10`, border: `1px solid ${VIOLET}25`, color: NAV }}>
+                <span className="font-bold" style={{ color: VIOLET }}>IA : </span>{aiReply}
+              </div>
+            )}
+
             <textarea
               value={aiPrompt}
               onChange={e => setAiPrompt(e.target.value)}
               rows={2}
               placeholder="ex : Ajouter une étape pour vérifier le message d'erreur..."
               className="w-full text-sm rounded-xl px-3 py-2.5 focus:outline-none resize-none transition-all"
-              style={{ color: NAV, background: 'rgba(99,102,241,0.04)', border: '1.5px solid rgba(99,102,241,0.18)' }}
+              style={{ color: NAV, background: 'rgba(29,78,216,0.04)', border: '1.5px solid rgba(29,78,216,0.18)' }}
+              onKeyDown={e => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) handleAiRefine() }}
             />
             <div className="flex justify-end">
               <button
@@ -339,7 +382,7 @@ const TestEditModal: React.FC<{
                 onClick={handleAiRefine}
                 disabled={aiLoading || !aiPrompt.trim()}
                 className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white transition-all hover:-translate-y-0.5 disabled:opacity-40 disabled:cursor-not-allowed"
-                style={{ background: `linear-gradient(135deg, ${VIOLET}, #8b5cf6)`, boxShadow: `0 3px 12px rgba(99,102,241,0.35)` }}>
+                style={{ background: `linear-gradient(135deg, ${VIOLET}, #2563EB)`, boxShadow: `0 3px 12px rgba(29,78,216,0.35)` }}>
                 {aiLoading
                   ? <><Cpu size={12} className="animate-spin" /> Affinage…</>
                   : <><Sparkles size={12} /> Affiner</>
@@ -787,29 +830,53 @@ const BulletList: React.FC<{ items: string[]; color?: string }> = ({ items, colo
   </ul>
 )
 
-const Agent5Result: React.FC<{ output: any }> = ({ output }) => {
+const Agent5Result: React.FC<{ output: any; storyId?: string }> = ({ output, storyId }) => {
   if (!output) return null
+  const [downloading, setDownloading] = useState(false)
 
-  const storyId     = output.story_id || output.story?.id
-  const reportTitle = output.report_title || output.title
-  const version     = output.report_version || output.version
-  const timestamp   = output.generated_timestamp || output.timestamp
+  // The output IS the Agent5Report object (unwrapped)
+  const reportObj     = output.report || output  // handle both wrapped and direct
+  const reportTitle   = reportObj.report_title   || output.report_title
+  const version       = reportObj.report_version || output.report_version
+  const timestamp     = reportObj.generated_timestamp || output.generated_timestamp
+  const reportStoryId = reportObj.story_id || output.story_id || storyId
 
-  const exec         = output.executive_summary || output.resume_executif || output.summary
-  const globalStatus = exec?.global_status || exec?.statut_global || output.global_status
-  const findings     = exec?.main_findings || exec?.findings_principaux || exec?.key_findings || []
-  const nextSteps    = exec?.next_steps || exec?.prochaines_etapes || exec?.recommendations_immediates || []
+  const exec         = reportObj.executive_summary || output.executive_summary || {}
+  const globalStatus = exec.overall_status || exec.global_status
+  const findings     = exec.key_findings    || exec.main_findings    || []
+  const nextSteps    = exec.next_steps      || exec.prochaines_etapes || []
 
-  const storySynth    = output.story_synthesis || output.synthese_story || output.story_summary || {}
-  const testSuite     = output.test_suite || output.suite_tests || output.generated_tests || {}
-  const coverage      = output.coverage_metrics || output.metriques_couverture || output.coverage || {}
-  const validation    = output.validation_quality || output.validation_assurance || output.validation || {}
-  const recommendations = output.recommendations || output.recommandations || []
-  const pipeline      = output.pipeline_notes || output.notes_pipeline || {}
+  const storySynth      = reportObj.story_summary    || output.story_summary    || {}
+  const testSuite       = reportObj.test_suite       || output.test_suite       || {}
+  const coverage        = reportObj.coverage_metrics || output.coverage_metrics || {}
+  const validation      = reportObj.quality_assurance|| output.quality_assurance|| {}
+  const recommendations = reportObj.recommendations  || output.recommendations  || []
+  const pipeline        = reportObj.processing_notes || output.processing_notes || []
 
-  // FIX #7 — case-insensitive status comparison
   const normalizedStatus = String(globalStatus || '').toUpperCase()
-  const statusColor = (normalizedStatus === 'APPROVED' || normalizedStatus === 'VALID') ? ORANGE : ROSE
+  const statusColor = (normalizedStatus === 'APPROVED') ? ORANGE : (normalizedStatus === 'REQUIRES_REVIEW' ? ROSE : ROSE)
+
+  const handleDownloadMarkdown = async () => {
+    if (!reportStoryId) return
+    setDownloading(true)
+    try {
+      const { apiClient } = await import('../api/client')
+      const md = await apiClient.agent5.getReportMarkdown(reportStoryId)
+      const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `rapport-qa-${reportStoryId}.md`
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      URL.revokeObjectURL(url)
+    } catch (err: any) {
+      console.error('Download failed:', err)
+    } finally {
+      setDownloading(false)
+    }
+  }
 
   return (
     <div className="w-full space-y-8 modal-print-area">
@@ -891,11 +958,11 @@ const Agent5Result: React.FC<{ output: any }> = ({ output }) => {
         <ReportSection icon="■" title="Suite de Tests Générée">
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-4">
             {[
-              { label: 'Total',             value: testSuite.total || testSuite.total_tests },
-              { label: 'NOM (Nominal)',     value: testSuite.nominal || testSuite.nom },
-              { label: 'ALT (Alternatif)', value: testSuite.alternative ?? testSuite.alt },
-              { label: 'EXC (Exception)',  value: testSuite.exception ?? testSuite.exc },
-              { label: 'Priorités Haute',  value: testSuite.high_priority || testSuite.priorite_haute },
+              { label: 'Total',             value: testSuite.total_tests ?? testSuite.total },
+              { label: 'NOM (Nominal)',     value: testSuite.nom_count   ?? testSuite.nom ?? testSuite.nominal },
+              { label: 'ALT (Alternatif)', value: testSuite.alt_count   ?? testSuite.alt ?? testSuite.alternative },
+              { label: 'EXC (Exception)',  value: testSuite.exc_count   ?? testSuite.exc ?? testSuite.exception },
+              { label: 'Priorité Haute',   value: testSuite.high_priority_count ?? testSuite.high_priority ?? testSuite.priorite_haute },
             ].filter(r => r.value !== undefined).map((item, i) => (
               <div key={i} className="rounded-xl p-3 text-center"
                 style={{ background: 'rgba(10,22,40,0.04)', border: '1px solid rgba(10,22,40,0.1)' }}>
@@ -941,19 +1008,37 @@ const Agent5Result: React.FC<{ output: any }> = ({ output }) => {
 
       {Object.keys(coverage).length > 0 && (
         <ReportSection icon="■" title="Métriques de Couverture">
-          <div className="space-y-3">
+          <div className="space-y-4">
+            {coverage.coverage_rate !== undefined && (
+              <div className="flex items-center gap-4">
+                <div className="flex-1 bg-gray-100 rounded-full h-3 overflow-hidden">
+                  <div className="h-full rounded-full transition-all"
+                    style={{ width: `${Math.min(coverage.coverage_rate, 100)}%`, background: `linear-gradient(90deg, ${VIOLET}, ${ORANGE})` }} />
+                </div>
+                <span className="text-lg font-extrabold flex-shrink-0" style={{ color: NAV }}>
+                  {Math.round(coverage.coverage_rate)}%
+                </span>
+              </div>
+            )}
             {[
-              ['Taux', coverage.rate !== undefined ? `${Math.round((coverage.rate || 0) * 100)}%` : coverage.taux],
-              ['Statut', coverage.status || coverage.statut],
-              ['Points Non Couverts', coverage.uncovered_points_count !== undefined
-                ? (coverage.uncovered_points_count === 0 ? 'Aucun' : coverage.uncovered_points_count)
-                : coverage.points_non_couverts],
-            ].filter(([, v]) => v !== undefined).map(([label, value], i) => (
+              ['Statut Couverture',   coverage.coverage_status || coverage.statut],
+              ['Points testables',   coverage.total_testable_points ?? coverage.total_points],
+              ['Points couverts',    coverage.covered_points ?? coverage.points_couverts],
+              ['Points non couverts', Array.isArray(coverage.uncovered_points)
+                ? (coverage.uncovered_points.length === 0 ? 'Aucun' : `${coverage.uncovered_points.length} point(s)`)
+                : coverage.uncovered_points_count ?? '—'],
+            ].filter(([, v]) => v !== undefined && v !== '—').map(([label, value], i) => (
               <div key={i} className="flex items-center gap-4">
-                <span className="text-sm font-semibold w-40 flex-shrink-0" style={{ color: `${NAV}70` }}>{label} :</span>
+                <span className="text-sm font-semibold w-44 flex-shrink-0" style={{ color: `${NAV}70` }}>{label} :</span>
                 <span className="text-sm font-bold" style={{ color: NAV }}>{String(value)}</span>
               </div>
             ))}
+            {Array.isArray(coverage.uncovered_points) && coverage.uncovered_points.length > 0 && (
+              <div>
+                <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: `${NAV}60` }}>Points non couverts :</p>
+                <BulletList items={coverage.uncovered_points} color={ROSE} />
+              </div>
+            )}
           </div>
         </ReportSection>
       )}
@@ -1014,16 +1099,17 @@ const Agent5Result: React.FC<{ output: any }> = ({ output }) => {
       )}
 
       <div className="flex items-center justify-between pt-4 border-t text-xs"
-        style={{ borderColor: 'rgba(10,22,40,0.1)', color: `${NAV}50` }}>
+        style={{ borderColor: 'rgba(11,30,62,0.1)', color: `${NAV}50` }}>
         <span>
           Rapport généré le {timestamp ? new Date(timestamp).toLocaleString('fr-FR') : '—'} — Version {version || '—'}
         </span>
         <button
           type="button"
-          onClick={() => window.print()}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all hover:-translate-y-0.5"
+          onClick={handleDownloadMarkdown}
+          disabled={downloading || !reportStoryId}
+          className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all hover:-translate-y-0.5 disabled:opacity-50"
           style={{ background: CARD_GRADIENT, boxShadow: `0 4px 16px ${NAV}35` }}>
-          <Printer size={14} /> Télécharger PDF
+          {downloading ? <><Cpu size={14} className="animate-spin" /> Génération…</> : <><FileText size={14} /> Télécharger .md</>}
         </button>
       </div>
     </div>
@@ -1037,7 +1123,7 @@ const AgentRichOutput: React.FC<{ agentKey: string; output: any; storyId?: strin
   if (agentKey === 'Agent 1') return <Agent1Result output={output} />
   if (agentKey === 'Agent 2') return <Agent2Result output={output} storyId={storyId} />
   if (agentKey === 'Agent 3') return <Agent3Result output={output} />
-  if (agentKey === 'Agent 5') return <Agent5Result output={output} />
+  if (agentKey === 'Agent 5') return <Agent5Result output={output} storyId={storyId} />
   if (typeof output === 'object') {
     const pairs = Object.entries(output).filter(([, v]) => typeof v !== 'object' || v === null)
     return (
@@ -1539,14 +1625,7 @@ export const PipelinePage: React.FC = () => {
         </div>
       )}
 
-      {manualTests.length > 0 && storyId && (
-        <div>
-          <p className="text-xs font-bold uppercase tracking-widest px-1 mb-3" style={{ color: `${NAV}50` }}>
-            Tests Manuels Générés
-          </p>
-          <ManualTestsTable tests={manualTests} storyId={storyId} onTestsChange={setManualTests} />
-        </div>
-      )}
+      {/* Tests edited in Agent 2 modal — no duplicate table here */}
 
       {/* FIX #4 — single modal instance at page level */}
       {openModalStep && (
