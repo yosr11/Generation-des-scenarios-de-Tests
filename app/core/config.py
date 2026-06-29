@@ -40,6 +40,8 @@ class Settings:
         "MICROSOFT_SCOPES",
         "openid profile email User.Read offline_access",
     )
+    MICROSOFT_PROMPT = os.getenv("MICROSOFT_PROMPT", "login")
+    MICROSOFT_ALLOWED_EMAIL_DOMAIN = os.getenv("MICROSOFT_ALLOWED_EMAIL_DOMAIN", "")
     FRONTEND_BASE_URL = os.getenv("FRONTEND_BASE_URL", "http://localhost:5173")
 
     ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "yomahfoudh@soprahr.com")

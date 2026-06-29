@@ -98,12 +98,32 @@ def _build_microsoft_authorize_url(next_path: str = "/pipeline") -> str:
         "response_mode": "query",
         "scope": settings.MICROSOFT_SCOPES,
         "state": next_path,
-        "prompt": "select_account",
+        "prompt": settings.MICROSOFT_PROMPT,
     }
     return (
         f"https://login.microsoftonline.com/{settings.MICROSOFT_TENANT_ID}"
         f"/oauth2/v2.0/authorize?{urlencode(params)}"
     )
+
+
+def _build_microsoft_token_payload(
+    user,
+    *,
+    microsoft_email: str,
+    microsoft_display_name: str | None,
+    session_id: str | None = None,
+) -> dict:
+    payload = {
+        "sub": str(user.id),
+        "email": microsoft_email,
+        "role": user.role,
+        "display_name": microsoft_display_name or user.display_name or microsoft_email,
+    }
+    if user.jira_username:
+        payload["jira_username"] = user.jira_username
+    if session_id:
+        payload["session_id"] = session_id
+    return payload
 
 
 # ── Unified login ─────────────────────────────────────────────────────────────
@@ -231,15 +251,21 @@ async def microsoft_callback(
         return response
 
     microsoft_user = user_resp.json()
-    email = microsoft_user.get("mail") or microsoft_user.get("userPrincipalName")
+    email = (microsoft_user.get("mail") or microsoft_user.get("userPrincipalName") or "").strip().lower()
     display_name = microsoft_user.get("displayName")
     if not email:
         response = RedirectResponse(url=f"{settings.FRONTEND_BASE_URL.rstrip('/')}/login?error=oauth_failed")
         _clear_auth_cookie(response)
         return response
 
+    allowed_domain = settings.MICROSOFT_ALLOWED_EMAIL_DOMAIN.strip().lower()
+    if allowed_domain and not email.endswith(f"@{allowed_domain}"):
+        response = RedirectResponse(url=f"{settings.FRONTEND_BASE_URL.rstrip('/')}/login?error=unauthorized")
+        _clear_auth_cookie(response)
+        return response
+
     # Search in a case-insensitive way
-    user = await get_user_by_email(db, email.strip().lower())
+    user = await get_user_by_email(db, email)
     if not user:
         response = RedirectResponse(url=f"{settings.FRONTEND_BASE_URL.rstrip('/')}/login?error=unauthorized")
         _clear_auth_cookie(response)
@@ -253,7 +279,15 @@ async def microsoft_callback(
         _clear_auth_cookie(response)
         return response
 
-    token = build_user_token(user)
+    from app.core.security import create_access_token
+
+    token = create_access_token(
+        _build_microsoft_token_payload(
+            user,
+            microsoft_email=email,
+            microsoft_display_name=display_name,
+        )
+    )
 
     # ── Provide Jira session for Microsoft users ─────────────────────────────
     # Microsoft-authenticated testers don't have per-user Jira creds.
@@ -262,24 +296,20 @@ async def microsoft_callback(
     if user.role == "tester" and settings.JIRA_USERNAME and settings.JIRA_PASSWORD:
         try:
             from app.services.credential_store import store_credentials
-            from app.services.jira_auth_service import create_tester_session_id
-            from app.services.auth_service import build_user_token as _build
-            from app.core.security import create_access_token
             import uuid
 
             ms_session_id = str(uuid.uuid4())
             store_credentials(ms_session_id, settings.JIRA_USERNAME, settings.JIRA_PASSWORD)
 
             # Rebuild token with session_id so /auth/projects can find the creds
-            token_payload = {
-                "sub":        str(user.id),
-                "email":      user.email,
-                "role":       user.role,
-                "session_id": ms_session_id,
-                "jira_username": settings.JIRA_USERNAME,
-                "display_name":  user.display_name or display_name,
-            }
-            token = create_access_token(token_payload)
+            token = create_access_token(
+                _build_microsoft_token_payload(
+                    user,
+                    microsoft_email=email,
+                    microsoft_display_name=display_name,
+                    session_id=ms_session_id,
+                )
+            )
         except Exception as _e:
             pass  # Fall back to token without session_id — AuthContext will handle gracefully
 
