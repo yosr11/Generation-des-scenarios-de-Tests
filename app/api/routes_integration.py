@@ -47,6 +47,7 @@ class IntegrateTestsResponse(BaseModel):
     status: str = Field(..., description="success, partial or error")
     created_count: int = Field(0, description="Nombre de tests créés avec succès")
     created_keys: List[str] = Field(default_factory=list, description="Clés Jira des tests créés")
+    jira_browse_base_url: Optional[str] = Field(None, description="Base URL Jira pour consulter les tests")
     errors: List[str] = Field(default_factory=list, description="Liste des erreurs rencontrées")
 
 
@@ -63,6 +64,11 @@ def _resolve_jira_session(user: CurrentUser):
 def _use_test_jira() -> bool:
     """Keep Xray integration on the same Jira instance as auth/project selection."""
     return settings.JIRA_BASE_URL.rstrip("/") == settings.JIRA_TEST_URL.rstrip("/")
+
+
+def _jira_browse_base_url(use_test_jira: bool) -> str:
+    base_url = settings.JIRA_TEST_URL if use_test_jira else settings.JIRA_BASE_URL
+    return f"{base_url.rstrip('/')}/browse"
 
 
 def _build_description(test_case: IntegrationTestCase) -> str:
@@ -203,6 +209,7 @@ async def integrate_tests(
         status=status,
         created_count=len(created_keys),
         created_keys=created_keys,
+        jira_browse_base_url=_jira_browse_base_url(use_test_jira),
         errors=errors,
     )
 
@@ -293,6 +300,7 @@ async def integrate_test_single(
         status=status,
         created_count=len(created_keys),
         created_keys=created_keys,
+        jira_browse_base_url=_jira_browse_base_url(use_test_jira),
         errors=errors,
     )
 

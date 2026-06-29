@@ -612,7 +612,6 @@ const TestAccordion: React.FC<{
 // ── Agent 2 Result ────────────────────────────────────────────────────────────
 
 const Agent2Result: React.FC<{ output: any; storyId?: string }> = ({ output, storyId }) => {
-  const [editingTest, setEditingTest] = useState<any | null>(null)
   const [tests, setTests] = useState<any[]>(
     Array.isArray(output) ? output : output?.tests || output?.agent2_tests || []
   )
@@ -624,49 +623,7 @@ const Agent2Result: React.FC<{ output: any; storyId?: string }> = ({ output, sto
     </div>
   )
 
-  // FIX #2 — use index-based update to avoid name-collision issues
-  const handleSave = (updated: any, originalIndex: number) => {
-    setTests(prev => prev.map((t, i) => i === originalIndex ? updated : t))
-  }
-
-  const handleXray = (test: any) => {
-    console.log('[Xray] Exporting test:', test)
-  }
-
-  return (
-    <>
-      <div className="space-y-4 w-full">
-        <div className="flex items-center justify-between mb-2">
-          <p className="text-xs font-bold" style={{ color: `${NAV}50` }}>
-            {tests.length} test{tests.length > 1 ? 's' : ''} généré{tests.length > 1 ? 's' : ''}
-          </p>
-          <button type="button"
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-white transition-all hover:-translate-y-0.5"
-            style={{ background: `linear-gradient(135deg,${ROSE},${ORANGE})`, boxShadow: `0 3px 12px ${ROSE}40` }}>
-            <Upload size={13} /> Tout exporter vers Xray
-          </button>
-        </div>
-        {tests.map((test: any, idx: number) => (
-          <TestAccordion
-            key={idx}
-            test={test}
-            idx={idx}
-            storyId={storyId}
-            onEdit={(t) => setEditingTest({ test: t, index: idx })}
-            onXray={handleXray}
-          />
-        ))}
-      </div>
-
-      {editingTest && (
-        <TestEditModal
-          test={editingTest.test}
-          onSave={(updated) => handleSave(updated, editingTest.index)}
-          onClose={() => setEditingTest(null)}
-        />
-      )}
-    </>
-  )
+  return <ManualTestsTable tests={tests} storyId={storyId} onTestsChange={setTests} />
 }
 
 // ── Agent 3 Result ────────────────────────────────────────────────────────────

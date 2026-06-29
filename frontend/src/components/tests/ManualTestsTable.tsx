@@ -16,6 +16,7 @@ export interface IntegrationResult {
   status: string
   created_count: number
   created_keys: string[]
+  jira_browse_base_url?: string
   errors: string[]
   test_name?: string
 }
@@ -278,6 +279,9 @@ const IntegrationModal: React.FC<{
 }> = ({ result, onClose }) => {
   const isSuccess = result.status === 'success' && result.errors.length === 0
   const isPartial = result.created_keys.length > 0 && result.errors.length > 0
+  const successMessage = result.created_keys.length === 1
+    ? `Le test a ete integre avec succes dans Jira sous l'ID ${result.created_keys[0]}.`
+    : 'Les tests ont ete integres avec succes dans Jira.'
   const grad = isSuccess
     ? 'linear-gradient(135deg,#10b981,#059669)'
     : isPartial
@@ -325,14 +329,33 @@ const IntegrationModal: React.FC<{
             )}
           </div>
 
+          {isSuccess && result.created_keys.length > 0 && (
+            <div
+              className="px-4 py-3 rounded-xl text-sm"
+              style={{ background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.2)', color: '#065f46' }}
+            >
+              {successMessage}
+            </div>
+          )}
+
           {result.created_keys.length > 0 && (
             <div>
-              <p className="text-xs font-bold text-brand-navy uppercase tracking-widest mb-2">Clés créées</p>
+              <p className="text-xs font-bold text-brand-navy uppercase tracking-widest mb-2">Tests Jira créés</p>
               <ul className="space-y-2">
                 {result.created_keys.map(k => (
-                  <li key={k} className="px-4 py-2.5 rounded-xl text-sm font-mono font-semibold"
+                  <li key={k} className="px-4 py-2.5 rounded-xl text-sm font-mono font-semibold flex items-center justify-between gap-3"
                     style={{ background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.2)', color: '#065f46' }}>
-                    🔗 {k}
+                    <span>🔗 {k}</span>
+                    {result.jira_browse_base_url && (
+                      <a
+                        href={`${result.jira_browse_base_url}/${k}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-xs font-semibold underline underline-offset-2"
+                      >
+                        Consulter dans Jira
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -396,7 +419,9 @@ export const ManualTestsTable: React.FC<ManualTestsTableProps> = ({
       const payload = buildPayload(test)
       const resp = await apiClient.integration.integrateTest({ project_key: projectKey, test: payload })
       setIntegrationResult({ ...resp, test_name: payload.test_name })
-      if (resp.status === 'success') toast.success(`Intégré : ${resp.created_keys.join(', ')}`)
+      if (resp.status === 'success' && resp.created_keys.length > 0) {
+        toast.success(`Test integre avec succes. ID Jira: ${resp.created_keys.join(', ')}`)
+      }
       else if (resp.errors?.length) toast.error('Intégration avec des erreurs')
     } catch (err: any) {
       toast.error(err?.message || 'Échec de l\'intégration')
