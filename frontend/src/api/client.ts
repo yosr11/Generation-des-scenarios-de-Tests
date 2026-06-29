@@ -396,7 +396,7 @@ export const apiClient = {
 
     async getLatestAnalysis(storyId: string, model?: string): Promise<AnalysisResponse> {
       try {
-        const url = `/db/analyses/${encodeURIComponent(storyId)}/latest${
+        const url = `/db/stories/${encodeURIComponent(storyId)}/analysis/latest${
           model ? `?model=${encodeURIComponent(model)}` : ''
         }`
         const response = await axiosInstance.get<AnalysisResponse>(url)

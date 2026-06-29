@@ -220,51 +220,260 @@ const ReportSection: React.FC<{ icon: string; title: string; children: React.Rea
   </div>
 )
 
-const Agent5Result: React.FC<{ output: any; storyId?: string }> = ({ output, storyId }) => {
-  if (!output) return null
-  const [downloading, setDownloading] = useState(false)
+  const handleDownloadPdf = () => {
+    // Helper to generate the exact styled PDF report matching user's screenshots
+    const printWindow = window.open('', '_blank')
+    if (!printWindow) return
 
-  const reportObj     = output.report || output
-  const reportTitle   = reportObj.report_title
-  const version       = reportObj.report_version
-  const timestamp     = reportObj.generated_timestamp
-  const reportStoryId = reportObj.story_id || storyId
+    const findingsHtml = findings.map((f: string) => `<li>${f}</li>`).join('')
+    const nextStepsHtml = nextSteps.map((s: string) => `<li>${s}</li>`).join('')
+    
+    const testSuiteHtml = (testSuite.tests_summary || []).map((t: any) => `
+      <tr>
+        <td><span style="font-weight:700;color:#EA580C;">${t.scenario_type || t.type || 'NOM'}</span></td>
+        <td>${t.test_name || t.name || '—'}</td>
+        <td>${t.priority || '—'}</td>
+        <td>${t.step_count !== undefined ? t.step_count : (t.steps_count !== undefined ? t.steps_count : 0)} étapes</td>
+      </tr>
+    `).join('')
 
-  const exec         = reportObj.executive_summary || {}
-  const globalStatus = exec.overall_status
-  const findings     = exec.key_findings || []
-  const nextSteps    = exec.next_steps || []
+    const recsHtml = recommendations.map((rec: any) => {
+      const priority = rec.priority || 'LOW'
+      const action = rec.action || rec.text || 'Recommandation'
+      const rationale = rec.rationale || rec.description || ''
+      return `
+        <div class="recommendation-card">
+          <div class="rec-header">[${priority.toUpperCase()}] ${action}</div>
+          <div class="rec-body">${rationale}</div>
+        </div>
+      `
+    }).join('')
 
-  const storySynth      = reportObj.story_summary || {}
-  const testSuite       = reportObj.test_suite || {}
-  const coverage        = reportObj.coverage_metrics || {}
-  const validation      = reportObj.quality_assurance || {}
-  const recommendations = reportObj.recommendations || []
-  const pipeline        = reportObj.processing_notes || []
+    const pipelineHtml = pipeline.map((p: string) => `<li>${p}</li>`).join('')
 
-  const normalizedStatus = String(globalStatus || '').toUpperCase()
-  const statusColor = (normalizedStatus === 'APPROVED') ? ORANGE : ROSE
-
-  const handleDownloadMarkdown = async () => {
-    if (!reportStoryId) return
-    setDownloading(true)
-    try {
-      const { apiClient } = await import('../api/client')
-      const md = await apiClient.agent5.getReportMarkdown(reportStoryId)
-      const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' })
-      const url = URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = `rapport-qa-${reportStoryId}.md`
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
-      URL.revokeObjectURL(url)
-    } catch (err: any) {
-      console.error('Download failed:', err)
-    } finally {
-      setDownloading(false)
-    }
+    const html = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Agent Test — Rapport QA · ${reportStoryId}</title>
+        <style>
+          @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+          body {
+            font-family: 'Outfit', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: #0B1E3E;
+            margin: 40px;
+            line-height: 1.6;
+          }
+          .header {
+            font-size: 11px;
+            color: #64748b;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+          }
+          .title {
+            font-size: 26px;
+            font-weight: 800;
+            color: #1D4ED8;
+            border-bottom: 2px solid #1D4ED8;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+          }
+          h2 {
+            font-size: 16px;
+            font-weight: 800;
+            color: #0B1E3E;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 5px;
+          }
+          h3 {
+            font-size: 13px;
+            font-weight: 700;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: #1A3A6B;
+          }
+          .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 700;
+            background: rgba(234,88,12,0.1);
+            color: #EA580C;
+            border: 1px solid rgba(234,88,12,0.3);
+            margin-left: 10px;
+          }
+          ul {
+            padding-left: 20px;
+            margin-bottom: 20px;
+          }
+          li {
+            margin-bottom: 6px;
+            font-size: 13px;
+          }
+          table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+            font-size: 13px;
+            border: 1px solid #e2e8f0;
+          }
+          th, td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+          }
+          th {
+            background-color: #0B1E3E;
+            color: white;
+            font-weight: 700;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+          }
+          td.prop-name {
+            font-weight: 700;
+            background-color: #f8fafc;
+            width: 30%;
+            color: #64748b;
+          }
+          .recommendation-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+          }
+          .rec-header {
+            font-weight: 800;
+            font-size: 11px;
+            color: #EA580C;
+            margin-bottom: 4px;
+          }
+          .rec-body {
+            font-size: 13px;
+          }
+          .footer {
+            margin-top: 50px;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 15px;
+            font-size: 11px;
+            color: #64748b;
+            display: flex;
+            justify-content: space-between;
+          }
+          @media print {
+            body {
+              margin: 20px;
+            }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <span>Agent Test — Rapport QA · ${reportStoryId}</span>
+        </div>
+        
+        <div class="title">${reportTitle || `Rapport QA Complet — ${reportStoryId}`}</div>
+        
+        <h2>■ Résumé Exécutif</h2>
+        <p><strong>Statut Global :</strong> <span class="status-badge">${globalStatus || 'APPROVED'}</span></p>
+        
+        <h3>Findings Principaux</h3>
+        <ul>${findingsHtml || '<li>Aucun finding disponible</li>'}</ul>
+        
+        <h3>Prochaines Étapes</h3>
+        <ul>${nextStepsHtml || '<li>Aucune étape recommandée</li>'}</ul>
+        
+        <h2>■ Synthèse User Story</h2>
+        <table>
+          <tr>
+            <td class="prop-name">ID</td>
+            <td><strong>${reportStoryId || '—'}</strong></td>
+          </tr>
+          <tr>
+            <td class="prop-name">Titre</td>
+            <td>${storySynth.story_title || storySynth.title || '—'}</td>
+          </tr>
+          <tr>
+            <td class="prop-name">Type</td>
+            <td>${storySynth.story_type || storySynth.type || '—'}</td>
+          </tr>
+        </table>
+        <p><strong>Acteurs :</strong> ${storySynth.actors && storySynth.actors.length > 0 ? storySynth.actors.join(', ') : 'N/A'}</p>
+        <p><strong>Règles Métier :</strong> ${storySynth.business_rules && storySynth.business_rules.length > 0 ? storySynth.business_rules.join('. ') : 'Aucune'}</p>
+        <p><strong>Périmètre Technique :</strong> ${storySynth.technical_scope && storySynth.technical_scope.length > 0 ? storySynth.technical_scope.join(', ') : 'N/A'}</p>
+        
+        <h2>■ Suite de Tests Générée</h2>
+        <ul>
+          <li><strong>Total :</strong> ${testSuite.total_tests ?? 0} cas de test</li>
+          <li><strong>NOM (Nominal) :</strong> ${testSuite.nom_count ?? 0}</li>
+          <li><strong>ALT (Alternatif) :</strong> ${testSuite.alt_count ?? 0}</li>
+          <li><strong>EXC (Exception) :</strong> ${testSuite.exc_count ?? 0}</li>
+          <li><strong>Priorités :</strong> Haute: ${testSuite.high_priority_count ?? 0}</li>
+        </ul>
+        
+        <h3>Tests (résumé)</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Nom</th>
+              <th>Priorité</th>
+              <th>Étapes</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${testSuiteHtml || '<tr><td colspan="4">Aucun test généré</td></tr>'}
+          </tbody>
+        </table>
+        
+        <h2>■ Métriques de Couverture</h2>
+        <ul>
+          <li><strong>Taux :</strong> ${coverage.coverage_rate !== undefined ? coverage.coverage_rate + '%' : '0%'}</li>
+          <li><strong>Statut :</strong> ${coverage.coverage_status || 'EXCELLENT'}</li>
+          <li><strong>Points Non Couverts :</strong> ${coverage.uncovered_points && coverage.uncovered_points.length > 0 ? coverage.uncovered_points.join(', ') : 'Aucun'}</li>
+        </ul>
+        
+        <h2>■ Validation & Assurance Qualité</h2>
+        <p><strong>Statut Validation :</strong> <span class="status-badge">${validation.validation_status || 'VALID'}</span></p>
+        <ul>
+          <li><strong>Doublons détectés :</strong> ${validation.duplicate_pairs ?? 0}</li>
+          <li><strong>Ambiguïtés détectées :</strong> ${validation.ambiguity_count ?? 0}</li>
+        </ul>
+        
+        <h3>Issues Détectées</h3>
+        <p>${(validation.issues || []).length === 0 ? 'Aucune issue détectée ■' : (validation.issues || []).map((i: any) => `• [${i.severity}] ${i.description}`).join('<br>')}</p>
+        
+        <h3>Qualité LLM</h3>
+        <ul>
+          <li><strong>Score :</strong> ${validation.llm_quality_score !== undefined ? validation.llm_quality_score : 'N/A'}/10</li>
+          <li><strong>Feedback :</strong> ${validation.llm_quality_summary || 'Pas de feedback'}</li>
+        </ul>
+        
+        <h2>■ Recommandations</h2>
+        ${recsHtml || '<p>Aucune recommandation</p>'}
+        
+        <h2>■■ Notes de Traitement (Pipeline)</h2>
+        <ul>${pipelineHtml || '<li>Aucune note de traitement</li>'}</ul>
+        
+        <div class="footer">
+          <span>Rapport généré le ${new Date(timestamp || new Date()).toLocaleString('fr-FR')} — Version ${version || '1.0'}</span>
+        </div>
+        
+        <script>
+          window.onload = function() {
+            window.print();
+          }
+        </script>
+      </body>
+      </html>
+    `
+    printWindow.document.write(html)
+    printWindow.document.close()
   }
 
   return (
@@ -320,13 +529,13 @@ const Agent5Result: React.FC<{ output: any; storyId?: string }> = ({ output, sto
       )}
 
       {Object.keys(testSuite).length > 0 && (
-        <ReportSection icon="■" title="Suite de Tests">
+        <ReportSection icon="■" title="Suite de Tests Générée">
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-4">
             {[
-              { label: 'Total', value: testSuite.total_tests },
-              { label: 'NOM', value: testSuite.nom_count },
-              { label: 'ALT', value: testSuite.alt_count },
-              { label: 'EXC', value: testSuite.exc_count },
+              { label: 'Total', value: testSuite.total_tests ?? testSuite.total },
+              { label: 'NOM', value: testSuite.nom_count ?? testSuite.nom },
+              { label: 'ALT', value: testSuite.alt_count ?? testSuite.alt },
+              { label: 'EXC', value: testSuite.exc_count ?? testSuite.exc },
             ].filter(r => r.value !== undefined).map((item, i) => (
               <div key={i} className="rounded-xl p-3 bg-slate-50 border text-center">
                 <p className="text-xl font-extrabold" style={{ color: NAV }}>{item.value}</p>
@@ -334,19 +543,135 @@ const Agent5Result: React.FC<{ output: any; storyId?: string }> = ({ output, sto
               </div>
             ))}
           </div>
+
+          {(testSuite.tests_summary || testSuite.tests || []).length > 0 && (
+            <div className="rounded-xl overflow-hidden border" style={{ borderColor: 'rgba(10,22,40,0.1)' }}>
+              <table className="w-full text-sm">
+                <thead style={{ background: CARD_GRADIENT }}>
+                  <tr>
+                    <th className="px-4 py-3 text-xs font-bold text-white text-left">Type</th>
+                    <th className="px-4 py-3 text-xs font-bold text-white text-left">Nom</th>
+                    <th className="px-4 py-3 text-xs font-bold text-white text-left">Priorité</th>
+                    <th className="px-4 py-3 text-xs font-bold text-white text-left">Étapes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {(testSuite.tests_summary || testSuite.tests || []).map((t: any, i: number) => (
+                    <tr key={i} className="border-t" style={{ borderColor: 'rgba(10,22,40,0.06)' }}>
+                      <td className="px-4 py-3">
+                        <span className="px-2 py-0.5 rounded-lg text-xs font-bold"
+                          style={{ background: `${ORANGE}15`, color: ORANGE }}>
+                          {t.type || t.classification || t.scenario_type || '—'}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-xs font-medium" style={{ color: NAV }}>{t.name || t.nom || t.test_name || '—'}</td>
+                      <td className="px-4 py-3 text-xs font-semibold" style={{ color: `${NAV}70` }}>{t.priority || t.priorite || '—'}</td>
+                      <td className="px-4 py-3 text-xs" style={{ color: `${NAV}60` }}>
+                        {t.step_count !== undefined ? `${t.step_count} étapes` : (t.steps_count !== undefined ? `${t.steps_count} étapes` : t.steps ? `${t.steps} étapes` : '—')}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </ReportSection>
+      )}
+
+      {Object.keys(coverage).length > 0 && (
+        <ReportSection icon="■" title="Métriques de Couverture">
+          <div className="space-y-4">
+            {[
+              ['Statut Couverture',   coverage.coverage_status || coverage.statut],
+              ['Points testables',   coverage.total_testable_points ?? coverage.total_points],
+              ['Points couverts',    coverage.covered_points ?? coverage.points_couverts],
+              ['Points non couverts', Array.isArray(coverage.uncovered_points)
+                ? (coverage.uncovered_points.length === 0 ? 'Aucun' : `${coverage.uncovered_points.length} point(s)`)
+                : coverage.uncovered_points_count ?? '—'],
+            ].filter(([, v]) => v !== undefined && v !== '—').map(([label, value], i) => (
+              <div key={i} className="flex items-center gap-4">
+                <span className="text-sm font-semibold w-44 flex-shrink-0" style={{ color: `${NAV}70` }}>{label} :</span>
+                <span className="text-sm font-bold" style={{ color: NAV }}>{String(value)}</span>
+              </div>
+            ))}
+          </div>
+        </ReportSection>
+      )}
+
+      {Object.keys(validation).length > 0 && (
+        <ReportSection icon="■" title="Validation & Assurance Qualité">
+          <div className="space-y-3">
+            {[
+              ['Statut Validation',   validation.validation_status || validation.status || validation.statut],
+              ['Doublons détectés',   validation.duplicate_pairs   ?? validation.duplicates ?? validation.doublons],
+              ['Ambiguïtés détectées', validation.ambiguity_count   ?? validation.ambiguities ?? validation.ambiguites],
+              ['Score LLM',          validation.llm_quality_score !== undefined ? `${validation.llm_quality_score}/10` : undefined],
+            ].filter(([, v]) => v !== undefined).map(([label, value], i) => (
+              <div key={i} className="flex items-center gap-4">
+                <span className="text-sm font-semibold w-44 flex-shrink-0" style={{ color: `${NAV}70` }}>{label} :</span>
+                <span className="text-sm font-bold" style={{ color: NAV }}>{String(value)}</span>
+              </div>
+            ))}
+          </div>
+        </ReportSection>
+      )}
+
+      {recommendations.length > 0 && (
+        <ReportSection icon="■" title="Recommandations">
+          <div className="space-y-3">
+            {(Array.isArray(recommendations) ? recommendations : Object.entries(recommendations)).map((rec: any, i: number) => {
+              const priority = typeof rec === 'object' ? (rec.priority || rec.priorite || rec[0]) : null
+              const text     = typeof rec === 'string' ? rec : rec.text || rec.description || rec[1] || JSON.stringify(rec)
+              return (
+                <div key={i} className="flex items-start gap-3 p-4 rounded-xl"
+                  style={{ background: 'rgba(10,22,40,0.03)', border: '1px solid rgba(10,22,40,0.08)' }}>
+                  {priority && (
+                    <span className="px-2 py-0.5 rounded-lg text-[10px] font-extrabold uppercase flex-shrink-0 mt-0.5"
+                      style={{
+                        background: String(priority) === 'HIGH' ? `${ROSE}20` : `${ORANGE}20`,
+                        color:      String(priority) === 'HIGH' ? ROSE : ORANGE,
+                      }}>
+                      {priority}
+                    </span>
+                  )}
+                  <p className="text-sm leading-relaxed" style={{ color: NAV }}>{text}</p>
+                </div>
+              )
+            })}
+          </div>
+        </ReportSection>
+      )}
+
+      {Object.keys(pipeline).length > 0 && (
+        <ReportSection icon="■■" title="Notes de Traitement (Pipeline)">
+          <BulletList
+            items={Object.entries(pipeline).map(([k, v]) =>
+              `${k.replace(/_/g, ' ')} : ${Array.isArray(v) ? v.join(', ') : String(v)}`
+            )}
+          />
         </ReportSection>
       )}
 
       <div className="flex items-center justify-between pt-4 border-t text-xs text-slate-400">
         <span>Rapport d'historique</span>
-        <button
-          type="button"
-          onClick={handleDownloadMarkdown}
-          disabled={downloading}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all hover:-translate-y-0.5 disabled:opacity-50"
-          style={{ background: CARD_GRADIENT }}>
-          {downloading ? 'Génération...' : 'Télécharger .md'}
-        </button>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={handleDownloadMarkdown}
+            disabled={downloading}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all hover:-translate-y-0.5 disabled:opacity-50"
+            style={{ background: CARD_GRADIENT }}>
+            {downloading ? 'Génération...' : 'Télécharger .md'}
+          </button>
+          <button
+            type="button"
+            onClick={handleDownloadPdf}
+            disabled={!reportStoryId}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all hover:-translate-y-0.5"
+            style={{ background: `linear-gradient(135deg, ${ROSE}, ${ORANGE})`, boxShadow: `0 4px 16px ${ROSE}35` }}>
+            <Printer size={14} /> Télécharger PDF
+          </button>
+        </div>
       </div>
     </div>
   )

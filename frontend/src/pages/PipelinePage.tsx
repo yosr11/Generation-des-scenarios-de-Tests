@@ -856,6 +856,262 @@ const Agent5Result: React.FC<{ output: any; storyId?: string }> = ({ output, sto
   const normalizedStatus = String(globalStatus || '').toUpperCase()
   const statusColor = (normalizedStatus === 'APPROVED') ? ORANGE : (normalizedStatus === 'REQUIRES_REVIEW' ? ROSE : ROSE)
 
+  const handleDownloadPdf = () => {
+    // Helper to generate the exact styled PDF report matching user's screenshots
+    const printWindow = window.open('', '_blank')
+    if (!printWindow) return
+
+    const findingsHtml = findings.map((f: string) => `<li>${f}</li>`).join('')
+    const nextStepsHtml = nextSteps.map((s: string) => `<li>${s}</li>`).join('')
+    
+    const testSuiteHtml = (testSuite.tests_summary || []).map((t: any) => `
+      <tr>
+        <td><span style="font-weight:700;color:#EA580C;">${t.scenario_type || t.type || 'NOM'}</span></td>
+        <td>${t.test_name || t.name || '—'}</td>
+        <td>${t.priority || '—'}</td>
+        <td>${t.step_count !== undefined ? t.step_count : (t.steps_count !== undefined ? t.steps_count : 0)} étapes</td>
+      </tr>
+    `).join('')
+
+    const recsHtml = recommendations.map((rec: any) => {
+      const priority = rec.priority || 'LOW'
+      const action = rec.action || rec.text || 'Recommandation'
+      const rationale = rec.rationale || rec.description || ''
+      return `
+        <div class="recommendation-card">
+          <div class="rec-header">[${priority.toUpperCase()}] ${action}</div>
+          <div class="rec-body">${rationale}</div>
+        </div>
+      `
+    }).join('')
+
+    const pipelineHtml = pipeline.map((p: string) => `<li>${p}</li>`).join('')
+
+    const html = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Agent Test — Rapport QA · ${reportStoryId}</title>
+        <style>
+          @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+          body {
+            font-family: 'Outfit', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: #0B1E3E;
+            margin: 40px;
+            line-height: 1.6;
+          }
+          .header {
+            font-size: 11px;
+            color: #64748b;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+          }
+          .title {
+            font-size: 26px;
+            font-weight: 800;
+            color: #1D4ED8;
+            border-bottom: 2px solid #1D4ED8;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+          }
+          h2 {
+            font-size: 16px;
+            font-weight: 800;
+            color: #0B1E3E;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 5px;
+          }
+          h3 {
+            font-size: 13px;
+            font-weight: 700;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: #1A3A6B;
+          }
+          .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 700;
+            background: rgba(234,88,12,0.1);
+            color: #EA580C;
+            border: 1px solid rgba(234,88,12,0.3);
+            margin-left: 10px;
+          }
+          ul {
+            padding-left: 20px;
+            margin-bottom: 20px;
+          }
+          li {
+            margin-bottom: 6px;
+            font-size: 13px;
+          }
+          table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+            font-size: 13px;
+            border: 1px solid #e2e8f0;
+          }
+          th, td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+          }
+          th {
+            background-color: #0B1E3E;
+            color: white;
+            font-weight: 700;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+          }
+          td.prop-name {
+            font-weight: 700;
+            background-color: #f8fafc;
+            width: 30%;
+            color: #64748b;
+          }
+          .recommendation-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+          }
+          .rec-header {
+            font-weight: 800;
+            font-size: 11px;
+            color: #EA580C;
+            margin-bottom: 4px;
+          }
+          .rec-body {
+            font-size: 13px;
+          }
+          .footer {
+            margin-top: 50px;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 15px;
+            font-size: 11px;
+            color: #64748b;
+            display: flex;
+            justify-content: space-between;
+          }
+          @media print {
+            body {
+              margin: 20px;
+            }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <span>Agent Test — Rapport QA · ${reportStoryId}</span>
+        </div>
+        
+        <div class="title">${reportTitle || `Rapport QA Complet — ${reportStoryId}`}</div>
+        
+        <h2>■ Résumé Exécutif</h2>
+        <p><strong>Statut Global :</strong> <span class="status-badge">${globalStatus || 'APPROVED'}</span></p>
+        
+        <h3>Findings Principaux</h3>
+        <ul>${findingsHtml || '<li>Aucun finding disponible</li>'}</ul>
+        
+        <h3>Prochaines Étapes</h3>
+        <ul>${nextStepsHtml || '<li>Aucune étape recommandée</li>'}</ul>
+        
+        <h2>■ Synthèse User Story</h2>
+        <table>
+          <tr>
+            <td class="prop-name">ID</td>
+            <td><strong>${reportStoryId || '—'}</strong></td>
+          </tr>
+          <tr>
+            <td class="prop-name">Titre</td>
+            <td>${storySynth.story_title || storySynth.title || '—'}</td>
+          </tr>
+          <tr>
+            <td class="prop-name">Type</td>
+            <td>${storySynth.story_type || storySynth.type || '—'}</td>
+          </tr>
+        </table>
+        <p><strong>Acteurs :</strong> ${storySynth.actors && storySynth.actors.length > 0 ? storySynth.actors.join(', ') : 'N/A'}</p>
+        <p><strong>Règles Métier :</strong> ${storySynth.business_rules && storySynth.business_rules.length > 0 ? storySynth.business_rules.join('. ') : 'Aucune'}</p>
+        <p><strong>Périmètre Technique :</strong> ${storySynth.technical_scope && storySynth.technical_scope.length > 0 ? storySynth.technical_scope.join(', ') : 'N/A'}</p>
+        
+        <h2>■ Suite de Tests Générée</h2>
+        <ul>
+          <li><strong>Total :</strong> ${testSuite.total_tests ?? 0} cas de test</li>
+          <li><strong>NOM (Nominal) :</strong> ${testSuite.nom_count ?? 0}</li>
+          <li><strong>ALT (Alternatif) :</strong> ${testSuite.alt_count ?? 0}</li>
+          <li><strong>EXC (Exception) :</strong> ${testSuite.exc_count ?? 0}</li>
+          <li><strong>Priorités :</strong> Haute: ${testSuite.high_priority_count ?? 0}</li>
+        </ul>
+        
+        <h3>Tests (résumé)</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Nom</th>
+              <th>Priorité</th>
+              <th>Étapes</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${testSuiteHtml || '<tr><td colspan="4">Aucun test généré</td></tr>'}
+          </tbody>
+        </table>
+        
+        <h2>■ Métriques de Couverture</h2>
+        <ul>
+          <li><strong>Taux :</strong> ${coverage.coverage_rate !== undefined ? coverage.coverage_rate + '%' : '0%'}</li>
+          <li><strong>Statut :</strong> ${coverage.coverage_status || 'EXCELLENT'}</li>
+          <li><strong>Points Non Couverts :</strong> ${coverage.uncovered_points && coverage.uncovered_points.length > 0 ? coverage.uncovered_points.join(', ') : 'Aucun'}</li>
+        </ul>
+        
+        <h2>■ Validation & Assurance Qualité</h2>
+        <p><strong>Statut Validation :</strong> <span class="status-badge">${validation.validation_status || 'VALID'}</span></p>
+        <ul>
+          <li><strong>Doublons détectés :</strong> ${validation.duplicate_pairs ?? 0}</li>
+          <li><strong>Ambiguïtés détectées :</strong> ${validation.ambiguity_count ?? 0}</li>
+        </ul>
+        
+        <h3>Issues Détectées</h3>
+        <p>${(validation.issues || []).length === 0 ? 'Aucune issue détectée ■' : (validation.issues || []).map((i: any) => `• [${i.severity}] ${i.description}`).join('<br>')}</p>
+        
+        <h3>Qualité LLM</h3>
+        <ul>
+          <li><strong>Score :</strong> ${validation.llm_quality_score !== undefined ? validation.llm_quality_score : 'N/A'}/10</li>
+          <li><strong>Feedback :</strong> ${validation.llm_quality_summary || 'Pas de feedback'}</li>
+        </ul>
+        
+        <h2>■ Recommandations</h2>
+        ${recsHtml || '<p>Aucune recommandation</p>'}
+        
+        <h2>■■ Notes de Traitement (Pipeline)</h2>
+        <ul>${pipelineHtml || '<li>Aucune note de traitement</li>'}</ul>
+        
+        <div class="footer">
+          <span>Rapport généré le ${new Date(timestamp || new Date()).toLocaleString('fr-FR')} — Version ${version || '1.0'}</span>
+        </div>
+        
+        <script>
+          window.onload = function() {
+            window.print();
+          }
+        </script>
+      </body>
+      </html>
+    `
+    printWindow.document.write(html)
+    printWindow.document.close()
+  }
+
   const handleDownloadMarkdown = async () => {
     if (!reportStoryId) return
     setDownloading(true)
@@ -886,13 +1142,13 @@ const Agent5Result: React.FC<{ output: any; storyId?: string }> = ({ output, sto
           <div className="flex-1">
             <p className="text-xs font-bold uppercase tracking-widest text-white/50 mb-2">Rapport QA Final</p>
             <h2 className="text-2xl font-extrabold text-white leading-tight mb-3">
-              {reportTitle || `Rapport QA — ${storyId}`}
+              {reportTitle || `Rapport QA — ${reportStoryId}`}
             </h2>
             <div className="flex flex-wrap gap-3">
-              {storyId && (
+              {reportStoryId && (
                 <span className="px-3 py-1 rounded-full text-xs font-bold text-white"
                   style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.25)' }}>
-                  {storyId}
+                  {reportStoryId}
                 </span>
               )}
               {version && (
@@ -989,13 +1245,13 @@ const Agent5Result: React.FC<{ output: any; storyId?: string }> = ({ output, sto
                       <td className="px-4 py-3">
                         <span className="px-2 py-0.5 rounded-lg text-xs font-bold"
                           style={{ background: `${ORANGE}15`, color: ORANGE }}>
-                          {t.type || t.classification || '—'}
+                          {t.type || t.classification || t.scenario_type || '—'}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-xs font-medium" style={{ color: NAV }}>{t.name || t.nom || '—'}</td>
+                      <td className="px-4 py-3 text-xs font-medium" style={{ color: NAV }}>{t.name || t.nom || t.test_name || '—'}</td>
                       <td className="px-4 py-3 text-xs font-semibold" style={{ color: `${NAV}70` }}>{t.priority || t.priorite || '—'}</td>
                       <td className="px-4 py-3 text-xs" style={{ color: `${NAV}60` }}>
-                        {t.steps_count !== undefined ? `${t.steps_count} étapes` : t.steps ? `${t.steps} étapes` : '—'}
+                        {t.step_count !== undefined ? `${t.step_count} étapes` : (t.steps_count !== undefined ? `${t.steps_count} étapes` : t.steps ? `${t.steps} étapes` : '—')}
                       </td>
                     </tr>
                   ))}
@@ -1047,17 +1303,47 @@ const Agent5Result: React.FC<{ output: any; storyId?: string }> = ({ output, sto
         <ReportSection icon="■" title="Validation & Assurance Qualité">
           <div className="space-y-3">
             {[
-              ['Statut Validation',   validation.status || validation.statut],
-              ['Doublons détectés',   validation.duplicates ?? validation.doublons],
-              ['Ambiguïtés détectées', validation.ambiguities ?? validation.ambiguites],
-              ['Issues Détectées',    validation.issues || validation.detected_issues],
-              ['Score LLM',          validation.llm_score !== undefined ? `${validation.llm_score}/10` : undefined],
+              ['Statut Validation',   validation.validation_status || validation.status || validation.statut],
+              ['Doublons détectés',   validation.duplicate_pairs   ?? validation.duplicates ?? validation.doublons],
+              ['Ambiguïtés détectées', validation.ambiguity_count   ?? validation.ambiguities ?? validation.ambiguites],
+              ['Score LLM',          validation.llm_quality_score !== undefined ? `${validation.llm_quality_score}/10` : undefined],
             ].filter(([, v]) => v !== undefined).map(([label, value], i) => (
               <div key={i} className="flex items-center gap-4">
                 <span className="text-sm font-semibold w-44 flex-shrink-0" style={{ color: `${NAV}70` }}>{label} :</span>
                 <span className="text-sm font-bold" style={{ color: NAV }}>{String(value)}</span>
               </div>
             ))}
+            {validation.llm_quality_summary && (
+              <div className="rounded-xl p-3 mt-2"
+                style={{ background: `${VIOLET}08`, border: `1px solid ${VIOLET}20` }}>
+                <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: VIOLET }}>Synthèse qualitative IA</p>
+                <p className="text-sm leading-relaxed" style={{ color: NAV }}>{validation.llm_quality_summary}</p>
+              </div>
+            )}
+            {Array.isArray(validation.issues) && validation.issues.length > 0 && (
+              <div>
+                <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: `${NAV}60` }}>Issues détectées :</p>
+                <div className="space-y-2">
+                  {validation.issues.map((issue: any, i: number) => (
+                    <div key={i} className="p-3 rounded-xl"
+                      style={{ background: `${ROSE}06`, border: `1px solid ${ROSE}20` }}>
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-lg"
+                          style={{ background: issue.severity === 'critical' ? `${ROSE}20` : `${ORANGE}20`,
+                            color: issue.severity === 'critical' ? ROSE : ORANGE }}>
+                          {issue.severity}
+                        </span>
+                        <span className="text-xs font-semibold" style={{ color: NAV }}>{issue.issue_type}</span>
+                      </div>
+                      <p className="text-xs leading-relaxed" style={{ color: `${NAV}80` }}>{issue.description}</p>
+                      {issue.recommendation && (
+                        <p className="text-xs mt-1 italic" style={{ color: VIOLET }}>{issue.recommendation}</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </ReportSection>
       )}
@@ -1103,14 +1389,24 @@ const Agent5Result: React.FC<{ output: any; storyId?: string }> = ({ output, sto
         <span>
           Rapport généré le {timestamp ? new Date(timestamp).toLocaleString('fr-FR') : '—'} — Version {version || '—'}
         </span>
-        <button
-          type="button"
-          onClick={handleDownloadMarkdown}
-          disabled={downloading || !reportStoryId}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all hover:-translate-y-0.5 disabled:opacity-50"
-          style={{ background: CARD_GRADIENT, boxShadow: `0 4px 16px ${NAV}35` }}>
-          {downloading ? <><Cpu size={14} className="animate-spin" /> Génération…</> : <><FileText size={14} /> Télécharger .md</>}
-        </button>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={handleDownloadMarkdown}
+            disabled={downloading || !reportStoryId}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all hover:-translate-y-0.5 disabled:opacity-50"
+            style={{ background: CARD_GRADIENT, boxShadow: `0 4px 16px ${NAV}35` }}>
+            {downloading ? <><Cpu size={14} className="animate-spin" /> MD…</> : <><FileText size={14} /> Télécharger .md</>}
+          </button>
+          <button
+            type="button"
+            onClick={handleDownloadPdf}
+            disabled={!reportStoryId}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all hover:-translate-y-0.5"
+            style={{ background: `linear-gradient(135deg, ${ROSE}, ${ORANGE})`, boxShadow: `0 4px 16px ${ROSE}35` }}>
+            <Printer size={14} /> Télécharger PDF
+          </button>
+        </div>
       </div>
     </div>
   )
