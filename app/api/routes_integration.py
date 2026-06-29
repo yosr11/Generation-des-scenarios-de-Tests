@@ -56,8 +56,17 @@ router = APIRouter(tags=["Xray Integration"])
 
 def _resolve_jira_session(user: CurrentUser):
     if user.is_tester:
-        creds = get_tester_jira_credentials(user)
-        return create_user_jira_session(creds.username, creds.password)
+        try:
+            creds = get_tester_jira_credentials(user)
+            return create_user_jira_session(creds.username, creds.password)
+        except HTTPException as exc:
+            # The tester Jira credential store is in-memory and can be cleared
+            # after a backend restart while the auth cookie is still valid.
+            # In that case, fall back to the shared Jira service account so
+            # Xray export can still work for authorized users.
+            if exc.status_code == 401 and settings.JIRA_USERNAME and settings.JIRA_PASSWORD:
+                return create_user_jira_session(settings.JIRA_USERNAME, settings.JIRA_PASSWORD)
+            raise
     return None
 
 
