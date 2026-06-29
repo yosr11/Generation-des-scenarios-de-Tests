@@ -634,7 +634,6 @@ const Agent2Result: React.FC<{ output: any; storyId?: string; onTestsChange?: (t
       storyId={storyId}
       onTestsChange={handleChange}
       expandable
-      defaultExpandedIndex={0}
       showProjectPicker
     />
   )
