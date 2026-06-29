@@ -67,7 +67,14 @@ def _resolve_jira_session(user: CurrentUser):
             if exc.status_code == 401 and settings.JIRA_USERNAME and settings.JIRA_PASSWORD:
                 return create_user_jira_session(settings.JIRA_USERNAME, settings.JIRA_PASSWORD)
             raise
-    return None
+
+    if settings.JIRA_USERNAME and settings.JIRA_PASSWORD:
+        return create_user_jira_session(settings.JIRA_USERNAME, settings.JIRA_PASSWORD)
+
+    raise HTTPException(
+        status_code=401,
+        detail="Jira session expired. Please log in again.",
+    )
 
 
 def _use_test_jira() -> bool:
@@ -191,6 +198,9 @@ async def integrate_tests(
                     f"Jira did not return issue key for test '{test_case.test_name}'"
                 )
 
+            for warning in issue.get("warnings") or []:
+                errors.append(f"{test_case.test_name} (warning): {warning}")
+
             logger.info(f"[integrate_tests] Test created with steps: {issue_key}")
             created_keys.append(issue_key)
 
@@ -202,7 +212,9 @@ async def integrate_tests(
             errors.append(f"{test_case.test_name}: {str(exc)}")
             continue
 
-    status = "success" if not errors else "partial"
+    status = "success"
+    if errors:
+        status = "partial" if created_keys else "error"
 
     await log_action(
         db,
@@ -286,6 +298,9 @@ async def integrate_test_single(
                     f"Jira did not return issue key for test '{test_case.test_name}'"
                 )
 
+            for warning in issue.get("warnings") or []:
+                errors.append(f"{test_case.test_name} (warning): {warning}")
+
             logger.info(f"[integrate_test_single] Test created with steps: {issue_key}")
             created_keys.append(issue_key)
 
@@ -293,7 +308,9 @@ async def integrate_test_single(
         logger.error(f"[integrate_test_single] Error: {exc}", exc_info=True)
         errors.append(str(exc))
 
-    status = "success" if not errors else "partial"
+    status = "success"
+    if errors:
+        status = "partial" if created_keys else "error"
 
     await log_action(
         db,
@@ -331,6 +348,8 @@ def add_step_to_test(
 
     logger = logging.getLogger(__name__)
 
+    jira_session = _resolve_jira_session(user)
+
     try:
         step_payload = [
             {
@@ -345,6 +364,7 @@ def add_step_to_test(
             test_key=test_key,
             steps=step_payload,
             use_test_jira=_use_test_jira(),
+            session=jira_session,
         )
 
         if res.get("error"):

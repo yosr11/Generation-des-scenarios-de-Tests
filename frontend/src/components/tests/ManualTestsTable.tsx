@@ -419,10 +419,11 @@ export const ManualTestsTable: React.FC<ManualTestsTableProps> = ({
       const payload = buildPayload(test)
       const resp = await apiClient.integration.integrateTest({ project_key: projectKey, test: payload })
       setIntegrationResult({ ...resp, test_name: payload.test_name })
-      if (resp.status === 'success' && resp.created_keys.length > 0) {
+      if (resp.created_keys.length > 0) {
         toast.success(`Test integre avec succes. ID Jira: ${resp.created_keys.join(', ')}`)
+      } else if (resp.errors?.length) {
+        toast.error('Integration avec des erreurs')
       }
-      else if (resp.errors?.length) toast.error('Intégration avec des erreurs')
     } catch (err: any) {
       toast.error(err?.message || 'Échec de l\'intégration')
       setIntegrationResult({ status: 'error', created_count: 0, created_keys: [], errors: [err?.message || 'Erreur'], test_name: test.test_name })

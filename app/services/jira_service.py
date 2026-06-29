@@ -41,6 +41,7 @@ XRAY_FIELD_STEPS = os.getenv("XRAY_FIELD_STEPS", "customfield_14404")
 XRAY_FIELD_REPO_PATH = os.getenv("XRAY_FIELD_REPO_PATH", "customfield_14410")
 XRAY_FIELD_PRECONDITIONS = os.getenv("XRAY_FIELD_PRECONDITIONS", "customfield_14407")
 XRAY_FIELD_STEPS_COUNT = os.getenv("XRAY_FIELD_STEPS_COUNT", "customfield_14405")
+XRAY_TEST_ISSUETYPE_ID = os.getenv("XRAY_TEST_ISSUETYPE_ID", "10800")
 
 
 def _create_session(
@@ -617,30 +618,135 @@ def get_test_byID(test_key: str, use_test_jira: bool = False) -> Dict[str, Any]:
 # Création issue Jira/Xray
 # ============================================================
 
+def _collect_rejected_fields(body: Any) -> set:
+    """Collect field names rejected by Jira create/update APIs."""
+    rejected: set = set()
+
+    if not isinstance(body, dict):
+        return rejected
+
+    errors = body.get("errors") or {}
+    if isinstance(errors, dict):
+        rejected.update(errors.keys())
+
+    for message in body.get("errorMessages") or []:
+        if not isinstance(message, str):
+            continue
+        match = re.search(r"Field '([^']+)' cannot be set", message)
+        if match:
+            rejected.add(match.group(1))
+
+    return rejected
+
+
 def _is_field_rejected_error(body: Any, field_name: str) -> bool:
     """
     Détecte si Jira a rejeté un champ spécifique.
     """
-    if isinstance(body, dict):
-        errors = body.get("errors") or {}
+    return field_name in _collect_rejected_fields(body)
 
-        if field_name in errors:
-            return True
 
-        for value in errors.values():
-            if isinstance(value, str) and field_name in value:
-                return True
+def fetch_create_meta(
+    session: requests.Session,
+    jira_url: str,
+    project_key: str,
+    issue_type_name: str = "Test",
+) -> Dict[str, Any]:
+    """
+    Récupère les champs autorisés à la création pour un type d'issue.
+    """
+    url = f"{jira_url}/rest/api/2/issue/createmeta"
+    params = {
+        "projectKeys": project_key,
+        "issuetypeNames": issue_type_name,
+        "expand": "projects.issuetypes.fields",
+    }
 
-        error_messages = body.get("errorMessages") or []
+    try:
+        resp = session.get(url, params=params, timeout=30)
+    except requests.RequestException as exc:
+        return {"error": str(exc)}
 
-        for message in error_messages:
-            if isinstance(message, str) and field_name in message:
-                return True
+    if resp.status_code != 200:
+        return {
+            "error": True,
+            "status_code": resp.status_code,
+            "body": resp.text[:2000],
+        }
 
-    elif isinstance(body, str):
-        return field_name in body
+    data = resp.json() or {}
+    projects = data.get("projects") or []
 
-    return False
+    for project in projects:
+        if project.get("key") != project_key:
+            continue
+
+        for issue_type in project.get("issuetypes") or []:
+            name = (issue_type.get("name") or "").strip()
+            if name.lower() != issue_type_name.lower():
+                continue
+
+            fields = issue_type.get("fields") or {}
+            return {
+                "issuetype": {
+                    "id": issue_type.get("id"),
+                    "name": name,
+                },
+                "allowed_fields": set(fields.keys()),
+                "required_fields": {
+                    field_key
+                    for field_key, field_meta in fields.items()
+                    if (field_meta or {}).get("required")
+                },
+            }
+
+    return {
+        "error": True,
+        "message": (
+            f"Issue type '{issue_type_name}' not found in createmeta "
+            f"for project {project_key}"
+        ),
+    }
+
+
+def _resolve_test_issuetype(
+    issue_type_name: str,
+    create_meta: Optional[Dict[str, Any]] = None,
+) -> Dict[str, str]:
+    """
+    Résout la référence issuetype (id prioritaire pour Sopra test Jira).
+    """
+    if XRAY_TEST_ISSUETYPE_ID:
+        return {"id": str(XRAY_TEST_ISSUETYPE_ID)}
+
+    if create_meta and create_meta.get("issuetype", {}).get("id"):
+        issue_type = create_meta["issuetype"]
+        return {"id": str(issue_type["id"])}
+
+    return {"name": issue_type_name}
+
+
+def _filter_fields_for_create(
+    fields: Dict[str, Any],
+    allowed_fields: Optional[set],
+) -> Dict[str, Any]:
+    """
+    Ne conserve que les champs autorisés par createmeta, sauf project/issuetype.
+    """
+    if not allowed_fields:
+        return fields
+
+    filtered = {
+        key: value
+        for key, value in fields.items()
+        if key in allowed_fields or key in {"project", "issuetype", "summary"}
+    }
+
+    filtered["project"] = fields["project"]
+    filtered["issuetype"] = fields["issuetype"]
+    if "summary" in fields:
+        filtered["summary"] = fields["summary"]
+    return filtered
 
 
 def _post_jira_issue(
@@ -700,12 +806,13 @@ def _update_issue_fields(
     issue_key: str,
     fields: Dict[str, Any],
     use_test_jira: bool = False,
+    session: Optional[requests.Session] = None,
 ) -> Dict[str, Any]:
     """
     Met à jour des champs Jira.
     """
     jira_url = JIRA_TEST_URL if use_test_jira else JIRA_PROD_URL
-    session = _session_test if use_test_jira else _session_prod
+    jira_session = session or (_session_test if use_test_jira else _session_prod)
 
     url = f"{jira_url}/rest/api/2/issue/{issue_key}"
 
@@ -714,7 +821,7 @@ def _update_issue_fields(
     }
 
     try:
-        resp = session.put(url, json=payload, timeout=30)
+        resp = jira_session.put(url, json=payload, timeout=30)
     except requests.RequestException as exc:
         return {
             "error": True,
@@ -783,11 +890,11 @@ def create_test_issue(
     session: Optional[requests.Session] = None,
 ) -> Dict[str, Any]:
     """
-    Crée une issue Jira de type Test avec steps Xray dès la création.
+    Crée une issue Jira de type Test, puis enrichit description / type / steps.
 
-    C'est la correction principale :
-    On évite de créer le test puis de modifier les steps après,
-    car ton Jira retourne un problème de permission sur l'édition.
+    Sur Sopra test Jira (YOUQA), les champs Xray ne sont pas toujours
+    disponibles sur l'écran de création : on crée d'abord un test minimal
+    (project + issuetype + summary), puis on met à jour les champs restants.
     """
     import logging
 
@@ -798,110 +905,142 @@ def create_test_issue(
 
     url = f"{jira_url}/rest/api/2/issue"
 
-    fields: Dict[str, Any] = {
+    create_meta = fetch_create_meta(
+        session=jira_session,
+        jira_url=jira_url,
+        project_key=project_key,
+        issue_type_name=issue_type,
+    )
+    if create_meta.get("error") and not XRAY_TEST_ISSUETYPE_ID:
+        logger.warning(
+            "[create_test_issue] createmeta unavailable for %s/%s: %s",
+            project_key,
+            issue_type,
+            create_meta.get("message") or create_meta.get("body") or create_meta.get("error"),
+        )
+
+    issuetype_ref = _resolve_test_issuetype(issue_type, create_meta)
+    allowed_fields = (
+        create_meta.get("allowed_fields")
+        if not create_meta.get("error")
+        else None
+    )
+
+    create_fields: Dict[str, Any] = {
         "project": {"key": project_key},
+        "issuetype": issuetype_ref,
         "summary": summary,
-        "description": description or "",
-        "issuetype": {"name": issue_type},
     }
-
-    # Type de test Xray = Manual
-    fields[XRAY_FIELD_TEST_TYPE] = {"value": "Manual"}
-
-    # Steps Xray directement dans la création
-    if steps:
-        fields[XRAY_FIELD_STEPS] = {
-            "steps": _build_xray_step_payload(steps)
-        }
-
-    payload = {
-        "fields": fields,
-    }
+    create_fields = _filter_fields_for_create(create_fields, allowed_fields)
 
     logger.info(
-        f"[create_test_issue] Creating Test in {jira_url}, "
-        f"project={project_key}, steps={len(steps or [])}"
-    )
-    logger.debug(
-        f"[create_test_issue] Payload={json.dumps(payload, ensure_ascii=False)}"
+        "[create_test_issue] Creating minimal Test in %s, project=%s, issuetype=%s",
+        jira_url,
+        project_key,
+        issuetype_ref,
     )
 
     result = _post_jira_issue(
         session=jira_session,
         url=url,
-        payload=payload,
+        payload={"fields": create_fields},
     )
 
-    # Si Jira refuse uniquement Test Type, on réessaie sans ce champ.
-    if result.get("error") and _is_field_rejected_error(
-        result.get("body"),
-        XRAY_FIELD_TEST_TYPE,
-    ):
-        logger.warning(
-            f"[create_test_issue] Jira rejected {XRAY_FIELD_TEST_TYPE}. "
-            "Retrying without Test Type field."
-        )
-
-        fields_without_test_type = dict(fields)
-        fields_without_test_type.pop(XRAY_FIELD_TEST_TYPE, None)
-
-        result = _post_jira_issue(
-            session=jira_session,
-            url=url,
-            payload={"fields": fields_without_test_type},
-        )
-
-    # Si Jira refuse les steps, on retente sans steps puis on les ajoute
-    # via l'API Xray de test/{key}/step.
-    if result.get("error") and _is_field_rejected_error(
-        result.get("body"),
-        XRAY_FIELD_STEPS,
-    ):
-        logger.warning(
-            "[create_test_issue] Jira rejected %s. Creating test without steps then adding steps via Xray API.",
-            XRAY_FIELD_STEPS,
-        )
-
-        fields_without_steps = dict(fields)
-        fields_without_steps.pop(XRAY_FIELD_STEPS, None)
-
-        retry_result = _post_jira_issue(
-            session=jira_session,
-            url=url,
-            payload={"fields": fields_without_steps},
-        )
-
-        if retry_result.get("error"):
-            return retry_result
-
-        issue_key = retry_result.get("key")
-        if not issue_key:
-            return {
-                "error": True,
-                "message": (
-                    "Test créé sans steps, mais Jira n'a pas renvoyé de clé d'issue."
-                ),
-                "body": retry_result,
+    if result.get("error"):
+        rejected = _collect_rejected_fields(result.get("body"))
+        if rejected:
+            retry_fields = {
+                key: value
+                for key, value in create_fields.items()
+                if key not in rejected
             }
+            if retry_fields.get("project") and retry_fields.get("issuetype"):
+                logger.warning(
+                    "[create_test_issue] Retrying minimal create without fields: %s",
+                    sorted(rejected),
+                )
+                result = _post_jira_issue(
+                    session=jira_session,
+                    url=url,
+                    payload={"fields": retry_fields},
+                )
 
+        if result.get("error") and issuetype_ref.get("id"):
+            logger.warning(
+                "[create_test_issue] Retrying create with issuetype name '%s'",
+                issue_type,
+            )
+            fallback_fields = {
+                "project": {"key": project_key},
+                "issuetype": {"name": issue_type},
+                "summary": summary,
+            }
+            fallback_fields = _filter_fields_for_create(
+                fallback_fields,
+                allowed_fields,
+            )
+            result = _post_jira_issue(
+                session=jira_session,
+                url=url,
+                payload={"fields": fallback_fields},
+            )
+
+    if result.get("error"):
+        return result
+
+    issue_key = result.get("key")
+    if not issue_key:
+        return {
+            "error": True,
+            "message": "Jira n'a pas renvoyé de clé d'issue après création.",
+            "body": result,
+        }
+
+    post_create_errors: List[str] = []
+
+    if description:
+        description_result = _update_issue_fields(
+            issue_key=issue_key,
+            fields={"description": description},
+            use_test_jira=use_test_jira,
+            session=jira_session,
+        )
+        if description_result.get("error"):
+            post_create_errors.append(
+                f"description: {description_result.get('body') or description_result.get('message')}"
+            )
+
+    test_type_result = _update_issue_fields(
+        issue_key=issue_key,
+        fields={XRAY_FIELD_TEST_TYPE: {"value": "Manual"}},
+        use_test_jira=use_test_jira,
+        session=jira_session,
+    )
+    if test_type_result.get("error"):
+        post_create_errors.append(
+            f"{XRAY_FIELD_TEST_TYPE}: {test_type_result.get('body') or test_type_result.get('message')}"
+        )
+
+    if steps:
         add_steps_result = add_xray_test_steps(
             test_key=issue_key,
             steps=steps,
             use_test_jira=use_test_jira,
+            session=jira_session,
         )
-
         if add_steps_result.get("error"):
-            return {
-                "error": True,
-                "message": (
-                    f"Test créé ({issue_key}) mais impossible d'ajouter les étapes "
-                    f"via l'API Xray: {add_steps_result.get('message') or add_steps_result.get('body')}"
-                ),
-                "issue_key": issue_key,
-                "steps_error": add_steps_result,
-            }
+            post_create_errors.append(
+                add_steps_result.get("message")
+                or str(add_steps_result.get("body") or add_steps_result)
+            )
 
-        return retry_result
+    if post_create_errors:
+        logger.warning(
+            "[create_test_issue] Test %s created with post-create warnings: %s",
+            issue_key,
+            post_create_errors,
+        )
+        result["warnings"] = post_create_errors
 
     return result
 
@@ -910,12 +1049,10 @@ def add_xray_test_steps(
     test_key: str,
     steps: List[Dict[str, str]],
     use_test_jira: bool = False,
+    session: Optional[requests.Session] = None,
 ) -> Dict[str, Any]:
     """
-    Ajoute des steps à un test existant.
-
-    Ce fallback peut échouer si ton compte n'a pas Edit/Browse.
-    L'intégration principale utilise create_test_issue avec steps directement.
+    Ajoute des steps à un test existant via l'API Xray Raven.
     """
     import logging
 
@@ -928,7 +1065,7 @@ def add_xray_test_steps(
         }
 
     jira_url = JIRA_TEST_URL if use_test_jira else JIRA_PROD_URL
-    session = _session_test if use_test_jira else _session_prod
+    jira_session = session or (_session_test if use_test_jira else _session_prod)
 
     candidate_urls = [
         f"{jira_url}/rest/raven/1.0/api/test/{test_key}/step",
@@ -957,7 +1094,7 @@ def add_xray_test_steps(
 
             for method in ("post", "put"):
                 try:
-                    resp = getattr(session, method)(
+                    resp = getattr(jira_session, method)(
                         url,
                         json=payload,
                         timeout=30,
@@ -1000,6 +1137,7 @@ def add_xray_test_steps(
             }
         },
         use_test_jira=use_test_jira,
+        session=jira_session,
     )
 
     if not fallback_result.get("error"):

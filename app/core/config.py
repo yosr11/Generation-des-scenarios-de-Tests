@@ -70,6 +70,7 @@ class Settings:
     JIRA_PASSWORD = os.getenv("JIRA_PASSWORD", "")
     JIRA_BASE_URL = os.getenv("JIRA_BASE_URL", JIRA_PROD_URL)
     XRAY_USE_TEST_JIRA = os.getenv("XRAY_USE_TEST_JIRA", "true").lower() == "true"
+    XRAY_TEST_ISSUETYPE_ID = os.getenv("XRAY_TEST_ISSUETYPE_ID", "10800")
 
     # ── Agent 1 — Analysis ───────────────────────────────────
     AGENT1_DEFAULT_MODEL = os.getenv("AGENT1_DEFAULT_MODEL", "llama4")
