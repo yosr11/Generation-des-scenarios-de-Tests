@@ -71,8 +71,8 @@ def _resolve_jira_session(user: CurrentUser):
 
 
 def _use_test_jira() -> bool:
-    """Keep Xray integration on the same Jira instance as auth/project selection."""
-    return settings.JIRA_BASE_URL.rstrip("/") == settings.JIRA_TEST_URL.rstrip("/")
+    """Xray export targets the Jira test instance by default."""
+    return settings.XRAY_USE_TEST_JIRA
 
 
 def _jira_browse_base_url(use_test_jira: bool) -> str:
