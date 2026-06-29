@@ -54,16 +54,19 @@ class IntegrateTestsResponse(BaseModel):
 router = APIRouter(tags=["Xray Integration"])
 
 
+def _truncate_summary(summary: str, max_length: int = 255) -> str:
+    """Tronque le summary à la limite Jira (255 caractères)."""
+    if len(summary) <= max_length:
+        return summary
+    return summary[: max_length - 1] + "…"
+
+
 def _resolve_jira_session(user: CurrentUser):
     if user.is_tester:
         try:
             creds = get_tester_jira_credentials(user)
             return create_user_jira_session(creds.username, creds.password)
         except HTTPException as exc:
-            # The tester Jira credential store is in-memory and can be cleared
-            # after a backend restart while the auth cookie is still valid.
-            # In that case, fall back to the shared Jira service account so
-            # Xray export can still work for authorized users.
             if exc.status_code == 401 and settings.JIRA_USERNAME and settings.JIRA_PASSWORD:
                 return create_user_jira_session(settings.JIRA_USERNAME, settings.JIRA_PASSWORD)
             raise
@@ -78,7 +81,6 @@ def _resolve_jira_session(user: CurrentUser):
 
 
 def _use_test_jira() -> bool:
-    """Xray export targets the Jira test instance by default."""
     return settings.XRAY_USE_TEST_JIRA
 
 
@@ -156,9 +158,11 @@ async def integrate_tests(
         try:
             logger.info(f"[integrate_tests] Processing: {test_case.test_name}")
 
+            safe_summary = _truncate_summary(test_case.test_name)
+
             existing = search_test_issue_by_summary(
                 project_key=body.project_key,
-                summary=test_case.test_name,
+                summary=safe_summary,
                 use_test_jira=use_test_jira,
                 session=jira_session,
             )
@@ -173,7 +177,7 @@ async def integrate_tests(
 
             issue = create_test_issue(
                 project_key=body.project_key,
-                summary=test_case.test_name,
+                summary=safe_summary,
                 description=desc,
                 issue_type="Test",
                 steps=step_payload,
@@ -189,17 +193,17 @@ async def integrate_tests(
                     or issue.get("error")
                 )
                 raise ValueError(
-                    f"Create test failed for '{test_case.test_name}': {error_detail}"
+                    f"Create test failed for '{safe_summary}': {error_detail}"
                 )
 
             issue_key = issue.get("key")
             if not issue_key:
                 raise ValueError(
-                    f"Jira did not return issue key for test '{test_case.test_name}'"
+                    f"Jira did not return issue key for test '{safe_summary}'"
                 )
 
             for warning in issue.get("warnings") or []:
-                errors.append(f"{test_case.test_name} (warning): {warning}")
+                errors.append(f"{safe_summary} (warning): {warning}")
 
             logger.info(f"[integrate_tests] Test created with steps: {issue_key}")
             created_keys.append(issue_key)
@@ -253,12 +257,13 @@ async def integrate_test_single(
 
     try:
         test_case = body.test
+        safe_summary = _truncate_summary(test_case.test_name)
 
-        logger.info(f"[integrate_test_single] Processing: {test_case.test_name}")
+        logger.info(f"[integrate_test_single] Processing: {safe_summary}")
 
         existing = search_test_issue_by_summary(
             project_key=body.project_key,
-            summary=test_case.test_name,
+            summary=safe_summary,
             use_test_jira=use_test_jira,
             session=jira_session,
         )
@@ -273,7 +278,7 @@ async def integrate_test_single(
 
             issue = create_test_issue(
                 project_key=body.project_key,
-                summary=test_case.test_name,
+                summary=safe_summary,
                 description=desc,
                 issue_type="Test",
                 steps=step_payload,
@@ -289,17 +294,17 @@ async def integrate_test_single(
                     or issue.get("error")
                 )
                 raise ValueError(
-                    f"Create test failed for '{test_case.test_name}': {error_detail}"
+                    f"Create test failed for '{safe_summary}': {error_detail}"
                 )
 
             issue_key = issue.get("key")
             if not issue_key:
                 raise ValueError(
-                    f"Jira did not return issue key for test '{test_case.test_name}'"
+                    f"Jira did not return issue key for test '{safe_summary}'"
                 )
 
             for warning in issue.get("warnings") or []:
-                errors.append(f"{test_case.test_name} (warning): {warning}")
+                errors.append(f"{safe_summary} (warning): {warning}")
 
             logger.info(f"[integrate_test_single] Test created with steps: {issue_key}")
             created_keys.append(issue_key)

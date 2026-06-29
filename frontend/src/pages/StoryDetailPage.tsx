@@ -186,7 +186,7 @@ const Agent3Result: React.FC<{ output: any }> = ({ output }) => {
   )
 }
 
-// ── Agent 5 Result ────────────────────────────────────────────────────────────
+// ── Agent 5 Result — sub-components ──────────────────────────────────────────
 const BulletList: React.FC<{ items: string[]; color?: string }> = ({ items, color = NAV }) => (
   <ul className="space-y-1.5 list-disc list-inside pl-1 text-xs" style={{ color: NAV }}>
     {items.map((it, i) => (
@@ -196,6 +196,7 @@ const BulletList: React.FC<{ items: string[]; color?: string }> = ({ items, colo
     ))}
   </ul>
 )
+
 const InfoTable: React.FC<{ rows: [string, string][] }> = ({ rows }) => (
   <div className="rounded-xl overflow-hidden border">
     <table className="w-full text-xs text-left">
@@ -210,6 +211,7 @@ const InfoTable: React.FC<{ rows: [string, string][] }> = ({ rows }) => (
     </table>
   </div>
 )
+
 const ReportSection: React.FC<{ icon: string; title: string; children: React.ReactNode }> = ({ icon, title, children }) => (
   <div className="space-y-3">
     <div className="flex items-center gap-2 pb-2 border-b">
@@ -220,14 +222,41 @@ const ReportSection: React.FC<{ icon: string; title: string; children: React.Rea
   </div>
 )
 
+// ── Agent 5 Result ────────────────────────────────────────────────────────────
+const Agent5Result: React.FC<{ output: any; storyId?: string }> = ({ output, storyId }) => {
+  const [downloading, setDownloading] = useState(false)
+
+  const report          = output?.report || output || {}
+  const reportTitle     = report.report_title    || report.title    || ''
+  const reportStoryId   = report.story_id        || storyId        || ''
+  const version         = report.version         || ''
+  const timestamp       = report.timestamp       || ''
+  const globalStatus    = report.global_status   || report.status  || ''
+  const findings        = report.key_findings    || report.findings || []
+  const nextSteps       = report.next_steps      || []
+  const storySynth      = report.story_synthesis || report.story_synth || {}
+  const testSuite       = report.test_suite      || report.tests   || {}
+  const coverage        = report.coverage        || report.coverage_metrics || {}
+  const validation      = report.validation      || report.quality  || {}
+  const recommendations = report.recommendations || []
+  const pipeline        = report.pipeline_notes  || report.pipeline || {}
+
+  const handleDownloadMarkdown = async () => {
+    setDownloading(true)
+    try {
+      // placeholder — ajoute ta logique ici si besoin
+    } finally {
+      setDownloading(false)
+    }
+  }
+
   const handleDownloadPdf = () => {
-    // Helper to generate the exact styled PDF report matching user's screenshots
     const printWindow = window.open('', '_blank')
     if (!printWindow) return
 
-    const findingsHtml = findings.map((f: string) => `<li>${f}</li>`).join('')
-    const nextStepsHtml = nextSteps.map((s: string) => `<li>${s}</li>`).join('')
-    
+    const findingsHtml   = findings.map((f: string) => `<li>${f}</li>`).join('')
+    const nextStepsHtml  = nextSteps.map((s: string) => `<li>${s}</li>`).join('')
+
     const testSuiteHtml = (testSuite.tests_summary || []).map((t: any) => `
       <tr>
         <td><span style="font-weight:700;color:#EA580C;">${t.scenario_type || t.type || 'NOM'}</span></td>
@@ -239,7 +268,7 @@ const ReportSection: React.FC<{ icon: string; title: string; children: React.Rea
 
     const recsHtml = recommendations.map((rec: any) => {
       const priority = rec.priority || 'LOW'
-      const action = rec.action || rec.text || 'Recommandation'
+      const action   = rec.action   || rec.text || 'Recommandation'
       const rationale = rec.rationale || rec.description || ''
       return `
         <div class="recommendation-card">
@@ -249,7 +278,9 @@ const ReportSection: React.FC<{ icon: string; title: string; children: React.Rea
       `
     }).join('')
 
-    const pipelineHtml = pipeline.map((p: string) => `<li>${p}</li>`).join('')
+    const pipelineHtml = Array.isArray(pipeline)
+      ? pipeline.map((p: string) => `<li>${p}</li>`).join('')
+      : Object.entries(pipeline).map(([k, v]) => `<li><strong>${k}</strong> : ${v}</li>`).join('')
 
     const html = `
       <!DOCTYPE html>
@@ -258,217 +289,94 @@ const ReportSection: React.FC<{ icon: string; title: string; children: React.Rea
         <title>Agent Test — Rapport QA · ${reportStoryId}</title>
         <style>
           @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
-          body {
-            font-family: 'Outfit', 'Segoe UI', system-ui, -apple-system, sans-serif;
-            color: #0B1E3E;
-            margin: 40px;
-            line-height: 1.6;
-          }
-          .header {
-            font-size: 11px;
-            color: #64748b;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-          }
-          .title {
-            font-size: 26px;
-            font-weight: 800;
-            color: #1D4ED8;
-            border-bottom: 2px solid #1D4ED8;
-            padding-bottom: 10px;
-            margin-bottom: 30px;
-          }
-          h2 {
-            font-size: 16px;
-            font-weight: 800;
-            color: #0B1E3E;
-            margin-top: 30px;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #e2e8f0;
-            padding-bottom: 5px;
-          }
-          h3 {
-            font-size: 13px;
-            font-weight: 700;
-            margin-top: 20px;
-            margin-bottom: 10px;
-            color: #1A3A6B;
-          }
-          .status-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 9999px;
-            font-size: 12px;
-            font-weight: 700;
-            background: rgba(234,88,12,0.1);
-            color: #EA580C;
-            border: 1px solid rgba(234,88,12,0.3);
-            margin-left: 10px;
-          }
-          ul {
-            padding-left: 20px;
-            margin-bottom: 20px;
-          }
-          li {
-            margin-bottom: 6px;
-            font-size: 13px;
-          }
-          table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 25px;
-            font-size: 13px;
-            border: 1px solid #e2e8f0;
-          }
-          th, td {
-            padding: 10px 12px;
-            text-align: left;
-            border-bottom: 1px solid #e2e8f0;
-          }
-          th {
-            background-color: #0B1E3E;
-            color: white;
-            font-weight: 700;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-          }
-          td.prop-name {
-            font-weight: 700;
-            background-color: #f8fafc;
-            width: 30%;
-            color: #64748b;
-          }
-          .recommendation-card {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 12px;
-          }
-          .rec-header {
-            font-weight: 800;
-            font-size: 11px;
-            color: #EA580C;
-            margin-bottom: 4px;
-          }
-          .rec-body {
-            font-size: 13px;
-          }
-          .footer {
-            margin-top: 50px;
-            border-top: 1px solid #e2e8f0;
-            padding-top: 15px;
-            font-size: 11px;
-            color: #64748b;
-            display: flex;
-            justify-content: space-between;
-          }
-          @media print {
-            body {
-              margin: 20px;
-            }
-          }
+          body { font-family: 'Outfit', 'Segoe UI', system-ui, -apple-system, sans-serif; color: #0B1E3E; margin: 40px; line-height: 1.6; }
+          .header { font-size: 11px; color: #64748b; margin-bottom: 20px; display: flex; justify-content: space-between; }
+          .title { font-size: 26px; font-weight: 800; color: #1D4ED8; border-bottom: 2px solid #1D4ED8; padding-bottom: 10px; margin-bottom: 30px; }
+          h2 { font-size: 16px; font-weight: 800; color: #0B1E3E; margin-top: 30px; margin-bottom: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; }
+          h3 { font-size: 13px; font-weight: 700; margin-top: 20px; margin-bottom: 10px; color: #1A3A6B; }
+          .status-badge { display: inline-block; padding: 4px 12px; border-radius: 9999px; font-size: 12px; font-weight: 700; background: rgba(234,88,12,0.1); color: #EA580C; border: 1px solid rgba(234,88,12,0.3); margin-left: 10px; }
+          ul { padding-left: 20px; margin-bottom: 20px; }
+          li { margin-bottom: 6px; font-size: 13px; }
+          table { width: 100%; border-collapse: collapse; margin-bottom: 25px; font-size: 13px; border: 1px solid #e2e8f0; }
+          th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+          th { background-color: #0B1E3E; color: white; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
+          td.prop-name { font-weight: 700; background-color: #f8fafc; width: 30%; color: #64748b; }
+          .recommendation-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; margin-bottom: 12px; }
+          .rec-header { font-weight: 800; font-size: 11px; color: #EA580C; margin-bottom: 4px; }
+          .rec-body { font-size: 13px; }
+          .footer { margin-top: 50px; border-top: 1px solid #e2e8f0; padding-top: 15px; font-size: 11px; color: #64748b; display: flex; justify-content: space-between; }
+          @media print { body { margin: 20px; } }
         </style>
       </head>
       <body>
-        <div class="header">
-          <span>Agent Test — Rapport QA · ${reportStoryId}</span>
-        </div>
-        
+        <div class="header"><span>Agent Test — Rapport QA · ${reportStoryId}</span></div>
         <div class="title">${reportTitle || `Rapport QA Complet — ${reportStoryId}`}</div>
-        
+
         <h2>■ Résumé Exécutif</h2>
         <p><strong>Statut Global :</strong> <span class="status-badge">${globalStatus || 'APPROVED'}</span></p>
-        
         <h3>Findings Principaux</h3>
         <ul>${findingsHtml || '<li>Aucun finding disponible</li>'}</ul>
-        
         <h3>Prochaines Étapes</h3>
         <ul>${nextStepsHtml || '<li>Aucune étape recommandée</li>'}</ul>
-        
+
         <h2>■ Synthèse User Story</h2>
         <table>
-          <tr>
-            <td class="prop-name">ID</td>
-            <td><strong>${reportStoryId || '—'}</strong></td>
-          </tr>
-          <tr>
-            <td class="prop-name">Titre</td>
-            <td>${storySynth.story_title || storySynth.title || '—'}</td>
-          </tr>
-          <tr>
-            <td class="prop-name">Type</td>
-            <td>${storySynth.story_type || storySynth.type || '—'}</td>
-          </tr>
+          <tr><td class="prop-name">ID</td><td><strong>${reportStoryId || '—'}</strong></td></tr>
+          <tr><td class="prop-name">Titre</td><td>${storySynth.story_title || storySynth.title || '—'}</td></tr>
+          <tr><td class="prop-name">Type</td><td>${storySynth.story_type  || storySynth.type  || '—'}</td></tr>
         </table>
-        <p><strong>Acteurs :</strong> ${storySynth.actors && storySynth.actors.length > 0 ? storySynth.actors.join(', ') : 'N/A'}</p>
-        <p><strong>Règles Métier :</strong> ${storySynth.business_rules && storySynth.business_rules.length > 0 ? storySynth.business_rules.join('. ') : 'Aucune'}</p>
-        <p><strong>Périmètre Technique :</strong> ${storySynth.technical_scope && storySynth.technical_scope.length > 0 ? storySynth.technical_scope.join(', ') : 'N/A'}</p>
-        
+        <p><strong>Acteurs :</strong> ${storySynth.actors?.length > 0 ? storySynth.actors.join(', ') : 'N/A'}</p>
+        <p><strong>Règles Métier :</strong> ${storySynth.business_rules?.length > 0 ? storySynth.business_rules.join('. ') : 'Aucune'}</p>
+        <p><strong>Périmètre Technique :</strong> ${storySynth.technical_scope?.length > 0 ? storySynth.technical_scope.join(', ') : 'N/A'}</p>
+
         <h2>■ Suite de Tests Générée</h2>
         <ul>
           <li><strong>Total :</strong> ${testSuite.total_tests ?? 0} cas de test</li>
           <li><strong>NOM (Nominal) :</strong> ${testSuite.nom_count ?? 0}</li>
           <li><strong>ALT (Alternatif) :</strong> ${testSuite.alt_count ?? 0}</li>
           <li><strong>EXC (Exception) :</strong> ${testSuite.exc_count ?? 0}</li>
-          <li><strong>Priorités :</strong> Haute: ${testSuite.high_priority_count ?? 0}</li>
+          <li><strong>Priorités Haute :</strong> ${testSuite.high_priority_count ?? 0}</li>
         </ul>
-        
         <h3>Tests (résumé)</h3>
         <table>
-          <thead>
-            <tr>
-              <th>Type</th>
-              <th>Nom</th>
-              <th>Priorité</th>
-              <th>Étapes</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${testSuiteHtml || '<tr><td colspan="4">Aucun test généré</td></tr>'}
-          </tbody>
+          <thead><tr><th>Type</th><th>Nom</th><th>Priorité</th><th>Étapes</th></tr></thead>
+          <tbody>${testSuiteHtml || '<tr><td colspan="4">Aucun test généré</td></tr>'}</tbody>
         </table>
-        
+
         <h2>■ Métriques de Couverture</h2>
         <ul>
           <li><strong>Taux :</strong> ${coverage.coverage_rate !== undefined ? coverage.coverage_rate + '%' : '0%'}</li>
           <li><strong>Statut :</strong> ${coverage.coverage_status || 'EXCELLENT'}</li>
-          <li><strong>Points Non Couverts :</strong> ${coverage.uncovered_points && coverage.uncovered_points.length > 0 ? coverage.uncovered_points.join(', ') : 'Aucun'}</li>
+          <li><strong>Points Non Couverts :</strong> ${coverage.uncovered_points?.length > 0 ? coverage.uncovered_points.join(', ') : 'Aucun'}</li>
         </ul>
-        
+
         <h2>■ Validation & Assurance Qualité</h2>
         <p><strong>Statut Validation :</strong> <span class="status-badge">${validation.validation_status || 'VALID'}</span></p>
         <ul>
           <li><strong>Doublons détectés :</strong> ${validation.duplicate_pairs ?? 0}</li>
           <li><strong>Ambiguïtés détectées :</strong> ${validation.ambiguity_count ?? 0}</li>
         </ul>
-        
         <h3>Issues Détectées</h3>
-        <p>${(validation.issues || []).length === 0 ? 'Aucune issue détectée ■' : (validation.issues || []).map((i: any) => `• [${i.severity}] ${i.description}`).join('<br>')}</p>
-        
+        <p>${(validation.issues || []).length === 0
+          ? 'Aucune issue détectée ■'
+          : (validation.issues || []).map((i: any) => `• [${i.severity}] ${i.description}`).join('<br>')
+        }</p>
         <h3>Qualité LLM</h3>
         <ul>
           <li><strong>Score :</strong> ${validation.llm_quality_score !== undefined ? validation.llm_quality_score : 'N/A'}/10</li>
           <li><strong>Feedback :</strong> ${validation.llm_quality_summary || 'Pas de feedback'}</li>
         </ul>
-        
+
         <h2>■ Recommandations</h2>
         ${recsHtml || '<p>Aucune recommandation</p>'}
-        
+
         <h2>■■ Notes de Traitement (Pipeline)</h2>
         <ul>${pipelineHtml || '<li>Aucune note de traitement</li>'}</ul>
-        
+
         <div class="footer">
           <span>Rapport généré le ${new Date(timestamp || new Date()).toLocaleString('fr-FR')} — Version ${version || '1.0'}</span>
         </div>
-        
-        <script>
-          window.onload = function() {
-            window.print();
-          }
-        </script>
+        <script>window.onload = function() { window.print(); }</script>
       </body>
       </html>
     `
@@ -478,6 +386,7 @@ const ReportSection: React.FC<{ icon: string; title: string; children: React.Rea
 
   return (
     <div className="w-full space-y-8 text-slate-900">
+      {/* Header card */}
       <div className="rounded-2xl p-6" style={{ background: CARD_GRADIENT, boxShadow: '0 8px 32px rgba(10,22,40,0.3)' }}>
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1">
@@ -491,7 +400,7 @@ const ReportSection: React.FC<{ icon: string; title: string; children: React.Rea
                   {reportStoryId}
                 </span>
               )}
-              {version && <span className="px-3 py-1 rounded-full text-xs font-bold text-white/70 bg-white/10">v{version}</span>}
+              {version   && <span className="px-3 py-1 rounded-full text-xs font-bold text-white/70 bg-white/10">v{version}</span>}
               {timestamp && <span className="px-3 py-1 rounded-full text-xs text-white/50 bg-white/5">{new Date(timestamp).toLocaleString('fr-FR')}</span>}
             </div>
           </div>
@@ -533,9 +442,9 @@ const ReportSection: React.FC<{ icon: string; title: string; children: React.Rea
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-4">
             {[
               { label: 'Total', value: testSuite.total_tests ?? testSuite.total },
-              { label: 'NOM', value: testSuite.nom_count ?? testSuite.nom },
-              { label: 'ALT', value: testSuite.alt_count ?? testSuite.alt },
-              { label: 'EXC', value: testSuite.exc_count ?? testSuite.exc },
+              { label: 'NOM',   value: testSuite.nom_count   ?? testSuite.nom   },
+              { label: 'ALT',   value: testSuite.alt_count   ?? testSuite.alt   },
+              { label: 'EXC',   value: testSuite.exc_count   ?? testSuite.exc   },
             ].filter(r => r.value !== undefined).map((item, i) => (
               <div key={i} className="rounded-xl p-3 bg-slate-50 border text-center">
                 <p className="text-xl font-extrabold" style={{ color: NAV }}>{item.value}</p>
@@ -567,7 +476,13 @@ const ReportSection: React.FC<{ icon: string; title: string; children: React.Rea
                       <td className="px-4 py-3 text-xs font-medium" style={{ color: NAV }}>{t.name || t.nom || t.test_name || '—'}</td>
                       <td className="px-4 py-3 text-xs font-semibold" style={{ color: `${NAV}70` }}>{t.priority || t.priorite || '—'}</td>
                       <td className="px-4 py-3 text-xs" style={{ color: `${NAV}60` }}>
-                        {t.step_count !== undefined ? `${t.step_count} étapes` : (t.steps_count !== undefined ? `${t.steps_count} étapes` : t.steps ? `${t.steps} étapes` : '—')}
+                        {t.step_count !== undefined
+                          ? `${t.step_count} étapes`
+                          : t.steps_count !== undefined
+                          ? `${t.steps_count} étapes`
+                          : t.steps
+                          ? `${t.steps} étapes`
+                          : '—'}
                       </td>
                     </tr>
                   ))}
@@ -582,10 +497,10 @@ const ReportSection: React.FC<{ icon: string; title: string; children: React.Rea
         <ReportSection icon="■" title="Métriques de Couverture">
           <div className="space-y-4">
             {[
-              ['Statut Couverture',   coverage.coverage_status || coverage.statut],
-              ['Points testables',   coverage.total_testable_points ?? coverage.total_points],
-              ['Points couverts',    coverage.covered_points ?? coverage.points_couverts],
-              ['Points non couverts', Array.isArray(coverage.uncovered_points)
+              ['Statut Couverture',    coverage.coverage_status || coverage.statut],
+              ['Points testables',     coverage.total_testable_points ?? coverage.total_points],
+              ['Points couverts',      coverage.covered_points ?? coverage.points_couverts],
+              ['Points non couverts',  Array.isArray(coverage.uncovered_points)
                 ? (coverage.uncovered_points.length === 0 ? 'Aucun' : `${coverage.uncovered_points.length} point(s)`)
                 : coverage.uncovered_points_count ?? '—'],
             ].filter(([, v]) => v !== undefined && v !== '—').map(([label, value], i) => (
@@ -602,10 +517,10 @@ const ReportSection: React.FC<{ icon: string; title: string; children: React.Rea
         <ReportSection icon="■" title="Validation & Assurance Qualité">
           <div className="space-y-3">
             {[
-              ['Statut Validation',   validation.validation_status || validation.status || validation.statut],
-              ['Doublons détectés',   validation.duplicate_pairs   ?? validation.duplicates ?? validation.doublons],
+              ['Statut Validation',    validation.validation_status || validation.status || validation.statut],
+              ['Doublons détectés',    validation.duplicate_pairs   ?? validation.duplicates ?? validation.doublons],
               ['Ambiguïtés détectées', validation.ambiguity_count   ?? validation.ambiguities ?? validation.ambiguites],
-              ['Score LLM',          validation.llm_quality_score !== undefined ? `${validation.llm_quality_score}/10` : undefined],
+              ['Score LLM',           validation.llm_quality_score !== undefined ? `${validation.llm_quality_score}/10` : undefined],
             ].filter(([, v]) => v !== undefined).map(([label, value], i) => (
               <div key={i} className="flex items-center gap-4">
                 <span className="text-sm font-semibold w-44 flex-shrink-0" style={{ color: `${NAV}70` }}>{label} :</span>
@@ -727,54 +642,29 @@ export const StoryDetailPage: React.FC = () => {
   const navigate = useNavigate()
   const toast = useToast()
 
-  const story = useStory<StoredStory>(storyId || '', true)
+  const story    = useStory<StoredStory>(storyId || '', true)
   const analyses = useAnalysisHistory(storyId || '')
-  
-  // Stored snapshots
+
   const [agent1Output, setAgent1Output] = useState<any | null>(null)
   const [agent2Output, setAgent2Output] = useState<any | null>(null)
   const [agent3Output, setAgent3Output] = useState<any | null>(null)
   const [agent5Output, setAgent5Output] = useState<any | null>(null)
-  
-  // Modal controllers
-  const [openAgent, setOpenAgent] = useState<string | null>(null)
+  const [openAgent,    setOpenAgent]    = useState<string | null>(null)
 
   const fetchHistoricalOutputs = useCallback(async () => {
     if (!storyId) return
-    try {
-      // 1. Fetch Agent 1 latest analysis
-      const ana = await apiClient.db.getLatestAnalysis(storyId)
-      setAgent1Output(ana)
-    } catch {}
-
-    try {
-      // 2. Fetch Agent 2 latest manual tests
-      const tests = await apiClient.db.getManualTests(storyId)
-      setAgent2Output(tests)
-    } catch {}
-
-    try {
-      // 3. Fetch Agent 3 latest validation
-      const val = await apiClient.db.getValidations(storyId)
-      setAgent3Output(val)
-    } catch {}
-
-    try {
-      // 4. Fetch Agent 5 latest report
-      const rep = await apiClient.agent5.generateReport(storyId)
-      setAgent5Output(rep)
-    } catch {}
+    try { const ana   = await apiClient.db.getLatestAnalysis(storyId); setAgent1Output(ana)  } catch {}
+    try { const tests = await apiClient.db.getManualTests(storyId);    setAgent2Output(tests) } catch {}
+    try { const val   = await apiClient.db.getValidations(storyId);    setAgent3Output(val)   } catch {}
+    try { const rep = await apiClient.agent5.getReportSummary(storyId); setAgent5Output(rep) } catch {}
   }, [storyId])
 
-  useEffect(() => {
-    fetchHistoricalOutputs()
-  }, [fetchHistoricalOutputs])
+  useEffect(() => { fetchHistoricalOutputs() }, [fetchHistoricalOutputs])
 
   const handleDeleteStory = async () => {
     if (!storyId) return
     const confirmed = window.confirm(`Supprimer la story ${storyId} et toutes ses données enregistrées ?`)
     if (!confirmed) return
-
     try {
       await apiClient.db.deleteStory(storyId)
       toast.success(`Story ${storyId} supprimée`)
@@ -889,7 +779,7 @@ export const StoryDetailPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Progress & Pipeline emulation bar */}
+      {/* Agent cards */}
       <div className="space-y-3">
         <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400 px-1">Statut des Agents de la Story</h3>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -900,7 +790,7 @@ export const StoryDetailPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Modals for outputs */}
+      {/* Modals */}
       {openAgent === 'Agent 1' && agent1Output && (
         <AgentResultModal agentKey="Agent 1" output={agent1Output} storyId={storyId} onClose={() => setOpenAgent(null)} />
       )}
