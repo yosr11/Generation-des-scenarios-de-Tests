@@ -72,6 +72,8 @@ function buildPayload(test: any, storyId?: string) {
 /* ──────────────────────────────────────────────────────
    Test Edit Drawer
 ────────────────────────────────────────────────────── */
+const CARD_GRADIENT = 'linear-gradient(135deg, #0B1E3E, #1A3A6B, #1D4ED8)'
+
 const TestEditDrawer: React.FC<{
   test: any
   storyId: string
@@ -87,11 +89,6 @@ const TestEditDrawer: React.FC<{
   const [refining, setRefining] = useState(false)
   const [saving, setSaving] = useState(false)
   const toast = useToast()
-
-  const steps: any[] =
-    (Array.isArray(editedTest?.étapes) && editedTest.étapes.length
-      ? editedTest.étapes.flatMap((e: any) => e.steps || [])
-      : editedTest?.steps) || []
 
   const updateGroupTitre = (groupIndex: number, value: string) => {
     setEditedTest((prev: any) => {

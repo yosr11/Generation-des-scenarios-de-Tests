@@ -41,7 +41,7 @@ const SectionTitle: React.FC<{ children: React.ReactNode; count?: number }> = ({
     </p>
     {count !== undefined && (
       <span className="px-2 py-0.5 rounded-full text-xs font-bold ml-1"
-        style={{ background: `${VIOLET}15`, color: VIOLET }}>
+        style={{ background: `linear-gradient(135deg,${VIOLET},${ROSE})`, color: 'white' }}>
         {count}
       </span>
     )}
@@ -200,7 +200,7 @@ const Agent1Result: React.FC<{ output: any }> = ({ output }) => {
                 <div key={i} className="flex items-start gap-3 p-3 rounded-xl"
                   style={{ background: 'rgba(10,22,40,0.03)', border: '1px solid rgba(10,22,40,0.07)' }}>
                   <div className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
-                    style={{ background: CARD_GRADIENT }}>
+                    style={{ background: HEADER_GRADIENT }}>
                     <span className="text-[10px] font-bold text-white">{i + 1}</span>
                   </div>
                   <div className="flex-1 min-w-0">
@@ -742,26 +742,22 @@ const Agent15Result: React.FC<{ output: any }> = ({ output }) => {
   )
 
   const BM_BLUE   = '#1e40af'
-  const BM_INDIGO = '#4338ca'
-  const BM_SLATE  = '#475569'
 
   return (
     <div className="space-y-6 w-full">
-      {/* Stats KPI row */}
+      {/* Stats KPI row — bordered white cards with colored numbers (like image 4) */}
       <div className="grid grid-cols-2 gap-4">
-        <div className="rounded-2xl p-5 text-center" style={{
-          background: 'linear-gradient(135deg,#1e40af,#2563eb)',
-          boxShadow: '0 4px 16px rgba(37,99,235,0.25)'
+        <div className="rounded-2xl p-5 text-center bg-white border-2" style={{
+          borderColor: `${VIOLET}25`,
         }}>
-          <p className="text-3xl font-extrabold text-white">{goals.length}</p>
-          <p className="text-xs font-bold uppercase tracking-widest mt-1 text-white/70">Business Goals</p>
+          <p className="text-3xl font-extrabold" style={{ color: VIOLET }}>{goals.length}</p>
+          <p className="text-xs font-bold uppercase tracking-widest mt-1" style={{ color: `${VIOLET}80` }}>Business Goals</p>
         </div>
-        <div className="rounded-2xl p-5 text-center" style={{
-          background: 'linear-gradient(135deg,#0f172a,#1e293b)',
-          boxShadow: '0 4px 16px rgba(15,23,42,0.25)'
+        <div className="rounded-2xl p-5 text-center bg-white border-2" style={{
+          borderColor: `${ROSE}25`,
         }}>
-          <p className="text-3xl font-extrabold text-white">{workflows.length}</p>
-          <p className="text-xs font-bold uppercase tracking-widest mt-1 text-white/70">Workflows</p>
+          <p className="text-3xl font-extrabold" style={{ color: ROSE }}>{workflows.length}</p>
+          <p className="text-xs font-bold uppercase tracking-widest mt-1" style={{ color: `${ROSE}80` }}>Workflows</p>
         </div>
       </div>
 
@@ -769,8 +765,8 @@ const Agent15Result: React.FC<{ output: any }> = ({ output }) => {
       {goals.length > 0 && (
         <div className="space-y-3">
           <div className="flex items-center gap-2">
-            <div className="w-1 h-5 rounded-full" style={{ background: `linear-gradient(180deg,${BM_BLUE},${BM_INDIGO})` }} />
-            <p className="text-sm font-extrabold uppercase tracking-widest" style={{ color: NAV }}>Business Goals</p>
+            <div className="w-1 h-5 rounded-full" style={{ background: `linear-gradient(180deg,${VIOLET},${ROSE})` }} />
+            <p className="text-xs font-extrabold uppercase tracking-widest" style={{ color: NAV }}>Business Goals</p>
           </div>
           {goals.map((g: any, i: number) => (
             <div key={i} className="rounded-2xl p-4 border space-y-2" style={{
@@ -779,14 +775,14 @@ const Agent15Result: React.FC<{ output: any }> = ({ output }) => {
             }}>
               <div className="flex items-center gap-3 flex-wrap">
                 <span className="px-2.5 py-0.5 rounded-lg text-[10px] font-extrabold uppercase text-white"
-                  style={{ background: BM_BLUE }}>{g.id}</span>
+                  style={{ background: `linear-gradient(135deg,${VIOLET},${ROSE})` }}>{g.id}</span>
                 <span className="font-bold text-sm flex-1" style={{ color: NAV }}>{g.label}</span>
                 {g.priority && (
                   <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase"
                     style={{
-                      background: g.priority === 'haute' ? 'rgba(220,38,38,0.1)' : g.priority === 'basse' ? 'rgba(100,116,139,0.1)' : 'rgba(37,99,235,0.1)',
-                      color:      g.priority === 'haute' ? '#dc2626'             : g.priority === 'basse' ? BM_SLATE                : BM_BLUE,
-                      border:     `1px solid ${g.priority === 'haute' ? 'rgba(220,38,38,0.2)' : g.priority === 'basse' ? 'rgba(100,116,139,0.2)' : 'rgba(37,99,235,0.2)'}`,
+                      background: g.priority === 'haute' ? `${ROSE}15` : g.priority === 'basse' ? 'rgba(100,116,139,0.1)' : `${VIOLET}15`,
+                      color:      g.priority === 'haute' ? ROSE              : g.priority === 'basse' ? '#475569'              : VIOLET,
+                      border:     `1px solid ${g.priority === 'haute' ? `${ROSE}30` : g.priority === 'basse' ? 'rgba(100,116,139,0.2)' : `${VIOLET}30`}`,
                     }}>{g.priority}</span>
                 )}
               </div>
@@ -808,18 +804,18 @@ const Agent15Result: React.FC<{ output: any }> = ({ output }) => {
       {workflows.length > 0 && (
         <div className="space-y-3">
           <div className="flex items-center gap-2">
-            <div className="w-1 h-5 rounded-full" style={{ background: `linear-gradient(180deg,#0f172a,#1e293b)` }} />
-            <p className="text-sm font-extrabold uppercase tracking-widest" style={{ color: NAV }}>Business Workflows</p>
+            <div className="w-1 h-5 rounded-full" style={{ background: `linear-gradient(180deg,${ROSE},${ORANGE})` }} />
+            <p className="text-xs font-extrabold uppercase tracking-widest" style={{ color: NAV }}>Business Workflows</p>
           </div>
           {workflows.map((w: any, i: number) => (
-            <details key={i} className="rounded-2xl border overflow-hidden group" style={{ borderColor: 'rgba(15,23,42,0.12)' }}>
-              <summary className="flex items-center gap-3 p-4 cursor-pointer list-none select-none hover:bg-slate-50 transition">
+            <details key={i} className="rounded-2xl border overflow-hidden group" style={{ borderColor: `${ROSE}20` }}>
+              <summary className="flex items-center gap-3 p-4 cursor-pointer list-none select-none hover:bg-rose-50/40 transition">
                 <span className="px-2.5 py-0.5 rounded-lg text-[10px] font-extrabold uppercase text-white"
-                  style={{ background: 'linear-gradient(135deg,#0f172a,#1e293b)' }}>{w.id}</span>
+                  style={{ background: `linear-gradient(135deg,${ROSE},${ORANGE})` }}>{w.id}</span>
                 <span className="font-bold text-sm flex-1" style={{ color: NAV }}>{w.label}</span>
                 {w.linked_goal_id && (
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full"
-                    style={{ background: 'rgba(30,64,175,0.1)', color: BM_BLUE, border: '1px solid rgba(30,64,175,0.2)' }}>→ {w.linked_goal_id}</span>
+                    style={{ background: `${VIOLET}12`, color: VIOLET, border: `1px solid ${VIOLET}25` }}>→ {w.linked_goal_id}</span>
                 )}
                 <ChevronDown size={14} className="text-slate-400 group-open:rotate-180 transition-transform" />
               </summary>

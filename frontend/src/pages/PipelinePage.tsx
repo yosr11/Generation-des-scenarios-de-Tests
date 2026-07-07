@@ -114,7 +114,7 @@ const Toggle: React.FC<{
       onClick={() => onChange(!checked)}
       className="relative w-11 h-6 rounded-full flex-shrink-0 transition-all duration-200 focus:outline-none"
       style={checked
-        ? { background: CARD_GRADIENT, boxShadow: `0 0 0 3px rgba(10,22,40,0.12)` }
+        ? { background: NAV, boxShadow: `0 0 0 3px rgba(11,30,62,0.18)` }
         : { background: '#e2e8f0' }
       }
     >
@@ -129,11 +129,11 @@ const Toggle: React.FC<{
 
 const SectionTitle: React.FC<{ children: React.ReactNode; count?: number }> = ({ children, count }) => (
   <h3 className="text-[11px] font-bold uppercase tracking-widest mb-2.5 flex items-center gap-2" style={{ color: NAV }}>
-    <span className="w-1 h-3.5 rounded-full inline-block" style={{ background: ROSE }} />
+    <span className="w-1 h-3.5 rounded-full inline-block" style={{ background: `linear-gradient(180deg,${VIOLET},${ROSE})` }} />
     {children}
     {count !== undefined && (
-      <span className="ml-1 px-1.5 py-0.5 rounded-md text-[10px] font-bold tabular-nums"
-        style={{ background: 'rgba(10,22,40,0.06)', color: `${NAV}70` }}>{count}</span>
+      <span className="ml-1 px-1.5 py-0.5 rounded-md text-[10px] font-bold tabular-nums text-white"
+        style={{ background: `linear-gradient(135deg,${VIOLET},${ROSE})` }}>{count}</span>
     )}
   </h3>
 )
@@ -222,7 +222,7 @@ const Agent1Result: React.FC<{ output: any }> = ({ output }) => {
                 <div key={i} className="flex items-start gap-2.5 p-2.5 rounded-lg"
                   style={{ background: 'rgba(10,22,40,0.03)', border: '1px solid rgba(10,22,40,0.07)' }}>
                   <div className="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5"
-                    style={{ background: CARD_GRADIENT }}>
+                    style={{ background: HEADER_GRADIENT }}>
                     <span className="text-[9px] font-bold text-white tabular-nums">{i + 1}</span>
                   </div>
                   <div className="flex-1 min-w-0">
@@ -1446,33 +1446,36 @@ const Agent15Result: React.FC<{ output: any }> = ({ output }) => {
 
   return (
     <div className="space-y-4 w-full">
-      {/* Stats */}
+      {/* Stats KPI — bordered white cards with brand colors */}
       <div className="grid grid-cols-2 gap-3">
-        <div className="rounded-xl p-3 text-center border" style={{ borderColor: `${VIOLET}30`, background: `${VIOLET}08` }}>
+        <div className="rounded-xl p-3 text-center bg-white border-2" style={{ borderColor: `${VIOLET}25` }}>
           <p className="text-2xl font-extrabold" style={{ color: VIOLET }}>{goals.length}</p>
           <p className="text-[10px] font-bold uppercase tracking-widest mt-0.5" style={{ color: `${VIOLET}80` }}>Business Goals</p>
         </div>
-        <div className="rounded-xl p-3 text-center border" style={{ borderColor: `${ORANGE}30`, background: `${ORANGE}08` }}>
-          <p className="text-2xl font-extrabold" style={{ color: ORANGE }}>{workflows.length}</p>
-          <p className="text-[10px] font-bold uppercase tracking-widest mt-0.5" style={{ color: `${ORANGE}80` }}>Workflows</p>
+        <div className="rounded-xl p-3 text-center bg-white border-2" style={{ borderColor: `${ROSE}25` }}>
+          <p className="text-2xl font-extrabold" style={{ color: ROSE }}>{workflows.length}</p>
+          <p className="text-[10px] font-bold uppercase tracking-widest mt-0.5" style={{ color: `${ROSE}80` }}>Workflows</p>
         </div>
       </div>
 
       {/* Business Goals */}
       {goals.length > 0 && (
         <div className="space-y-2">
-          <p className="text-[11px] font-bold uppercase tracking-widest" style={{ color: `${NAV}50` }}>Business Goals</p>
+          <div className="flex items-center gap-2">
+            <span className="w-1 h-3.5 rounded-full inline-block" style={{ background: `linear-gradient(180deg,${VIOLET},${ROSE})` }} />
+            <p className="text-[11px] font-bold uppercase tracking-widest" style={{ color: NAV }}>Business Goals</p>
+          </div>
           {goals.map((g: any, i: number) => (
-            <div key={i} className="rounded-xl p-3 border space-y-1.5" style={{ borderColor: 'rgba(10,22,40,0.1)' }}>
+            <div key={i} className="rounded-xl p-3 border space-y-1.5" style={{ borderColor: `${VIOLET}15`, background: `${VIOLET}04` }}>
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="px-2 py-0.5 rounded-md text-[10px] font-extrabold uppercase"
-                  style={{ background: `${VIOLET}15`, color: VIOLET }}>{g.id}</span>
+                <span className="px-2 py-0.5 rounded-md text-[10px] font-extrabold uppercase text-white"
+                  style={{ background: `linear-gradient(135deg,${VIOLET},${ROSE})` }}>{g.id}</span>
                 <span className="font-bold text-[13px] flex-1" style={{ color: NAV }}>{g.label}</span>
                 {g.priority && (
                   <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase"
                     style={{
-                      background: g.priority === 'haute' ? `${ROSE}15` : g.priority === 'basse' ? `${VIOLET}10` : `${ORANGE}12`,
-                      color:      g.priority === 'haute' ? ROSE        : g.priority === 'basse' ? VIOLET       : ORANGE,
+                      background: g.priority === 'haute' ? `${ROSE}15` : g.priority === 'basse' ? `${VIOLET}10` : `${VIOLET}12`,
+                      color:      g.priority === 'haute' ? ROSE        : g.priority === 'basse' ? VIOLET       : VIOLET,
                     }}>{g.priority}</span>
                 )}
               </div>
@@ -1480,7 +1483,8 @@ const Agent15Result: React.FC<{ output: any }> = ({ output }) => {
               {g.actors?.length > 0 && (
                 <div className="flex flex-wrap gap-1">
                   {g.actors.map((a: string, j: number) => (
-                    <span key={j} className="px-2 py-0.5 rounded-md text-[11px] font-semibold bg-blue-50 text-blue-700 border border-blue-100">{a}</span>
+                    <span key={j} className="px-2 py-0.5 rounded-md text-[11px] font-semibold"
+                      style={{ background: `${VIOLET}10`, color: VIOLET, border: `1px solid ${VIOLET}20` }}>{a}</span>
                   ))}
                 </div>
               )}
@@ -1492,12 +1496,15 @@ const Agent15Result: React.FC<{ output: any }> = ({ output }) => {
       {/* Business Workflows */}
       {workflows.length > 0 && (
         <div className="space-y-2">
-          <p className="text-[11px] font-bold uppercase tracking-widest" style={{ color: `${NAV}50` }}>Business Workflows</p>
+          <div className="flex items-center gap-2">
+            <span className="w-1 h-3.5 rounded-full inline-block" style={{ background: `linear-gradient(180deg,${ROSE},${ORANGE})` }} />
+            <p className="text-[11px] font-bold uppercase tracking-widest" style={{ color: NAV }}>Business Workflows</p>
+          </div>
           {workflows.map((w: any, i: number) => (
-            <details key={i} className="rounded-xl border overflow-hidden group" style={{ borderColor: 'rgba(10,22,40,0.1)' }}>
-              <summary className="flex items-center gap-2 p-3 cursor-pointer list-none select-none hover:bg-slate-50 transition">
-                <span className="px-2 py-0.5 rounded-md text-[10px] font-extrabold uppercase"
-                  style={{ background: `${ORANGE}15`, color: ORANGE }}>{w.id}</span>
+            <details key={i} className="rounded-xl border overflow-hidden group" style={{ borderColor: `${ROSE}18` }}>
+              <summary className="flex items-center gap-2 p-3 cursor-pointer list-none select-none hover:bg-rose-50/40 transition">
+                <span className="px-2 py-0.5 rounded-md text-[10px] font-extrabold uppercase text-white"
+                  style={{ background: `linear-gradient(135deg,${ROSE},${ORANGE})` }}>{w.id}</span>
                 <span className="font-bold text-[13px] flex-1" style={{ color: NAV }}>{w.label}</span>
                 {w.linked_goal_id && (
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full"
@@ -1505,7 +1512,7 @@ const Agent15Result: React.FC<{ output: any }> = ({ output }) => {
                 )}
                 <ChevronDown size={14} className="text-slate-400 group-open:rotate-180 transition-transform" />
               </summary>
-              <div className="px-3 pb-3 space-y-2.5 border-t bg-slate-50" style={{ borderColor: 'rgba(10,22,40,0.06)' }}>
+              <div className="px-3 pb-3 space-y-2.5 border-t" style={{ borderColor: `${ROSE}12`, background: 'rgba(219,39,119,0.02)' }}>
                 {w.trigger && (
                   <div className="pt-2.5">
                     <p className="text-[10px] font-bold uppercase tracking-widest mb-0.5" style={{ color: `${NAV}50` }}>Déclencheur</p>
@@ -1518,7 +1525,8 @@ const Agent15Result: React.FC<{ output: any }> = ({ output }) => {
                     <ol className="space-y-1">
                       {w.steps.map((s: string, j: number) => (
                         <li key={j} className="flex gap-2 items-start text-xs" style={{ color: `${NAV}80` }}>
-                          <span className="w-4 h-4 flex-shrink-0 rounded-full bg-slate-200 flex items-center justify-center font-bold text-[9px] tabular-nums">{j + 1}</span>
+                          <span className="w-4 h-4 flex-shrink-0 rounded-full flex items-center justify-center font-bold text-[9px] tabular-nums text-white"
+                            style={{ background: `linear-gradient(135deg,${ROSE},${ORANGE})` }}>{j + 1}</span>
                           <span>{s}</span>
                         </li>
                       ))}
@@ -1980,7 +1988,7 @@ export const PipelinePage: React.FC = () => {
                     <button type="button" onClick={handleRun}
                       disabled={!inputValue.trim()}
                       className="px-8 py-4 rounded-2xl font-bold text-white flex items-center gap-2 flex-shrink-0 transition-all hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none"
-                      style={{ background: 'linear-gradient(135deg,#1e40af,#2563eb,#3b82f6)', boxShadow: '0 4px 18px rgba(37,99,235,0.4)' }}>
+                      style={{ background: `linear-gradient(135deg, ${VIOLET}, ${ROSE})`, boxShadow: `0 4px 18px rgba(219,39,119,0.38)` }}>
                       <Play size={16} /> Lancer le Pipeline
                     </button>
                   </div>
