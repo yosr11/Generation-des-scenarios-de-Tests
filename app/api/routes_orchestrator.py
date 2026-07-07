@@ -63,9 +63,10 @@ class PipelineRequest(BaseModel):
     use_rag: bool = Field(default=False, description="Activer le RAG ChromaDB")
     use_legacy_rag: bool = Field(default=True, description="Activer le RAG des tests Xray legacy Sopra HR (few-shot Agent 2)")
     model_agent1: str = Field(default="llama4", description="Modèle LLM pour Agent 1 (analyse). Options: qwen3, llama4, gptoss, gptoss120b, qwen3.6, nova-lite-2")
+    model_agent15: str = Field(default="llama4", description="Modèle LLM pour Agent 1.5 (business modeling)")
     model_agent2: str = Field(default="llama4", description="Modèle LLM pour Agent 2 (génération)")
-    model_agent3_quality: str = Field(default="qwen3", description="Modèle LLM pour Agent 3 (qualité)")
-    model_agent5: str = Field(default="qwen3", description="Modèle LLM pour Agent 5 (rapport)")
+    model_agent3_quality: str = Field(default="llama4", description="Modèle LLM pour Agent 3 (qualité)")
+    model_agent5: str = Field(default="llama4", description="Modèle LLM pour Agent 5 (rapport)")
     coverage_threshold: float = Field(default=0.70, ge=0.0, le=1.0, description="Seuil de couverture")
     max_correction_iterations: int = Field(default=2, ge=0, le=5, description="Max itérations gap-fill")
     force_refresh: bool = Field(
@@ -98,8 +99,27 @@ class PipelineStoryResult(BaseModel):
     """Résultat du pipeline pour une story."""
 
     story_id: str
+    story: Optional[dict] = None
     status: str                  # completed | skipped | failed
     story_type: Optional[str] = None
+   
+    # ── Traçabilité RAG tests legacy (few-shot Agent 2) ──
+    legacy_examples: Optional[List[dict]] = Field(
+        default=None,
+        description="Tests Xray legacy injectés en few-shot à Agent 2 (id, score, titre, pivot complet).",
+    )
+    agent2_input: Optional[dict] = Field(
+        default=None,
+        description="Input Agent 2 : tests legacy RAG (few-shot) + contexte RAG epic.",
+    )
+    images: Optional[List[dict]] = Field(
+        default=None,
+        description="Images attachées à la story avec descriptions OCR+VLM (texte).",
+    )
+    rag_context: Optional[List[Any]] = Field(
+        default=None,
+        description="Contexte RAG epic récupéré pour Agent 1 / Agent 2.",
+    )
     tests_count: int = 0
     coverage_rate: Optional[float] = None
     validation_status: Optional[str] = None
@@ -108,7 +128,6 @@ class PipelineStoryResult(BaseModel):
     duration_ms: int = 0
     errors: List[str] = []
     report_markdown: Optional[str] = None
-
     # ── Sorties détaillées par agent ──
     agent1_analysis: Optional[dict] = Field(default=None, description="Sortie Agent 1 (analyse)")
     agent2_tests: Optional[List[dict]] = Field(default=None, description="Sortie Agent 2 (tests générés)")
@@ -117,17 +136,15 @@ class PipelineStoryResult(BaseModel):
         description="Avertissements golden rules non bloquants (Agent 2)",
     )
     agent2_message: Optional[str] = Field(default=None, description="Message Agent 2")
+    agent15_business_model: Optional[dict] = Field(default=None, description="Sortie Agent 1.5 (business goals + workflows)")
     agent3_validation: Optional[dict] = Field(default=None, description="Sortie Agent 3 (validation/couverture)")
     agent5_report: Optional[dict] = Field(default=None, description="Sortie Agent 5 (rapport final)")
 
     # ── Métriques de consommation LLM ──
     token_usage: Optional[dict] = Field(default=None, description="Tokens consommés par agent et par modèle")
 
-    # ── Traçabilité RAG tests legacy (few-shot Agent 2) ──
-    legacy_examples: Optional[List[dict]] = Field(
-        default=None,
-        description="Tests Xray legacy injectés en few-shot à Agent 2 (id, score, titre, pivot complet).",
-    )
+    
+   
 
 
 class EpicPipelineResult(BaseModel):
@@ -170,13 +187,26 @@ def _dump(obj: Any) -> Optional[Any]:
 
 def _state_to_result(state: PipelineState, include_markdown: bool = False) -> PipelineStoryResult:
     """Convertit le PipelineState final en réponse API."""
+    from app.services.pipeline_export_service import (
+        build_agent2_input,
+        build_evaluation_export,
+        collect_story_images,
+    )
+
     analysis = state.get("analysis")
     validation = state.get("validation")
     report = state.get("report")
     tests = state.get("tests", []) or []
+    story_id = state.get("story_id", "")
+    legacy_examples = state.get("legacy_examples") or None
+    rag_context = state.get("rag_context") or None
+
+    images = collect_story_images(story_id) or None
+    agent2_input = build_agent2_input(legacy_examples=legacy_examples, rag_context=rag_context)
 
     result = PipelineStoryResult(
-        story_id=state.get("story_id", ""),
+        story_id=story_id,
+        story=_dump(state.get("story")),
         status=state.get("status", "failed"),
         story_type=analysis.story_type if analysis else None,
         tests_count=len(tests),
@@ -185,16 +215,22 @@ def _state_to_result(state: PipelineState, include_markdown: bool = False) -> Pi
         correction_iterations=state.get("correction_iteration", 0),
         report_status=report.executive_summary.overall_status if report else None,
         duration_ms=state.get("duration_ms", 0),
+        rag_context=rag_context,
+        images=images,
+        legacy_examples=legacy_examples,
+        agent2_input=agent2_input,
         errors=state.get("errors", []),
         agent1_analysis=_dump(analysis),
+        agent15_business_model=_dump(state.get("business_model")),
         agent2_tests=[d for d in (_dump(t) for t in tests) if d is not None] or None,
         agent2_golden_rule_warnings=state.get("agent2_golden_rule_warnings") or None,
         agent2_message=state.get("agent2_message"),
         agent3_validation=_dump(validation),
         agent5_report=_dump(report),
         token_usage=state.get("token_usage"),
-        legacy_examples=state.get("legacy_examples") or None,
     )
+
+    
 
     if include_markdown and report:
         try:
@@ -258,6 +294,7 @@ async def run_story_pipeline(
                     use_rag=params.use_rag,
                     use_legacy_rag=params.use_legacy_rag,
                     model_agent1=params.model_agent1,
+                    model_agent15=params.model_agent15,
                     model_agent2=params.model_agent2,
                     model_agent3_quality=params.model_agent3_quality,
                     model_agent5=params.model_agent5,
@@ -365,6 +402,7 @@ def run_story_pipeline_with_markdown(story_id: str, body: PipelineRequest = None
             use_rag=params.use_rag,
             use_legacy_rag=params.use_legacy_rag,
             model_agent1=params.model_agent1,
+            model_agent15=params.model_agent15,
             model_agent2=params.model_agent2,
             model_agent3_quality=params.model_agent3_quality,
             model_agent5=params.model_agent5,
@@ -396,6 +434,7 @@ def run_story_pipeline_report_md(story_id: str, body: PipelineRequest = None):
             use_rag=params.use_rag,
             use_legacy_rag=params.use_legacy_rag,
             model_agent1=params.model_agent1,
+            model_agent15=params.model_agent15,
             model_agent2=params.model_agent2,
             model_agent3_quality=params.model_agent3_quality,
             model_agent5=params.model_agent5,
@@ -459,6 +498,7 @@ def run_story_pipeline_report_html(story_id: str, body: PipelineRequest = None):
             use_rag=params.use_rag,
             use_legacy_rag=params.use_legacy_rag,
             model_agent1=params.model_agent1,
+            model_agent15=params.model_agent15,
             model_agent2=params.model_agent2,
             model_agent3_quality=params.model_agent3_quality,
             model_agent5=params.model_agent5,
@@ -548,6 +588,7 @@ def run_epic_pipeline(epic_key: str, body: PipelineRequest = None):
                 use_rag=params.use_rag,
                 use_legacy_rag=params.use_legacy_rag,
                 model_agent1=params.model_agent1,
+                model_agent15=params.model_agent15,
                 model_agent2=params.model_agent2,
                 model_agent3_quality=params.model_agent3_quality,
                 model_agent5=params.model_agent5,

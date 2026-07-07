@@ -481,7 +481,8 @@ def clean_issuelinks(issuelinks: Optional[List[Dict[str, Any]]]) -> List[Dict[st
         "direction": "...",
         "key": "...",
         "summary": "...",
-        "status": "..."
+        "status": "...",
+        "description": "..." 
       }
     """
     if not issuelinks:
@@ -499,6 +500,7 @@ def clean_issuelinks(issuelinks: Optional[List[Dict[str, Any]]]) -> List[Dict[st
             "key": clean_scalar_text(link.get("key")),
             "summary": clean_scalar_text(link.get("summary")),
             "status": clean_scalar_text(link.get("status")),
+            "description": clean_text(link.get("description") or ""),
         })
 
     return cleaned_links

@@ -12,6 +12,7 @@ from app.models.test_manual import ManualTestCase
 from app.services.agent3_coverage_service import analyze_coverage
 from app.services.agent3_prescriptive_service import build_validation_envelope
 from app.services.agent3_quality_llm_service import llm_quality_feedback
+from app.services.agent3_ambiguity_service import detect_ambiguous_steps_with_llm, detect_testable_point_contradictions
 
 
 def validate_and_improve_tests(
@@ -39,9 +40,28 @@ def validate_and_improve_tests(
         coverage_threshold,
     )
 
-    # Enrichir les ambiguïtés avec la détection sémantique LLM
+    # ── Détection des contradictions entre testable_points (heuristique, pas de LLM) ──
+    if testable_points:
+        contradictions = detect_testable_point_contradictions(testable_points)
+        if contradictions:
+            existing_keys = {
+                (a.get("test_name", ""), a.get("step_index", 0), a.get("field", ""), a.get("original_text", ""))
+                for a in env["ambiguity_findings"]
+            }
+            for c in contradictions:
+                key = (c["test_name"], c["step_index"], c["field"], c["original_text"])
+                if key not in existing_keys:
+                    env["ambiguity_findings"].append(c)
+            from app.services.agent3_prescriptive_service import compute_validation_status
+            env["validation_status"] = compute_validation_status(
+                float(cov.coverage_rate),
+                coverage_threshold,
+                len(env["duplicate_pairs"]),
+                len(env["ambiguity_findings"]),
+            )
+
+    # ── Enrichir les ambiguïTés avec la détection sémantique LLM ──
     if run_llm_ambiguity_detection and tests:
-        from app.services.agent3_ambiguity_service import detect_ambiguous_steps_with_llm
         llm_ambiguities = detect_ambiguous_steps_with_llm(tests, model_alias=quality_model_alias)
         if llm_ambiguities:
             # Fusionner sans doublons (même test + même step_index + même field)

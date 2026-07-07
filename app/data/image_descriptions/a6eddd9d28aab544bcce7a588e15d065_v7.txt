@@ -1,0 +1,31 @@
+[Image jointe : QuestionRH.png]
+── Textes détectés (OCR) ──
+= @ Mes questions RH
+Vous avez besoin d'information ou d'aide sur vos données personnelles contractuelle:
+demande de support ci-dessous. Vous avez la possibilité de joindre un document. Vot
+gestionnaire.
+Bénéficiaire *
+| | AHMED AHMED FRLFRA4YŸMANT11
+Informer le bénéficiaire du suivi de la question RH, par mail
+Mes questions RH
+ACcente
+OIS
+_—
+I AHMED AHMED FRLFR4YMANT11 |
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran semble être un formulaire pour saisir une demande de support RH. Il contient un champ pour sélectionner le bénéficiaire et une option pour informer le bénéficiaire du suivi de la question RH par mail.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un champ de saisie avec un cercle bleu à côté, contenant le texte "AHMED AHMED FRLFR4YMANT11".
+- Un bouton de type case à cocher (non coché) avec le texte "Informer le bénéficiaire du suivi de la question RH, par mail" à côté.
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Une icône de menu (représentée par trois lignes horizontales) en haut à gauche.
+- Une icône de logo (contenant les lettres "A" et "+" avec des couleurs) à côté du titre "Mes questions RH".
+
+## 5. AGENCEMENT ET RELATIONS
+Le formulaire est divisé en sections. Le titre "Mes questions RH" est en haut, suivi d'un paragraphe d'information. En dessous, il y a des boutons : "Quitter", "Supprimer", "Sauvegarder", "Envoyer" et "Accepter la réponse". Une section "Je saisis ma demande" est présente avec un champ "Bénéficiaire *" et une option pour informer le bénéficiaire par mail.

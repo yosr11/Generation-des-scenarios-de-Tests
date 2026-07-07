@@ -1,0 +1,37 @@
+[Image jointe : image-2026-04-23-10-51-52-346.png]
+── Textes détectés (OCR) ──
+Vous êtes affilié(e) à :
+La caisse de prévoyance Klésia Prévoyance Options contractuelles cadre sur complémentaire
+La Mutuelle Mutuelle Klésia Options contractuelles prévoyance cadre
+La caisse de prévoyance
+Klésia Prévoyance
+Options contractuelles
+cadre sur complémentaire
+La Mutuelle
+Mutuelle Klésia
+prévoyance cadre
+── Analyse visuelle (VLM) ──
+### 1. CONTEXTE
+L'écran semble être une liste ou un tableau présentant des informations sur les affiliations de l'utilisateur. Il contient un tableau avec des colonnes et des lignes, probablement utilisé pour afficher des détails sur les options contractuelles et les types de couverture.
+
+### 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+### 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- **Tableau** : 
+  - Le tableau est structuré avec des en-têtes et des lignes.
+  - Il comporte plusieurs colonnes :
+    - **Première colonne** : Texte "La caisse de prévoyance" et "La mutuelle".
+    - **Deuxième colonne** : Texte "Klésia Prévoyance" et "Mutuelle Klésia".
+    - **Troisième colonne** : Texte "Options contractuelles" (identique pour les deux lignes).
+    - **Quatrième colonne** : Texte "cadre sur complémentaire" et "prévoyance cadre".
+
+### 4. ICÔNES ET PICTOGRAMMES
+Aucune icône ou pictogramme visible.
+
+### 5. AGENCEMENT ET RELATIONS
+- Le tableau présente une structure simple avec quatre colonnes.
+- Deux lignes de données sont visibles sous les en-têtes.
+- Les en-têtes de colonnes ne sont pas explicitement marquées, mais les textes de la première ligne suggèrent qu'il s'agit d'une description des colonnes.
+- Les champs ne semblent pas avoir d'indication de caractère obligatoire (pas d'étoile *).
+- Il n'y a pas d'éléments visuellement actifs (boutons, liens) dans la zone visible.

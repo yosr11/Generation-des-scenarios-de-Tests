@@ -1,0 +1,103 @@
+[Image jointe : Mise à jour des News.jpg]
+── Textes détectés (OCR) ──
+cas fonctionnel Date du jourDébut publication|Fin publication |Valide Texte Image carrouse|Libellé supplémentaire
+à droite du libellé "Publication”
+publication future | 01/07/2024|  01:0172025] 31r12/2025[0u — [rece — [mage — | - —- __
+pas de publication | 01/07/2024| _ 01/01/2025| — 31:12/2025]Non — [rexce — [mage — | . —-
+p | |j | | J
+publication passée | 01/07/2026 01/01/2025 31/12/2925 texte image Seule la date de fin de validité de la news est
+modifiable.
+L'auteur qui souhaite modifier plus d'éléments
+duplique la News ou en créer une autre.
+news passée
+p | | J | | J
+publication en courg 01/07/2025|  01/01/2025]  51/12:2025[0u — [tete  limage — [Publication'encours’ __
+publication en courd 01/07/2025| _ 01/01/2025|  31/12/2025[Non  [tete  limage — [Alasaisiedevalide-mon __
+pas de publication | 01/07/2025 01/01/2025 3171272025 Nen texte image les zones surlignées en jaune deviennent
+saisissables, le libellé "en cours” disparait
+immediatement après le choix valide = non
+p | | | | | |
+publication en courd 01/07/2025|  01/01/2026]  31/12/2025[0u  [tete  limage — [Publication'encours" ——
+publication en courg 01/07/2025|  01/01/2025]  31/05:2025[0u  [tete  limage — [modificationdeladatedefindanslepassé __
+pas de publication | 01/07/2025 01/01/2025 31/05/2925 texte image la zone valide devient non saisissable, disparition du
+libellé "en cours" à droite de "publication”,
+immediatement après avoir modifié la date de fin de
+publication
+cas fonctionnel
+Texte
+Date du joulJDébut publication|Fin publication |Valide
+Image carrouse|Libellé supplémentaire
+zex
+2e
+publication future
+01/07/2024
+91/01/2025
+/12:2925|Ou
+Mé
+pas de publication
+01/01/2025
+11272025
+Non
+magé
+publication passée
+01/07/2026
+/12/2925
+Oui
+image
+Seule la date de fin de validité de la news est
+2:2025
+Mon
+TN
+“E
+mage
+News non publiée dans le passé. Modifiable partout.
+01/07/2025
+2i2025
+Ou
+Publication "en cours”
+publication en cour
+publication en cour:
+À la saisie de valide = non
+22025
+les zones surlignées en jaune deviennent
+1/06/2025
+Qu
+modification de la date de fin dans le passé
+/05/2025
+la zone valide devient non saisissable, disparition du
+── Analyse visuelle (VLM) ──
+Voici mon analyse de l'image :
+
+**1. CONTEXTE**
+L'écran est un tableau comparatif de différents cas fonctionnels liés à la publication de contenu, probablement dans un système de gestion de contenu. Le tableau présente diverses combinaisons de dates de publication et de fin de publication, ainsi que leur impact sur l'état de publication.
+
+**2. ANNOTATIONS AJOUTÉES PAR LE PO**
+Plusieurs cellules du tableau sont surlignées en jaune, indiquant des annotations ajoutées par le Product Owner (PO). 
+- type : surlignage
+- couleur : jaune
+- éléments concernés : 
+  - "publication en cours" avec les champs "Début publication", "Fin publication" et "Valide" 
+  - "publication en cours" avec les champs "Début publication", "Fin publication" et "Valide" 
+  - "publication en cours" avec les champs "Début publication", "Fin publication" et "Valide" 
+
+**3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI**
+- Des pastilles (pills) de couleur verte sont présentes dans la colonne "Valide" pour indiquer l'état de validation. 
+  - Forme : rectangulaire
+  - Couleur de fond : verte
+  - Texte OCR : "Oui" ou "Non"
+
+**4. ICÔNES ET PICTOGRAMMES**
+Aucune icône ou pictogramme n'est visible dans l'image.
+
+**5. AGENCEMENT ET RELATIONS**
+Le tableau est organisé en colonnes et lignes, avec des en-têtes de colonnes clairement définis. Les lignes sont regroupées par cas fonctionnels. 
+- Le tableau comporte 7 colonnes : 
+  - "cas fonctionnel"
+  - "Date du jour"
+  - "Début publication"
+  - "Fin publication"
+  - "Valide"
+  - "Texte"
+  - "Image carrouse"
+  - "Libellé supplémentaire à droite du libellé 'Publication'"
+- Certaines cellules contiennent des informations de description supplémentaires dans la colonne "Libellé supplémentaire à droite du libellé 'Publication'".

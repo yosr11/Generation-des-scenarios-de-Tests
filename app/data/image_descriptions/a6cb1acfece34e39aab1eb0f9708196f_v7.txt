@@ -1,0 +1,107 @@
+[Image jointe : 2026-04-27_15h28_34.png]
+── Textes détectés (OCR) ──
+——
+Menu v Recherche
+; ; D - Caisses et mutuelles
+1. Rechercher une personne
+Nom [7| Matricule || Société | Plus de critères
+2. Gérer les données de la personne sélectionnée
+Entrée 0/0 / ç @ %
+Sortie L .
+Fiche individuelle Synthèse Paie :
+Population favorite = Populations Caisses de retraite Mutuelles et assurances _ MSA CFE Autres caisses
+0 W Prévoyances (=[] oo [~]x][+]-["]
+Nom * Matricule *
+Options contractuelles [: s.
+Réf. du salarié chez l'OPS (*) [: Nombre de personnes [:
+(*) OPS = Organisme de Protection Sociale
+Description du dossier de paie
+Dossier de paie D P
+Contrat [} —
+Saisie manuelle
+Motifs de changement de caisse
+Motif d'entrée D .…
+Motif de sortie D s…
+Menu
+Recherche
+Caisses et mutuelles
+Nom |
+Matricule _|
+Société [:l
+Plus de critères
+Entrée
+0/0
+#9%8
+Sortie
+Fiche individuelle
+Synthèse
+Paie :
+Population favorite
+Mutuelles et assurances
+CFE
+Autres caisses
+n Caisses de retraite
+(=[] oo [+]=]+]-]e
+D H Prévoyances
+Nom
+Matricule
+Caisse de prévoyance :] .…
+||
+w 5
+P —i
+Réf. du salarié chez l'OPS (*) |
+Nombre de personnes [:
+Contrat |
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran semble être une page de gestion des données de personnes dans un système de paie ou de ressources humaines, plus précisément dans la section des caisses et mutuelles. Il s'agit probablement d'un formulaire ou d'une fiche individuelle de gestion des informations liées aux caisses de prévoyance.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+- Un cadre rouge entoure deux champs : 
+  - Type : cadre
+  - Couleur : rouge
+  - Eléments désignés : 
+    - "Caisse de prévoyance"
+    - "Options contractuelles"
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un onglet actif :
+  - Forme : rectangle avec un fond coloré
+  - Couleur de fond : bleu
+  - Texte OCR : "Prévoyances"
+- Des onglets :
+  - Forme : rectangles
+  - Couleur de fond : gris clair ou blanc
+  - Textes OCR : 
+    - "Populations"
+    - "Caisses de retraite"
+    - "Mutuelles et assurances"
+    - "MSA"
+    - "CFE"
+    - "Autres caisses"
+- Des boutons :
+  - Forme : rectangles avec des bords arrondis
+  - Couleur de fond : gris
+  - Textes OCR : 
+    - "Soumettre"
+    - "Annuler"
+- Des champs de saisie :
+  - Plusieurs champs de texte pour saisir des informations.
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Une icône de calendrier :
+  - Fonction probable : permet de sélectionner des dates
+  - Position : à côté des champs pour les dates.
+- Une icône de loupe :
+  - Fonction probable : recherche ou vérification d'informations
+  - Position : à côté de certains champs de saisie.
+
+## 5. AGENCEMENT ET RELATIONS
+- L'écran est divisé en sections :
+  - Une section pour rechercher une personne
+  - Une section pour gérer les données de la personne sélectionnée
+  - Une section pour les informations de caisse de prévoyance
+- Les champs sont organisés en lignes et en colonnes, facilitant la saisie et la lecture des informations.
+- Des titres et sous-titres sont présents pour hiérarchiser les informations :
+  - "Prévoyances" comme onglet actif
+  - "Caisse de prévoyance" et "Options contractuelles" dans une section dédiée.

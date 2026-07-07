@@ -1,0 +1,107 @@
+[Image jointe : Formulaire_Mono langue.jpg]
+── Textes détectés (OCR) ──
+= @ Gestion des News Q ? 0
+VOuS gerez 101 vos News, vous pouvez créer des annonces et des actualités rÎ
+Quitter + Créer une actualité Savvugatan
+> Liste des News
+v je crée une News
+Lesinamos CI LS AT LTe * SCTTIO! 28I 2S
+Type de Nèves *
+Actualités - #
+Publication i Confidentialité «i:
+ociète *
+[ vaice Soce
+Date de cétut de publication * cis : ]
+Etablissement *
+Date de fin de pubiication * i)
+i ACTEUT autonse à VOI 1a News *
+La localisation de la News est France secteur privé
+talangue de publication de ta News est l Anglais. IHlustration dans le carrousel
+veulliez sélectionner une image
+Contenu " u
+Langue * . . “
+English - Titre dans le carrousel *
+| r Liste des unités déclaratives
+Vg % NN crcette ot e 4 Aperçu de Hllustration
+English - Mors.cles * SRE -F — E
+English - Aperçu du contenu
+- . . .
+English - Vewliez seiectionner un Document dactualte * É lﬁ
+[6 |
+Gestion des News
+ut
+Vous gerez cI vos News, vous pouvez créer des annonce
+et des actualités 1-
+Lescmamos “Doesparure*sc
+cecssi
+281z 85
+iype de News *
+Actualités
+Publication &
+Confidentialité i
+Sociète
+( vaice
+Date de cétut de publication * (i1
+PR G S—
+Acteur autorisé à voir !a N
+PE SR .
+La locahisation de la News est France secteur privé
+La langue de publication de la News est l’ Anglais.
+lilustration dans le carrousel
+Contenu i}
+Languë
+e b
+Liste des unités déclaratives
+en
+Aperçu de Hllustration
+Englsh - Texte *
+rrs
+Ry
+oo
+u.
+PRTSERS
+.…
+".
+English - Mots-cles *
+English - Veuille,
+eiectionner un Document dactualté " 151
+"B
+── Analyse visuelle (VLM) ──
+### 1. CONTEXTE
+L'écran analysé est un formulaire de création de news (actualités) dans un système de gestion de contenu. L'intention probable est de permettre aux utilisateurs de créer et de configurer des annonces et des actualités.
+
+### 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+### 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- **Pastille / Badge** : 
+  - Un badge bleu apparaît à côté du champ "Langue" avec le texte "English".
+- **Boutons** :
+  - Bouton "Quitter" (forme rectangulaire, couleur grise ou bleue, texte "Quitter").
+  - Bouton "+ Créer une annonce" (forme rectangulaire, couleur verte ou bleue, texte "+ Créer une annonce").
+  - Bouton "+ Créer une actualité" (forme rectangulaire, couleur verte ou bleue, texte "+ Créer une actualité").
+  - Bouton "Sauvegarder" (forme rectangulaire, couleur grise ou bleue, texte "Sauvegarder").
+
+### 4. ICÔNES ET PICTOGRAMMES
+- **Icône de calendrier** : 
+  - Position : à côté des champs "Date de début de publication" et "Date de fin de publication".
+  - Fonction probable : permet de sélectionner des dates.
+- **Icône d'information** (petit "i") :
+  - Position : à côté de plusieurs champs (Type de News, Publication, Contenu, etc.).
+  - Fonction probable : fournit des informations supplémentaires ou des aides contextuelles.
+- **Icône de téléchargement / sélection d'image** :
+  - Position : dans la section "Illustration dans le carrousel".
+  - Fonction probable : permet de sélectionner une image.
+
+### 5. AGENCEMENT ET RELATIONS
+- **Structure** : 
+  - Le formulaire est divisé en sections : "Publication", "Confidentialité", "Contenu" et "Illustration dans le carrousel".
+  - Les champs obligatoires sont indiqués par une étoile (*).
+- **Regroupements visuels** :
+  - Les champs sont regroupés sous des intitulés (sections).
+- **Hiérarchie** :
+  - Les titres de sections sont plus gros et/ou en gras par rapport aux sous-titres et champs.
+- **Relations spatiales** :
+  - Le champ "Type de News" est en haut du formulaire.
+  - Les champs "Date de début de publication" et "Date de fin de publication" sont côte à côte.
+  - La section "Illustration dans le carrousel" est accompagnée d'un aperçu de l'illustration.

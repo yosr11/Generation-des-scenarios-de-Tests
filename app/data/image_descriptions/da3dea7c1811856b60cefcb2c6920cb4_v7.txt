@@ -1,0 +1,85 @@
+[Image jointe : image-2025-04-22-18-11-52-953.png]
+── Textes détectés (OCR) ──
+= 51558 ;
+= @ =— à ? 0
+A Acven —.
+ACTES DF GESTION 4+, MES CCIABORATEURS
+; 2* roRorrer H0ssen AESTUAN
+o Actes de gestion 14 a37 reckrre 24 a v 2 a
+K3 Mes collaborateurs “éter es temps paia « 1a Ç Frrdeniuc 2ARBIES za
+8 1 e 0 g e tihe e M SR
+BR _ Dossier numenque & 1 5 B Re 1 e o G L0710t S srav el 14 ,n Mrher 14
+Sensizelet une pétisde p'oba:. 1€ 14 _-ä Jeuss VT AN 14
+O Mes préférences » ï LECHIN
+X Apropos
+Q) Léconnexion
+i &y soprobhr
+ASSENCES À CONTROLER
+3 dossiers
+A Acven
+ACTES DF GFSTION
+MES CCLABORATEURS
+Htsien AESILAN
+37 é cFrer
+24
+FROTITONT
+2 A
+o Actes de gestion
+14
+érer|és temps partie <
+Fridertzuc ZARBIE=
+Mes collaborateurs
+8777017
+Rev s r G1 OL dl ZE 110 el
+Lhrhe E o)
+GQ
+84
+150
+(R LI
+Dossier numérique
+ICUES VL AR |
+Renad.elzt une périsdep'obs:21€
+(S FAGER
+Mes préférences
+À propos
+Léconnexion
+Ly soprohr
+ABSENCES À CCNTROLER
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran semble être un tableau de bord ou un dashboard d'une application web, probablement une plateforme de gestion des ressources humaines (Sopra HR). Il affiche des informations générales et des liens vers différentes sections.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un badge ou pastille : 
+  - Forme : Rond
+  - Couleur de fond : Jaune/orange
+  - Texte OCR : "8" et "15" (dans un autre badge)
+- Plusieurs icônes de notification ou d'alerte :
+  - Forme : Triangle avec un ! à l'intérieur
+  - Couleur de fond : Rouge
+  - Position : À côté des noms des collaborateurs
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Icône de menu/trois lignes horizontales (en haut à gauche) : Probablement pour ouvrir un menu latéral.
+- Icône de recherche (en haut à droite) : Probablement pour effectuer une recherche.
+- Icône d'information ou d'aide (en haut à droite, à côté de la loupe) : Probablement pour afficher des informations d'aide.
+- Icônes de poubelle ou de suppression (dans la liste des collaborateurs) : Probablement pour supprimer un collaborateur.
+- Icônes de visualisation ou de détail (petits cercles avec des visages) : Probablement pour afficher plus de détails sur un collaborateur.
+
+## 5. AGENCEMENT ET RELATIONS
+- Le tableau de bord est divisé en sections :
+  - Une section principale avec des cartes (ou des tuiles) d'information.
+  - Un menu latéral (ou sidebar) avec des liens vers différentes sections de l'application.
+- Le menu latéral contient des éléments qui semblent être des liens :
+  - "Accueil"
+  - "Actes de gestion"
+  - "Mes collaborateurs"
+  - "Dossier numérique"
+  - "Mes préférences"
+  - "À propos"
+  - "Déconnexion"
+- Les cartes d'information affichent des données chiffrées et des liens vers des actions spécifiques, comme "Saisir une absence" ou "Gérer les temps partiels".
+- La section "MES COLLABORATEURS" liste des utilisateurs avec des informations et des icônes d'alerte.

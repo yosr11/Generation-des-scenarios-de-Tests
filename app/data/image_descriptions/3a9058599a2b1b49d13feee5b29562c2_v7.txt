@@ -1,0 +1,61 @@
+[Image jointe : image-2024-04-09-10-35-28-707.png]
+── Textes détectés (OCR) ──
+Be i
+$ TITRE $ DATE DE DEPOT $ DATE DE DÉBUT $ DATE DE FIN $ FICHIER $ VISIBLE $ VALIDE ACTIONS
+contrat CDI 08/04/2024 01/04/2024 - Conrrat de travail CDI - F Qui Ou @ @ @ @
+Be=
+$ TITRE
+$ DATE DE DEPOT
+$ DATE DE DÉBUT
+$ DATE DE FIN
+$ FICHIER
+$ VISIBLE
+$ VALIDE
+ACTIONS
+contrat CDI
+08/04/2024
+01/04/2024
+Cenrat de travail CDI - F Qui
+Ou
+@O® ®
+── Analyse visuelle (VLM) ──
+Voici mon analyse de l'interface :
+
+**1. CONTEXTE**
+L'écran semble être une liste ou un tableau de gestion de documents, probablement dans un contexte de gestion des ressources humaines. L'intention probable est de visualiser et de gérer les contrats de travail.
+
+**2. ANNOTATIONS AJOUTÉES PAR LE PO**
+Aucune annotation détectée.
+
+**3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI**
+- Un bouton "Ajouter" en haut à droite, de couleur noire avec texte blanc.
+- Des en-têtes de colonnes avec des symboles de tri (une flèche montante et descendante) :
+  - "TITRE"
+  - "DATE DE DEPOT"
+  - "DATE DE DÉBUT"
+  - "DATE DE FIN"
+  - "FICHIER"
+  - "VISIBLE"
+  - "VALIDE"
+  - "ACTIONS"
+
+**4. ICÔNES ET PICTOGRAMMES**
+- Un ensemble d'icônes dans la colonne "ACTIONS" pour chaque ligne :
+  - Une loupe
+  - Un crayon
+  - Une poubelle
+  - Un téléchargement
+  - Un symbole "+"
+
+**5. AGENCEMENT ET RELATIONS**
+- Le tableau comporte 1 ligne de données avec les informations suivantes :
+  - TITRE : contrat CDI
+  - DATE DE DEPOT : 08/04/2024
+  - DATE DE DÉBUT : 01/04/2024
+  - DATE DE FIN : -
+  - FICHIER : Contrat de travail CDI - F Oui (lien bleu)
+  - VISIBLE : Oui
+  - VALIDE : Oui
+  - ACTIONS : les icônes mentionnées précédemment
+- Le bouton "Ajouter" est positionné en haut à droite de l'écran.
+- La ligne de données est séparée en colonnes qui correspondent aux en-têtes.

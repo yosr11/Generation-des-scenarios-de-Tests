@@ -1,0 +1,61 @@
+[Image jointe : image-2024-04-08-10-38-38-933.png]
+── Textes détectés (OCR) ──
+Be :
+$ TITRE $ DATE DE DÉPOT $ DATE DE DÉBUT $ DATE DE FIN $ FICHIER $ VISIBLE $ VALIDE ACTIONS
+contrat CDI 08/04/2024 01/04/2024 - Conrrat de travail CDI - F Qui Ou @ @ @ @ Î.Ï
+Be=
+$ TITRE
+$ DATE DE DEPOT
+$ DATE DE DÉBUT
+$ DATE DE FIN
+$ FICHIER
+$ VISIBLE
+$ VALIDE
+ACTIONS
+contrat CDI
+08/04/2024
+01/04/2024
+Cenrat de travail CDI - F Qui
+Ou
+@DO®® A
+── Analyse visuelle (VLM) ──
+Voici mon analyse de l'interface :
+
+**1. CONTEXTE**
+L'écran semble être une liste de contrats de travail, probablement dans un tableau. L'intention probable est de visualiser et de gérer les contrats de travail.
+
+**2. ANNOTATIONS AJOUTÉES PAR LE PO**
+Aucune annotation détectée.
+
+**3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI**
+- Un bouton "Ajouter" en haut à droite, de couleur noire avec texte blanc.
+- Un en-tête de tableau avec des colonnes :
+ - Une pastille (pill) bleue avec texte blanc dans la colonne "FICHIER" contenant le texte "Contrat de travail CDI - F Oui".
+- Des icônes dans la colonne "ACTIONS" :
+ - Une loupe
+ - Un crayon
+ - Une poubelle
+ - Un téléchargement
+ - Un triangle (probablement un menu déroulant)
+
+**4. ICÔNES ET PICTOGRAMMES**
+- Une icône de menu (représentant trois lignes horizontales) en haut à gauche.
+- Une icône d'information (représentant un "i") à côté de l'icône de menu.
+- Une icône de loupe dans la colonne "ACTIONS".
+- Une icône de crayon dans la colonne "ACTIONS".
+- Une icône de poubelle dans la colonne "ACTIONS".
+- Une icône de téléchargement dans la colonne "ACTIONS".
+- Une icône de triangle (probablement un menu déroulant) dans la colonne "ACTIONS".
+
+**5. AGENCEMENT ET RELATIONS**
+- Le tableau comporte 8 colonnes : TITRE, DATE DE DEPOT, DATE DE DEBUT, DATE DE FIN, FICHIER, VISIBLE, VALIDE, ACTIONS.
+- La ligne du tableau contient un seul élément avec les informations suivantes :
+ - TITRE : "contrat CDI"
+ - DATE DE DEPOT : "08/04/2024"
+ - DATE DE DEBUT : "01/04/2024"
+ - DATE DE FIN : vide
+ - FICHIER : "Contrat de travail CDI - F Oui" (dans une pastille bleue)
+ - VISIBLE : -
+ - VALIDE : "Oui"
+ - ACTIONS : les icônes de loupe, crayon, poubelle, téléchargement et triangle.
+- Le bouton "Ajouter" est positionné en haut à droite de l'écran.

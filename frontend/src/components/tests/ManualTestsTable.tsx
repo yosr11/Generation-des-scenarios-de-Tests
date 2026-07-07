@@ -5,6 +5,7 @@ import { apiClient } from '../../api/client'
 import { useToast } from '../../contexts/ToastContext'
 import { useAuth, JiraProject } from '../../contexts/AuthContext'
 import { ProjectPicker } from '../projects/ProjectPicker'
+import { XrayTestView } from './XrayTestView'
 
 /* ── types ── */
 interface ManualTestsTableProps {
@@ -32,11 +33,14 @@ function truncateSummary(name: string): string {
   return name.slice(0, JIRA_SUMMARY_MAX - 1) + '…'
 }
 
-function buildPayload(test: any) {
-  const rawSteps = test.steps || []
-  const flatSteps = rawSteps.length
-    ? rawSteps
-    : (test.étapes || []).flatMap((e: any) =>
+function buildPayload(test: any, storyId?: string) {
+  const groupedEtapes = Array.isArray(test.étapes) && test.étapes.length
+    ? test.étapes
+    : Array.isArray(test.etapes) && test.etapes.length
+    ? test.etapes
+    : []
+  const flatSteps = groupedEtapes.length
+    ? groupedEtapes.flatMap((e: any) =>
         (e.steps || []).map((s: any) => ({
           action: s.action || e.titre || '',
           expected_result: s.expected_result || '',
@@ -44,14 +48,18 @@ function buildPayload(test: any) {
           actor: s.actor || e.actor || '',
         }))
       )
+    : (test.steps || [])
 
   const rawName = test.test_name || test.title || 'Untitled'
   const test_name = truncateSummary(rawName)
 
   return {
     test_name,
+    story_key: storyId || undefined,
     objective: test.objective || rawName,
     scenario_type: test.scenario_type,
+    preconditions: Array.isArray(test.preconditions) ? test.preconditions : [],
+    étapes: groupedEtapes.length ? groupedEtapes : undefined,
     steps: flatSteps.map((s: any) => ({
       action: s.action || '',
       expected_result: s.expected_result || s.result || '',
@@ -67,9 +75,11 @@ function buildPayload(test: any) {
 const TestEditDrawer: React.FC<{
   test: any
   storyId: string
+  allTests: any[]
+  editingIndex: number
   onClose: () => void
   onSaved: (t: any) => void
-}> = ({ test, storyId, onClose, onSaved }) => {
+}> = ({ test, storyId, allTests, editingIndex, onClose, onSaved }) => {
   const [editedTest, setEditedTest] = useState<any>(test)
   const [message, setMessage] = useState('')
   const [chatHistory, setChatHistory] = useState<{ role: string; content: string }[]>([])
@@ -78,10 +88,37 @@ const TestEditDrawer: React.FC<{
   const [saving, setSaving] = useState(false)
   const toast = useToast()
 
-  const steps =
-    editedTest?.steps ||
-    editedTest?.étapes?.flatMap((e: any) => e.steps || []) ||
-    []
+  const steps: any[] =
+    (Array.isArray(editedTest?.étapes) && editedTest.étapes.length
+      ? editedTest.étapes.flatMap((e: any) => e.steps || [])
+      : editedTest?.steps) || []
+
+  // Met à jour un champ d'un step (repéré par son index à plat) de façon
+  // immuable, en écrivant dans `étapes` (source affichée) ET en resynchronisant
+  // le tableau plat `steps`. Corrige le bug où les éditions n'apparaissaient pas
+  // dans le tableau Xray (qui lit `étapes` en priorité).
+  const updateStep = (i: number, field: 'action' | 'titre' | 'expected_result' | 'data', value: string) => {
+    setEditedTest((prev: any) => {
+      const next = { ...prev }
+      if (Array.isArray(next.étapes) && next.étapes.length) {
+        let counter = 0
+        next.étapes = next.étapes.map((g: any) => ({
+          ...g,
+          steps: (g.steps || []).map((s: any) => {
+            const isTarget = counter === i
+            counter++
+            return isTarget ? { ...s, [field]: value } : s
+          }),
+        }))
+        next.steps = next.étapes.flatMap((g: any) => g.steps || [])
+      } else {
+        next.steps = (next.steps || []).map((s: any, idx: number) =>
+          idx === i ? { ...s, [field]: value } : s
+        )
+      }
+      return next
+    })
+  }
 
   const handleRefine = useCallback(
     async (e: React.MouseEvent) => {
@@ -121,7 +158,11 @@ const TestEditDrawer: React.FC<{
       e.stopPropagation()
       setSaving(true)
       try {
-        await apiClient.testEditing.saveEdited(storyId, [editedTest])
+        // On persiste la LISTE COMPLÈTE des tests (avec l'édition fusionnée),
+        // pas seulement le test édité — sinon le snapshot backend écrase tous
+        // les autres tests et l'historique n'en affiche plus qu'un seul.
+        const fullList = allTests.map((t, i) => (i === editingIndex ? editedTest : t))
+        await apiClient.testEditing.saveEdited(storyId, fullList)
         onSaved(editedTest)
         toast.success('Test sauvegardé !')
       } catch (err: any) {
@@ -130,7 +171,7 @@ const TestEditDrawer: React.FC<{
         setSaving(false)
       }
     },
-    [editedTest, storyId, onSaved, toast]
+    [editedTest, storyId, allTests, editingIndex, onSaved, toast]
   )
 
   return (
@@ -245,28 +286,22 @@ const TestEditDrawer: React.FC<{
                       className="w-full text-sm text-brand-navy rounded-lg px-2.5 py-2 border border-brand-navy/[0.08] bg-white focus:border-brand-violet focus:outline-none focus:ring-2 focus:ring-brand-violet/10"
                       value={step.action || step.titre || ''}
                       onChange={(e) => {
-                        const newSteps = [...steps]
-                        if (newSteps[i].action !== undefined) newSteps[i].action = e.target.value
-                        else newSteps[i].titre = e.target.value
-                        const newTest = { ...editedTest }
-                        if (newTest.steps) newTest.steps = newSteps
-                        setEditedTest(newTest)
+                        const field = step.action !== undefined ? 'action' : 'titre'
+                        updateStep(i, field, e.target.value)
                       }}
                       onClick={(e) => e.stopPropagation()}
                       placeholder="Action…"
                     />
-                    <input
-                      className="w-full text-xs text-brand-navy rounded-lg px-2.5 py-2 border border-brand-navy/[0.06] bg-brand-offwhite/20 focus:border-brand-violet focus:outline-none focus:ring-2 focus:ring-brand-violet/10"
+                    {/* CORRIGÉ : textarea multi-lignes au lieu d'un input simple,
+                        pour permettre la saisie/édition d'une liste d'assertions
+                        atomiques (une par ligne). */}
+                    <textarea
+                      className="w-full text-xs text-brand-navy rounded-lg px-2.5 py-2 border border-brand-navy/[0.06] bg-brand-offwhite/20 focus:border-brand-violet focus:outline-none focus:ring-2 focus:ring-brand-violet/10 resize-y leading-relaxed"
                       value={step.expected_result || ''}
-                      onChange={(e) => {
-                        const newSteps = [...steps]
-                        newSteps[i].expected_result = e.target.value
-                        const newTest = { ...editedTest }
-                        if (newTest.steps) newTest.steps = newSteps
-                        setEditedTest(newTest)
-                      }}
+                      onChange={(e) => updateStep(i, 'expected_result', e.target.value)}
                       onClick={(e) => e.stopPropagation()}
-                      placeholder="Résultat attendu…"
+                      placeholder="Résultat attendu (une assertion par ligne)…"
+                      rows={4}
                     />
                   </li>
                 ))}
@@ -498,7 +533,7 @@ export const ManualTestsTable: React.FC<ManualTestsTableProps> = ({
       }
       setIntegratingIndex(index)
       try {
-        const payload = buildPayload(test)
+        const payload = buildPayload(test, storyId)
         const resp = await apiClient.integration.integrateTest({
           project_key: projectKey,
           test: payload,
@@ -615,50 +650,7 @@ export const ManualTestsTable: React.FC<ManualTestsTableProps> = ({
                 {isExpanded && (
                   <div className="px-4 pb-5 pt-1 pl-[3.25rem] space-y-4">
 
-                    {test.objective && (
-                      <div>
-                        <p className="syn-label mb-1.5">Objectif</p>
-                        <p className="text-sm text-brand-navy leading-relaxed">{test.objective}</p>
-                      </div>
-                    )}
-
-                    {test.description && (
-                      <div>
-                        <p className="syn-label mb-1.5">Description</p>
-                        <p className="text-sm text-brand-navy leading-relaxed whitespace-pre-wrap">
-                          {test.description}
-                        </p>
-                      </div>
-                    )}
-
-                    {allSteps.length > 0 && (
-                      <div>
-                        <p className="syn-label mb-2">Étapes</p>
-                        <div className="space-y-3">
-                          {allSteps.map((step: any, si: number) => (
-                            <div
-                              key={si}
-                              className="text-sm border-l-2 border-brand-violet/25 pl-3 py-0.5"
-                            >
-                              <p className="font-semibold text-brand-navy mb-1">
-                                {si + 1}. {step.titre || step.action}
-                              </p>
-                              {step.data && (
-                                <p className="text-xs text-brand-muted mb-1">
-                                  <span className="font-medium">Données :</span> {step.data}
-                                </p>
-                              )}
-                              {step.expected_result && (
-                                <p className="text-xs text-brand-navy leading-relaxed">
-                                  <span className="font-medium text-brand-muted">Résultat attendu :</span>{' '}
-                                  {step.expected_result}
-                                </p>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
+                    <XrayTestView test={test} />
 
                     <div className="flex items-center gap-2 pt-2">
                       <button
@@ -696,6 +688,8 @@ export const ManualTestsTable: React.FC<ManualTestsTableProps> = ({
         <TestEditDrawer
           test={editingTest}
           storyId={storyId ?? ''}
+          allTests={localTests}
+          editingIndex={editingIndex}
           onClose={() => { setEditingTest(null); setEditingIndex(null) }}
           onSaved={handleSaved}
         />

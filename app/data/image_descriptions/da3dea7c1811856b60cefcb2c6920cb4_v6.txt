@@ -1,0 +1,79 @@
+[Image jointe : image-2025-04-22-18-11-52-953.png]
+── Textes détectés (OCR) ──
+= 51558 ;
+= @ =— à ? 0
+A Acven —.
+ACTES DF GESTION 4+, MES CCIABORATEURS
+; 2* roRorrer H0ssen AESTUAN
+o Actes de gestion 14 a37 reckrre 24 a v 2 a
+K3 Mes collaborateurs “éter es temps paia « 1a Ç Frrdeniuc 2ARBIES za
+8 1 e 0 g e tihe e M SR
+BR _ Dossier numenque & 1 5 B Re 1 e o G L0710t S srav el 14 ,n Mrher 14
+Sensizelet une pétisde p'oba:. 1€ 14 _-ä Jeuss VT AN 14
+O Mes préférences » ï LECHIN
+X Apropos
+Q) Léconnexion
+i &y soprobhr
+ASSENCES À CONTROLER
+3 dossiers
+A Acven
+ACTES DF GFSTION
+MES CCLABORATEURS
+Htsien AESILAN
+37 é cFrer
+24
+FROTITONT
+2 A
+o Actes de gestion
+14
+érer|és temps partie <
+Fridertzuc ZARBIE=
+Mes collaborateurs
+8777017
+Rev s r G1 OL dl ZE 110 el
+Lhrhe E o)
+GQ
+84
+150
+(R LI
+Dossier numérique
+ICUES VL AR |
+Renad.elzt une périsdep'obs:21€
+(S FAGER
+Mes préférences
+À propos
+Léconnexion
+Ly soprohr
+ABSENCES À CCNTROLER
+── Analyse visuelle (VLM) ──
+Voici mon analyse de l'interface :
+
+**1. CONTEXTE**
+L'écran semble être un dashboard de gestion pour un espace de travail, probablement une application web ou un logiciel de gestion des ressources humaines. L'intention probable est de fournir un aperçu des informations importantes et des tâches à accomplir.
+
+**2. ANNOTATIONS AJOUTÉES PAR LE PO**
+Aucune annotation détectée.
+
+**3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI**
+Il y a plusieurs éléments graphiques natifs de l'interface :
+- Un badge avec le texte "8" et un triangle de warning, de couleur bleu clair.
+- Un badge avec le texte "14" et un triangle de warning, de couleur bleu clair.
+- Un badge avec le texte "3 dossiers", de couleur bleu clair.
+- Des pastilles rouges avec un triangle de warning à côté des noms des collaborateurs.
+
+**4. ICÔNES ET PICTOGRAMMES**
+Il y a plusieurs icônes et pictogrammes :
+- Une icône de menu (représentant trois lignes horizontales) dans le coin supérieur gauche.
+- Une icône de recherche (représentant une loupe) dans le coin supérieur droit.
+- Une icône de paramètres (représentant un engrenage) dans le coin supérieur droit.
+- Des icônes de warning (représentant un triangle avec un exclamation) à côté des badges et des noms des collaborateurs.
+- Des icônes de profil (représentant des personnes) à côté des noms des collaborateurs.
+
+**5. AGENCEMENT ET RELATIONS**
+L'écran est divisé en plusieurs sections :
+- Un menu de navigation vertical à gauche, avec des éléments tels que "Accueil", "Actes de gestion", "Mes collaborateurs", etc.
+- Un espace central avec des badges et des informations importantes.
+- Un espace droit avec une liste de collaborateurs et des informations les concernant.
+- Les badges et les informations importantes sont regroupés dans des sections distinctes.
+- Les champs obligatoires sont indiqués par un astérisque (*), mais il n'y en a pas dans cette capture d'écran.
+- Les éléments de l'interface sont organisés de manière logique et facile à comprendre.

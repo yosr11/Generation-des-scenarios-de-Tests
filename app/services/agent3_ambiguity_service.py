@@ -85,3 +85,64 @@ def detect_ambiguous_steps_with_llm(
     user story et n'est pas une ambiguïté de test → pas de détection LLM (faux positifs).
     """
     return []
+
+
+# ── Contradiction entre testable_points ──────────────────────────────────────
+
+_CONTRADICTION_PAIRS: list[tuple[str, str]] = [
+    ("droite", "gauche"),
+    ("gauche", "droite"),
+    ("activé", "désactivé"),
+    ("désactivé", "activé"),
+    ("affiché", "masqué"),
+    ("masqué", "affiché"),
+    ("affiché", "caché"),
+    ("caché", "affiché"),
+    ("visible", "invisible"),
+    ("invisible", "visible"),
+    ("présent", "absent"),
+    ("absent", "présent"),
+    ("autorisé", "interdit"),
+    ("interdit", "autorisé"),
+    ("actif", "inactif"),
+    ("inactif", "actif"),
+    ("activé", "grisé"),
+    ("grisé", "activé"),
+]
+
+
+def detect_testable_point_contradictions(testable_points: List[str]) -> List[dict]:
+    """
+    Détecte les contradictions internes entre testable_points.
+    Ex : TP-1 dit "à droite de la date" et TP-4 dit "à gauche de la date".
+    Retourne une liste de findings au format ambiguity_findings (story-level).
+    """
+    findings: List[dict] = []
+    seen_pairs: set[tuple[int, int]] = set()
+
+    for i, tp_a in enumerate(testable_points):
+        words_a = set(re.findall(r"\b\w+\b", tp_a.lower()))
+        for j, tp_b in enumerate(testable_points):
+            if i >= j:
+                continue
+            words_b = set(re.findall(r"\b\w+\b", tp_b.lower()))
+            for word_a, word_b in _CONTRADICTION_PAIRS:
+                if word_a in words_a and word_b in words_b:
+                    pair_key = (min(i, j), max(i, j), word_a, word_b)
+                    canonical = (min(i, j), max(i, j), min(word_a, word_b), max(word_a, word_b))
+                    if canonical in seen_pairs:
+                        continue
+                    seen_pairs.add(canonical)
+                    findings.append({
+                        "test_name": "[STORY]",
+                        "step_index": -1,
+                        "field": "testable_points",
+                        "reason": (
+                            f"Contradiction probable : TP-{i+1} contient '«{word_a}»' "
+                            f"et TP-{j+1} contient '«{word_b}»' — "
+                            f"vérifier la cohérence avec la User Story source."
+                        ),
+                        "original_text": f"TP-{i+1}: {tp_a}\nTP-{j+1}: {tp_b}",
+                        "source": "heuristic_contradiction",
+                    })
+    return findings

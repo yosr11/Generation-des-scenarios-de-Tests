@@ -1,0 +1,82 @@
+[Image jointe : image-2025-04-23-08-07-40-541.png]
+── Textes détectés (OCR) ──
+PRU T Publication /
+lype ce News *
+ACTUALITE v Cette News est RV/\R(p]@ NON VALIDE
+Titre dans le carrousel * Date de début de publication *
+Les News sortent dans 4YOU9.0 __ / - / __ -
+Texte ‘ Date de fin de publication *
+—- 7
+Les News permettent de d'informer les collaborateurs manager gestionnaires.
+Localisation
+L France secteur privé
+Document d'actualité tanaue
+; ,( . Francais
+Actualile.ping m
+Ilustration dans le carrousel Confidentialité /
+Veuillez sélectionner une image s
+Société
+R -Z
+7 - - Etablissement
+— .
+38 * ’ /' Aperçu Acteur autorisé à voir la News
+' 1 = v
+{l } u
+Pouvoir tout cocher dans une liste
+(][]
+ce
+adia et
+Publication /
+lype ce News
+ACTUALITE
+Cette News est MRIN 78 NON VALIDE
+Titre dans le carrousel °
+Date de début de publication
+Les News sortent dans 4YOU9.0
+__/__/__
+Date de fin de publication
+Texte
+France secteur privé
+Langue
+Document d’actualité
+Français
+Aclualilé.png Il
+Confidentialité /
+Illustration dans le carrousel
+Veuillez sélectionner une image
+Etablissement
+-— .
+38
+Aperçu
+Acteur autorisé à voir la News
+[ [ ]
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran semble être un formulaire de création ou édition d'une news (actualité) dans un système de gestion de contenu, probablement pour une plateforme RH (Ressources Humaines). Le formulaire inclut des champs pour les informations de publication, la localisation, la langue, et la confidentialité.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+- Un cadre jaune entoure le champ "Type de News" et le texte associé est « ACTUALITE ».
+- Un cadre jaune entoure le champ "Titre dans le carrousel" et le texte associé est « Les News sortent dans 4YOU9.0 ».
+- Un cadre jaune entoure le champ "Texte" et le texte associé est « Les News permettent de d'informer les collaborateurs manager gestionnaires. ».
+- Un cadre jaune entoure le champ "Document d'actualité" et le texte associé est « Actualité.png ».
+- Un cadre jaune entoure le champ "Illustration dans le carrousel" et le texte associé est « News.png ».
+- Un cercle rouge est autour du champ "Acteur autorisé à voir la News".
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Le bouton « Valide » est de couleur bleue.
+- Le bouton « Non Valide » est de couleur grise.
+- Un champ de recherche ou de saisie avec une icône de calendrier est présent pour les dates de début et de fin de publication.
+- Des champs déroulants sont présents pour « Type de News », « Localisation », « Langue », « Société », « Etablissement », et « Acteur autorisé à voir la News ».
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Une icône de calendrier est présente à côté des champs de date de début et de fin de publication.
+- Une icône d'information (info-bulle) est présente à côté de « Publication » et « Confidentialité ».
+- Une icône de poubelle est présente à côté de « Document d'actualité » et « Illustration dans le carrousel ».
+- Une icône de téléchargement ou de sélection de fichier est présente pour « Document d'actualité » et « Illustration dans le carrousel ».
+
+## 5. AGENCEMENT ET RELATIONS
+- Le formulaire est divisé en sections : informations de publication, contenu de la news, et confidentialité.
+- Les champs obligatoires sont indiqués par une étoile (*).
+- Le champ « Type de News » est en haut à gauche.
+- Les champs « Date de début de publication » et « Date de fin de publication » sont alignés à droite.
+- La section « Confidentialité » inclut des champs pour « Société », « Etablissement », et « Acteur autorisé à voir la News », montrant une hiérarchie d'informations.

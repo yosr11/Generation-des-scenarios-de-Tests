@@ -1,0 +1,73 @@
+[Image jointe : Traduction.png]
+── Textes détectés (OCR) ──
+= 6B Gestion des News o ? O
+PUBLICATION TITRE AUTEUR DATE DE CREATION DATE DE DEBUT DE PUBLICATION DATE DE FIN DE PUBLICATION VALIDE ACTIONS
+Éléments par page 5 - 0/0
+Les champs indigués par Lre * son: coligataires.
+Type de News * Publication 7}
+[] valide
+Langue * ; —
+Date de début de publication * Cil
+[Engisn (o X]
+Titre dans le carrousel English * —
+! ! ! ng Date de fin de publication * (i}
+Texte English *
+La localisation de la News est France secteur privé.
+La langue de publication de la News est e Français.
+-  Confidentialité (
+Société *
+Titre dans le carrousel Français *
+Etablissement
+Texte Français *
+Acteur autorisé à voir la News *
+Gestion des News
+O,
+PUBLICATION
+TITRE
+AUTEUR
+DATE DE CREATION
+DATE DE DEBUT DE PUBLICATION
+DATE DE FIN DE PUBLICATION
+VALIDE
+ACTIONS
+070
+Éléments par page
+V Je crée une News
+Type de News *
+Publication (i)
+Langue *
+Date de début de publication * i)
+Engish } Famcas X [ raïano X ]
+A —
+Titre dans le carrousel English *
+Date de fin de publication * i}
+— 40
+La langue de publication de la News est le Français.
+ÀÆ
+Confidentialité (i)
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran semble être un formulaire pour créer une nouvelle "News" dans un système de gestion. Le formulaire comporte plusieurs champs pour saisir des informations relatives à la news, telles que le titre, la langue, les dates de publication, et la confidentialité.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un onglet actif "PUBLICATION" en haut de l'écran, de couleur grise avec un texte blanc.
+- Un champ de sélection "Type de News" avec une flèche déroulante.
+- Des onglets de langue (English, Français, Italiano) de couleur bleue avec un "X" gris pour fermer.
+- Des champs de texte avec des libellés tels que "Titre dans le carrousel English" et "Texte English".
+- Des champs de date avec des icônes de calendrier.
+- Un champ "Confidentialité" avec des sous-champs déroulants pour "Société", "Etablissement", et "Acteur autorisé à voir la News".
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Une icône de calendrier à côté des champs de date.
+- Une icône d'information (i) à côté de certains champs pour potentiellement fournir des informations supplémentaires.
+- Une icône de fermeture (X) à côté des onglets de langue.
+
+## 5. AGENCEMENT ET RELATIONS
+- Le formulaire est divisé en sections verticales avec des libellés à gauche et des champs à droite.
+- Les champs obligatoires sont indiqués par une étoile (*).
+- Le formulaire comporte des champs de texte, des sélecteurs de date, et des menus déroulants.
+- Les onglets de langue (English, Français, Italiano) sont alignés horizontalement.
+- Le champ "Confidentialité" est regroupé avec des sous-champs en dessous.

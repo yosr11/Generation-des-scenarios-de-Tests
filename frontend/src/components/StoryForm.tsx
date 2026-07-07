@@ -167,7 +167,8 @@ export default function StoryForm({ onAnalyze, isLoading }: StoryFormProps) {
                 <label className="block text-sm font-semibold text-slate-700">Agent 5</label>
                 <p className="text-sm text-slate-500">Le pipeline se termine désormais avec Agent 5 pour générer le rapport final.</p>
               </div>
-            )}
+            </>
+          )}
 
           <div className="grid gap-3">
             <label className="block text-sm font-semibold text-slate-700">Options</label>

@@ -1,0 +1,65 @@
+[Image jointe : image-2024-04-08-10-22-32-694.png]
+── Textes détectés (OCR) ──
+= @ Dossier numérique QO ? D
+RPN RIUE 5ASE DE CONNAISSANCE EN. .
+CTIGRADNS GESTIET O
+FRLFRAY1109 °
+y \J
+8 :
+$ TITRE & DATE DE DÉPOT & DATE DE DÉBUT $ DATE DE FIN $ FICHIER $ VISIBLE $ VALIDE ACTIONS
+Dossier numérique contrat CDI 08/04/2024 01:04:2024 - Tonvrar de travall CC - = Oui Oui @ @
+É Courrier emiaucre
+E Curriealum vitae
+B Décaratar oréalaole à emosucne
+E Fcenssier 5 temnance
+Dossier numérique
+A ? 0
+BASE DE CONNAISSANCE EN. ..
+CTIGRADNSZ GESTIET
+O,
+FRLFR4Y1109
+EEEI
+$ TITRE
+& DATE DE DÉPOT
+& DATE DE DÉBUT
+$ DATE DE FIN
+$ FICHIER
+$ VISIBLE
+$ VALIDE
+ACTIONS
+contrat CDI
+08/04/2024
+01/04/2024
+Tovra: de travail CC
+- Oui
+Oui
+VOW®
+Courrier emtaucre
+Carricalum Vitae
+Decarstor oréalaoie à emosucne
+Hcemnssior aternance
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran semble être une page de gestion de dossiers numériques, probablement dans un contexte de gestion des ressources humaines. Il affiche une liste de documents avec des informations telles que le titre, les dates de dépôt et de début, le fichier associé, la visibilité et la validation.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un badge ou étiquette de type "pill" de couleur bleue avec le texte "SALARIÉ 4YOU".
+- Des icônes dans la colonne "ACTIONS" : 
+  - Une loupe (probablement pour visualiser les détails),
+  - Une poubelle (probablement pour supprimer),
+  - Une flèche pointant vers le bas (probablement pour télécharger).
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Une icône de menu (représenté par trois lignes horizontales) en haut à gauche.
+- Une icône de recherche (représentée par une loupe) dans la barre de recherche.
+- Une icône d'information (représentée par un "i") dans la colonne des titres.
+- Une icône pour basculer l'affichage du tableau (représentée par des lignes) à côté de l'icône d'information.
+
+## 5. AGENCEMENT ET RELATIONS
+- Le tableau est organisé en colonnes avec des en-têtes pour le titre, la date de dépôt, la date de début, la date de fin, le fichier, la visibilité, la validation, et les actions.
+- Il y a un champ de recherche en haut à gauche avec un texte "Filtre sur arborescence et mots-clés".
+- Un bouton "Ajouter" est visible en haut à droite du tableau.
+- La liste des dossiers numériques est présentée dans une arborescence sur la gauche, avec des éléments tels que "Courrier embauche", "Curriculum Vitae", "Déclaration préalable à l'embauche", et "Fiche mission alternance".

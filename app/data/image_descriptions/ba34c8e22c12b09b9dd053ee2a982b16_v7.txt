@@ -1,0 +1,102 @@
+[Image jointe : Formulaire_Multi langue.jpg]
+── Textes détectés (OCR) ──
+= @ Gestion des News o ? O
+Vous gérez it vos News, vous pouvez creer des annonces et des actualités !5)
++ Créer une actualité Sauvégarde
+> Liste des News
+V Je crée une News ﬂl, t]'
+Les champs TH:Icé5 DICUTE * SOR CHROIGIES
+Type de News *
+Actualités - $
+Publication /i) Confidentialité (i}
+Société “
+(O vande
+Etablissement *
+Date de fin de publication * 15}
+Acteur autorisé à voir 1a News *
+— = :]
+La locahisation de la News est France secteur privé
+La langue de publication de ta News est l Anglais. Illustration dans le carrousel
+Veurilez sélectionner une image
+_ 1 © 2on2 w
+Contenu ) Lena %
+Langue * « - "
+Liste des unités déclaratives
+Campagne 04 52014 ourects an mode st Aperçu de l'llustration
+m uc ms ccs [
+P R i et be e u
+v Je rédige en English ﬂjl Ën
+English - Titre dans le carrousel * English - Aperçu du contenu
+éneisn - Tente ” -
+English - Mots-clés *
+English - Veuillez sélectionner un Document d'actualité * ‘Îjl
+> Je rédige en Français ﬂ]! Ê]|
+> Je réaige en Italiano ÛI Ëll
+Gestion des News
+ce
+V Je crée une News
+o,
+Les champs - TH:acé5 D37 L ™€ * SOR TDLRATGIE!
+Actualités
+Publication i)
+Confidentialité (i
+Date de début de pubhcation * 15)
+P e
+/!
+=]
+—E
+ff
+La langue de publication de la News est i Anglais.
+Ilustration dans le carrousel
+1 © 2prz W
+Contenu i)
+Langue “
+\@mmm
+Campagne €u 57014 ouracts en made
+Aperçu de l'Hlustration
+"~
+[——
+oo
+cec
+ompoutsass
+An T
+et =
+—c ce
+vt e s
+.…
+se
+ms
+v Je rédige en English
+UE
+English - Aperçu du contenu
+English - Titre dans le carrousel *
+English - Texte *
+[6]
+> Je rédige en Français
+88
+> Je réaige en Italiano
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran semble être un formulaire de création de news ou d'actualités dans un système de gestion. Il contient divers champs pour saisir des informations relatives à la news, comme son type, sa date de publication, sa confidentialité, et son contenu.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un champ de sélection pour le type de news avec la valeur "Actualités".
+- Des boutons de langue (English, Français, Italiano) de forme rectangulaire avec des couleurs différentes pour indiquer la langue active.
+- Un conteneur pour l'illustration dans le carrousel avec une image sélectionnée (2.png).
+- Des champs de texte pour saisir le titre, l'apercu du contenu et les mots-clés dans différentes langues.
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Une icône d'information (petit "i") à côté de plusieurs champs pour fournir des informations supplémentaires.
+- Une icône de téléchargement ou de sélection d'image (une petite image) dans la section "Illustration dans le carrousel".
+- Une icône de validation ou de sauvegarde (une coche ou un disque) associée aux champs de texte.
+
+## 5. AGENCEMENT ET RELATIONS
+Le formulaire est organisé en sections :
+- Une section pour les informations générales de la news (type, publication, confidentialité).
+- Une section pour le contenu (langue, titre, aperçu du contenu, mots-clés) avec des onglets pour différentes langues (English, Français, Italiano).
+- Un champ pour l'illustration dans le carrousel.
+Les champs obligatoires sont indiqués par une étoile (*).
+Les sections sont séparées par des titres et des espaces pour améliorer la lisibilité.

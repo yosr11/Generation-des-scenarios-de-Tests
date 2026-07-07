@@ -1,0 +1,55 @@
+[Image jointe : TextePopin.png]
+── Textes détectés (OCR) ──
+HF Vacances de NOEL
+‘40 by Ù 2
+i Publié le 08/10/2025
+“ 4 il _“
+—E - ‘l .;:..At R
+oA e °
+e e-billet UGC 28 septembre 2025 pdf
+Les vacances scolaires commencent généralement le vendredi soir ou le samedi matin après les cours et se terminent deux semaines plus
+tard le lundi matin à la reprise des cours. Elles comportent : - Les vacances de la Toussaint (ou d'automne) : en 2012, revenues à deux
+semaines, les vacances de Toussaint sont généralement situées à la fin du mois d'octobre et au début du mois de novembre. Elles duraient
+une semaine et demie entre 1981 et 1996 et entre 2003 et 2011, et une semaine entre 1997 et 2002. - Les vacances de Noël (ou de fin
+d'année) : d'une durée de deux semaines et également communes à toutes les zones. Elles englobent les fétes de Noël et du jour de l'an et
+laissent quelques jours de récupération au début du mois de janvier. les vacances de Mardi-gras (ou d'hiver) : situées au mois de février
+jusqu'à mars. Elles sont divisées en zones et durent deux semaines. - Les vacances de Pâques (ou de printemps) : derniéres vacances de
+l'année scolaire, elles sont également divisées en zones et durent deux semaines. Entre 1977 et 1990, existait une journée de congé
+supplémentaire désignée sous le nom de « journée du maire », dont la date était fixée à la demande du maire de la commune, par le recteur
+d'académie. Celle-ci servait notamment à accompagner, en dehors des congés scolaires et jours férié légaux, des festivités et
+commémorations organisées par la commune. Par exemple à Oradour-sur-Glane, la journée du maire tombait le 10 juin, en souvenir
+évidemment du massacre du 10 juin 1944.
+@> Voir le document (® Télécharger le document
+Vacances de NOËL
+. -
+..
+Publié le 08/10/2025
+PR
+& *
+e-billet UGC 28 septembre 2025 pdf
+jusqu'à mars. Elles sont divisées en zones et durent deux semaines. - Les vacances de Pâques (ou de printemps) : dernières vacances de
+── Analyse visuelle (VLM) ──
+1. CONTEXTE : 
+L'écran semble être une popup ou une fenêtre modale d'information, probablement dans un contexte de gestion des ressources humaines ou d'administration scolaire, affichant des informations sur les vacances scolaires, notamment celles de Noël.
+
+2. ANNOTATIONS AJOUTÉES PAR LE PO : 
+Aucune annotation détectée.
+
+3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI :
+- Un cadre rectangulaire rouge entoure le texte descriptif des vacances scolaires.
+- Le texte « Vacances de NOËL » est en en-tête avec une icône de carrousel ou d'image à gauche.
+- Trois boutons sont présents en bas : 
+  - Un bouton « Fermer » semble être de forme arrondie.
+  - Deux boutons noirs avec des icônes : « Voir le document » avec une icône œil et « Télécharger le document » avec une icône de téléchargement.
+
+4. ICÔNES ET PICTOGRAMMES :
+- Une petite icône en forme de « X » (fermer) est visible en haut à droite de la popup.
+- Une icône représentant un œil est associée au bouton « Voir le document ».
+- Une icône représentant une flèche descendante est associée au bouton « Télécharger le document ».
+- Une image ou icône carrée (possiblement un carrousel) est présente en haut à gauche, représentant une scène festive.
+
+5. AGENCEMENT ET RELATIONS :
+- La popup contient une section de titre « Vacances de NOËL » suivie d'une date « Publié le 08/10/2025 ».
+- Un paragraphe de texte est entouré d'un cadre rouge, fournissant des informations détaillées sur les vacances scolaires.
+- Trois boutons sont alignés au bas de la popup : « Fermer », « Voir le document », et « Télécharger le document ».
+- L'agencement suggère que les boutons « Voir le document » et « Télécharger le document » sont liés aux informations sur les vacances scolaires fournies dans la popup.

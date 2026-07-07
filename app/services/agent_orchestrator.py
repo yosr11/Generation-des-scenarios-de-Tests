@@ -12,8 +12,14 @@ import time
 from typing import Any, Dict, List, Optional, TypedDict
 
 from langgraph.graph import END, StateGraph
+from app.services.jira_service import enrich_issuelinks_with_description
 
 from app.services.token_tracker import track_agent, track_pipeline
+from app.services.pipeline_export_service import (
+    collect_story_images,
+    build_agent2_input,
+    build_evaluation_export,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -54,6 +60,7 @@ class PipelineState(TypedDict, total=False):
     analysis: Optional[Any]              # StoryAnalysisResult (merged final output)
     analysis_dict: Optional[Dict]        # Version dict pour Agent 2
     classification: Optional[Any]        # StoryClassificationResult (classification-only output)
+    business_model: Optional[Any]        # BusinessModelingResult (Agent 1.5)
     tests: List[Any]                     # List[ManualTestCase]
     generation_result: Optional[Any]     # ManualTestGenerationResult
     agent2_golden_rule_warnings: List[str]
@@ -61,6 +68,9 @@ class PipelineState(TypedDict, total=False):
     validation: Optional[Any]            # Agent3ValidationResult
     report: Optional[Any]               # Agent5Report
     classification_result: Optional[Any] # Agent4 — StoryAutomationClassificationResult
+
+    # ── Modèles par agent ──
+    model_agent15: str                   # Modèle LLM pour Agent 1.5
 
     # ── Contrôle ──
     correction_iteration: int
@@ -125,6 +135,7 @@ def node_enrich_story(state: PipelineState) -> dict:
         "labels": fields.get("labels") or [],
         "components": [c.get("name") for c in (fields.get("components") or [])],
         "issuelinks": flatten_issuelinks(fields.get("issuelinks") or []),
+        "issuelinks": enrich_issuelinks_with_description(flatten_issuelinks(fields.get("issuelinks") or [])),
         "priority": (fields.get("priority") or {}).get("name"),
         "status": (fields.get("status") or {}).get("name"),
         "fixVersions": [v.get("name") for v in (fields.get("fixVersions") or [])],
@@ -223,7 +234,7 @@ def node_classify_story(state: PipelineState) -> dict:
     story = state["story"]
     story_id = state["story_id"]
     model = state.get("model_agent1", "llama4")
-    rag_context = state.get("rag_context")
+    rag_context = None
     _safe_update_step(story_id, "Agent 1", "running", progress=15)
 
     story_attachments = collect_documents_for_story(story_id)
@@ -275,7 +286,7 @@ def node_extract_analysis(state: PipelineState) -> dict:
     story = state["story"]
     story_id = state["story_id"]
     model = state.get("model_agent1", "llama4")
-    rag_context = state.get("rag_context")
+    rag_context = None
     classification = state.get("classification")
     _safe_update_step(story_id, "Agent 1", "running", progress=20)
 
@@ -305,7 +316,7 @@ def node_extract_analysis(state: PipelineState) -> dict:
         save_analysis(analysis_dict)
 
         _safe_update_step(story_id, "Agent 1", "completed", output=analysis_dict, progress=25)
-        _safe_update_step(story_id, "Agent 2", "running", progress=30)
+        _safe_update_step(story_id, "Agent 1.5", "running", progress=26)
 
         return {
             "analysis": analysis,
@@ -321,14 +332,53 @@ def node_extract_analysis(state: PipelineState) -> dict:
         }
 
 
+def node_agent15_business_model(state: PipelineState) -> dict:
+    """Agent 1.5 : modélisation des business goals et workflows."""
+    from app.services.business_modeling_service import build_business_model
+    from app.repositories.business_model_repository import save_business_model
+
+    story_id = state["story_id"]
+    analysis_dict = state.get("analysis_dict") or {}
+    model = state.get("model_agent15") or state.get("model_agent1", "llama4")
+
+    _safe_update_step(story_id, "Agent 1.5", "running", progress=27)
+    logger.info(f"[Orchestrator] Agent 1.5 modélisation de {story_id} (modèle={model})")
+
+    try:
+        with track_agent("agent15"):
+            result = build_business_model(analysis=analysis_dict, model_alias=model)
+
+        result_dict = result.model_dump()
+        result_dict["model"] = model
+        save_business_model(result_dict)
+
+        bm_out = result_dict
+        _safe_update_step(story_id, "Agent 1.5", "completed", output=bm_out, progress=30)
+
+        return {"business_model": result}
+
+    except Exception as exc:
+        # Agent 1.5 est non-bloquant : en cas d'échec, le pipeline continue sans business model
+        logger.error(f"[Orchestrator] Agent 1.5 failed for {story_id}: {exc}")
+        _safe_update_step(story_id, "Agent 1.5", "failed", error=str(exc), progress=30)
+        return {"business_model": None}
+
+
 def node_agent2_generate(state: PipelineState) -> dict:
     """Agent 2 : génération de tests manuels."""
     from app.api.manual_test_generation import generate_manual_tests_for_story_data
     from app.repositories.manual_tests_repository import save_manual_tests_snapshot
 
     story = state["story"]
-    analysis_dict = state.get("analysis_dict") or {}
+    analysis_dict = dict(state.get("analysis_dict") or {})
     story_id = state["story_id"]
+
+    # Enrichir analysis_dict avec le business model si disponible
+    business_model = state.get("business_model")
+    if business_model is not None:
+        bm_dict = business_model.model_dump() if hasattr(business_model, "model_dump") else dict(business_model)
+        analysis_dict["business_goals"] = bm_dict.get("business_goals", [])
+        analysis_dict["business_workflows"] = bm_dict.get("business_workflows", [])
     model = state.get("model_agent2", "llama4")
     rag_context = state.get("rag_context")
     _safe_update_step(story_id, "Agent 2", "running", progress=35)
@@ -644,34 +694,28 @@ def route_after_agent3(state: PipelineState) -> str:
         return next_after_validation
 
     report = validation.report
-    status = report.validation_status
     coverage = report.coverage_rate
     iteration = state.get("correction_iteration", 0)
     max_iter = state.get("max_correction_iterations", 2)
-
+    coverage_threshold = state.get("coverage_threshold", 0.70)
     uncovered = report.uncovered_testable_points or []
+
     duplicates = report.duplicate_pairs or []
     ambiguities = report.ambiguity_findings or []
 
-    if status == "VALID":
-        logger.info(f"[Orchestrator] Validation VALID (coverage={coverage:.1%}) → {next_after_validation}")
-        return next_after_validation
-
-    has_actionable_issues = bool(uncovered or duplicates or ambiguities)
-
-    if iteration < max_iter and has_actionable_issues:
+    # Déclencher le gap-fill si couverture < seuil OU doublons OU ambiguïtés
+    has_issues = bool((coverage < coverage_threshold and uncovered) or duplicates or ambiguities)
+    if iteration < max_iter and has_issues:
         logger.info(
-            f"[Orchestrator] Validation {status} "
-            f"(coverage={coverage:.1%}, uncovered={len(uncovered)}, "
-            f"duplicates={len(duplicates)}, ambiguities={len(ambiguities)}), "
-            f"iteration {iteration + 1}/{max_iter} → gap-fill"
+            f"[Orchestrator] Issues détectées (coverage={coverage:.1%}, uncovered={len(uncovered)}, "
+            f"duplicates={len(duplicates)}, ambiguities={len(ambiguities)}) "
+            f"→ gap-fill itération {iteration + 1}/{max_iter}"
         )
         return "agent2_gap_fill"
 
-    reason = "max iterations reached" if iteration >= max_iter else "no actionable issues"
     logger.info(
-        f"[Orchestrator] Validation {status} (coverage={coverage:.1%}) "
-        f"but {reason} → {next_after_validation}"
+        f"[Orchestrator] Couverture {coverage:.1%} (seuil={coverage_threshold:.1%}), "
+        f"itérations={iteration}/{max_iter} → {next_after_validation}"
     )
     return next_after_validation
 
@@ -747,6 +791,7 @@ def build_pipeline_graph() -> StateGraph:
     graph.add_node("agent2_generate", node_agent2_generate)
     graph.add_node("agent3_validate", node_agent3_validate)
     graph.add_node("agent2_gap_fill", node_agent2_gap_fill)
+    graph.add_node("agent15_business_model", node_agent15_business_model)
     graph.add_node("agent5_report", node_agent5_report)
     graph.add_node("skip", node_skip)
     graph.add_node("no_tests", node_no_tests)
@@ -770,7 +815,8 @@ def build_pipeline_graph() -> StateGraph:
         END: END,
     })
 
-    graph.add_edge("analysis_agent", "agent2_generate")
+    graph.add_edge("analysis_agent", "agent15_business_model")
+    graph.add_edge("agent15_business_model", "agent2_generate")
 
     graph.add_conditional_edges("agent2_generate", route_after_agent2, {
         "agent3_validate": "agent3_validate",
@@ -818,9 +864,10 @@ def run_pipeline(
     use_rag: bool = False,
     use_legacy_rag: bool = True,
     model_agent1: str = "llama4",
+    model_agent15: str = "llama4",
     model_agent2: str = "llama4",
-    model_agent3_quality: str = "qwen3",
-    model_agent5: str = "qwen3",
+    model_agent3_quality: str = "llama4",
+    model_agent5: str = "llama4",
     coverage_threshold: float = 0.70,
     max_correction_iterations: int = 2,
     force_reanalyze: bool = False,
@@ -839,6 +886,7 @@ def run_pipeline(
         "use_rag": use_rag,
         "use_legacy_rag": use_legacy_rag,
         "model_agent1": model_agent1,
+        "model_agent15": model_agent15,
         "model_agent2": model_agent2,
         "model_agent3_quality": model_agent3_quality,
         "model_agent5": model_agent5,
@@ -860,15 +908,56 @@ def run_pipeline(
     with track_pipeline() as token_usage:
         final_state = graph.invoke(initial_state)
 
+    
     duration_ms = int((time.time() - start_time) * 1000)
     final_state["duration_ms"] = duration_ms
     final_state["token_usage"] = token_usage
+
+    # ── Construction du payload d'évaluation (images, RAG, inputs des agents) ──
+    analysis        = final_state.get("analysis")
+    generation      = final_state.get("generation_result")
+    validation      = final_state.get("validation")
+    report          = final_state.get("report")
+    business_model  = final_state.get("business_model")
+    tests           = final_state.get("tests", [])
+
+    images = collect_story_images(story_id)
+    agent2_input = build_agent2_input(
+        legacy_examples=final_state.get("legacy_examples"),
+        rag_context=final_state.get("rag_context"),
+    )
+
+    export_source = {
+        "story_id": story_id,
+        "story": final_state.get("story"),
+        "images": images,
+        "agent2_input": agent2_input,
+        "agent15_business_model": business_model.model_dump() if business_model else None,
+        "agent2_tests": [t.model_dump() for t in tests],
+        "agent2_golden_rule_warnings": final_state.get("agent2_golden_rule_warnings"),
+        "agent2_message": final_state.get("agent2_message"),
+        "agent1_analysis": final_state.get("analysis_dict"),
+        "agent3_validation": validation.model_dump() if validation else None,
+        "agent5_report": report.model_dump() if report else None,
+        "legacy_examples": final_state.get("legacy_examples"),
+        "rag_context": final_state.get("rag_context"),
+        "status": final_state.get("status"),
+        "tests_count": len(tests),
+        "coverage_rate": validation.report.coverage_rate if validation else None,
+        "validation_status": validation.report.validation_status if validation else None,
+        "correction_iterations": final_state.get("correction_iteration"),
+        "duration_ms": duration_ms,
+        "errors": final_state.get("errors"),
+        "token_usage": token_usage,
+    }
+
+    
 
     status = final_state.get("status", "completed")
     logger.info(
         f"[Orchestrator] ■ Pipeline finished for {story_id}: "
         f"status={status}, duration={duration_ms}ms, "
-        f"tests={len(final_state.get('tests', []))}, "
+        f"tests={len(tests)}, "
         f"iterations={final_state.get('correction_iteration', 0)}"
     )
 

@@ -214,6 +214,51 @@ def bold_first_word(text: str) -> str:
         return f"**{parts[0]}** {parts[1]}"
     return f"**{text}**"
 
+_ACTOR_COLOR_PALETTE = [
+    "0052CC",  # bleu
+    "DE350B",  # rouge
+    "00875A",  # vert
+    "FF8B00",  # orange
+    "6554C0",  # violet
+    "00A3BF",  # cyan
+]
+
+
+def get_actor_color(actor: str) -> str:
+    """Couleur stable pour un acteur donné (même acteur = même couleur partout)."""
+    if not actor:
+        return "5E6C84"  # gris neutre
+    h = 0
+    for ch in actor:
+        h = (h * 31 + ord(ch)) & 0xFFFFFFFF
+    return _ACTOR_COLOR_PALETTE[h % len(_ACTOR_COLOR_PALETTE)]
+
+
+def color_actor_bracket(actor: str) -> str:
+    """Rend [Acteur] en couleur au format wiki Jira."""
+    if not actor:
+        return "[]"
+    color = get_actor_color(actor)
+    return f"{{color:#{color}}}[{actor}]{{color}}"
+
+def _is_precondition_title(titre: str) -> bool:
+    titre = (titre or "").strip().lower()
+    if not titre:
+        return False
+    return "précondition" in titre and not titre.startswith("exécuter la précondition suivante")
+
+
+def _normalize_precondition_title(titre: str) -> str:
+    titre = (titre or "").strip()
+    if not titre:
+        return titre
+    lower = titre.lower()
+    if lower.startswith("exécuter la précondition suivante"):
+        return titre
+    if titre.endswith(":"):
+        return f"Exécuter la précondition suivante {titre}"
+    return f"Exécuter la précondition suivante: {titre}"
+
 
 def build_xray_description_line(actor: str, titre: str) -> str:
     """Format Jira/Xray : [Acteur] **Verbe** reste du titre."""
@@ -221,15 +266,26 @@ def build_xray_description_line(actor: str, titre: str) -> str:
     titre = (titre or "").strip()
     if not titre:
         return ""
-    actor_part = f"[{actor}] " if actor else ""
+    if _is_precondition_title(titre):
+        titre = _normalize_precondition_title(titre)
+    actor_part = f"{color_actor_bracket(actor)} " if actor else ""
     return f"{actor_part}{bold_first_word(titre)}"
 
 
 def build_xray_description(test: Dict[str, Any]) -> str:
     """Construit la description Xray à partir des titres d'étapes."""
+    lines: List[str] = []
+
+    for precondition in test.get("preconditions") or []:
+        if not precondition:
+            continue
+        titre = _normalize_precondition_title(str(precondition))
+        line = build_xray_description_line("", titre)
+        if line:
+            lines.append(line)
+
     etapes = test.get("étapes") or []
     if etapes:
-        lines = []
         for etape in etapes:
             ed = _as_dict(etape)
             titre = (ed.get("titre") or "").strip()
@@ -242,7 +298,6 @@ def build_xray_description(test: Dict[str, Any]) -> str:
 
     steps = test.get("steps") or []
     if steps:
-        lines = []
         for step in steps:
             sd = _as_dict(step)
             action = (sd.get("action") or "").strip()
@@ -252,6 +307,9 @@ def build_xray_description(test: Dict[str, Any]) -> str:
             if action:
                 actor_part = f"[{actor}] " if actor else ""
                 lines.append(f"{actor_part}{bold_first_word(action)}")
+        if lines:
+            return "\n".join(lines)
+    if lines:
         return "\n".join(lines)
     return (test.get("description") or "").strip()
 

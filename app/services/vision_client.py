@@ -28,16 +28,20 @@ logger = logging.getLogger(__name__)
 
 # Modèle VLM. Surchargeable via env var `VISION_MODEL`.
 # - llama-4-scout (défaut)   : rapide, OCR correct, mais rate les distinctions visuelles fines.
-# - llama-4-maverick         : plus précis sur badges/couleurs/encadrés. À tester si scout passe
-#                               à côté de mots-clés stylisés.
-#   meta-llama/llama-4-maverick-17b-128e-instruct
+# - llama-4-maverick         : plus précis sur badges/couleurs/encadrés MAIS nécessite un accès
+#                               Groq spécifique (sinon 404 model_not_found).
+#                               meta-llama/llama-4-maverick-17b-128e-instruct
 VISION_MODEL = os.getenv("VISION_MODEL", "meta-llama/llama-4-scout-17b-16e-instruct")
-VISION_MAX_TOKENS = int(os.getenv("VISION_MAX_TOKENS", "600"))
+# 1200 tokens : évite la troncature des descriptions sur les écrans riches (vignettes 15+ éléments).
+VISION_MAX_TOKENS = int(os.getenv("VISION_MAX_TOKENS", "1200"))
 
 # v5 : ajout pré-traitement OCR (grayscale, upscale x2, auto-inversion fond
 #      sombre, binarisation Otsu) + double passe PSM 6/11 pour mieux capter
 #      à la fois les blocs de texte et les pills/badges éparpillés.
-_PROMPT_VERSION = "v5"
+# v6 : passage au VLM maverick + budget tokens 1200 → invalide l'ancien cache scout.
+# v7 : durcissement anti-hallucination du prompt VLM (interdit de nommer un pattern UI
+#      incertain : « champ de recherche » et non « onglet de recherche personnalisée », etc.).
+_PROMPT_VERSION = "v7"
 
 # Configuration Tesseract (Windows). Si tesseract.exe n'est pas dans le PATH,
 # pointe vers son emplacement via la variable d'env `TESSERACT_CMD`.
@@ -96,7 +100,20 @@ _VISION_PROMPT = (
     "- N'invente jamais de texte qui n'est pas dans la liste OCR.\n"
     "- Ne re-liste pas les textes de l'OCR pour faire du remplissage.\n"
     "- Si l'image est illisible ou vide, dis-le.\n"
-    "- Reste factuel : décris ce que tu vois, sans interprétation métier."
+    "- Reste factuel : décris ce que tu vois, sans interprétation métier.\n"
+    "- NE NOMME JAMAIS un pattern d'UI dont tu n'es pas certain. Décris ce que tu vois "
+    "littéralement, avec le vocabulaire le plus neutre et générique possible :\n"
+    "   * une loupe + une zone de saisie → dis « champ de recherche », JAMAIS « onglet de "
+    "recherche personnalisée », « recherche avancée » ou « formulaire de recherche ».\n"
+    "   * des éléments regroupés sous un intitulé → dis « catégorie » / « regroupement », "
+    "JAMAIS « sous-catégorie » / « sous-onglet » sauf si une hiérarchie à 2 niveaux est "
+    "VISIBLEMENT et clairement présente à l'écran.\n"
+    "   * un conteneur cliquable en haut d'une zone → dis « onglet » seulement si des onglets "
+    "sont réellement visibles ; sinon « section » / « bloc ».\n"
+    "- N'attribue PAS de fonctionnalités à un élément (création, filtrage, tri, application de "
+    "filtres…) : décris uniquement sa forme et son libellé OCR, pas ce qu'il est censé faire.\n"
+    "- En cas de doute sur le nom d'un composant, préfère TOUJOURS la description générique la "
+    "plus prudente plutôt qu'un terme précis potentiellement inventé."
 )
 
 

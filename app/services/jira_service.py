@@ -289,6 +289,56 @@ def get_epic_for_story(issue_key: str) -> Optional[Dict[str, Any]]:
         "description": epic_fields.get("description") or "",
     }
 
+# ============================================================
+# Enrichissement des issuelinks avec leur description
+# ============================================================
+
+def enrich_issuelinks_with_description(
+    issuelinks: List[Dict[str, Any]],
+    max_workers: int = 4,
+) -> List[Dict[str, Any]]:
+    """
+    Enrichit chaque issuelink (déjà aplati/nettoyé) avec la description
+    du ticket lié, récupérée via un fetch Jira supplémentaire par clé.
+    Parallélisé pour limiter la latence quand une story a plusieurs liens.
+    """
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+
+    if not issuelinks:
+        return []
+
+    def _fetch_description(key: str) -> str:
+        if not key:
+            return ""
+        try:
+            resp = get_story_byID(key)
+            if resp.get("status") == 200 and resp.get("data"):
+                fields = resp["data"].get("fields", {}) or {}
+                raw_desc = fields.get("description") or ""
+                return clean_text(raw_desc) if raw_desc else ""
+        except Exception:
+            pass
+        return ""
+
+    enriched_links = [dict(link) for link in issuelinks]  # copie défensive
+    keys = [link.get("key") for link in enriched_links]
+
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        future_to_index = {
+            executor.submit(_fetch_description, key): idx
+            for idx, key in enumerate(keys)
+            if key
+        }
+        for future in as_completed(future_to_index):
+            idx = future_to_index[future]
+            try:
+                enriched_links[idx]["description"] = future.result()
+            except Exception:
+                enriched_links[idx]["description"] = ""
+
+    return enriched_links
+
+
 
 # ============================================================
 # Recherche stories avec tests liés
@@ -847,11 +897,15 @@ def _update_issue_fields(
 
 def _build_xray_step_payload(steps: List[Dict[str, str]]) -> List[Dict[str, Any]]:
     """
-    Format Xray Server/DC pour Manual Test Steps.
+    Format Xray Server/DC pour Manual Test Steps via l'API REST Jira (create/update).
 
-    Important :
-    - Xray attend généralement : action, data, expected result.
-    - Pas Action/Data/Expected Result.
+    Xray Server stocke chaque champ de step comme un objet rich-text :
+        {"value": "texte"}
+    Passer une simple string fait que Xray accepte le payload sans erreur
+    mais n'enregistre aucune étape (comportement silencieux).
+
+    Champs attendus (noms en minuscules) :
+        action, data, expected result
     """
     payload: List[Dict[str, Any]] = []
 
@@ -867,9 +921,9 @@ def _build_xray_step_payload(steps: List[Dict[str, str]]) -> List[Dict[str, Any]
             {
                 "index": index,
                 "fields": {
-                    "action": step.get("action", "") or "",
-                    "data": step.get("data", "") or "",
-                    "expected result": expected_result,
+                    "action":          {"value": step.get("action", "") or ""},
+                    "data":            {"value": step.get("data", "") or ""},
+                    "expected result": {"value": expected_result},
                 },
             }
         )
@@ -887,7 +941,11 @@ def create_test_issue(
     session: Optional[requests.Session] = None,
 ) -> Dict[str, Any]:
     """
-    Crée une issue Jira de type Test, puis enrichit description / type / steps.
+    Crée une issue Jira de type Test, puis tente d'ajouter les steps Xray.
+
+    NB : l'ajout des steps nécessite le droit *Edit Issues* dans le projet
+    (API Xray Raven PUT .../step). Sans ce droit, le test est créé mais les
+    steps ne peuvent pas être posés — voir le warning renvoyé.
     """
     import logging
 
@@ -931,36 +989,24 @@ def create_test_issue(
     # Ajouter la description dès la création si Jira l'autorise
     if description and (not allowed_fields or "description" in allowed_fields):
         create_fields["description"] = description
-    
-    
 
-    print(json.dumps(create_fields, indent=2, ensure_ascii=False))
+    # Test Type = Manual : requis pour activer l'onglet "Test Details".
+    if not allowed_fields or XRAY_FIELD_TEST_TYPE in allowed_fields:
+        create_fields[XRAY_FIELD_TEST_TYPE] = {"value": "Manual"}
+
+    # NOTE : customfield_14404 (Manual Steps) est intentionnellement ABSENT
+    # du payload de création. Xray Server l'ignore silencieusement quand il
+    # est posé via POST /rest/api/2/issue — les steps seront ajoutés après
+    # la création via l'API Raven /step.
 
     create_fields = _filter_fields_for_create(create_fields, allowed_fields)
-    
-
-    print("===================================")
-    print("JIRA USER =", jira_session.auth[0])
-    print("PROJECT =", project_key)
-    print("ISSUETYPE =", issuetype_ref)
-    print("ALLOWED_FIELDS HAS DESCRIPTION =", bool(allowed_fields and "description" in allowed_fields))
-    print("CREATE_FIELDS =", create_fields)
-    print("===================================")
-
 
     logger.info(
-        "[create_test_issue] Creating minimal Test in %s, project=%s, issuetype=%s, summary_len=%d",
+        "[create_test_issue] Creating Test in %s, project=%s, fields=%s",
         jira_url,
         project_key,
-        issuetype_ref,
-        len(safe_summary),
+        list(create_fields.keys()),
     )
-    
-    
-    print("===================================")
-    print("JIRA USER =", jira_session.auth[0])
-    print("PROJECT =", project_key)
-    print("===================================")
 
 
     result = _post_jira_issue(
@@ -1023,22 +1069,26 @@ def create_test_issue(
     post_create_errors: List[str] = []
 
     if steps:
+        # Ajouter les steps via l'API Raven après création.
+        # Même si customfield_14404 est présent sur l'écran de création,
+        # Xray Server l'ignore silencieusement via POST /rest/api/2/issue.
+        # La seule voie fiable est l'API Raven /step.
+        logger.info(
+            "[create_test_issue] Ajout de %d step(s) sur %s via Raven API",
+            len(steps), issue_key,
+        )
         add_steps_result = add_xray_test_steps(
             test_key=issue_key,
             steps=steps,
             use_test_jira=use_test_jira,
             session=jira_session,
         )
-        
-    
+        logger.info(
+            "[create_test_issue] Raven step result for %s: %s",
+            issue_key, add_steps_result,
+        )
         if add_steps_result.get("error"):
-                post_create_errors.append(
-                    json.dumps(
-                        add_steps_result,
-                        ensure_ascii=False,
-                        indent=2,
-                    )
-                )
+            post_create_errors.append(json.dumps(add_steps_result, ensure_ascii=False, indent=2))
 
 
 
@@ -1060,7 +1110,14 @@ def add_xray_test_steps(
     session: Optional[requests.Session] = None,
 ) -> Dict[str, Any]:
     """
-    Ajoute des steps à un test existant via l'API Xray Raven.
+    Ajoute des steps à un Test Xray existant via l'API Raven.
+
+    Endpoint correct sur Xray Server/DC :
+        PUT /rest/raven/1.0/api/test/{key}/step   (le POST renvoie 405)
+
+    ⚠ Nécessite le droit *Edit Issues* sur le projet. Sans ce droit,
+    l'API renvoie HTTP 403 et les steps ne peuvent PAS être ajoutés
+    (aucun contournement côté code — c'est une restriction serveur).
     """
     import logging
 
@@ -1075,98 +1132,175 @@ def add_xray_test_steps(
     jira_url = JIRA_TEST_URL if use_test_jira else JIRA_PROD_URL
     jira_session = session or (_session_test if use_test_jira else _session_prod)
 
-    candidate_urls = [
-        f"{jira_url}/rest/raven/1.0/api/test/{test_key}/step",
-        f"{jira_url}/rest/raven/2.0/api/test/{test_key}/step",
-    ]
+    url = f"{jira_url}/rest/raven/1.0/api/test/{test_key}/step"
 
     api_errors: List[str] = []
+    permission_denied = False
+    success_count = 0
 
-    for url in candidate_urls:
-        logger.info(f"[add_xray_test_steps] Trying endpoint: {url}")
+    for index, step in enumerate(steps, start=1):
+        payload: Dict[str, Any] = {
+            "step": step.get("action", "") or "",
+            "result": (
+                step.get("result")
+                or step.get("expected_result")
+                or ""
+            ),
+            "data": str(step.get("data", "") or "none").strip() or "none",
+        }
 
-        success_count = 0
+        try:
+            resp = jira_session.put(url, json=payload, timeout=30)
+        except requests.RequestException as exc:
+            api_errors.append(f"PUT {url} step {index}: {exc}")
+            continue
 
-        for index, step in enumerate(steps, start=1):
-            payload = {
-                "step": step.get("action", "") or "",
-                "data": step.get("data", "") or "",
-                "result": (
-                    step.get("result")
-                    or step.get("expected_result")
-                    or ""
-                ),
-            }
+        logger.info(
+            "[add_xray_test_steps] PUT step %d → HTTP %d : %s",
+            index, resp.status_code, resp.text[:300],
+        )
 
-            step_ok = False
+        if resp.status_code in (200, 201, 204):
+            success_count += 1
+            continue
 
-            for method in ("post", "put"):
-                try:
-                    resp = getattr(jira_session, method)(
-                        url,
-                        json=payload,
-                        timeout=30,
-                    )
-                except requests.RequestException as exc:
-                    api_errors.append(
-                        f"{method.upper()} {url} step {index}: {exc}"
-                    )
-                    continue
+        if resp.status_code in (401, 403):
+            permission_denied = True
 
-                logger.info(
-                    f"[add_xray_test_steps] {method.upper()} step {index}: "
-                    f"status={resp.status_code}"
-                )
+        api_errors.append(
+            f"PUT {url} step {index}: HTTP {resp.status_code} - {resp.text[:300]}"
+        )
 
-                if resp.status_code in (200, 201, 204):
-                    step_ok = True
-                    break
-
-                api_errors.append(
-                    f"{method.upper()} {url} step {index}: "
-                    f"HTTP {resp.status_code} - {resp.text[:500]}"
-                )
-
-            if step_ok:
-                success_count += 1
-
-        if success_count == len(steps):
-            return {
-                "ok": True,
-                "method": url,
-            }
-
-    # Fallback Jira REST custom field
-    fallback_result = _update_issue_fields(
-        issue_key=test_key,
-        fields={
-            XRAY_FIELD_STEPS: {
-                "steps": _build_xray_step_payload(steps)
-            }
-        },
-        use_test_jira=use_test_jira,
-        session=jira_session,
-    )
-
-    if not fallback_result.get("error"):
+    if success_count == len(steps):
         return {
             "ok": True,
-            "fallback": XRAY_FIELD_STEPS,
+            "method": url,
+        }
+
+    if permission_denied:
+        return {
+            "error": True,
+            "code": "PERMISSION_DENIED",
+            "message": (
+                f"Impossible d'ajouter les steps sur {test_key} : le compte "
+                f"utilisé n'a pas le droit *Edit Issues* sur ce projet (HTTP 403). "
+                f"Le test est créé mais les étapes doivent être ajoutées à la main, "
+                f"ou l'intégration doit utiliser un compte disposant du droit d'édition. "
+                f"Aucun contournement possible côté application."
+            ),
+            "api_errors": api_errors,
         }
 
     return {
         "error": True,
         "message": (
-            "Impossible d'ajouter les steps après création. "
-            "Les endpoints Xray et le fallback Jira REST ont échoué. "
-            "Cause probable : permission Edit/Browse insuffisante ou champ Xray "
-            "non disponible sur l'écran Edit."
+            f"Échec de l'ajout des steps sur {test_key} via l'API Raven "
+            f"({success_count}/{len(steps)} steps ajoutés)."
         ),
         "api_errors": api_errors,
-        "fallback_error": fallback_result,
     }
 
+def _fetch_xray_step_ids(
+    test_key: str,
+    use_test_jira: bool = False,
+    session: Optional[requests.Session] = None,
+) -> tuple:
+    """Récupère les IDs des steps existants (nécessaires pour DELETE)."""
+    jira_url = JIRA_TEST_URL if use_test_jira else JIRA_PROD_URL
+    jira_session = session or (_session_test if use_test_jira else _session_prod)
 
+    candidate_urls = [
+        f"{jira_url}/rest/raven/1.0/api/test/{test_key}/step",
+        f"{jira_url}/rest/raven/2.0/api/test/{test_key}/step",
+    ]
+
+    for url in candidate_urls:
+        try:
+            resp = jira_session.get(url, timeout=20)
+        except requests.RequestException:
+            continue
+
+        if resp.status_code != 200:
+            continue
+
+        try:
+            data = resp.json()
+        except ValueError:
+            continue
+
+        if isinstance(data, list):
+            ids = [step.get("id") for step in data if step.get("id") is not None]
+            return ids, url
+
+    return [], None
+
+
+def delete_xray_test_steps(
+    test_key: str,
+    use_test_jira: bool = False,
+    session: Optional[requests.Session] = None,
+) -> Dict[str, Any]:
+    """Supprime tous les steps existants d'un test avant réintégration."""
+    jira_session = session or (_session_test if use_test_jira else _session_prod)
+
+    step_ids, base_url = _fetch_xray_step_ids(test_key, use_test_jira, jira_session)
+
+    if not step_ids:
+        return {"ok": True, "deleted": 0}
+
+    deleted = 0
+    errors: List[str] = []
+
+    for step_id in step_ids:
+        url = f"{base_url}/{step_id}"
+        try:
+            resp = jira_session.delete(url, timeout=30)
+        except requests.RequestException as exc:
+            errors.append(f"DELETE step {step_id}: {exc}")
+            continue
+
+        if resp.status_code in (200, 204):
+            deleted += 1
+        else:
+            errors.append(
+                f"DELETE step {step_id}: HTTP {resp.status_code} - {resp.text[:200]}"
+            )
+
+    if errors:
+        return {
+            "error": True,
+            "deleted": deleted,
+            "total": len(step_ids),
+            "errors": errors,
+        }
+
+    return {"ok": True, "deleted": deleted}
+
+
+def replace_xray_test_steps(
+    test_key: str,
+    steps: List[Dict[str, str]],
+    use_test_jira: bool = False,
+    session: Optional[requests.Session] = None,
+) -> Dict[str, Any]:
+    """
+    Réintégration : supprime les steps existants puis recrée les steps
+    à jour. C'est la seule façon fiable de refléter les modifications
+    faites côté app dans Xray (l'API Raven n'a pas de vrai 'update in place'
+    exploitable ici).
+    """
+    jira_session = session or (_session_test if use_test_jira else _session_prod)
+
+    delete_result = delete_xray_test_steps(test_key, use_test_jira, jira_session)
+
+    if delete_result.get("error"):
+        return {
+            "error": True,
+            "stage": "delete",
+            "detail": delete_result,
+        }
+
+    return add_xray_test_steps(test_key, steps, use_test_jira, jira_session)
 def search_test_issue_by_summary(
     project_key: str,
     summary: str,
@@ -1722,3 +1856,260 @@ def extract_legacy_tests_pivot(
         results["total"] += len(tests_pivot)
 
     return results
+# ============================================================
+# Liens Jira : Story <-> Test, Test <-> Test (Relates)
+# ============================================================
+
+def create_issue_link(
+    from_key: str,
+    to_key: str,
+    link_type_name: str,
+    use_test_jira: bool = False,
+    session: Optional[requests.Session] = None,
+) -> Dict[str, Any]:
+    """
+    Crée un lien Jira entre deux issues.
+    from_key = outwardIssue, to_key = inwardIssue.
+    """
+    jira_url = JIRA_TEST_URL if use_test_jira else JIRA_PROD_URL
+    jira_session = session or (_session_test if use_test_jira else _session_prod)
+
+    url = f"{jira_url}/rest/api/2/issueLink"
+    payload = {
+        "type": {"name": link_type_name},
+        "inwardIssue": {"key": to_key},
+        "outwardIssue": {"key": from_key},
+    }
+
+    try:
+        resp = jira_session.post(url, json=payload, timeout=30)
+    except requests.RequestException as exc:
+        return {"error": True, "message": str(exc)}
+
+    if resp.status_code not in (200, 201):
+        return {
+            "error": True,
+            "status_code": resp.status_code,
+            "body": resp.text[:1000],
+        }
+
+    return {"ok": True}
+
+def _story_remote_link_exists(
+    test_key: str,
+    story_url: str,
+    use_test_jira: bool = True,
+    session: Optional[requests.Session] = None,
+) -> bool:
+    """Évite de dupliquer le remote link si on réintègre le même test."""
+    jira_url = JIRA_TEST_URL if use_test_jira else JIRA_PROD_URL
+    jira_session = session or (_session_test if use_test_jira else _session_prod)
+
+    url = f"{jira_url}/rest/api/2/issue/{test_key}/remotelink"
+    try:
+        resp = jira_session.get(url, timeout=20)
+    except requests.RequestException:
+        return False
+
+    if resp.status_code != 200:
+        return False
+
+    for link in resp.json() or []:
+        if (link.get("object") or {}).get("url") == story_url:
+            return True
+    return False
+
+
+def create_remote_link_to_story(
+    test_key: str,
+    story_key: str,
+    prod_base_url: Optional[str] = None,
+    use_test_jira: bool = True,
+    session: Optional[requests.Session] = None,
+) -> Dict[str, Any]:
+    """
+    Crée un lien externe (remote link) depuis un test Xray (Jira TEST)
+    vers sa story sur Jira PROD, puisque issueLink ne fonctionne pas
+    entre deux instances Jira différentes.
+    """
+    prod_url = (prod_base_url or JIRA_PROD_URL).rstrip("/")
+    jira_url = JIRA_TEST_URL if use_test_jira else JIRA_PROD_URL
+    jira_session = session or (_session_test if use_test_jira else _session_prod)
+
+    story_url = f"{prod_url}/browse/{story_key}"
+
+    if _story_remote_link_exists(test_key, story_url, use_test_jira, jira_session):
+        return {"ok": True, "note": "already linked"}
+
+    url = f"{jira_url}/rest/api/2/issue/{test_key}/remotelink"
+    payload = {
+        "object": {
+            "url": story_url,
+            "title": f"Story liée : {story_key}",
+            "icon": {"url16x16": f"{prod_url}/favicon.ico"},
+        }
+    }
+
+    try:
+        resp = jira_session.post(url, json=payload, timeout=30)
+    except requests.RequestException as exc:
+        return {"error": True, "message": str(exc)}
+
+    if resp.status_code not in (200, 201):
+        return {
+            "error": True,
+            "status_code": resp.status_code,
+            "body": resp.text[:1000],
+        }
+
+    return {"ok": True}
+
+def get_tests_linked_to_story(
+    story_key: str,
+    use_test_jira: bool = False,
+    session: Optional[requests.Session] = None,
+) -> List[Dict[str, str]]:
+    """Récupère les tests déjà liés à une story."""
+    jira_url = JIRA_TEST_URL if use_test_jira else JIRA_PROD_URL
+    jira_session = session or (_session_test if use_test_jira else _session_prod)
+
+    url = f"{jira_url}/rest/api/2/issue/{story_key}"
+    try:
+        resp = jira_session.get(url, params={"fields": "issuelinks"}, timeout=20)
+    except requests.RequestException:
+        return []
+
+    if resp.status_code != 200:
+        return []
+
+    return _extract_linked_tests(resp.json() or {})
+
+
+def link_test_to_story_and_related_tests(
+    test_key: str,
+    story_key: Optional[str],
+    project_key: str,
+    relates_link_type: str = "Relates",
+    use_test_jira: bool = False,
+    session: Optional[requests.Session] = None,
+) -> Dict[str, Any]:
+    results: Dict[str, Any] = {"story_link": None, "label_result": None, "related_test_links": []}
+
+    if not story_key:
+        return results
+
+    results["story_link"] = create_remote_link_to_story(
+        test_key=test_key,
+        story_key=story_key,
+        prod_base_url=JIRA_PROD_URL,
+        use_test_jira=use_test_jira,
+        session=session,
+    )
+
+    results["label_result"] = add_story_label_to_test(
+        test_key=test_key,
+        story_key=story_key,
+        use_test_jira=use_test_jira,
+        session=session,
+    )
+
+    other_test_keys = get_tests_with_story_label(
+        story_key=story_key,
+        project_key=project_key,
+        use_test_jira=use_test_jira,
+        session=session,
+    )
+    other_test_keys = [k for k in other_test_keys if k != test_key]
+
+    for other_key in other_test_keys:
+        link_result = create_issue_link(
+            from_key=test_key,
+            to_key=other_key,
+            link_type_name=relates_link_type,
+            use_test_jira=use_test_jira,
+            session=session,
+        )
+        results["related_test_links"].append({"test": other_key, "result": link_result})
+
+    return results
+
+def _story_label(story_key: str) -> str:
+    """
+    Convertit une clé de story en label Jira valide.
+    Jira interdit les espaces dans les labels ; les clés (ex: NUXEPM-1842)
+    sont déjà sans espace donc pas de transformation nécessaire au-delà
+    d'un préfixe pour éviter toute collision avec d'autres labels.
+    """
+    return f"STORY_{story_key}"
+
+
+def get_tests_with_story_label(
+    story_key: str,
+    project_key: str,
+    use_test_jira: bool = True,
+    session: Optional[requests.Session] = None,
+) -> List[str]:
+    """
+    Cherche les tests (sur Jira TEST) qui portent le label STORY_<story_key>,
+    pour identifier les tests 'frères' (même story) à relier en 'Relates'.
+    """
+    jira_url = JIRA_TEST_URL if use_test_jira else JIRA_PROD_URL
+    jira_session = session or (_session_test if use_test_jira else _session_prod)
+
+    label = _story_label(story_key)
+    jql = f'project = "{project_key}" AND issuetype = Test AND labels = "{label}"'
+    url = f"{jira_url}/rest/api/2/search"
+
+    try:
+        resp = jira_session.get(
+            url,
+            params={"jql": jql, "fields": "key", "maxResults": 50},
+            timeout=30,
+        )
+    except requests.RequestException:
+        return []
+
+    if resp.status_code != 200:
+        return []
+
+    return [
+        issue.get("key")
+        for issue in resp.json().get("issues", [])
+        if issue.get("key")
+    ]
+
+
+def add_story_label_to_test(
+    test_key: str,
+    story_key: str,
+    use_test_jira: bool = True,
+    session: Optional[requests.Session] = None,
+) -> Dict[str, Any]:
+    """
+    Ajoute le label STORY_<story_key> au test, sans écraser les labels
+    existants (utilise l'opération 'add' de l'API update).
+    """
+    jira_url = JIRA_TEST_URL if use_test_jira else JIRA_PROD_URL
+    jira_session = session or (_session_test if use_test_jira else _session_prod)
+
+    label = _story_label(story_key)
+    url = f"{jira_url}/rest/api/2/issue/{test_key}"
+    payload = {
+        "update": {
+            "labels": [{"add": label}]
+        }
+    }
+
+    try:
+        resp = jira_session.put(url, json=payload, timeout=30)
+    except requests.RequestException as exc:
+        return {"error": True, "message": str(exc)}
+
+    if resp.status_code not in (200, 204):
+        return {
+            "error": True,
+            "status_code": resp.status_code,
+            "body": resp.text[:1000],
+        }
+
+    return {"ok": True}

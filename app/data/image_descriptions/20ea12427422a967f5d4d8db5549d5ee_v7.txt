@@ -1,0 +1,102 @@
+[Image jointe : screenshot-1.png]
+── Textes détectés (OCR) ──
+HR ACCESS)® Bienvenue MARTIN-BORDEREAUX Marie-Laure
+——
+Menu v Recherche
+; ; UU - Caisses et mutuelles
+1. Rechercher une personne
+Nom [7' Matricule 7| Société | Plus de critères
+2. Gérer les données de la personne sélectionnée
+Entrée 0/0 / ç @ ê
+Sortie E .
+Fiche individuelle Synthèse Paie :
+Population favorite = Populations Caisses de retraite Mutuelles et assurances Prévoyances MSA CFE Autres caisses
+0 H Mutuelles et assurances B! 0/0 nﬂ EE
+Nom X Matricule x
+Options contractuelles [: ...
+Réf. du salarié chez l'OPS (*) [: Nombre de personnes [j
+(*) OPS = Organisme de Protection Sociale
+Description du dossier de paie
+Dossier de paie D P
+Contrat [} —
+Saisie manuelle
+HR Access*®
+Bienvenue MARTIN-BORDEREAUX Marie-Laure
+Menu
+Recherche
+Caisses et mutuelles
+Nom |
+Matricule |
+Société [:|
+Plus de critéres
+Entrée
+#9%8
+0/0
+Sortie
+Fiche individuelle
+Synthèse
+Paie
+Population favorite
+MSA
+CFE
+Autres caisses
+= Caisses de retraite Prévoyances
+D H Mutuelles et assurances
+(=[] oo [+]=]+[-]=
+Nom
+Matricule
+Caisse de mutuelle ou assurance
+||
+Options contractuelles
+c__
+Du
+uf
+Réf. du salarié chez l'OPS (*)
+Nombre de personnes [j
+Contrat |
+….
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran semble être une page de gestion des ressources humaines, plus précisément une section dédiée aux caisses et mutuelles. Il s'agit probablement d'un formulaire pour rechercher et gérer les informations liées aux assurances et mutuelles des employés.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+- Un cadre rouge entoure les champs "Caisse de mutuelle ou assurance" et "Options contractuelles".
+  - Type : cadre
+  - Couleur : rouge
+  - Élément désigné : "Caisse de mutuelle ou assurance" et "Options contractuelles".
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un onglet bleu avec le texte "Mutuelles et assurances".
+  - Forme : onglet
+  - Couleur de fond : bleu
+  - Texte : "Mutuelles et assurances".
+- Des onglets gris pour "Caisses de retraite", "Prévoyances", "MSA", "CFE", et "Autres caisses".
+  - Forme : onglet
+  - Couleur de fond : gris
+  - Textes : "Caisses de retraite", "Prévoyances", "MSA", "CFE", "Autres caisses".
+- Un bouton "Rechercher".
+  - Forme : bouton
+  - Couleur de fond : Non clairement identifiable, probablement gris ou bleu.
+  - Texte : "Rechercher".
+- Un bouton "Plus de critères".
+  - Forme : bouton
+  - Couleur de fond : Non clairement identifiable, probablement gris ou bleu.
+  - Texte : "Plus de critères".
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Une icône de loupe à côté du champ "Caisse de mutuelle ou assurance".
+  - Fonction probable : recherche ou clarification.
+  - Position : à droite du champ "Caisse de mutuelle ou assurance".
+- Une icône de calendrier à côté des champs "Du" et "Au".
+  - Fonction probable : sélection de dates.
+  - Position : à droite des champs "Du" et "Au".
+- Une icône de dossier ou de fichier à côté de "Dossier de paie".
+  - Fonction probable : gestion de dossiers.
+  - Position : à côté de "Dossier de paie".
+
+## 5. AGENCEMENT ET RELATIONS
+- L'écran est divisé en sections avec des onglets en haut pour naviguer entre différentes catégories de caisses et assurances.
+- Un formulaire de recherche est présent avec des champs pour "Nom", "Matricule", et "Société".
+- Les champs "Caisse de mutuelle ou assurance" et "Options contractuelles" sont mis en avant par un cadre rouge, indiquant leur importance pour la tâche à accomplir.
+- Des champs pour saisir des dates ("Du" et "Au") et un champ pour "Nombre de personnes" sont présents, suggérant une gestion de périodes et de quantités.
+- Un lien ou un champ pour "Description du dossier de paie" et "Contrat" est visible, indiquant une section pour des informations supplémentaires.

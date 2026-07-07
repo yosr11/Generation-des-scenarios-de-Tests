@@ -1,0 +1,64 @@
+[Image jointe : 360_RRHPageCollab.png]
+── Textes détectés (OCR) ──
+Mes collaborateurs
+'._\Q Rechercher un collaborateur
+V Application Paie
+v $ à E A B
+Angela QMNP11 .
+FRLREC000000014
+Bojack QNPO5 .
+FRLREC000000005
+BRUNO QNPOQ2 .
+FRLREC000000002
+Béatrice QNP10 .
+FRLREC000000010
+( @ Rechercher un collaborateur
+|l
+A B
+Angela QMNP11
+FRLRECO00000014
+Bojack QNPO5
+FRLRECO00000005
+BRUNO QNP02
+FRLRECO00000002
+Béatrice QNP10
+FRLRECO00000010
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran semble être une liste de collaborateurs, affichée dans le cadre d'une application de gestion des ressources humaines. L'intention probable est de permettre à un utilisateur de visualiser et de gérer les informations relatives à ses collaborateurs.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+- Un cadre rouge est ajouté autour de la ligne "Angela QMNP11 FRLREC000000014". 
+  - Type : cadre
+  - Couleur : rouge
+  - Élément désigné : "Angela QMNP11 FRLREC000000014"
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un badge ou pastille de sélection est visible à gauche de "Angela QMNP11".
+  - Forme : rectangulaire avec une icône de profil
+  - Couleur de fond : bleu clair
+  - Texte OCR : Non applicable
+- Quatre lignes de liste contiennent chacune un nom de collaborateur suivi d'une série de tirets et de colonnes vides.
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Une icône de profil est visible à côté de chaque nom de collaborateur.
+  - Fonction probable : Représentation du profil du collaborateur
+  - Position : À gauche de chaque ligne de collaborateur
+- Une série de colonnes avec des tirets ou des icônes noires sont présents à droite de chaque collaborateur.
+  - Fonction probable : Informations ou actions supplémentaires
+  - Position : À droite de chaque ligne de collaborateur
+- Une icône de cloche (notification) est visible dans la partie supérieure.
+  - Fonction probable : Notifications
+  - Position : Partie supérieure droite
+- Une icône de tri (flèche pointant vers le bas) est visible au-dessus de la liste.
+  - Fonction probable : Tri de la liste
+  - Position : Au-dessus de la liste
+
+## 5. AGENCEMENT ET RELATIONS
+- L'écran est divisé en sections :
+  - Une barre de recherche en haut.
+  - Un titre "Mes collaborateurs" en haut.
+  - Un filtre ou menu déroulant "Application Paie".
+  - Une liste de collaborateurs en dessous.
+- La liste des collaborateurs est organisée en lignes, avec des colonnes pour les noms et des informations supplémentaires.
+- Un système de sélection ou de mise en avant est visible avec un cadre rouge autour d'un élément de la liste.

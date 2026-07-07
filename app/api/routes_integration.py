@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 
 from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel, Field
@@ -9,12 +9,15 @@ from app.core.deps import CurrentUser, get_client_ip, get_current_user, get_test
 from app.db.postgres import get_db
 from app.services.audit_service import log_action
 from app.services.jira_service import (
+    _update_issue_fields,
     add_xray_test_steps,
     create_test_issue,
     create_user_jira_session,
+    link_test_to_story_and_related_tests,
+    replace_xray_test_steps,
     search_test_issue_by_summary,
 )
-
+from app.utils.test_steps_utils import bold_first_word, color_actor_bracket
 
 class IntegrationTestStep(BaseModel):
     action: str = Field(..., description="Action claire à exécuter")
@@ -25,9 +28,17 @@ class IntegrationTestStep(BaseModel):
 
 class IntegrationTestCase(BaseModel):
     test_name: str = Field(..., description="Nom du test")
+    story_key: Optional[str] = Field(None, description="Clé Jira de la User Story liée")
     objective: str = Field(..., description="Objectif du test")
     scenario_type: Optional[str] = Field(None, description="Type de scénario")
+    preconditions: List[str] = Field(default_factory=list, description="Préconditions du test")
     steps: List[IntegrationTestStep] = Field(default_factory=list)
+    etapes: Optional[List[Dict[str, Any]]] = Field(default=None, alias='étapes')
+
+    class Config:
+        allow_population_by_field_name = True
+
+   
 
 
 class IntegrateTestsRequest(BaseModel):
@@ -92,41 +103,117 @@ def _jira_browse_base_url(use_test_jira: bool) -> str:
 def _build_description(test_case: IntegrationTestCase) -> str:
     desc = test_case.objective or ""
 
-    if test_case.steps:
-        try:
-            from app.utils.test_steps_utils import build_xray_description
+    try:
+        from app.utils.test_steps_utils import build_xray_description
 
-            sd = [
-                {
-                    "action": step.action,
-                    "data": step.data or "",
-                    "actor": step.actor or "",
-                    "expected_result": step.expected_result,
-                }
-                for step in test_case.steps
-            ]
+        sd = [
+            {
+                "action": step.action,
+                "data": step.data or "",
+                "actor": step.actor or "",
+                "expected_result": step.expected_result,
+            }
+            for step in test_case.steps
+        ] if test_case.steps else []
 
-            desc_steps = build_xray_description({"steps": sd})
-            if desc_steps:
-                desc = desc_steps
-
-        except Exception:
-            pass
+        desc_steps = build_xray_description(
+            {
+                "preconditions": test_case.preconditions,
+                "étapes": test_case.etapes,
+                "steps": sd,
+            }
+        )
+        if desc_steps:
+            return desc_steps
+    except Exception:
+        pass
 
     return desc
 
 
 def _build_step_payload(test_case: IntegrationTestCase) -> List[dict]:
-    return [
-        {
-            "action": step.action,
-            "data": step.data or "",
-            "actor": step.actor or "",
-            "result": step.expected_result,
-        }
-        for step in test_case.steps
-    ]
+    def sanitize(value: Optional[str]) -> str:
+        if not value:
+            return ""
+        t = str(value)
+        t = t.replace("•", "-")
+        t = t.replace("\u2022", "-")
+        t = t.replace("**", "")
+        t = t.replace("*", "")
+        t = t.replace("__", "")
+        t = t.replace("<br>", "\n")
+        t = t.replace("<br/>", "\n")
+        t = t.replace("<br />", "\n")
+        t = t.strip()
+        return t
 
+    def normalize_precondition(value: str) -> str:
+        value = value.strip()
+        lower = value.lower()
+        if not value:
+            return value
+        if lower.startswith("exécuter la précondition suivante"):
+            return value
+        if value.endswith(":"):
+            return f"Exécuter la précondition suivante {value}"
+        return f"Exécuter la précondition suivante: {value}"
+
+    payload: List[dict] = []
+
+    for precondition in getattr(test_case, "preconditions", []) or []:
+        pre = sanitize(precondition)
+        if not pre:
+            continue
+        action_text = normalize_precondition(pre)
+        payload.append({
+            "action": f"*ÉTAPE* : {bold_first_word(action_text)}",
+            "data": None,
+            "result": "none",
+        })
+
+    if getattr(test_case, "etapes", None):
+        for etape in test_case.etapes:
+            etape_dict = etape or {}
+            titre = sanitize(etape_dict.get("titre") or "")
+            actor = sanitize(etape_dict.get("actor") or "")
+            substeps = etape_dict.get("steps") or []
+            actions = [sanitize((step or {}).get("action") or "") for step in substeps]
+            expecteds = [sanitize((step or {}).get("expected_result") or (step or {}).get("result") or "") for step in substeps]
+
+            action_lines = []
+            step_actor = f"{color_actor_bracket(actor)} " if actor else ""
+            if titre:
+                action_lines.append(f"*ÉTAPE* : {step_actor}{bold_first_word(titre)}")
+            if actions:
+                action_lines.append("*ACTION(S)* :")
+                for action in actions:
+                    if action:
+                        action_lines.append(f"- {bold_first_word(action)}")
+
+            action_text = "\n".join(line for line in action_lines if line).strip()
+            result_text = "\n".join([r for r in expecteds if r]) or "none"
+
+            payload.append({
+                "action": action_text,
+                "data": "none",
+                "result": result_text,
+            })
+        return payload
+
+    if test_case.steps:
+        payload.extend(
+            {
+                "action": step.action,
+                "data": "none",
+                "actor": step.actor or "none",
+                "result": step.expected_result or "none",
+            }
+            for step in test_case.steps
+        )
+
+    return payload
+
+  
 
 @router.post("/integrate-tests", response_model=IntegrateTestsResponse)
 async def integrate_tests(
@@ -169,6 +256,57 @@ async def integrate_tests(
 
             if existing:
                 logger.info(f"[integrate_tests] Test already exists: {existing}")
+
+                desc = _build_description(test_case)
+                step_payload = _build_step_payload(test_case)
+
+                update_result = _update_issue_fields(
+                    issue_key=existing,
+                    fields={"description": desc},
+                    use_test_jira=use_test_jira,
+                    session=jira_session,
+                )
+                if update_result.get("error"):
+                    raise ValueError(
+                        f"Update test failed for '{safe_summary}': {update_result.get('message') or update_result.get('body') or update_result.get('raw_body') or update_result.get('error')}"
+                    )
+
+                if step_payload:
+                    replace_result = replace_xray_test_steps(
+                        test_key=existing,
+                        steps=step_payload,
+                        use_test_jira=use_test_jira,
+                        session=jira_session,
+                    )
+                    if replace_result.get("error"):
+                        import json as _json
+                        raise ValueError(
+                            f"Update test failed for '{safe_summary}': "
+                            f"{replace_result.get('message') or replace_result.get('detail') or replace_result.get('body') or replace_result.get('error')}\n"
+                            f"Détails: {_json.dumps(replace_result.get('api_errors', replace_result.get('detail', {})), ensure_ascii=False, indent=2)}"
+                        )
+
+                # 🔧 AJOUT : relier le test existant à sa story + tests frères
+                if test_case.story_key:
+                    link_result = link_test_to_story_and_related_tests(
+                        test_key=existing,
+                        story_key=test_case.story_key,
+                        project_key=body.project_key,
+                        use_test_jira=use_test_jira,
+                        session=jira_session,
+                    )
+                    if link_result.get("story_link", {}).get("error"):
+                        errors.append(
+                            f"{safe_summary} (warning): échec du lien vers {test_case.story_key}: "
+                            f"{link_result['story_link']}"
+                        )
+                    for related in link_result.get("related_test_links", []):
+                        if related["result"].get("error"):
+                            errors.append(
+                                f"{safe_summary} (warning): échec du lien vers {related['test']}: "
+                                f"{related['result']}"
+                            )
+
                 created_keys.append(existing)
                 continue
 
@@ -206,6 +344,28 @@ async def integrate_tests(
                 errors.append(f"{safe_summary} (warning): {warning}")
 
             logger.info(f"[integrate_tests] Test created with steps: {issue_key}")
+
+           
+            if test_case.story_key:
+                link_result = link_test_to_story_and_related_tests(
+                    test_key=issue_key,
+                    story_key=test_case.story_key,
+                    project_key=body.project_key,
+                    use_test_jira=use_test_jira,
+                    session=jira_session,
+                )
+                if link_result.get("story_link", {}).get("error"):
+                    errors.append(
+                        f"{safe_summary} (warning): échec du lien vers {test_case.story_key}: "
+                        f"{link_result['story_link']}"
+                    )
+                for related in link_result.get("related_test_links", []):
+                    if related["result"].get("error"):
+                        errors.append(
+                            f"{safe_summary} (warning): échec du lien vers {related['test']}: "
+                            f"{related['result']}"
+                        )
+
             created_keys.append(issue_key)
 
         except Exception as exc:
@@ -270,6 +430,56 @@ async def integrate_test_single(
 
         if existing:
             logger.info(f"[integrate_test_single] Test already exists: {existing}")
+
+            desc = _build_description(test_case)
+            step_payload = _build_step_payload(test_case)
+
+            update_result = _update_issue_fields(
+                issue_key=existing,
+                fields={"description": desc},
+                use_test_jira=use_test_jira,
+                session=jira_session,
+            )
+            if update_result.get("error"):
+                raise ValueError(
+                    f"Update test failed for '{safe_summary}': {update_result.get('message') or update_result.get('body') or update_result.get('raw_body') or update_result.get('error')}"
+                )
+
+            if step_payload:
+                replace_result = replace_xray_test_steps(
+                    test_key=existing,
+                    steps=step_payload,
+                    use_test_jira=use_test_jira,
+                    session=jira_session,
+                )
+                if replace_result.get("error"):
+                    import json as _json
+                    raise ValueError(
+                        f"Update test failed for '{safe_summary}': "
+                        f"{replace_result.get('message') or replace_result.get('detail') or replace_result.get('body') or replace_result.get('error')}\n"
+                        f"Détails: {_json.dumps(replace_result.get('api_errors', replace_result.get('detail', {})), ensure_ascii=False, indent=2)}"
+                    )
+            # 🔧 AJOUT : relier le test existant à sa story + tests frères
+            if test_case.story_key:
+                link_result = link_test_to_story_and_related_tests(
+                    test_key=existing,
+                    story_key=test_case.story_key,
+                    project_key=body.project_key,
+                    use_test_jira=use_test_jira,
+                    session=jira_session,
+                )
+                if link_result.get("story_link", {}).get("error"):
+                    errors.append(
+                        f"{safe_summary} (warning): échec du lien vers {test_case.story_key}: "
+                        f"{link_result['story_link']}"
+                    )
+                for related in link_result.get("related_test_links", []):
+                    if related["result"].get("error"):
+                        errors.append(
+                            f"{safe_summary} (warning): échec du lien vers {related['test']}: "
+                            f"{related['result']}"
+                        )
+
             created_keys.append(existing)
 
         else:
@@ -307,6 +517,27 @@ async def integrate_test_single(
                 errors.append(f"{safe_summary} (warning): {warning}")
 
             logger.info(f"[integrate_test_single] Test created with steps: {issue_key}")
+            logger.info(f"[integrate_test_single] story_key reçu: {test_case.story_key!r}")
+            if test_case.story_key:
+                link_result = link_test_to_story_and_related_tests(
+                    test_key=issue_key,
+                    story_key=test_case.story_key,
+                    project_key=body.project_key,
+                    use_test_jira=use_test_jira,
+                    session=jira_session,
+                )
+                if link_result.get("story_link", {}).get("error"):
+                    errors.append(
+                        f"{safe_summary} (warning): échec du lien vers {test_case.story_key}: "
+                        f"{link_result['story_link']}"
+                    )
+                for related in link_result.get("related_test_links", []):
+                    if related["result"].get("error"):
+                        errors.append(
+                            f"{safe_summary} (warning): échec du lien vers {related['test']}: "
+                            f"{related['result']}"
+                        )
+
             created_keys.append(issue_key)
 
     except Exception as exc:

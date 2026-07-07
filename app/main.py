@@ -22,6 +22,7 @@ from app.api.routes_integration import router as integration_router
 from app.api.routes_test_editing import router as test_editing_router
 from app.api.routes_auth import router as auth_router
 from app.api.routes_admin import router as admin_router
+from app.api.routes_agent15 import router as agent15_router
 
 logger = logging.getLogger(__name__)
 
@@ -81,6 +82,7 @@ app.include_router(orchestrator_router)
 app.include_router(legacy_tests_router)
 app.include_router(integration_router)
 app.include_router(test_editing_router)
+app.include_router(agent15_router)
 
 
 @app.get("/")

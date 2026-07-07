@@ -1,0 +1,90 @@
+[Image jointe : image-2025-04-22-18-09-22-227.png]
+── Textes détectés (OCR) ──
+= ® o 20
+MES ACTIVITÉS D
+6A 1E s* 156
+Y Atribuée(s) amoi Ÿ En cours, En attente d... Par Daenrecrearce V Ë ° v
+Par échéance >
+Ç Fredenque BARBIER Congés exceptionnels En cours
+% FALTETCIO
+Par catégorie > Activite crvigue (mandat électoral) du 07.05 2021 au __
+Par collaborateur v A ecoermecte DE IEIIN @
+O a F A B
+Houssem ABSOUANI
+» ERLTETON o
+Frédérique BARBIER
+D frTETO:O o
+Congés ; - - .
+Aute - R . .
+Michèle LOMBARD
+» fecrerion o
+ldriss MONTAMARD
+Y RRLTETHSO o
+Ludovic STUAN ARD
+» rkarrrice o
+Martine VEGUIN RD
+Y ererrrin o
++ Nouvel acte 1 aement o Nombre aerements oar sage - 12 v
+Q ?0
+MES ACTIVITÉS
+64
+8h
+158
+1=
+Pa
+5a
+éarie
+1° E CENCENTS
+Par échéance
+Fredenque BARBIER
+Congés exceptionnels
+En cours
+FRATETC10
+Activite civique (mandat electoral} du 07.05 2021 su
+07.05.2021
+A F
+=]
+FRLTETO
+FRITETOIC
+Congés
+FRATET1:1
+Idriss MONTAMARD
+FRATETI:0
+FRATTTI:0
+FRATTT1:1
+<+ Nouvel acte
+12
+ivrede
+19073
+── Analyse visuelle (VLM) ──
+Voici mon analyse de l'interface :
+
+**1. CONTEXTE**
+L'écran semble être une page de gestion des activités, probablement dans un contexte de gestion des ressources humaines ou de suivi des tâches. Il s'agit d'une liste avec des filtres et des actions possibles.
+
+**2. ANNOTATIONS AJOUTÉES PAR LE PO**
+Aucune annotation détectée.
+
+**3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI**
+- Un badge ou pastille : 
+  - forme : rond,
+  - couleur de fond : verte,
+  - position : à côté de "Frédérique BARBIER", semble indiquer l'état "En cours".
+- Des boutons :
+  - "Refuser" et "Valider" de couleur grise et verte.
+  - "Valider en attente de justificatif" de couleur grise.
+
+**4. ICÔNES ET PICTOGRAMMES**
+- Une icône de calendrier ou de date : à côté de "07/05/2021", probablement liée à la date d'échéance.
+- Une icône d'utilisateur ou de personne : à côté de "Frédérique BARBIER", probablement pour représenter le profil de l'utilisateur.
+- Une icône de pièce jointe ou de fichier : à côté de "Congés exceptionnels", pourrait indiquer qu'il y a un fichier attaché.
+- Une icône de warning ou d'alerte : dans le coin supérieur gauche, pourrait indiquer une alerte ou un message important.
+
+**5. AGENCEMENT ET RELATIONS**
+- La page est divisée en sections :
+  - Une barre de menu en haut avec des onglets "MES ACTIVITÉS", etc.
+  - Un tableau ou liste en dessous avec des filtres (Par échéance, Par catégorie, Par collaborateur).
+  - Un bouton "+ Nouvel acte" en bas à gauche.
+  - Des informations sur les activités sont présentées dans une liste avec des champs comme le nom du collaborateur, le type d'activité et les dates.
+- Les éléments de la liste semblent être organisés par ordre de priorité ou d'échéance.
+- Le champ de recherche ou de filtre est probablement situé en haut à gauche avec une icône de loupe.

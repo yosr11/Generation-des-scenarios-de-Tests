@@ -84,9 +84,9 @@ def generate_manual_tests_for_story_data(
             story_id=story_id,
             recommended_test_strategy="needs_refinement",
             generation_status="not_generated",
-            message="Description vide. Impossible de générer des tests. Contacter le PO pour compléter la story.",
+            message="La story est sans description. On ne peut pas générer des tests, il faut contacter le PO pour qu’il explique le besoin.",
             tests=[],
-            notes=["Action requise : demander au PO de renseigner la description de la story avant de relancer la génération."],
+            notes=["Action requise : demander au PO d’expliquer le besoin dans la description de la story avant de relancer la génération."],
         )
 
     story_type = (analysis.get("story_type") or "").strip().lower()

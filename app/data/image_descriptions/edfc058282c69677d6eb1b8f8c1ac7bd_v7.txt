@@ -1,0 +1,49 @@
+[Image jointe : 360_RRHWidgetCollab.png]
+── Textes détectés (OCR) ──
+MES COLLABORATEURS
+Rihem Q11MAN12
+FRLFR4Y1003
+Samir Q11GESTPA1
+Q =
+FRLFR4Y1011
+M Maarcen-Etaa QSYDAY- —
+=— 03] =
+V Frirravaoon
+Rami Q11MAN11
+@ PE
+&/ o
+Léonel TEST DANIEL 1
+@ rueranzs
+28 Accéder à tous mes
+collaborateurs
+15
+—s
+183
+Ivraarçen -Etaa QSYDAY- —
+'EBLERAYLDDJ
+FRLFR4Y1002
+Léonel TEST DANIEL
+FRLFR4Y1328
+&8 Accéder à tous mes
+── Analyse visuelle (VLM) ──
+Voici mon analyse de l'image :
+
+**1. CONTEXTE**
+L'écran semble être une liste de collaborateurs, probablement dans un contexte de gestion des ressources humaines ou de communication interne. L'intention probable est de visualiser et potentiellement d'interagir avec la liste des collaborateurs.
+
+**2. ANNOTATIONS AJOUTÉES PAR LE PO**
+- Un cadre rouge entoure le texte "Rihem Q11MAN12 FRLFR4Y1003".
+- Une flèche ou un symbole de type "1" semble être ajouté à côté de chaque collaborateur, mais il est difficile de déterminer si cela fait partie de l'annotation ou de l'interface native.
+
+**3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI**
+- Des icônes de type silhouette ou photo apparaissent à côté de chaque nom de collaborateur.
+- Un lien hypertexte bleu "Accéder à tous mes collaborateurs" est présent en bas de l'écran.
+
+**4. ICÔNES ET PICTOGRAMMES**
+- Une icône de cadenas apparaît à côté du nom "Rihem Q11MAN12".
+- Des icônes de type bulle de discussion (ou speech bubble) apparaissent à côté de chaque collaborateur.
+
+**5. AGENCEMENT ET RELATIONS**
+- La liste des collaborateurs est présentée sous forme de liste verticale.
+- Chaque collaborateur est représenté par une ligne contenant son nom et des informations complémentaires.
+- Un lien "Accéder à tous mes collaborateurs" est positionné en bas de l'écran.

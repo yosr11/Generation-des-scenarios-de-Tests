@@ -109,6 +109,20 @@ def init_tables():
         CREATE INDEX IF NOT EXISTS idx_agent3_validations_story ON agent3_validations(story_id);
         CREATE INDEX IF NOT EXISTS idx_automation_class_story ON automation_classifications(story_id);
 
+        -- Business models Agent 1.5 (goals + workflows)
+        CREATE TABLE IF NOT EXISTS story_business_models (
+            id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+            story_id            TEXT NOT NULL,
+            model               TEXT,
+            business_goals      TEXT,          -- JSON array
+            business_workflows  TEXT,          -- JSON array
+            modeling_notes      TEXT,
+            created_at          TEXT DEFAULT (datetime('now')),
+            FOREIGN KEY (story_id) REFERENCES stories(id)
+        );
+
+        CREATE INDEX IF NOT EXISTS idx_business_models_story ON story_business_models(story_id);
+
         """)
         conn.commit()
 
@@ -135,6 +149,7 @@ def init_tables():
         _add_column_if_missing(conn, "agent3_validations", "correction_instructions", "TEXT")
 
         print("[OK] Tables SQLite initialisees")
+        print("[OK] Table story_business_models (Agent 1.5) prête")
     finally:
         conn.close()
 

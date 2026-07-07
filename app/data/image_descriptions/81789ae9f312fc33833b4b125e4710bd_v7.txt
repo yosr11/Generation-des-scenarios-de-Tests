@@ -1,0 +1,76 @@
+[Image jointe : illustration Recherche Vue par collaborateur.png]
+── Textes détectés (OCR) ──
+= ® Q ?0
+A 1E ! 1S
+A rarmuces amos | Encous Enanensea_ ” .
+Pas échéance > . , ;
+Ç Heptrcc e a2 oA et el 3 (LR [ | H
+Pi catéponie > L cr Jerey Lotddr s, ;
+—— __ Ty L cirCeLe T
+Par coflaborateur “ A e @
+Q a = : PR
+Homitern ARSQUANT
+’x:_rr':-- a
+Fredeuspre BARNIER
+Sansres o
+Canges
+Y hele l OMBARD
+4 LT 4 o
+Idriss MONTAMAED
+Uudéese STUAN ARD
+Martine#[GUIN BB
+Q ?
+és at
+[14]
+M rs | en cr e
+Pas échéance
+sk
+s4
+[,
+..
+T ey
+ir »
+Pax catégonte
+r.>
+P < clabos ateur
+p Homssem ABSQUANT
+— Fredessque BARNIER
+Baofrri
+Cange
+ot
+p Yhele LOMPARD
+teret
+p ldriss MONTAMAED
+PRI
+* Ludrote STUAN ARD
+PE
++ Martine GUIN ED
+vectet
+[P NE (420
+LI
+── Analyse visuelle (VLM) ──
+### 1. CONTEXTE
+L'écran capturé semble être une interface de gestion des activités ou des tâches, probablement dans un contexte professionnel. Il s'agit d'une liste ou d'un tableau de bord permettant de filtrer et de visualiser les activités en cours ou à venir.
+
+### 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+### 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un badge ou pastille de couleur verte avec le texte « En cours ».
+- Des boutons :
+  - « Refuser »
+  - « Valider »
+  - « Valider en attente de justificatif »
+- Un champ de recherche ou de filtre avec les options « Par échéance », « Par catégorie », « Par collaborateur ».
+
+### 4. ICÔNES ET PICTOGRAMMES
+- Une icône de calendrier ou d'horaire, probablement utilisée pour indiquer des dates d'échéance.
+- Une icône de personne ou de profil, associée aux informations du collaborateur.
+- Une icône de validation ou de checkmark, utilisée pour les statuts des tâches (peut-être dans les colonnes ou lignes du tableau).
+
+### 5. AGENCEMENT ET RELATIONS
+- L'écran est divisé en sections :
+  - Une barre de menu ou de navigation en haut avec des onglets ou des boutons de filtre.
+  - Un tableau ou liste principal qui affiche les activités, avec des colonnes pour les informations telles que les collaborateurs, les catégories, et les échéances.
+- Les éléments sont organisés en lignes et colonnes, suggérant un tableau structuré pour afficher les données.
+- Un champ de recherche ou de filtre est présent, permettant aux utilisateurs de trier les activités par différents critères.

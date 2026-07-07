@@ -47,7 +47,38 @@ export default function MainPanel() {
       }
 
       const data = await response.json()
-      setResults({ storyId, status: 'success', data, requestType: options.mode, requestOptions: options })
+
+      // Si pipeline : lancer un polling sur /orchestrator/status/{jobId}
+      if (options.mode === 'pipeline') {
+        const jobId = data.storyId || storyId
+        // Mettre à jour l'UI avec le job initial
+        setResults({ storyId, status: 'success', data, requestType: options.mode, requestOptions: options })
+
+        // Poller jusqu'à obtention du résultat final (job.result non nul) ou statut final
+        const poll = async () => {
+          for (let i = 0; i < 60; i++) {
+            try {
+              const st = await fetch(`/api/orchestrator/status/${encodeURIComponent(jobId)}`)
+              if (!st.ok) break
+              const job = await st.json()
+              // Si le job contient le résultat, afficher le résultat final (pipeline JSON)
+              if (job.result) {
+                setResults({ storyId, status: 'success', data: job.result, requestType: options.mode, requestOptions: options })
+                return
+              }
+              // Sinon mettre à jour l'affichage du job (progression)
+              setResults({ storyId, status: 'success', data: job, requestType: options.mode, requestOptions: options })
+            } catch (e) {
+              // Ignore et réessaye
+            }
+            await new Promise((r) => setTimeout(r, 2000))
+          }
+        }
+
+        poll()
+      } else {
+        setResults({ storyId, status: 'success', data, requestType: options.mode, requestOptions: options })
+      }
     } catch (error) {
       setResults({ storyId, status: 'error', error: String(error), requestType: options.mode, requestOptions: options })
     }

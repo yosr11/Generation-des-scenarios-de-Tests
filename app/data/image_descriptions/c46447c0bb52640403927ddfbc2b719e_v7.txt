@@ -1,0 +1,48 @@
+[Image jointe : 360_InboxManager.png]
+── Textes détectés (OCR) ──
+@ ABSENCES
+v A
+DATE BUTOIR —
+Mohamed Q11CONGE02 H
+O 3, du 01/07/2026 Valider ) o
+J au 03/07/2026 ‘
+DATE BUTOIR
+[ 4
+Mohamed Q11CONGE02
+du 01/07/2026
+3;
+au 03/07/2026
+── Analyse visuelle (VLM) ──
+Voici mon analyse de la capture d'écran :
+
+**1. CONTEXTE**
+L'écran semble être une page de gestion des absences, probablement dans un logiciel de ressources humaines. Il s'agit d'un formulaire ou d'une liste de résultats de recherche pour les absences.
+
+**2. ANNOTATIONS AJOUTÉES PAR LE PO**
+Aucune annotation détectée.
+
+**3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI**
+- Un badge ou une pastille : 
+  - Forme : ronde
+  - Couleur de fond : bleu clair
+  - Texte OCR : aucun
+
+**4. ICÔNES ET PICTOGRAMMES**
+- Une icône de silhouette de personne : 
+  - Fonction probable : représentation de l'utilisateur ou du profil
+  - Position : à gauche de l'écran, près du texte "Mohamed Q11CONGE02"
+- Une icône de flèche gauche : 
+  - Fonction probable : navigation arrière
+  - Position : en haut à gauche de l'écran
+- Une icône de trois points verticaux : 
+  - Fonction probable : menu d'actions supplémentaires
+  - Position : à droite de l'écran, près du bouton "Valider"
+- Une icône de loupe ou de recherche : 
+  - Non visible, mais un champ de recherche est présent.
+
+**5. AGENCEMENT ET RELATIONS**
+- Le titre "ABSENCES" est en haut de l'écran.
+- Un champ de recherche avec un texte "Entrez un nom" et un bouton déroulant pour la "DATE BUTOIR".
+- Le nom "Mohamed Q11CONGE02" est suivi d'une période de congé ("du 01/07/2026 au 03/07/2026") et d'une durée ("3j").
+- Un bouton "Valider" est présent à droite de l'écran.
+- La structure générale comporte une section pour les résultats de recherche ou les informations de congé, avec une icône de profil à gauche.

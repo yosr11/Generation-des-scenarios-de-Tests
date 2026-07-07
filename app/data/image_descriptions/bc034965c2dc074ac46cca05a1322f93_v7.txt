@@ -1,0 +1,22 @@
+[Image jointe : image-2025-04-07-09-48-01-994.png]
+── Textes détectés (OCR) ──
+e Une fois la date de début de publication passée. interdire la modification de la news "* sauf pour la retirer de la publication.
+* Pour retirer une news
+de la publication, on la rend invalide ou on met la date de fin de publication dans le passé.
+── Analyse visuelle (VLM) ──
+Voici mon analyse de l'image :
+
+**1. CONTEXTE**
+L'écran semble être un extrait de documentation ou d'aide en ligne, probablement un texte d'information ou une FAQ, concernant la gestion de publications (news) dans un système de gestion de contenu.
+
+**2. ANNOTATIONS AJOUTÉES PAR LE PO**
+Aucune annotation détectée.
+
+**3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI**
+Aucun élément graphique natif de l'UI (pastilles, badges, étiquettes, boutons) n'est visible dans l'image.
+
+**4. ICÔNES ET PICTOGRAMMES**
+Aucune icône ou pictogramme n'est visible dans l'image.
+
+**5. AGENCEMENT ET RELATIONS**
+Le texte est présenté sous forme de deux points clés, avec des phrases courtes et des asterisks (** sauf pour la retirer de la publication) qui mettent en avant des conditions ou des exceptions. Le texte est simple, avec une structure claire et concise. Il semble qu'il n'y ait pas de champs obligatoires, d'états (actif/inactif, sélectionné, désactivé) ou de relations spatiales complexes. Les deux points sont simplement listés.

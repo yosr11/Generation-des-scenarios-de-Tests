@@ -74,6 +74,7 @@ export interface OrchestratorRequest {
   use_rag?: boolean
   use_legacy_rag?: boolean
   model_agent1?: string
+  model_agent15?: string
   model_agent2?: string
   model_agent3_quality?: string
   model_agent5?: string
@@ -151,6 +152,8 @@ export interface StoredStory extends Story {
   description_raw?: string
   acceptance_criteria_clean?: string
   labels?: string[]
+  images?: any[]
+  rag_context?: any[]
 }
 
 // ── Scenario ──────────────────────────────────────────────────
@@ -446,6 +449,26 @@ export const apiClient = {
       } catch (error) {
         throw handleError(error)
       }
+    },
+  },
+
+  // ── Agent 1.5 — Business Modeling ───────────────────────────
+  agent15: {
+    async getLatest(storyId: string): Promise<any> {
+      const response = await axiosInstance.get<any>(
+        `/agent15/${encodeURIComponent(storyId)}/latest`
+      )
+      return response.data
+    },
+
+    async run(storyId: string, options?: { model_alias?: string; force?: boolean }): Promise<any> {
+      const params = new URLSearchParams()
+      if (options?.model_alias) params.append('model_alias', options.model_alias)
+      if (options?.force !== undefined) params.append('force', String(options.force))
+      const response = await axiosInstance.get<any>(
+        `/agent15/${encodeURIComponent(storyId)}?${params.toString()}`
+      )
+      return response.data
     },
   },
 

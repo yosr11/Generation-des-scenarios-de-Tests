@@ -1,0 +1,34 @@
+[Image jointe : DN.png]
+── Textes détectés (OCR) ──
+— @ Dossier numérique
+S PNV TEST CONF SAL1 TEST CO
+ADEM ADEM
+O\
+FRLFRYRHSUP02
+Dossier numérique
+TEST CONF SAL1 TEST CO
+── Analyse visuelle (VLM) ──
+Voici mon analyse de l'interface :
+
+**1. CONTEXTE**
+L'écran semble être une page de dossier numérique pour un salarié, probablement dans un contexte de gestion des ressources humaines. L'intention probable est de consulter ou de gérer les informations relatives au dossier numérique du salarié.
+
+**2. ANNOTATIONS AJOUTÉES PAR LE PO**
+Aucune annotation détectée.
+
+**3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI**
+- Un badge : forme rectangulaire, couleur bleue, texte "SALARIÉ 4YOU".
+- Un logo : cercle avec un design coloré (contient les lettres "4" et "+" ).
+
+**4. ICÔNES ET PICTOGRAMMES**
+- Une icône de menu (3 lignes horizontales) en haut à gauche.
+- Une icône de recherche (loupe) à côté du champ de saisie du nom du salarié.
+- Une icône de silhouette humaine dans un cercle (probablement une photo de profil).
+- Une icône de flèche inversée (probablement pour fermer ou réduire un élément).
+
+**5. AGENCEMENT ET RELATIONS**
+- Le titre "Dossier numérique" est en haut de l'écran, centré.
+- Un champ de saisie avec le nom du salarié "ADEM ADEM FRLFRYRHSUP02" et une icône de recherche à côté.
+- Un champ de filtre avec le texte "Filtre sur arborescence et mots-clés" et une icône de flèche inversée à droite.
+- Un élément de formulaire avec une case à cocher et le texte "Masquer les emplacements vides".
+- Des onglets ou sections en haut de l'écran : "SALARIÉ 4YOU", "TEST CONF SAL1", "TEST CO".

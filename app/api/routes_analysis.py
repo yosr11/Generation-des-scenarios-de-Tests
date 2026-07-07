@@ -317,11 +317,8 @@ def analyze_epic_stories(
         if not description:
             return {"story_id": story_id, "skipped": True}
 
-        # RAG retrieval pour cette story
+        # RAG désactivé pour Agent 1 (utilise attachments directs + epic uniquement)
         rag_context = None
-        if use_rag and rag_info and rag_info.get("total_chunks", 0) > 0:
-            query = f"{enriched.get('summary', '')} {enriched.get('description_clean', '')}"
-            rag_context = retrieve_context(epic_key, query)
 
         # Attachments directs de la story (images + pièces jointes + issuelinks descriptions)
         story_attachments = _get_story_attachments(story_id)
@@ -335,7 +332,7 @@ def analyze_epic_stories(
         return {
             "story_id": story_id,
             "result": _build_response(enriched, model_alias, model_name, "groq", analysis),
-            "rag_chunks_used": len(rag_context) if rag_context else 0,
+            "rag_chunks_used": 0,
         }
 
     for raw in raw_stories:
@@ -405,7 +402,7 @@ def analyze_story(
 
     # Les PJ de la story sont TOUJOURS injectées en direct (spec), indépendamment de use_rag
     story_attachments = _get_story_attachments(issue_key)
-    rag_context = _get_rag_context(enriched, force_refresh=force_refresh) if use_rag else None
+    rag_context = None  # RAG désactivé pour Agent 1
 
     try:
         analysis = analyze_story_with_groq(
@@ -428,7 +425,7 @@ def analyze_story(
 def analyze_story_qwen3(issue_key: str, use_rag: bool = Query(False), force_refresh: bool = Query(False)):
     enriched = _get_enriched_story(issue_key, force_refresh=force_refresh)
     story_attachments = _get_story_attachments(issue_key)
-    rag_context = _get_rag_context(enriched, force_refresh=force_refresh) if use_rag else None
+    rag_context = None
     try:
         analysis = analyze_story_with_groq(
             story=enriched, model_alias="qwen3",

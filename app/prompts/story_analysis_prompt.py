@@ -93,6 +93,19 @@ TESTABLE_POINTS :
   Inclus les points NEGATIFS SEULEMENT S'ILS SONT MENTIONNES : "Verifier que <element> n'apparait plus", "Verifier que <role> ne peut plus <action>".
   Mauvais : "verifier que ca marche", "tester la fonctionnalite", invention d'UI non mentionnee, cas limites non cites.
 
+  REGLE DE TRACABILITE STRICTE (ANTI-HALLUCINATION — PRIORITE MAXIMALE) :
+  Chaque testable_point DOIT correspondre a un mot, une phrase ou un element visuel PRESENT dans la story
+  (summary, description, criteres d'acceptation, tickets lies, ou image decrite). Avant d'ecrire un point,
+  verifie mentalement : "Quelle phrase EXACTE de la story justifie ce point ?". Si tu ne peux pas citer la
+  source, NE l'ecris PAS.
+  N'INVENTE JAMAIS de concept d'UI ou de mecanisme absent du texte, notamment :
+    - des "sous-categories", "sous-onglets", "sous-sections" si la story ne parle que de "categories"
+    - un "onglet de recherche personnalisee", un "formulaire de recherche", une "recherche avancee"
+      si la story ne mentionne qu'un simple "champ de recherche" / "zone de recherche avec loupe"
+    - des etats, filtres, tris, colonnes, boutons ou messages non cites
+    - un comportement deduit "par analogie" avec un autre produit ou une autre story
+  En cas de doute entre deux formulations, choisis TOUJOURS la plus proche du vocabulaire exact de la story.
+
   REGLE DE GRANULARITE :
   - Un point testable = UNE assertion QA unique et observable (pas un objectif metier).
   - Pour chaque action de la story, decompose-la en autant de verifications elementaires qu'il y a de COMPORTEMENTS DISTINCTS EXPLICITEMENT MENTIONNES dans le texte.
@@ -109,6 +122,14 @@ TESTABLE_POINTS :
     - Mentions de droits/acces ("permission", "confidentiel", "public", "acces") → cas negatif obligatoire
   SI LA STORY N'EN PARLE PAS : ne l'ajoute pas.
   EXEMPLE : si story parle de "0, 1 ou N mots-cles", tester N=0, N=1, N=N. Si elle ne parle que de selection, tester juste la selection (pas N=0).
+
+  REGLE FONCTIONNALITE NON DEVELOPPEE / BONUS :
+  Si la story indique EXPLICITEMENT qu'une fonctionnalite est un bonus, n'est pas encore developpee, sera
+  traitee plus tard, ou doit etre verifiee "a la fin des developpements" (ex: "ce point est un bonus",
+  "n'a pas ete developpe en 9.0.x", "verifier la presence a la fin de la story", "sera traite apres"),
+  alors ne genere QU'UN SEUL point testable de PRESENCE pour cette fonctionnalite
+  (ex: "Verifier la presence de la zone de recherche"). NE genere PAS de points testables detailles sur
+  son comportement interne (saisie, filtrage, resultats), car elle n'est pas encore livree.
 
   REGLE COMPOSANTS EXISTANTS :
   Si la story mentionne "Idem composant X", "comme le multi-select", "similaire a Y", "conforme a la spec de Z", cela indique un composant REUTILISABLE.

@@ -22,6 +22,79 @@ function FieldCard({ title, children }: { title: string; children: React.ReactNo
   )
 }
 
+function JsonSection({ title, content }: { title: string; content: any }) {
+  if (!content) return null
+
+  return (
+    <FieldCard title={title}>
+      <pre className="rounded-2xl bg-slate-50 p-3 text-xs text-slate-700 overflow-auto max-h-72">
+        {JSON.stringify(content, null, 2)}
+      </pre>
+    </FieldCard>
+  )
+}
+
+function resolveImageUrl(url?: string) {
+  if (!url) return undefined
+  if (url.startsWith('http') || url.startsWith('data:') || url.startsWith('/api')) return url
+  if (url.startsWith('/documents/')) return `/api${url}`
+  return url
+}
+
+function ImageGallery({ images, title = 'Images' }: { images: any[]; title?: string }) {
+  if (!images || images.length === 0) return null
+  return (
+    <FieldCard title={title}>
+      <div className="grid gap-4 sm:grid-cols-2">
+        {images.map((image, idx) => {
+          const src = resolveImageUrl(image.url)
+          return (
+            <div key={idx} className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
+              {src ? (
+                <div className="h-48 overflow-hidden rounded-2xl bg-slate-100">
+                  <img
+                    src={src}
+                    alt={image.alt_text || image.caption || `Image ${idx + 1}`}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+              ) : (
+                <div className="h-48 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400 text-sm">
+                  Image sans URL
+                </div>
+              )}
+              <div className="mt-4 space-y-2 text-slate-700 text-sm">
+                {image.caption && <p className="font-semibold text-slate-900">{image.caption}</p>}
+                {image.description && <p className="whitespace-pre-wrap">{image.description}</p>}
+              </div>
+            </div>
+          )
+        })}
+      </div>
+    </FieldCard>
+  )
+}
+
+function RagContextSection({ ragContext }: { ragContext: any[] }) {
+  if (!ragContext || ragContext.length === 0) return null
+  return (
+    <FieldCard title="Contexte RAG">
+      <div className="space-y-4">
+        {ragContext.map((item, idx) => (
+          <div key={idx} className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
+            {item.source && (
+              <p className="text-xs uppercase tracking-[0.18em] text-slate-500 font-semibold mb-2">{item.source}</p>
+            )}
+            <p className="text-sm text-slate-700 whitespace-pre-wrap">
+              {item.text || item.content || JSON.stringify(item)}
+            </p>
+          </div>
+        ))}
+      </div>
+    </FieldCard>
+  )
+}
+
 export default function ResultsPanel({ result }: ResultsPanelProps) {
   if (result.status === 'loading') {
     return (
@@ -103,6 +176,23 @@ export default function ResultsPanel({ result }: ResultsPanelProps) {
         )}
       </div>
 
+      {isPipeline && data?.story && (
+        <div className="mt-4">
+          <FieldCard title="User Story">
+            <div className="space-y-2 text-sm text-slate-700">
+              <p><strong>ID :</strong> {data.story.id || result.storyId}</p>
+              <p><strong>Résumé :</strong> {data.story.summary || data.story.title || 'N/A'}</p>
+              {data.story.description && (
+                <div>
+                  <p className="text-sm font-semibold text-slate-700">Description</p>
+                  <p className="text-sm text-slate-600 whitespace-pre-wrap">{data.story.description}</p>
+                </div>
+              )}
+            </div>
+          </FieldCard>
+        </div>
+      )}
+
       {isPipeline ? (
         <div className="grid gap-4 lg:grid-cols-3">
           <FieldCard title="Statut final">
@@ -131,17 +221,118 @@ export default function ResultsPanel({ result }: ResultsPanelProps) {
             </FieldCard>
           )}
 
+          {data.agent1_analysis && (
+            <FieldCard title="Agent 1">
+              <div className="space-y-2 text-sm text-slate-700">
+                {data.agent1_analysis.story_title && (
+                  <p><strong>Story :</strong> {data.agent1_analysis.story_title}</p>
+                )}
+                {data.agent1_analysis.story_type && (
+                  <p><strong>Type :</strong> {data.agent1_analysis.story_type}</p>
+                )}
+                {data.agent1_analysis.actors?.length > 0 && (
+                  <p><strong>Acteurs :</strong> {data.agent1_analysis.actors.join(', ')}</p>
+                )}
+                {data.agent1_analysis.actions?.length > 0 && (
+                  <p><strong>Actions :</strong> {data.agent1_analysis.actions.join('; ')}</p>
+                )}
+                {data.agent1_analysis.testable_points?.length > 0 && (
+                  <p><strong>Points testables :</strong> {data.agent1_analysis.testable_points.length}</p>
+                )}
+              </div>
+            </FieldCard>
+          )}
+
+          {data.agent15_business_model && (
+            <FieldCard title="Agent 1.5">
+              <div className="space-y-2 text-sm text-slate-700">
+                {data.agent15_business_model.business_goals?.length != null && (
+                  <p><strong>Objectifs :</strong> {data.agent15_business_model.business_goals.length}</p>
+                )}
+                {data.agent15_business_model.business_workflows?.length != null && (
+                  <p><strong>Workflows :</strong> {data.agent15_business_model.business_workflows.length}</p>
+                )}
+                {data.agent15_business_model.modeling_notes && (
+                  <p><strong>Notes :</strong> {data.agent15_business_model.modeling_notes}</p>
+                )}
+              </div>
+            </FieldCard>
+          )}
+
           {data.agent2_tests && (
             <FieldCard title="Agent 2">
               <div className="space-y-2 text-sm text-slate-700">
                 <p>
                   <strong>Tests :</strong> {data.agent2_tests.length}
                 </p>
+                {data.agent2_tests[0]?.test_name && (
+                  <p><strong>Premier test :</strong> {data.agent2_tests[0].test_name}</p>
+                )}
                 <p>
                   <strong>Rapport :</strong> {data.report_status ?? 'N/A'}
                 </p>
               </div>
             </FieldCard>
+          )}
+
+          {data.agent3_validation && (
+            <FieldCard title="Agent 3">
+              <div className="space-y-2 text-sm text-slate-700">
+                {data.agent3_validation.validation_status && (
+                  <p><strong>Validation :</strong> {data.agent3_validation.validation_status}</p>
+                )}
+                {data.agent3_validation.report?.coverage_rate != null && (
+                  <p><strong>Couverture :</strong> {data.agent3_validation.report.coverage_rate}</p>
+                )}
+                {data.agent3_validation.report?.ambiguity_count != null && (
+                  <p><strong>Ambiguïtés :</strong> {data.agent3_validation.report.ambiguity_count}</p>
+                )}
+              </div>
+            </FieldCard>
+          )}
+
+          {data.agent5_report && (
+            <FieldCard title="Agent 5">
+              <div className="space-y-2 text-sm text-slate-700">
+                {data.agent5_report.report_title && (
+                  <p><strong>Rapport :</strong> {data.agent5_report.report_title}</p>
+                )}
+                {data.agent5_report.executive_summary?.overall_status && (
+                  <p><strong>Statut :</strong> {data.agent5_report.executive_summary.overall_status}</p>
+                )}
+                {data.agent5_report.coverage_metrics?.coverage_rate != null && (
+                  <p><strong>Couverture :</strong> {data.agent5_report.coverage_metrics.coverage_rate}%</p>
+                )}
+              </div>
+            </FieldCard>
+          )}
+
+          {(data.story?.legacy_examples || data.legacy_examples)?.length > 0 && (
+            <JsonSection title="Exemples legacy RAG" content={data.story?.legacy_examples || data.legacy_examples} />
+          )}
+
+          {(data.story?.rag_context || data.rag_context)?.length > 0 && (
+            <RagContextSection ragContext={data.story?.rag_context || data.rag_context} />
+          )}
+
+          {(data.story?.images || data.images)?.length > 0 && (
+            <ImageGallery images={data.story?.images || data.images} title="Images Agent 1" />
+          )}
+
+          {data.agent1_analysis && (
+            <JsonSection title="Agent 1 Analysis" content={data.agent1_analysis} />
+          )}
+
+          {data.agent2_tests && data.agent2_tests.length > 0 && (
+            <JsonSection title="Agent 2 Tests" content={data.agent2_tests} />
+          )}
+
+          {data.agent3_validation && (
+            <JsonSection title="Agent 3 Validation" content={data.agent3_validation} />
+          )}
+
+          {data.agent5_report && (
+            <JsonSection title="Agent 5 Report" content={data.agent5_report} />
           )}
         </div>
       ) : (

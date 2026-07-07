@@ -278,11 +278,27 @@ class ManualTestGeneratorService:
             normalize_test_etapes_and_steps(test)
 
         # Normalize notes (outside the test loop)
+        # Normalize notes (outside the test loop)
         notes = data.get("notes")
         if isinstance(notes, str):
             data["notes"] = [notes] if notes.strip() else []
         elif notes is None:
             data["notes"] = []
+        elif isinstance(notes, list):
+            normalized_notes = []
+            for note in notes:
+                if isinstance(note, str):
+                    if note.strip():
+                        normalized_notes.append(note)
+                elif isinstance(note, dict):
+                    # Le LLM a renvoyé un objet au lieu d'une string : sérialiser proprement
+                    normalized_notes.append(json.dumps(note, ensure_ascii=False))
+                elif note is not None:
+                    normalized_notes.append(str(note))
+            data["notes"] = normalized_notes
+        else:
+            # Type inattendu (ex: dict unique) → wrapper en liste de string
+            data["notes"] = [json.dumps(notes, ensure_ascii=False)] if notes else []
 
         data.setdefault("golden_rule_warnings", [])
 

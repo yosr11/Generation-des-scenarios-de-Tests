@@ -1,14 +1,16 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useStory, useAnalysisHistory } from '../hooks'
+import { useStory } from '../hooks'
 import { apiClient, StoredStory } from '../api/client'
 import { useToast } from '../contexts/ToastContext'
 import {
-  ArrowLeft, Trash2, FileText, CheckCircle2, Cpu, Clock, XCircle,
-  TestTube, FileBarChart2, HelpCircle, AlertTriangle, ArrowRight, Printer, Sparkles, Upload
+  ArrowLeft, Trash2, FileText, CheckCircle2, XCircle,
+  TestTube, FileBarChart2, ArrowRight, Workflow,
+  GitBranch, ChevronDown, Printer, HelpCircle
 } from 'lucide-react'
 import { Badge } from '../components/ui/Badge'
 import { Alert } from '../components/ui/Alert'
+import { ManualTestsTable } from '../components/tests/ManualTestsTable'
 
 // ── Colors & Styles matching PipelinePage ──────────────────────────────────
 const NAV       = '#0B1E3E'
@@ -17,111 +19,236 @@ const ROSE      = '#DB2777'
 const ORANGE    = '#EA580C'
 const VIOLET    = '#1D4ED8'
 
-const MAIN_GRADIENT = `linear-gradient(90deg, ${NAV}, ${NAV_LIGHT}, ${VIOLET}, ${ROSE}, ${ORANGE})`
 const CARD_GRADIENT = `linear-gradient(135deg, ${NAV}, ${NAV_LIGHT}, ${VIOLET})`
+// Dégradé vif pour les cartes d'en-tête (Story ID / Type / Acteurs) : bleu → rose → rouge
+const HEADER_GRADIENT = 'linear-gradient(135deg, #2563EB 0%, #7C3AED 40%, #DB2777 75%, #F43F5E 100%)'
+const HEADER_SHADOW   = '0 8px 26px rgba(219,39,119,0.30)'
 
 const AGENT_INFO: Record<string, { label: string; desc: string; icon: React.ElementType; gradient: string }> = {
-  'Agent 1': { label: 'Agent 1 — Analyse',              desc: 'Analyse sémantique de la user story',     icon: FileText,      gradient: CARD_GRADIENT },
-  'Agent 2': { label: 'Agent 2 — Génération des tests', desc: 'Création des scénarios de tests manuels', icon: TestTube,      gradient: CARD_GRADIENT },
-  'Agent 3': { label: 'Agent 3 — Validation',           desc: 'Couverture, ambiguïtés & cas limites',    icon: CheckCircle2,  gradient: CARD_GRADIENT },
-  'Agent 5': { label: 'Agent 5 — Rapport',              desc: 'Rapport qualité & recommandations',       icon: FileBarChart2, gradient: CARD_GRADIENT },
+  'Agent 1':   { label: 'Agent 1 — Analyse',              desc: 'Analyse sémantique de la user story',             icon: FileText,      gradient: CARD_GRADIENT },
+  'Agent 1.5': { label: 'Agent 1.5 — Business Modeling',  desc: 'Goals métier & workflows end-to-end',              icon: Workflow,      gradient: CARD_GRADIENT },
+  'Agent 2':   { label: 'Agent 2 — Génération des tests', desc: 'Création des scénarios de tests manuels',         icon: TestTube,      gradient: CARD_GRADIENT },
+  'Agent 3':   { label: 'Agent 3 — Validation',           desc: 'Couverture, ambiguïtés & cas limites',            icon: CheckCircle2,  gradient: CARD_GRADIENT },
+  'Agent 5':   { label: 'Agent 5 — Rapport',              desc: 'Rapport qualité & recommandations',               icon: FileBarChart2, gradient: CARD_GRADIENT },
 }
 
-// ── Agent 1 Result ────────────────────────────────────────────────────────────
+// ── Section Title ─────────────────────────────────────────────────────────────
+const SectionTitle: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <p className="text-xs font-bold uppercase tracking-widest mb-3 capitalize" style={{ color: `${NAV}80` }}>
+    {children}
+  </p>
+)
+
+const resolveImageUrl = (url?: string) => {
+  if (!url) return undefined
+  if (url.startsWith('http') || url.startsWith('data:') || url.startsWith('/api')) return url
+  if (url.startsWith('/documents/')) return `/api${url}`
+  return url
+}
+
+const ImageGallery: React.FC<{ images: any[] }> = ({ images }) => {
+  if (!images || images.length === 0) return null
+  return (
+    <div className="grid gap-4 sm:grid-cols-2">
+      {images.map((image, idx) => {
+        const src = resolveImageUrl(image.url)
+        return (
+          <div key={idx} className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
+            {src ? (
+              <div className="h-48 overflow-hidden rounded-2xl bg-slate-100">
+                <img
+                  src={src}
+                  alt={image.alt_text || image.caption || `Image ${idx + 1}`}
+                  className="h-full w-full object-cover"
+                />
+              </div>
+            ) : (
+              <div className="h-48 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400 text-sm">
+                Image sans URL
+              </div>
+            )}
+            <div className="mt-4 space-y-2 text-slate-700 text-sm">
+              {image.caption && <p className="font-semibold text-slate-900">{image.caption}</p>}
+              {image.description && <p className="whitespace-pre-wrap">{image.description}</p>}
+              {image.source && <p className="text-xs text-slate-400">Source: {image.source}</p>}
+            </div>
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
+const RagContextSection: React.FC<{ ragContext: any[] }> = ({ ragContext }) => {
+  if (!ragContext || ragContext.length === 0) return null
+  return (
+    <div className="space-y-3">
+      {ragContext.map((item, idx) => (
+        <div key={idx} className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
+          <p className="text-sm font-semibold text-slate-900 mb-2">{item.source || `Document ${idx + 1}`}</p>
+          <p className="text-sm text-slate-600 whitespace-pre-wrap">{item.text || item.content || JSON.stringify(item)}</p>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+const JsonSectionContent: React.FC<{ content: any }> = ({ content }) => {
+  if (!content) return null
+  return (
+    <div className="space-y-3">
+      {(Array.isArray(content) ? content : [content]).map((item, idx) => (
+        <div key={idx} className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
+          <pre className="rounded-xl bg-slate-50 p-3 text-xs text-slate-700 overflow-auto">
+            {JSON.stringify(item, null, 2)}
+          </pre>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+// ── Agent 1 Result (rendu complet dynamique, identique à la vue live) ─────────
 const Agent1Result: React.FC<{ output: any }> = ({ output }) => {
   if (!output) return null
-  const points = output.testable_points || []
-  const actors = output.actors || []
+  const { story_id, story_title, story_type, actors, ...rest } = output
+
+  const isEmptyScalar = (v: any) =>
+    v === null || v === undefined || (typeof v === 'string' && v.trim() === '')
+
+  // On n'affiche que les données réellement présentes : plus de titres de
+  // section orphelins (ex. « BUSINESS RULES » sans contenu) ni de valeurs vides.
+  const tableRows   = Object.entries(rest).filter(
+    ([, v]) => (typeof v !== 'object' || v === null) && !isEmptyScalar(v)
+  )
+  const listEntries = Object.entries(rest).filter(
+    ([, v]) => Array.isArray(v) && v.length > 0
+  )
+  const objEntries  = Object.entries(rest).filter(
+    ([, v]) => !Array.isArray(v) && typeof v === 'object' && v !== null && Object.keys(v).length > 0
+  )
+
   return (
-    <div className="space-y-6 w-full text-slate-900">
-      <div className="grid gap-4 sm:grid-cols-2">
-        {output.story_type && (
-          <div className="rounded-2xl p-4 bg-slate-50 border">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Type de Story</p>
-            <p className="mt-1 font-bold text-sm" style={{ color: NAV }}>{output.story_type}</p>
+    <div className="space-y-8 w-full">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {story_id && (
+          <div className="rounded-2xl p-5 flex flex-col gap-1.5"
+            style={{ background: HEADER_GRADIENT, boxShadow: HEADER_SHADOW }}>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-white/60">Story ID</span>
+            <span className="text-2xl font-extrabold text-white font-mono">{story_id}</span>
           </div>
         )}
-        {actors.length > 0 && (
-          <div className="rounded-2xl p-4 bg-slate-50 border">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Acteurs</p>
-            <div className="mt-2 flex flex-wrap gap-1.5">
-              {actors.map((actor: string, i: number) => (
-                <span key={i} className="px-2 py-0.5 rounded-lg text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-100">
-                  {actor}
+        {story_type && (
+          <div className="rounded-2xl p-5 flex flex-col gap-1.5"
+            style={{ background: HEADER_GRADIENT, boxShadow: HEADER_SHADOW }}>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-white/60">Story Type</span>
+            <span className="text-xl font-bold text-white capitalize">{story_type}</span>
+          </div>
+        )}
+        {actors && (
+          <div className="rounded-2xl p-5 flex flex-col gap-2"
+            style={{ background: HEADER_GRADIENT, boxShadow: HEADER_SHADOW }}>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-white/60">Acteurs</span>
+            <div className="flex flex-wrap gap-1.5">
+              {(Array.isArray(actors) ? actors : [actors]).map((a: string, i: number) => (
+                <span key={i} className="px-2.5 py-0.5 rounded-full text-xs font-semibold text-white"
+                  style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.25)' }}>
+                  {a}
                 </span>
               ))}
             </div>
           </div>
         )}
       </div>
-      {points.length > 0 && (
-        <div className="space-y-2">
-          <p className="text-xs font-bold uppercase tracking-widest text-slate-500">Points Testables Identifiés</p>
-          <div className="space-y-2">
-            {points.map((pt: string, i: number) => (
-              <div key={i} className="flex gap-3 items-start p-3 bg-white border rounded-xl">
-                <span className="font-bold text-xs px-2 py-0.5 rounded bg-slate-100">{i+1}</span>
-                <p className="text-xs leading-relaxed font-medium">{pt}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
-  )
-}
 
-// ── Test Accordion ────────────────────────────────────────────────────────────
-const TestAccordion: React.FC<{ test: any; idx: number; storyId?: string }> = ({ test, idx, storyId }) => {
-  const [open, setOpen] = useState(false)
-  const steps = test.steps || test.étapes?.flatMap((e: any) => e.steps || []) || []
-  return (
-    <div className="border rounded-2xl overflow-hidden bg-white shadow-sm transition hover:shadow-md">
-      <button
-        type="button"
-        onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between p-4 text-left font-semibold text-sm"
-        style={{ color: NAV }}
-      >
-        <div className="flex items-center gap-3">
-          <span className="px-2 py-0.5 rounded text-xs font-bold text-white uppercase" style={{ background: ORANGE }}>
-            {test.scenario_type || 'NOM'}
+      {story_title && (
+        <div className="rounded-2xl p-5 border" style={{ borderColor: 'rgba(10,22,40,0.12)', background: 'rgba(10,22,40,0.03)' }}>
+          <span className="text-[10px] font-bold uppercase tracking-widest block mb-2" style={{ color: `${NAV}80` }}>
+            Titre de la Story
           </span>
-          <span>{test.test_name || test.title || `Test #${idx + 1}`}</span>
-        </div>
-        <span className="text-slate-400">{open ? '▲' : '▼'}</span>
-      </button>
-      {open && (
-        <div className="p-4 border-t bg-slate-50 space-y-3">
-          {test.objective && (
-            <div>
-              <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Objectif</p>
-              <p className="text-xs font-medium text-slate-700 mt-1">{test.objective}</p>
-            </div>
-          )}
-          <div>
-            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Étapes ({steps.length})</p>
-            <div className="space-y-2">
-              {steps.map((st: any, i: number) => (
-                <div key={i} className="p-2.5 bg-white border rounded-xl space-y-1">
-                  <div className="flex gap-2 items-center text-xs font-bold" style={{ color: NAV }}>
-                    <span className="w-5 h-5 rounded-full bg-slate-100 flex items-center justify-center text-[10px]">{i+1}</span>
-                    <span>{st.titre || st.action || 'Étape'}</span>
-                  </div>
-                  {st.expected_result && (
-                    <p className="text-xs text-slate-500 pl-7">Attendu : {st.expected_result}</p>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
+          <p className="text-base font-semibold" style={{ color: NAV }}>{story_title}</p>
         </div>
       )}
+
+      {listEntries.map(([key, val]) => (
+        <div key={key}>
+          <SectionTitle>{key.replace(/_/g, ' ')}</SectionTitle>
+          <div className="space-y-2">
+            {(val as any[]).map((item: any, i: number) => {
+              const isObj = item && typeof item === 'object'
+              const primary = isObj
+                ? (item.description || item.label || item.title || item.name || item.text || '')
+                : String(item)
+              const secondary = isObj
+                ? Object.entries(item)
+                    .filter(([k, v]) =>
+                      !['description', 'label', 'title', 'name', 'text'].includes(k) &&
+                      (typeof v !== 'object' || v === null) &&
+                      v !== null && v !== undefined && String(v).trim() !== ''
+                    )
+                : []
+              return (
+                <div key={i} className="flex items-start gap-3 p-3 rounded-xl"
+                  style={{ background: 'rgba(10,22,40,0.03)', border: '1px solid rgba(10,22,40,0.07)' }}>
+                  <div className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
+                    style={{ background: CARD_GRADIENT }}>
+                    <span className="text-[10px] font-bold text-white">{i + 1}</span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <span className="text-sm leading-relaxed block" style={{ color: NAV }}>
+                      {primary || (isObj ? JSON.stringify(item) : '')}
+                    </span>
+                    {secondary.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5 mt-1.5">
+                        {secondary.map(([k, v]) => (
+                          <span key={k} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-semibold"
+                            style={{ background: 'rgba(10,22,40,0.06)', color: `${NAV}90` }}>
+                            <span className="uppercase tracking-wider opacity-60">{k.replace(/_/g, ' ')}</span>
+                            {String(v)}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      ))}
+
+      {tableRows.length > 0 && (
+        <div className="rounded-2xl overflow-hidden border" style={{ borderColor: 'rgba(10,22,40,0.12)' }}>
+          <table className="w-full text-sm">
+            <tbody className="divide-y" style={{ borderColor: 'rgba(10,22,40,0.08)' }}>
+              {tableRows.map(([k, v]) => (
+                <tr key={k}>
+                  <td className="px-4 py-3 font-semibold text-xs uppercase tracking-wider w-1/3"
+                    style={{ background: 'rgba(10,22,40,0.04)', color: `${NAV}80` }}>
+                    {k.replace(/_/g, ' ')}
+                  </td>
+                  <td className="px-4 py-3 font-medium" style={{ color: NAV }}>{String(v)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {objEntries.map(([key, val]) => (
+        <div key={key}>
+          <SectionTitle>{key.replace(/_/g, ' ')}</SectionTitle>
+          <pre className="text-xs p-4 rounded-xl overflow-x-auto font-mono"
+            style={{ background: 'rgba(10,22,40,0.04)', border: '1px solid rgba(10,22,40,0.1)', color: NAV }}>
+            {JSON.stringify(val, null, 2)}
+          </pre>
+        </div>
+      ))}
     </div>
   )
 }
 
-// ── Agent 2 Result ────────────────────────────────────────────────────────────
+// ── Agent 2 Result (format Xray, identique à la vue live) ─────────────────────
 const Agent2Result: React.FC<{ output: any; storyId?: string }> = ({ output, storyId }) => {
   const tests = Array.isArray(output) ? output : output?.tests || output?.agent2_tests || []
   if (!tests.length) return (
@@ -131,14 +258,12 @@ const Agent2Result: React.FC<{ output: any; storyId?: string }> = ({ output, sto
     </div>
   )
   return (
-    <div className="space-y-4 w-full">
-      <p className="text-xs font-bold text-slate-500 mb-2">
-        {tests.length} test{tests.length > 1 ? 's' : ''} généré{tests.length > 1 ? 's' : ''}
-      </p>
-      {tests.map((test: any, idx: number) => (
-        <TestAccordion key={idx} test={test} idx={idx} storyId={storyId} />
-      ))}
-    </div>
+    <ManualTestsTable
+      tests={tests}
+      storyId={storyId}
+      expandable
+      showProjectPicker
+    />
   )
 }
 
@@ -188,7 +313,7 @@ const Agent3Result: React.FC<{ output: any }> = ({ output }) => {
 
 // ── Agent 5 Result — sub-components ──────────────────────────────────────────
 const BulletList: React.FC<{ items: string[]; color?: string }> = ({ items, color = NAV }) => (
-  <ul className="space-y-1.5 list-disc list-inside pl-1 text-xs" style={{ color: NAV }}>
+  <ul className="space-y-1.5 list-disc list-inside pl-1 text-xs" style={{ color }}>
     {items.map((it, i) => (
       <li key={i} className="leading-relaxed">
         <span className="font-medium">{it}</span>
@@ -592,13 +717,134 @@ const Agent5Result: React.FC<{ output: any; storyId?: string }> = ({ output, sto
   )
 }
 
+// ── Agent 1.5 Result — Business Modeling ──────────────────────────────────────
+const Agent15Result: React.FC<{ output: any }> = ({ output }) => {
+  const bm        = output?.business_model || output || {}
+  const goals     = bm.business_goals     || []
+  const workflows = bm.business_workflows || []
+  const notes     = bm.modeling_notes     || ''
+
+  if (!goals.length && !workflows.length) return (
+    <div className="py-12 text-center space-y-2">
+      <GitBranch size={32} className="mx-auto opacity-20" style={{ color: NAV }} />
+      <p className="text-sm font-medium" style={{ color: `${NAV}60` }}>Aucun modèle métier généré</p>
+      {notes && <p className="text-xs mt-1" style={{ color: `${NAV}40` }}>{notes}</p>}
+    </div>
+  )
+
+  return (
+    <div className="space-y-6 w-full">
+      {/* Stats */}
+      <div className="grid grid-cols-2 gap-4">
+        <div className="rounded-2xl p-4 text-center border" style={{ borderColor: `${VIOLET}30`, background: `${VIOLET}08` }}>
+          <p className="text-3xl font-extrabold" style={{ color: VIOLET }}>{goals.length}</p>
+          <p className="text-xs font-bold uppercase tracking-widest mt-1" style={{ color: `${VIOLET}80` }}>Business Goals</p>
+        </div>
+        <div className="rounded-2xl p-4 text-center border" style={{ borderColor: `${ORANGE}30`, background: `${ORANGE}08` }}>
+          <p className="text-3xl font-extrabold" style={{ color: ORANGE }}>{workflows.length}</p>
+          <p className="text-xs font-bold uppercase tracking-widest mt-1" style={{ color: `${ORANGE}80` }}>Workflows</p>
+        </div>
+      </div>
+
+      {/* Business Goals */}
+      {goals.length > 0 && (
+        <div className="space-y-3">
+          <p className="text-xs font-bold uppercase tracking-widest" style={{ color: `${NAV}50` }}>Business Goals</p>
+          {goals.map((g: any, i: number) => (
+            <div key={i} className="rounded-2xl p-4 border space-y-2" style={{ borderColor: 'rgba(10,22,40,0.1)' }}>
+              <div className="flex items-center gap-3 flex-wrap">
+                <span className="px-2 py-0.5 rounded-lg text-[10px] font-extrabold uppercase"
+                  style={{ background: `${VIOLET}15`, color: VIOLET }}>{g.id}</span>
+                <span className="font-bold text-sm flex-1" style={{ color: NAV }}>{g.label}</span>
+                {g.priority && (
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase"
+                    style={{
+                      background: g.priority === 'haute' ? `${ROSE}15` : g.priority === 'basse' ? `${VIOLET}10` : `${ORANGE}12`,
+                      color:      g.priority === 'haute' ? ROSE        : g.priority === 'basse' ? VIOLET       : ORANGE,
+                    }}>{g.priority}</span>
+                )}
+              </div>
+              {g.description && <p className="text-xs leading-relaxed" style={{ color: `${NAV}70` }}>{g.description}</p>}
+              {g.actors?.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 pt-1">
+                  {g.actors.map((a: string, j: number) => (
+                    <span key={j} className="px-2 py-0.5 rounded-lg text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-100">{a}</span>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Business Workflows */}
+      {workflows.length > 0 && (
+        <div className="space-y-3">
+          <p className="text-xs font-bold uppercase tracking-widest" style={{ color: `${NAV}50` }}>Business Workflows</p>
+          {workflows.map((w: any, i: number) => (
+            <details key={i} className="rounded-2xl border overflow-hidden group" style={{ borderColor: 'rgba(10,22,40,0.1)' }}>
+              <summary className="flex items-center gap-3 p-4 cursor-pointer list-none select-none hover:bg-slate-50 transition">
+                <span className="px-2 py-0.5 rounded-lg text-[10px] font-extrabold uppercase"
+                  style={{ background: `${ORANGE}15`, color: ORANGE }}>{w.id}</span>
+                <span className="font-bold text-sm flex-1" style={{ color: NAV }}>{w.label}</span>
+                {w.linked_goal_id && (
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full"
+                    style={{ background: `${VIOLET}10`, color: VIOLET }}>→ {w.linked_goal_id}</span>
+                )}
+                <ChevronDown size={14} className="text-slate-400 group-open:rotate-180 transition-transform" />
+              </summary>
+              <div className="px-4 pb-4 space-y-4 border-t bg-slate-50" style={{ borderColor: 'rgba(10,22,40,0.06)' }}>
+                {w.trigger && (
+                  <div className="pt-3">
+                    <p className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: `${NAV}50` }}>Déclencheur</p>
+                    <p className="text-xs" style={{ color: `${NAV}80` }}>{w.trigger}</p>
+                  </div>
+                )}
+                {w.steps?.length > 0 && (
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-widest mb-2" style={{ color: `${NAV}50` }}>Étapes ({w.steps.length})</p>
+                    <ol className="space-y-1.5">
+                      {w.steps.map((s: string, j: number) => (
+                        <li key={j} className="flex gap-2 items-start text-xs" style={{ color: `${NAV}80` }}>
+                          <span className="w-5 h-5 flex-shrink-0 rounded-full bg-slate-200 flex items-center justify-center font-bold text-[10px]">{j + 1}</span>
+                          <span>{s}</span>
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+                )}
+                {w.success_criteria?.length > 0 && (
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-widest mb-2" style={{ color: `${NAV}50` }}>Critères de succès</p>
+                    <ul className="space-y-1">
+                      {w.success_criteria.map((c: string, j: number) => (
+                        <li key={j} className="flex gap-2 items-start text-xs">
+                          <span style={{ color: ORANGE }}>✓</span>
+                          <span style={{ color: `${NAV}70` }}>{c}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </details>
+          ))}
+        </div>
+      )}
+
+      {notes && <p className="text-xs italic border-t pt-3 mt-2" style={{ color: `${NAV}40` }}>{notes}</p>}
+    </div>
+  )
+}
+
 // ── Agent Rich Output Dispatcher ──────────────────────────────────────────────
 const AgentRichOutput: React.FC<{ agentKey: string; output: any; storyId?: string }> = ({ agentKey, output, storyId }) => {
   if (!output) return null
-  if (agentKey === 'Agent 1') return <Agent1Result output={output} />
-  if (agentKey === 'Agent 2') return <Agent2Result output={output} storyId={storyId} />
-  if (agentKey === 'Agent 3') return <Agent3Result output={output} />
-  if (agentKey === 'Agent 5') return <Agent5Result output={output} storyId={storyId} />
+  if (agentKey === 'Agent 1')   return <Agent1Result output={output} />
+  if (agentKey === 'Agent 1.5') return <Agent15Result output={output} />
+  if (agentKey === 'Agent 2')   return <Agent2Result output={output} storyId={storyId} />
+  if (agentKey === 'Agent 3')   return <Agent3Result output={output} />
+  if (agentKey === 'Agent 5')   return <Agent5Result output={output} storyId={storyId} />
   return <pre className="text-xs p-4 rounded-xl bg-slate-50 overflow-x-auto">{JSON.stringify(output, null, 2)}</pre>
 }
 
@@ -642,21 +888,24 @@ export const StoryDetailPage: React.FC = () => {
   const navigate = useNavigate()
   const toast = useToast()
 
-  const story    = useStory<StoredStory>(storyId || '', true)
-  const analyses = useAnalysisHistory(storyId || '')
+  const story = useStory<StoredStory>(storyId || '', true)
+  const storedStory = story.data as StoredStory | null
 
-  const [agent1Output, setAgent1Output] = useState<any | null>(null)
-  const [agent2Output, setAgent2Output] = useState<any | null>(null)
-  const [agent3Output, setAgent3Output] = useState<any | null>(null)
-  const [agent5Output, setAgent5Output] = useState<any | null>(null)
-  const [openAgent,    setOpenAgent]    = useState<string | null>(null)
+  const [agent1Output,  setAgent1Output]  = useState<any | null>(null)
+  const [agent15Output, setAgent15Output] = useState<any | null>(null)
+  const [agent2Output,  setAgent2Output]  = useState<any | null>(null)
+  const [agent3Output,  setAgent3Output]  = useState<any | null>(null)
+  const [agent5Output,  setAgent5Output]  = useState<any | null>(null)
+  const [openAgent,     setOpenAgent]     = useState<string | null>(null)
+  const [showJsonHistory, setShowJsonHistory] = useState(false)
 
   const fetchHistoricalOutputs = useCallback(async () => {
     if (!storyId) return
-    try { const ana   = await apiClient.db.getLatestAnalysis(storyId); setAgent1Output(ana)  } catch {}
-    try { const tests = await apiClient.db.getManualTests(storyId);    setAgent2Output(tests) } catch {}
-    try { const val   = await apiClient.db.getValidations(storyId);    setAgent3Output(val)   } catch {}
-    try { const rep = await apiClient.agent5.getReportSummary(storyId); setAgent5Output(rep) } catch {}
+    try { const ana   = await apiClient.db.getLatestAnalysis(storyId);       setAgent1Output(ana)   } catch {}
+    try { const bm    = await apiClient.agent15.getLatest(storyId);           setAgent15Output(bm)   } catch {}
+    try { const tests = await apiClient.db.getManualTests(storyId);           setAgent2Output(tests) } catch {}
+    try { const val   = await apiClient.db.getValidations(storyId);           setAgent3Output(val)   } catch {}
+    try { const rep   = await apiClient.agent5.getReportSummary(storyId);     setAgent5Output(rep)   } catch {}
   }, [storyId])
 
   useEffect(() => { fetchHistoricalOutputs() }, [fetchHistoricalOutputs])
@@ -674,7 +923,7 @@ export const StoryDetailPage: React.FC = () => {
     }
   }
 
-  const renderCard = (agentName: string, output: any, isAvailable: boolean) => {
+  const renderCard = (agentName: string, isAvailable: boolean) => {
     const info = AGENT_INFO[agentName]
     if (!info) return null
     const Icon = info.icon
@@ -725,13 +974,23 @@ export const StoryDetailPage: React.FC = () => {
             <h1 className="text-3xl font-extrabold" style={{ color: NAV }}>{storyId}</h1>
           </div>
         </div>
-        <button
-          type="button"
-          onClick={handleDeleteStory}
-          className="inline-flex items-center gap-2 rounded-2xl bg-rose-50 px-4 py-3 text-sm font-semibold text-rose-600 border border-rose-100 transition hover:bg-rose-100"
-        >
-          <Trash2 size={16} /> Supprimer la story
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={handleDeleteStory}
+            className="inline-flex items-center gap-2 rounded-2xl bg-rose-50 px-4 py-3 text-sm font-semibold text-rose-600 border border-rose-100 transition hover:bg-rose-100"
+          >
+            <Trash2 size={16} /> Supprimer la story
+          </button>
+          <button
+            type="button"
+            onClick={() => setShowJsonHistory(s => !s)}
+            className="inline-flex items-center gap-2 rounded-2xl bg-white px-4 py-3 text-sm font-medium border transition hover:bg-slate-50"
+            style={{ borderColor: 'rgba(11,30,62,0.08)' }}
+          >
+            {showJsonHistory ? 'Masquer JSON' : 'Afficher JSON'}
+          </button>
+        </div>
       </div>
 
       {story.error && (
@@ -782,17 +1041,70 @@ export const StoryDetailPage: React.FC = () => {
       {/* Agent cards */}
       <div className="space-y-3">
         <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400 px-1">Statut des Agents de la Story</h3>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {renderCard('Agent 1', agent1Output, !!agent1Output)}
-          {renderCard('Agent 2', agent2Output, !!agent2Output)}
-          {renderCard('Agent 3', agent3Output, !!agent3Output)}
-          {renderCard('Agent 5', agent5Output, !!agent5Output)}
+        <div className="flex flex-col gap-3">
+          {renderCard('Agent 1',   !!agent1Output)}
+          {renderCard('Agent 1.5', !!agent15Output)}
+          {renderCard('Agent 2',   !!agent2Output)}
+          {renderCard('Agent 3',   !!agent3Output)}
+          {renderCard('Agent 5',   !!agent5Output)}
         </div>
       </div>
+
+      {/* JSON raw view */}
+      {showJsonHistory && (
+        <div className="mt-6 space-y-4">
+          <SectionTitle>Données JSON — Historique</SectionTitle>
+
+          {storedStory?.images && storedStory.images.length > 0 && (
+            <div className="rounded-3xl border bg-white p-5 shadow-sm">
+              <p className="text-xs uppercase tracking-widest text-slate-400 mb-2">Images</p>
+              <ImageGallery images={storedStory.images} />
+            </div>
+          )}
+
+          {storedStory?.rag_context && storedStory.rag_context.length > 0 && (
+            <div className="rounded-3xl border bg-white p-5 shadow-sm">
+              <p className="text-xs uppercase tracking-widest text-slate-400 mb-2">Contexte RAG</p>
+              <RagContextSection ragContext={storedStory.rag_context} />
+            </div>
+          )}
+
+          {agent2Output?.legacy_examples && agent2Output.legacy_examples.length > 0 && (
+            <div className="rounded-3xl border bg-white p-5 shadow-sm">
+              <p className="text-xs uppercase tracking-widest text-slate-400 mb-2">Exemples RAG legacy (Agent 2)</p>
+              <JsonSectionContent content={agent2Output.legacy_examples} />
+            </div>
+          )}
+
+          {agent2Output?.rag_context && agent2Output.rag_context.length > 0 && (
+            <div className="rounded-3xl border bg-white p-5 shadow-sm">
+              <p className="text-xs uppercase tracking-widest text-slate-400 mb-2">Contexte RAG (Agent 2)</p>
+              <RagContextSection ragContext={agent2Output.rag_context} />
+            </div>
+          )}
+
+          {agent2Output?.images && agent2Output.images.length > 0 && (
+            <div className="rounded-3xl border bg-white p-5 shadow-sm">
+              <p className="text-xs uppercase tracking-widest text-slate-400 mb-2">Images (Agent 2)</p>
+              <ImageGallery images={agent2Output.images} />
+            </div>
+          )}
+
+          <div className="rounded-3xl border bg-white p-5 shadow-sm">
+            <p className="text-xs uppercase tracking-widest text-slate-400 mb-2">JSON complet</p>
+            <pre className="rounded-2xl bg-slate-50 p-3 text-xs text-slate-700 overflow-auto" style={{ maxHeight: 420 }}>
+              {JSON.stringify({ story: story.data || {}, agent1: agent1Output, agent15: agent15Output, agent2: agent2Output, agent3: agent3Output, agent5: agent5Output }, null, 2)}
+            </pre>
+          </div>
+        </div>
+      )}
 
       {/* Modals */}
       {openAgent === 'Agent 1' && agent1Output && (
         <AgentResultModal agentKey="Agent 1" output={agent1Output} storyId={storyId} onClose={() => setOpenAgent(null)} />
+      )}
+      {openAgent === 'Agent 1.5' && agent15Output && (
+        <AgentResultModal agentKey="Agent 1.5" output={agent15Output} storyId={storyId} onClose={() => setOpenAgent(null)} />
       )}
       {openAgent === 'Agent 2' && agent2Output && (
         <AgentResultModal agentKey="Agent 2" output={agent2Output} storyId={storyId} onClose={() => setOpenAgent(null)} />

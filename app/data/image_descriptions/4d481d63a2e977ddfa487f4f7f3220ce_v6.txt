@@ -1,0 +1,114 @@
+[Image jointe : image-2025-04-22-18-09-22-227.png]
+── Textes détectés (OCR) ──
+= ® o 20
+MES ACTIVITÉS D
+6A 1E s* 156
+Y Atribuée(s) amoi Ÿ En cours, En attente d... Par Daenrecrearce V Ë ° v
+Par échéance >
+Ç Fredenque BARBIER Congés exceptionnels En cours
+% FALTETCIO
+Par catégorie > Activite crvigue (mandat électoral) du 07.05 2021 au __
+Par collaborateur v A ecoermecte DE IEIIN @
+O a F A B
+Houssem ABSOUANI
+» ERLTETON o
+Frédérique BARBIER
+D frTETO:O o
+Congés ; - - .
+Aute - R . .
+Michèle LOMBARD
+» fecrerion o
+ldriss MONTAMARD
+Y RRLTETHSO o
+Ludovic STUAN ARD
+» rkarrrice o
+Martine VEGUIN RD
+Y ererrrin o
++ Nouvel acte 1 aement o Nombre aerements oar sage - 12 v
+Q ?0
+MES ACTIVITÉS
+64
+8h
+158
+1=
+Pa
+5a
+éarie
+1° E CENCENTS
+Par échéance
+Fredenque BARBIER
+Congés exceptionnels
+En cours
+FRATETC10
+Activite civique (mandat electoral} du 07.05 2021 su
+07.05.2021
+A F
+=]
+FRLTETO
+FRITETOIC
+Congés
+FRATET1:1
+Idriss MONTAMARD
+FRATETI:0
+FRATTTI:0
+FRATTT1:1
+<+ Nouvel acte
+12
+ivrede
+19073
+── Analyse visuelle (VLM) ──
+### 1. CONTEXTE
+L'écran capturé semble être une page de gestion des activités ou des tâches dans une application professionnelle, probablement Sopra HR. Il s'agit d'une liste ou d'un tableau de bord affichant différentes activités attribuées à l'utilisateur, avec des filtres et des options de gestion.
+
+### 2. ANNOTATIONS AJOUTÉES PAR LE PO
+- **Type** : Cadre
+- **Couleur** : Rouge
+- **Élément désigné** : "Congés exceptionnels"
+
+- **Type** : Flèche
+- **Couleur** : Noire
+- **Élément désigné** : "Par échéance"
+
+- **Type** : Cercle
+- **Couleur** : Bleu
+- **Élément désigné** : "1"
+
+- **Type** : Texte surligné
+- **Couleur** : Jaune
+- **Élément désigné** : "Frédérique BARBIER"
+
+### 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- **Forme** : Pastille (badge)
+- **Couleur de fond** : Bleue
+- **Texte OCR** : "2"
+
+- **Forme** : Badge
+- **Couleur de fond** : Verte
+- **Texte OCR** : "En cours"
+
+- **Forme** : Bouton
+- **Couleur de fond** : Bleue
+- **Texte OCR** : "+ Nouvel acte"
+
+### 4. ICÔNES ET PICTOGRAMMES
+- **Icône de calendrier** (fonction probable : sélection de date)
+  - **Position** : Près du champ de date d'échéance
+
+- **Icône de recherche** (fonction probable : recherche)
+  - **Position** : Dans la barre de menu supérieure
+
+- **Icône de menu** (fonction probable : menu déroulant)
+  - **Position** : Dans la barre de menu supérieure
+
+### 5. AGENCEMENT ET RELATIONS
+- **Structure** : Le contenu est organisé en lignes et colonnes, avec une section pour les filtres en haut et une liste en dessous.
+
+- **Regroupements visuels** : Les activités sont regroupées par critères sélectionnés (échéance, catégorie, collaborateur).
+
+- **Hiérarchie** : Les titres des sections ("MES ACTIVITÉS", "Par échéance") sont en tête de section.
+
+- **Champs obligatoires** : Aucun champ obligatoire n'est explicitement indiqué par une étoile (*).
+
+- **États** : Les activités ont différents états (En cours, En attente).
+
+- **Relations spatiales** : Le bouton "+ Nouvel acte" est en bas de la page, suggérant qu'il permet d'ajouter de nouvelles activités.

@@ -5,11 +5,37 @@ Permet de visualiser ce que le RAG aura comme contexte.
 """
 
 from fastapi import APIRouter, HTTPException
+from fastapi.responses import Response
 
 from app.services.document_collector import collect_documents_for_story, collect_documents_for_epic
 from app.services.rag_service import index_documents, is_epic_indexed
 
 router = APIRouter(prefix="/documents", tags=["Document_Collection"])
+
+
+@router.get("/attachment/{issue_key}/{attachment_id}")
+def get_story_attachment(issue_key: str, attachment_id: str):
+    """
+    Proxy authentifié vers une pièce jointe Jira (affichage image dans le frontend).
+    """
+    from app.services.document_collector import _get_attachments, _session
+
+    sid = issue_key.strip().upper()
+    attachments = _get_attachments(sid)
+    att = next((a for a in attachments if str(a.get("id")) == str(attachment_id)), None)
+    if not att or not att.get("content"):
+        raise HTTPException(status_code=404, detail="Pièce jointe introuvable")
+
+    try:
+        resp = _session.get(att["content"], timeout=30)
+    except Exception as exc:
+        raise HTTPException(status_code=502, detail=f"Erreur téléchargement Jira: {exc}") from exc
+
+    if resp.status_code != 200:
+        raise HTTPException(status_code=resp.status_code, detail="Impossible de récupérer la pièce jointe")
+
+    media_type = att.get("mimeType") or "application/octet-stream"
+    return Response(content=resp.content, media_type=media_type)
 
 
 @router.get("/{issue_key}")

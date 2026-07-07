@@ -21,6 +21,9 @@ const VIOLET    = '#1D4ED8'
 
 const MAIN_GRADIENT = `linear-gradient(90deg, ${NAV}, ${NAV_LIGHT}, ${VIOLET}, ${ROSE}, ${ORANGE})`
 const CARD_GRADIENT = `linear-gradient(135deg, ${NAV}, ${NAV_LIGHT}, ${VIOLET})`
+// Dégradé vif pour les cartes d'en-tête (Story ID / Type / Acteurs) : bleu → rose → rouge
+const HEADER_GRADIENT = 'linear-gradient(135deg, #2563EB 0%, #7C3AED 40%, #DB2777 75%, #F43F5E 100%)'
+const HEADER_SHADOW   = '0 8px 26px rgba(219,39,119,0.30)'
 
 // FIX #6 — inject print CSS inside a useEffect (SSR-safe, no duplicate injection)
 const PRINT_STYLE = `
@@ -53,11 +56,12 @@ const STEP_STYLE: Record<string, { bg: string; border: string; icon: React.Eleme
 }
 
 const AGENT_INFO: Record<string, { label: string; desc: string; icon: React.ElementType; gradient: string; accent: string }> = {
-  'Agent 1': { label: 'Agent 1 — Analyse',              desc: 'Analyse sémantique de la user story',     icon: FileText,      gradient: `linear-gradient(135deg, ${NAV}, ${VIOLET})`, accent: VIOLET },
-  'Agent 2': { label: 'Agent 2 — Génération des tests', desc: 'Création des scénarios de tests manuels', icon: TestTube,      gradient: `linear-gradient(135deg, ${VIOLET}, ${ROSE})`, accent: ROSE },
-  'Agent 3': { label: 'Agent 3 — Validation',           desc: 'Couverture, ambiguïtés & cas limites',    icon: CheckCircle2,  gradient: `linear-gradient(135deg, ${ORANGE}, ${ROSE})`, accent: ORANGE },
-  'Agent 4': { label: 'Agent 4 — Classification',       desc: 'Classification auto/manuel',              icon: BarChart3,     gradient: CARD_GRADIENT, accent: '#7c3aed' },
-  'Agent 5': { label: 'Agent 5 — Rapport',              desc: 'Rapport qualité & recommandations',       icon: FileBarChart2, gradient: CARD_GRADIENT, accent: NAV },
+  'Agent 1':   { label: 'Agent 1 — Analyse',              desc: 'Analyse sémantique de la user story',             icon: FileText,      gradient: `linear-gradient(135deg, ${NAV}, ${VIOLET})`, accent: VIOLET },
+  'Agent 1.5': { label: 'Agent 1.5 — Business Modeling',  desc: 'Goals métier & workflows end-to-end',              icon: GitBranch,     gradient: `linear-gradient(135deg, ${NAV}, ${VIOLET})`, accent: VIOLET },
+  'Agent 2':   { label: 'Agent 2 — Génération des tests', desc: 'Création des scénarios de tests manuels',         icon: TestTube,      gradient: `linear-gradient(135deg, ${VIOLET}, ${ROSE})`, accent: ROSE },
+  'Agent 3':   { label: 'Agent 3 — Validation',           desc: 'Couverture, ambiguïtés & cas limites',            icon: CheckCircle2,  gradient: `linear-gradient(135deg, ${ORANGE}, ${ROSE})`, accent: ORANGE },
+  'Agent 4':   { label: 'Agent 4 — Classification',       desc: 'Classification auto/manuel',                      icon: BarChart3,     gradient: CARD_GRADIENT, accent: '#7c3aed' },
+  'Agent 5':   { label: 'Agent 5 — Rapport',              desc: 'Rapport qualité & recommandations',               icon: FileBarChart2, gradient: CARD_GRADIENT, accent: NAV },
 }
 
 const MODEL_OPTIONS = [
@@ -123,10 +127,14 @@ const Toggle: React.FC<{
   </label>
 )
 
-const SectionTitle: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <h3 className="text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2" style={{ color: NAV }}>
-    <span className="w-1 h-4 rounded-full inline-block" style={{ background: ROSE }} />
+const SectionTitle: React.FC<{ children: React.ReactNode; count?: number }> = ({ children, count }) => (
+  <h3 className="text-[11px] font-bold uppercase tracking-widest mb-2.5 flex items-center gap-2" style={{ color: NAV }}>
+    <span className="w-1 h-3.5 rounded-full inline-block" style={{ background: ROSE }} />
     {children}
+    {count !== undefined && (
+      <span className="ml-1 px-1.5 py-0.5 rounded-md text-[10px] font-bold tabular-nums"
+        style={{ background: 'rgba(10,22,40,0.06)', color: `${NAV}70` }}>{count}</span>
+    )}
   </h3>
 )
 
@@ -136,31 +144,42 @@ const Agent1Result: React.FC<{ output: any }> = ({ output }) => {
   if (!output) return null
   const { story_id, story_title, story_type, actors, ...rest } = output
 
-  const tableRows   = Object.entries(rest).filter(([, v]) => typeof v !== 'object' || v === null)
-  const listEntries = Object.entries(rest).filter(([, v]) => Array.isArray(v))
-  const objEntries  = Object.entries(rest).filter(([, v]) => !Array.isArray(v) && typeof v === 'object' && v !== null)
+  const isEmptyScalar = (v: any) =>
+    v === null || v === undefined || (typeof v === 'string' && v.trim() === '')
+
+  // On n'affiche que les données réellement présentes : plus de titres de
+  // section orphelins (ex. « BUSINESS RULES » sans contenu) ni de valeurs vides.
+  const tableRows   = Object.entries(rest).filter(
+    ([, v]) => (typeof v !== 'object' || v === null) && !isEmptyScalar(v)
+  )
+  const listEntries = Object.entries(rest).filter(
+    ([, v]) => Array.isArray(v) && v.length > 0
+  )
+  const objEntries  = Object.entries(rest).filter(
+    ([, v]) => !Array.isArray(v) && typeof v === 'object' && v !== null && Object.keys(v).length > 0
+  )
 
   return (
-    <div className="space-y-8 w-full">
+    <div className="space-y-5 w-full">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {story_id && (
           <div className="rounded-2xl p-5 flex flex-col gap-1.5"
-            style={{ background: CARD_GRADIENT, boxShadow: '0 4px 20px rgba(10,22,40,0.25)' }}>
-            <span className="text-[10px] font-bold uppercase tracking-widest text-white/50">Story ID</span>
+            style={{ background: HEADER_GRADIENT, boxShadow: HEADER_SHADOW }}>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-white/60">Story ID</span>
             <span className="text-2xl font-extrabold text-white font-mono">{story_id}</span>
           </div>
         )}
         {story_type && (
           <div className="rounded-2xl p-5 flex flex-col gap-1.5"
-            style={{ background: CARD_GRADIENT, boxShadow: '0 4px 20px rgba(10,22,40,0.25)' }}>
-            <span className="text-[10px] font-bold uppercase tracking-widest text-white/50">Story Type</span>
+            style={{ background: HEADER_GRADIENT, boxShadow: HEADER_SHADOW }}>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-white/60">Story Type</span>
             <span className="text-xl font-bold text-white capitalize">{story_type}</span>
           </div>
         )}
         {actors && (
           <div className="rounded-2xl p-5 flex flex-col gap-2"
-            style={{ background: CARD_GRADIENT, boxShadow: '0 4px 20px rgba(10,22,40,0.25)' }}>
-            <span className="text-[10px] font-bold uppercase tracking-widest text-white/50">Acteurs</span>
+            style={{ background: HEADER_GRADIENT, boxShadow: HEADER_SHADOW }}>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-white/60">Acteurs</span>
             <div className="flex flex-wrap gap-1.5">
               {(Array.isArray(actors) ? actors : [actors]).map((a: string, i: number) => (
                 <span key={i} className="px-2.5 py-0.5 rounded-full text-xs font-semibold text-white"
@@ -184,20 +203,47 @@ const Agent1Result: React.FC<{ output: any }> = ({ output }) => {
 
       {listEntries.map(([key, val]) => (
         <div key={key}>
-          <SectionTitle>{key.replace(/_/g, ' ')}</SectionTitle>
-          <div className="space-y-2">
-            {(val as any[]).map((item: any, i: number) => (
-              <div key={i} className="flex items-start gap-3 p-3 rounded-xl"
-                style={{ background: 'rgba(10,22,40,0.03)', border: '1px solid rgba(10,22,40,0.07)' }}>
-                <div className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
-                  style={{ background: CARD_GRADIENT }}>
-                  <span className="text-[10px] font-bold text-white">{i + 1}</span>
+          <SectionTitle count={(val as any[]).length}>{key.replace(/_/g, ' ')}</SectionTitle>
+          <div className="grid gap-1.5 sm:grid-cols-2">
+            {(val as any[]).map((item: any, i: number) => {
+              const isObj = item && typeof item === 'object'
+              const primary = isObj
+                ? (item.description || item.label || item.title || item.name || item.text || '')
+                : String(item)
+              const secondary = isObj
+                ? Object.entries(item)
+                    .filter(([k, v]) =>
+                      !['description', 'label', 'title', 'name', 'text'].includes(k) &&
+                      (typeof v !== 'object' || v === null) &&
+                      v !== null && v !== undefined && String(v).trim() !== ''
+                    )
+                : []
+              return (
+                <div key={i} className="flex items-start gap-2.5 p-2.5 rounded-lg"
+                  style={{ background: 'rgba(10,22,40,0.03)', border: '1px solid rgba(10,22,40,0.07)' }}>
+                  <div className="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5"
+                    style={{ background: CARD_GRADIENT }}>
+                    <span className="text-[9px] font-bold text-white tabular-nums">{i + 1}</span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <span className="text-[13px] leading-snug block" style={{ color: NAV }}>
+                      {primary || (isObj ? JSON.stringify(item) : '')}
+                    </span>
+                    {secondary.length > 0 && (
+                      <div className="flex flex-wrap gap-1 mt-1">
+                        {secondary.map(([k, v]) => (
+                          <span key={k} className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-semibold"
+                            style={{ background: 'rgba(10,22,40,0.06)', color: `${NAV}90` }}>
+                            <span className="uppercase tracking-wider opacity-60">{k.replace(/_/g, ' ')}</span>
+                            {String(v)}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
-                <span className="text-sm leading-relaxed" style={{ color: NAV }}>
-                  {typeof item === 'string' ? item : item?.description || JSON.stringify(item)}
-                </span>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
       ))}
@@ -1384,12 +1430,132 @@ const Agent5Result: React.FC<{ output: any; storyId?: string }> = ({ output, sto
 
 // ── Agent dispatcher ──────────────────────────────────────────────────────────
 
+const Agent15Result: React.FC<{ output: any }> = ({ output }) => {
+  const bm        = output?.business_model || output || {}
+  const goals     = bm.business_goals     || []
+  const workflows = bm.business_workflows || []
+  const notes     = bm.modeling_notes     || ''
+
+  if (!goals.length && !workflows.length) return (
+    <div className="py-12 text-center space-y-2">
+      <GitBranch size={32} className="mx-auto opacity-20" style={{ color: NAV }} />
+      <p className="text-sm font-medium" style={{ color: `${NAV}60` }}>Aucun modèle métier généré</p>
+      {notes && <p className="text-xs mt-1" style={{ color: `${NAV}40` }}>{notes}</p>}
+    </div>
+  )
+
+  return (
+    <div className="space-y-4 w-full">
+      {/* Stats */}
+      <div className="grid grid-cols-2 gap-3">
+        <div className="rounded-xl p-3 text-center border" style={{ borderColor: `${VIOLET}30`, background: `${VIOLET}08` }}>
+          <p className="text-2xl font-extrabold" style={{ color: VIOLET }}>{goals.length}</p>
+          <p className="text-[10px] font-bold uppercase tracking-widest mt-0.5" style={{ color: `${VIOLET}80` }}>Business Goals</p>
+        </div>
+        <div className="rounded-xl p-3 text-center border" style={{ borderColor: `${ORANGE}30`, background: `${ORANGE}08` }}>
+          <p className="text-2xl font-extrabold" style={{ color: ORANGE }}>{workflows.length}</p>
+          <p className="text-[10px] font-bold uppercase tracking-widest mt-0.5" style={{ color: `${ORANGE}80` }}>Workflows</p>
+        </div>
+      </div>
+
+      {/* Business Goals */}
+      {goals.length > 0 && (
+        <div className="space-y-2">
+          <p className="text-[11px] font-bold uppercase tracking-widest" style={{ color: `${NAV}50` }}>Business Goals</p>
+          {goals.map((g: any, i: number) => (
+            <div key={i} className="rounded-xl p-3 border space-y-1.5" style={{ borderColor: 'rgba(10,22,40,0.1)' }}>
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="px-2 py-0.5 rounded-md text-[10px] font-extrabold uppercase"
+                  style={{ background: `${VIOLET}15`, color: VIOLET }}>{g.id}</span>
+                <span className="font-bold text-[13px] flex-1" style={{ color: NAV }}>{g.label}</span>
+                {g.priority && (
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase"
+                    style={{
+                      background: g.priority === 'haute' ? `${ROSE}15` : g.priority === 'basse' ? `${VIOLET}10` : `${ORANGE}12`,
+                      color:      g.priority === 'haute' ? ROSE        : g.priority === 'basse' ? VIOLET       : ORANGE,
+                    }}>{g.priority}</span>
+                )}
+              </div>
+              {g.description && <p className="text-xs leading-snug" style={{ color: `${NAV}70` }}>{g.description}</p>}
+              {g.actors?.length > 0 && (
+                <div className="flex flex-wrap gap-1">
+                  {g.actors.map((a: string, j: number) => (
+                    <span key={j} className="px-2 py-0.5 rounded-md text-[11px] font-semibold bg-blue-50 text-blue-700 border border-blue-100">{a}</span>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Business Workflows */}
+      {workflows.length > 0 && (
+        <div className="space-y-2">
+          <p className="text-[11px] font-bold uppercase tracking-widest" style={{ color: `${NAV}50` }}>Business Workflows</p>
+          {workflows.map((w: any, i: number) => (
+            <details key={i} className="rounded-xl border overflow-hidden group" style={{ borderColor: 'rgba(10,22,40,0.1)' }}>
+              <summary className="flex items-center gap-2 p-3 cursor-pointer list-none select-none hover:bg-slate-50 transition">
+                <span className="px-2 py-0.5 rounded-md text-[10px] font-extrabold uppercase"
+                  style={{ background: `${ORANGE}15`, color: ORANGE }}>{w.id}</span>
+                <span className="font-bold text-[13px] flex-1" style={{ color: NAV }}>{w.label}</span>
+                {w.linked_goal_id && (
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full"
+                    style={{ background: `${VIOLET}10`, color: VIOLET }}>→ {w.linked_goal_id}</span>
+                )}
+                <ChevronDown size={14} className="text-slate-400 group-open:rotate-180 transition-transform" />
+              </summary>
+              <div className="px-3 pb-3 space-y-2.5 border-t bg-slate-50" style={{ borderColor: 'rgba(10,22,40,0.06)' }}>
+                {w.trigger && (
+                  <div className="pt-2.5">
+                    <p className="text-[10px] font-bold uppercase tracking-widest mb-0.5" style={{ color: `${NAV}50` }}>Déclencheur</p>
+                    <p className="text-xs" style={{ color: `${NAV}80` }}>{w.trigger}</p>
+                  </div>
+                )}
+                {w.steps?.length > 0 && (
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-widest mb-1.5" style={{ color: `${NAV}50` }}>Étapes ({w.steps.length})</p>
+                    <ol className="space-y-1">
+                      {w.steps.map((s: string, j: number) => (
+                        <li key={j} className="flex gap-2 items-start text-xs" style={{ color: `${NAV}80` }}>
+                          <span className="w-4 h-4 flex-shrink-0 rounded-full bg-slate-200 flex items-center justify-center font-bold text-[9px] tabular-nums">{j + 1}</span>
+                          <span>{s}</span>
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+                )}
+                {w.success_criteria?.length > 0 && (
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-widest mb-1.5" style={{ color: `${NAV}50` }}>Critères de succès</p>
+                    <ul className="space-y-0.5">
+                      {w.success_criteria.map((c: string, j: number) => (
+                        <li key={j} className="flex gap-2 items-start text-xs">
+                          <span style={{ color: ORANGE }}>✓</span>
+                          <span style={{ color: `${NAV}70` }}>{c}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </details>
+          ))}
+        </div>
+      )}
+
+      {notes && <p className="text-xs italic border-t pt-3 mt-2" style={{ color: `${NAV}40` }}>{notes}</p>}
+    </div>
+  )
+}
+
 const AgentRichOutput: React.FC<{ agentKey: string; output: any; storyId?: string; onTestsChange?: (tests: any[]) => void }> = ({ agentKey, output, storyId, onTestsChange }) => {
   if (!output) return null
-  if (agentKey === 'Agent 1') return <Agent1Result output={output} />
-  if (agentKey === 'Agent 2') return <Agent2Result output={output} storyId={storyId} onTestsChange={onTestsChange} />
-  if (agentKey === 'Agent 3') return <Agent3Result output={output} />
-  if (agentKey === 'Agent 5') return <Agent5Result output={output} storyId={storyId} />
+  if (agentKey === 'Agent 1')   return <Agent1Result output={output} />
+  if (agentKey === 'Agent 1.5') return <Agent15Result output={output} />
+  if (agentKey === 'Agent 2')   return <Agent2Result output={output} storyId={storyId} onTestsChange={onTestsChange} />
+  if (agentKey === 'Agent 3')   return <Agent3Result output={output} />
+  if (agentKey === 'Agent 5')   return <Agent5Result output={output} storyId={storyId} />
   if (typeof output === 'object') {
     const pairs = Object.entries(output).filter(([, v]) => typeof v !== 'object' || v === null)
     return (
@@ -1608,12 +1774,14 @@ export const PipelinePage: React.FC = () => {
   const [forceRefresh,  setForceRefresh]  = useState(false)
   const [runAgent4,     setRunAgent4]     = useState(true)
   const [modelAgent1,   setModelAgent1]   = useState<ModelOption>('llama4')
+  const [modelAgent15,  setModelAgent15]  = useState<ModelOption>('llama4')
   const [modelAgent2,   setModelAgent2]   = useState<ModelOption>('llama4')
   const [modelAgent3,   setModelAgent3]   = useState<ModelOption>('qwen3')
   const [modelAgent4,   setModelAgent4]   = useState<ModelOption>('qwen3')
   const [modelAgent5,   setModelAgent5]   = useState<ModelOption>('qwen3')
   const [manualTests,   setManualTests]   = useState<any[]>([])
   const [selectedAgent, setSelectedAgent] = useState<string | null>(null)
+  const [showJson, setShowJson] = useState(true)
 
   // FIX #4 — single open-modal slot tracked in the page, not inside cards
   const [openModalStep, setOpenModalStep] = useState<any | null>(null)
@@ -1644,13 +1812,14 @@ export const PipelinePage: React.FC = () => {
       run_agent4: runAgent4,
       force_refresh: forceRefresh,
       model_agent1: modelAgent1,
+      model_agent15: modelAgent15,
       model_agent2: modelAgent2,
       model_agent3_quality: modelAgent3,
       model_agent4: modelAgent4,
       model_agent5: modelAgent5,
     }
     setLaunchToken(t => t + 1) // always increments → effect always fires
-  }, [inputValue, useRag, useLegacyRag, runAgent4, forceRefresh, modelAgent1, modelAgent2, modelAgent3, modelAgent4, modelAgent5])
+  }, [inputValue, useRag, useLegacyRag, runAgent4, forceRefresh, modelAgent1, modelAgent15, modelAgent2, modelAgent3, modelAgent4, modelAgent5])
 
   // FIX #5 — stable deps: run and toast are accessed via refs to avoid stale-closure warnings
   const runRef   = useRef(run)
@@ -1668,6 +1837,7 @@ export const PipelinePage: React.FC = () => {
           use_legacy_rag:      params.use_legacy_rag,
           force_refresh:       params.force_refresh,
           model_agent1:        params.model_agent1,
+          model_agent15:       params.model_agent15,
           model_agent2:        params.model_agent2,
           model_agent3_quality: params.model_agent3_quality,
           model_agent5:        params.model_agent5,
@@ -1728,11 +1898,16 @@ export const PipelinePage: React.FC = () => {
     }
 
     if (pipelineResult?.status === 'skipped' && pipelineResult.story_type) {
+      const storyType = pipelineResult.story_type
+      const defaultDescription = storyType === 'invalid_or_too_weak'
+        ? `Cette story a été classée « ${storyType} », la story est sans description, on ne peut pas générer des tests, il faut contacter le PO pour qu’il explique le besoin.`
+        : `Cette story a été classée « ${storyType} » et n'est pas traitée par le pipeline fonctionnel.`
+
       warnings.push({
         title: 'Story non fonctionnelle',
         description: pipelineResult.errors?.[0]
           ? pipelineResult.errors[0]
-          : `Cette story a été classée « ${pipelineResult.story_type} » et n'est pas traitée par le pipeline fonctionnel.`,
+          : defaultDescription,
       })
     }
 
@@ -1801,11 +1976,19 @@ export const PipelinePage: React.FC = () => {
                     <Square size={16} /> Arrêter
                   </button>
                 ) : (
-                  <button type="button" onClick={handleRun}
-                    disabled={!inputValue.trim()}
-                    className="px-8 py-4 rounded-2xl font-bold text-white flex items-center gap-2 flex-shrink-0 transition-all hover:-translate-y-0.5 disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none syn-btn-xray !text-sm !py-4 !px-8">
-                    <Play size={16} /> Lancer le Pipeline
-                  </button>
+                  <div className="flex items-center gap-3">
+                    <button type="button" onClick={handleRun}
+                      disabled={!inputValue.trim()}
+                      className="px-8 py-4 rounded-2xl font-bold text-white flex items-center gap-2 flex-shrink-0 transition-all hover:-translate-y-0.5 disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none syn-btn-xray !text-sm !py-4 !px-8">
+                      <Play size={16} /> Lancer le Pipeline
+                    </button>
+
+                    <button type="button" onClick={() => setShowJson(s => !s)}
+                      className="px-4 py-3 rounded-2xl font-medium bg-white border shadow-sm text-sm"
+                      style={{ borderColor: 'rgba(10,22,40,0.06)' }}>
+                      {showJson ? 'Masquer JSON' : 'Afficher JSON'}
+                    </button>
+                  </div>
                 )}
               </div>
               <p className="text-xs mt-2 ml-1" style={{ color: `${NAV}50` }}>Appuyez sur Entrée ou cliquez sur « Lancer »</p>
@@ -1822,13 +2005,23 @@ export const PipelinePage: React.FC = () => {
             </div>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mt-2">
-            <ModelSelector label="Modèle Agent 1" value={modelAgent1} onChange={setModelAgent1} />
-            <ModelSelector label="Modèle Agent 2" value={modelAgent2} onChange={setModelAgent2} />
-            <ModelSelector label="Modèle Agent 3" value={modelAgent3} onChange={setModelAgent3} />
-            <ModelSelector label="Modèle Agent 5" value={modelAgent5} onChange={setModelAgent5} />
-            <ModelSelector label="Modèle Agent 4" value={modelAgent4} onChange={setModelAgent4} disabled={!runAgent4} />
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 mt-2">
+            <ModelSelector label="Modèle Agent 1"   value={modelAgent1}  onChange={setModelAgent1}  />
+            <ModelSelector label="Modèle Agent 1.5" value={modelAgent15} onChange={setModelAgent15} />
+            <ModelSelector label="Modèle Agent 2"   value={modelAgent2}  onChange={setModelAgent2}  />
+            <ModelSelector label="Modèle Agent 3"   value={modelAgent3}  onChange={setModelAgent3}  />
+            <ModelSelector label="Modèle Agent 5"   value={modelAgent5}  onChange={setModelAgent5}  />
+            <ModelSelector label="Modèle Agent 4"   value={modelAgent4}  onChange={setModelAgent4}  disabled={!runAgent4} />
           </div>
+
+          {showJson && (
+            <div className="mt-4">
+              <SectionTitle>Données JSON — Pipeline</SectionTitle>
+              <pre className="rounded-2xl bg-slate-50 p-3 text-xs text-slate-700 overflow-auto" style={{ maxHeight: 360 }}>
+                {JSON.stringify((data as any)?.result || (data as any) || {}, null, 2)}
+              </pre>
+            </div>
+          )}
         </div>
       </div>
 
@@ -1894,11 +2087,12 @@ export const PipelinePage: React.FC = () => {
               />
             </div>
             {data && (
-              <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
                 {[
-                  { label: 'Agent 1',    value: modelAgent1 },
-                  { label: 'Agent 2',    value: modelAgent2 },
-                  { label: 'Agent 3',    value: modelAgent3 },
+                  { label: 'Agent 1',     value: modelAgent1 },
+                  { label: 'Agent 1.5',   value: modelAgent15 },
+                  { label: 'Agent 2',     value: modelAgent2 },
+                  { label: 'Agent 3',     value: modelAgent3 },
                   { label: 'Agent 4 / 5', value: runAgent4 ? `${modelAgent4} / ${modelAgent5}` : modelAgent5 },
                 ].map(({ label, value }) => (
                   <div key={label} className="rounded-2xl bg-slate-50 p-4 border border-slate-200">
