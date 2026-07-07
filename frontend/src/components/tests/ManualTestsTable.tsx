@@ -93,29 +93,53 @@ const TestEditDrawer: React.FC<{
       ? editedTest.étapes.flatMap((e: any) => e.steps || [])
       : editedTest?.steps) || []
 
-  // Met à jour un champ d'un step (repéré par son index à plat) de façon
-  // immuable, en écrivant dans `étapes` (source affichée) ET en resynchronisant
-  // le tableau plat `steps`. Corrige le bug où les éditions n'apparaissaient pas
-  // dans le tableau Xray (qui lit `étapes` en priorité).
-  const updateStep = (i: number, field: 'action' | 'titre' | 'expected_result' | 'data', value: string) => {
+  const updateGroupTitre = (groupIndex: number, value: string) => {
     setEditedTest((prev: any) => {
       const next = { ...prev }
-      if (Array.isArray(next.étapes) && next.étapes.length) {
-        let counter = 0
-        next.étapes = next.étapes.map((g: any) => ({
-          ...g,
-          steps: (g.steps || []).map((s: any) => {
-            const isTarget = counter === i
-            counter++
-            return isTarget ? { ...s, [field]: value } : s
-          }),
-        }))
-        next.steps = next.étapes.flatMap((g: any) => g.steps || [])
-      } else {
-        next.steps = (next.steps || []).map((s: any, idx: number) =>
-          idx === i ? { ...s, [field]: value } : s
+      if (Array.isArray(next.étapes)) {
+        next.étapes = next.étapes.map((g: any, idx: number) =>
+          idx === groupIndex ? { ...g, titre: value } : g
         )
       }
+      return next
+    })
+  }
+
+  const updateGroupActor = (groupIndex: number, value: string) => {
+    setEditedTest((prev: any) => {
+      const next = { ...prev }
+      if (Array.isArray(next.étapes)) {
+        next.étapes = next.étapes.map((g: any, idx: number) =>
+          idx === groupIndex ? { ...g, actor: value } : g
+        )
+      }
+      return next
+    })
+  }
+
+  const updateSubStepField = (groupIndex: number, stepIndex: number, field: string, value: string) => {
+    setEditedTest((prev: any) => {
+      const next = { ...prev }
+      if (Array.isArray(next.étapes)) {
+        next.étapes = next.étapes.map((g: any, gIdx: number) => {
+          if (gIdx !== groupIndex) return g
+          const newSteps = (g.steps || []).map((s: any, sIdx: number) =>
+            sIdx === stepIndex ? { ...s, [field]: value } : s
+          )
+          return { ...g, steps: newSteps }
+        })
+        next.steps = next.étapes.flatMap((g: any) => g.steps || [])
+      }
+      return next
+    })
+  }
+
+  const updateFlatStepField = (stepIndex: number, field: string, value: string) => {
+    setEditedTest((prev: any) => {
+      const next = { ...prev }
+      next.steps = (next.steps || []).map((s: any, idx: number) =>
+        idx === stepIndex ? { ...s, [field]: value } : s
+      )
       return next
     })
   }
@@ -268,45 +292,201 @@ const TestEditDrawer: React.FC<{
             />
           </section>
 
-          {/* Étapes */}
-          {steps.length > 0 && (
-            <section>
-              <div className="flex items-center justify-between mb-2">
-                <p className="syn-label">Étapes</p>
-                <span className="text-xs text-brand-muted">{steps.length}</span>
+          {/* Étapes groupées (Xray / normal format) */}
+          {Array.isArray(editedTest?.étapes) && editedTest.étapes.length > 0 ? (
+            <section className="space-y-4">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <div className="w-1 h-4 rounded-full" style={{ background: 'linear-gradient(180deg,#1e40af,#3b82f6)' }} />
+                  <p className="text-sm font-extrabold uppercase tracking-widest text-brand-navy font-sans">Étapes (Format Groupé)</p>
+                </div>
+                <span className="px-2 py-0.5 rounded-full text-xs font-bold font-sans"
+                  style={{ background: 'rgba(30,64,175,0.1)', color: '#1e40af' }}>
+                  {editedTest.étapes.length}
+                </span>
               </div>
-              <ol className="space-y-3">
-                {steps.map((step: any, i: number) => (
-                  <li
-                    key={i}
-                    className="pl-3 border-l-2 border-brand-violet/20 space-y-2"
+
+              <div className="space-y-4">
+                {editedTest.étapes.map((group: any, gi: number) => (
+                  <div
+                    key={gi}
+                    className="rounded-2xl border overflow-hidden"
+                    style={{ borderColor: 'rgba(30,64,175,0.2)', background: 'rgba(30,64,175,0.01)' }}
                   >
-                    <span className="text-xs font-bold text-brand-violet">{i + 1}.</span>
-                    <input
-                      className="w-full text-sm text-brand-navy rounded-lg px-2.5 py-2 border border-brand-navy/[0.08] bg-white focus:border-brand-violet focus:outline-none focus:ring-2 focus:ring-brand-violet/10"
-                      value={step.action || step.titre || ''}
-                      onChange={(e) => {
-                        const field = step.action !== undefined ? 'action' : 'titre'
-                        updateStep(i, field, e.target.value)
-                      }}
-                      onClick={(e) => e.stopPropagation()}
-                      placeholder="Action…"
-                    />
-                    {/* CORRIGÉ : textarea multi-lignes au lieu d'un input simple,
-                        pour permettre la saisie/édition d'une liste d'assertions
-                        atomiques (une par ligne). */}
-                    <textarea
-                      className="w-full text-xs text-brand-navy rounded-lg px-2.5 py-2 border border-brand-navy/[0.06] bg-brand-offwhite/20 focus:border-brand-violet focus:outline-none focus:ring-2 focus:ring-brand-violet/10 resize-y leading-relaxed"
-                      value={step.expected_result || ''}
-                      onChange={(e) => updateStep(i, 'expected_result', e.target.value)}
-                      onClick={(e) => e.stopPropagation()}
-                      placeholder="Résultat attendu (une assertion par ligne)…"
-                      rows={4}
-                    />
-                  </li>
+                    {/* Group Header */}
+                    <div className="px-4 py-3 flex items-center gap-2"
+                      style={{ background: 'rgba(30,64,175,0.06)', borderBottom: '1px solid rgba(30,64,175,0.12)' }}>
+                      <span className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-extrabold text-white flex-shrink-0"
+                        style={{ background: 'linear-gradient(135deg,#1e40af,#3b82f6)' }}>{gi + 1}</span>
+                      <span className="text-xs font-extrabold text-brand-navy uppercase tracking-wider font-sans">Étape {gi + 1}</span>
+                    </div>
+
+                    <div className="p-4 space-y-4">
+                      {/* Group Title (main action) */}
+                      <div>
+                        <p className="text-[10px] font-extrabold uppercase tracking-widest mb-1.5 font-sans" style={{ color: '#1e40af' }}>
+                          Titre de l'étape (Action principale)
+                        </p>
+                        <input
+                          className="w-full text-sm font-semibold text-brand-navy rounded-xl px-3 py-2.5 border border-brand-navy/[0.12] bg-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/10 transition-all font-sans"
+                          value={group.titre || ''}
+                          onChange={(e) => updateGroupTitre(gi, e.target.value)}
+                          onClick={(e) => e.stopPropagation()}
+                          placeholder="ex : Se connecter en tant que Collaborateur…"
+                        />
+                      </div>
+
+                      {/* Group Actor */}
+                      <div>
+                        <p className="text-[10px] font-extrabold uppercase tracking-widest mb-1.5 font-sans" style={{ color: '#475569' }}>
+                          Acteur
+                        </p>
+                        <input
+                          className="w-full text-xs text-brand-navy rounded-xl px-3 py-2 border border-brand-navy/[0.1] bg-white focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-500/10 transition-all font-sans"
+                          value={group.actor || ''}
+                          onChange={(e) => updateGroupActor(gi, e.target.value)}
+                          onClick={(e) => e.stopPropagation()}
+                          placeholder="ex : Collaborateur, Manager…"
+                        />
+                      </div>
+
+                      {/* Sub-steps of this group */}
+                      {Array.isArray(group.steps) && group.steps.length > 0 && (
+                        <div className="space-y-3 pt-2 border-t border-dashed border-brand-navy/10">
+                          <p className="text-[10px] font-extrabold uppercase tracking-widest text-brand-navy/50 font-sans">
+                            Actions & Résultats détaillés
+                          </p>
+                          {group.steps.map((subStep: any, si: number) => (
+                            <div key={si} className="p-3 rounded-xl bg-white border border-brand-navy/[0.08] space-y-3">
+                              {/* SubStep Action */}
+                              <div>
+                                <p className="text-[9px] font-bold uppercase tracking-wider mb-1 font-sans text-brand-muted">
+                                  Action détaillée
+                                </p>
+                                <input
+                                  className="w-full text-xs text-brand-navy rounded-lg px-2.5 py-2 border border-brand-navy/[0.08] bg-slate-50/50 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 font-sans"
+                                  value={subStep.action || ''}
+                                  onChange={(e) => updateSubStepField(gi, si, 'action', e.target.value)}
+                                  onClick={(e) => e.stopPropagation()}
+                                  placeholder="Action détaillée…"
+                                />
+                              </div>
+
+                              {/* SubStep Expected Result */}
+                              <div>
+                                <p className="text-[9px] font-bold uppercase tracking-wider mb-1 font-sans text-emerald-600">
+                                  Résultat attendu
+                                </p>
+                                <textarea
+                                  className="w-full text-xs text-brand-navy rounded-lg px-2.5 py-2 border border-brand-navy/[0.08] bg-slate-50/50 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 font-sans resize-y leading-relaxed"
+                                  value={subStep.expected_result || ''}
+                                  onChange={(e) => updateSubStepField(gi, si, 'expected_result', e.target.value)}
+                                  onClick={(e) => e.stopPropagation()}
+                                  placeholder="Résultat attendu (une assertion par ligne)…"
+                                  rows={2}
+                                />
+                              </div>
+
+                              {/* SubStep Data */}
+                              <div>
+                                <p className="text-[9px] font-bold uppercase tracking-wider mb-1 font-sans text-violet-600">
+                                  Données de test
+                                </p>
+                                <input
+                                  className="w-full text-xs text-brand-navy rounded-lg px-2.5 py-2 border border-brand-navy/[0.08] bg-slate-50/50 focus:border-violet-500 focus:outline-none focus:ring-1 focus:ring-violet-500 font-sans"
+                                  value={subStep.data || ''}
+                                  onChange={(e) => updateSubStepField(gi, si, 'data', e.target.value)}
+                                  onClick={(e) => e.stopPropagation()}
+                                  placeholder="Données (optionnel)…"
+                                />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 ))}
-              </ol>
+              </div>
             </section>
+          ) : (
+            /* Flat steps fallback */
+            Array.isArray(editedTest?.steps) && editedTest.steps.length > 0 && (
+              <section className="space-y-4">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <div className="w-1 h-4 rounded-full" style={{ background: 'linear-gradient(180deg,#1e40af,#3b82f6)' }} />
+                    <p className="text-sm font-extrabold uppercase tracking-widest text-brand-navy font-sans">Étapes (Format Plat)</p>
+                  </div>
+                  <span className="px-2 py-0.5 rounded-full text-xs font-bold font-sans"
+                    style={{ background: 'rgba(30,64,175,0.1)', color: '#1e40af' }}>
+                    {editedTest.steps.length}
+                  </span>
+                </div>
+
+                <div className="space-y-4">
+                  {editedTest.steps.map((step: any, si: number) => (
+                    <div
+                      key={si}
+                      className="rounded-2xl border overflow-hidden"
+                      style={{ borderColor: 'rgba(10,22,40,0.12)', background: 'rgba(10,22,40,0.01)' }}
+                    >
+                      <div className="px-4 py-2.5 flex items-center gap-2"
+                        style={{ background: 'rgba(10,22,40,0.04)', borderBottom: '1px solid rgba(10,22,40,0.08)' }}>
+                        <span className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-extrabold text-white flex-shrink-0"
+                          style={{ background: CARD_GRADIENT }}>{si + 1}</span>
+                        <span className="text-xs font-extrabold text-brand-navy uppercase tracking-wider font-sans">Étape {si + 1}</span>
+                      </div>
+
+                      <div className="p-4 space-y-3">
+                        {/* Action */}
+                        <div>
+                          <p className="text-[10px] font-extrabold uppercase tracking-widest mb-1.5 font-sans" style={{ color: '#1e40af' }}>
+                            Action
+                          </p>
+                          <input
+                            className="w-full text-sm text-brand-navy rounded-xl px-3 py-2.5 border border-brand-navy/[0.12] bg-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/10 transition-all font-sans"
+                            value={step.action || step.titre || ''}
+                            onChange={(e) => updateFlatStepField(si, 'action', e.target.value)}
+                            onClick={(e) => e.stopPropagation()}
+                            placeholder="Action à réaliser…"
+                          />
+                        </div>
+
+                        {/* Expected Result */}
+                        <div>
+                          <p className="text-[10px] font-extrabold uppercase tracking-widest mb-1.5 font-sans" style={{ color: '#059669' }}>
+                            Résultat attendu
+                          </p>
+                          <textarea
+                            className="w-full text-xs text-brand-navy rounded-xl px-3 py-2 border border-brand-navy/[0.1] bg-white focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/10 transition-all font-sans resize-y leading-relaxed"
+                            value={step.expected_result || ''}
+                            onChange={(e) => updateFlatStepField(si, 'expected_result', e.target.value)}
+                            onClick={(e) => e.stopPropagation()}
+                            placeholder="Résultat attendu (une assertion par ligne)…"
+                            rows={3}
+                          />
+                        </div>
+
+                        {/* Data */}
+                        <div>
+                          <p className="text-[10px] font-extrabold uppercase tracking-widest mb-1.5 font-sans" style={{ color: '#7c3aed' }}>
+                            Données de test
+                          </p>
+                          <input
+                            className="w-full text-xs text-brand-navy rounded-xl px-3 py-2 border border-brand-navy/[0.1] bg-white focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/10 transition-all font-sans"
+                            value={step.data || ''}
+                            onChange={(e) => updateFlatStepField(si, 'data', e.target.value)}
+                            onClick={(e) => e.stopPropagation()}
+                            placeholder="Données ou valeurs (optionnel)…"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )
           )}
         </div>
 
@@ -513,9 +693,13 @@ export const ManualTestsTable: React.FC<ManualTestsTableProps> = ({
   const { selectedProject } = useAuth()
 
   React.useEffect(() => { setLocalTests(tests) }, [tests])
+  const lastStoryIdRef = React.useRef(storyId)
   React.useEffect(() => {
-    setExpandedIndex(null)
-  }, [tests])
+    if (lastStoryIdRef.current !== storyId) {
+      setExpandedIndex(null)
+      lastStoryIdRef.current = storyId
+    }
+  }, [storyId])
 
   const projectKey = xrayProjectKey || selectedProject?.key || ''
 

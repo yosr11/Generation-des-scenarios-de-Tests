@@ -106,7 +106,7 @@ const Toggle: React.FC<{
   label: string
   desc?: string
 }> = ({ checked, onChange, label, desc }) => (
-  <label className="flex items-center gap-3 cursor-pointer group py-1.5">
+  <label className="flex items-center gap-3 cursor-pointer group py-1">
     <button
       type="button"
       role="switch"
@@ -1972,21 +1972,16 @@ export const PipelinePage: React.FC = () => {
                 {loading ? (
                   <button type="button" onClick={cancel}
                     className="px-6 py-4 rounded-2xl font-bold text-white flex items-center gap-2 flex-shrink-0 transition-all hover:-translate-y-0.5"
-                    style={{ background: `linear-gradient(135deg,${ROSE},#dc2626)`, boxShadow: `0 4px 16px ${ROSE}45` }}>
+                    style={{ background: 'linear-gradient(135deg,#dc2626,#b91c1c)', boxShadow: '0 4px 16px rgba(220,38,38,0.35)' }}>
                     <Square size={16} /> Arrêter
                   </button>
                 ) : (
                   <div className="flex items-center gap-3">
                     <button type="button" onClick={handleRun}
                       disabled={!inputValue.trim()}
-                      className="px-8 py-4 rounded-2xl font-bold text-white flex items-center gap-2 flex-shrink-0 transition-all hover:-translate-y-0.5 disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none syn-btn-xray !text-sm !py-4 !px-8">
+                      className="px-8 py-4 rounded-2xl font-bold text-white flex items-center gap-2 flex-shrink-0 transition-all hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none"
+                      style={{ background: 'linear-gradient(135deg,#1e40af,#2563eb,#3b82f6)', boxShadow: '0 4px 18px rgba(37,99,235,0.4)' }}>
                       <Play size={16} /> Lancer le Pipeline
-                    </button>
-
-                    <button type="button" onClick={() => setShowJson(s => !s)}
-                      className="px-4 py-3 rounded-2xl font-medium bg-white border shadow-sm text-sm"
-                      style={{ borderColor: 'rgba(10,22,40,0.06)' }}>
-                      {showJson ? 'Masquer JSON' : 'Afficher JSON'}
                     </button>
                   </div>
                 )}
