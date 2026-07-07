@@ -13,16 +13,16 @@ import { Alert } from '../components/ui/Alert'
 import { ManualTestsTable } from '../components/tests/ManualTestsTable'
 
 // ── Colors & Styles matching PipelinePage ──────────────────────────────────
-const NAV       = '#0B1E3E'
-const NAV_LIGHT = '#1A3A6B'
-const ROSE      = '#DB2777'
-const ORANGE    = '#EA580C'
-const VIOLET    = '#1D4ED8'
+const NAV       = '#0a0f2e'
+const NAV_LIGHT = '#1a2060'
+const ROSE      = '#f43f5e'
+const ORANGE    = '#f97316'
+const VIOLET    = '#7c3aed'
 
 const CARD_GRADIENT = `linear-gradient(135deg, ${NAV}, ${NAV_LIGHT}, ${VIOLET})`
-// Dégradé vif pour les cartes d'en-tête (Story ID / Type / Acteurs) : bleu → rose → rouge
-const HEADER_GRADIENT = 'linear-gradient(135deg, #2563EB 0%, #7C3AED 40%, #DB2777 75%, #F43F5E 100%)'
-const HEADER_SHADOW   = '0 8px 26px rgba(219,39,119,0.30)'
+// Dégradé premium inspiré de la page landing : bleu marine profond vers rose/violet
+const HEADER_GRADIENT = 'linear-gradient(135deg, #0a0f2e 0%, #13113c 50%, #2d1334 100%)'
+const HEADER_SHADOW   = '0 8px 30px rgba(10, 15, 46, 0.22)'
 
 const AGENT_INFO: Record<string, { label: string; desc: string; icon: React.ElementType; gradient: string }> = {
   'Agent 1':   { label: 'Agent 1 — Analyse',              desc: 'Analyse sémantique de la user story',             icon: FileText,      gradient: CARD_GRADIENT },

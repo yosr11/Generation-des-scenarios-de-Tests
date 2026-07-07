@@ -10,28 +10,28 @@
    ═══════════════════════════════════════════════════ */
 :root {
   /* Core Brand Colors */
-  --navy:        #0B1E3E;
-  --navy-mid:    #12274F;
-  --navy-light:  #1A3A6B;
-  --violet:      #1D4ED8;
-  --violet-light:#3B82F6;
-  --rose:        #DB2777;
-  --rose-light:  #F472B6;
-  --pink:        #DB2777;
-  --pink-light:  #F472B6;
-  --orange:      #EA580C;
-  --orange-light:#FB923C;
-  --red:         #DC2626;
+  --navy:        #0a0f2e;
+  --navy-mid:    #111538;
+  --navy-light:  #1a2060;
+  --violet:      #7c3aed;
+  --violet-light:#a855f7;
+  --rose:        #f43f5e;
+  --rose-light:  #fb7185;
+  --pink:        #ec4899;
+  --pink-light:  #f472b6;
+  --orange:      #f97316;
+  --orange-light:#fb923c;
+  --red:         #ef4444;
   --white:       #ffffff;
   --off-white:   #f8f7ff;
   --muted:       #64748b;
 
   /* Gradients */
-  --grad-hero:    linear-gradient(135deg, #0B1E3E 0%, #1A3A6B 40%, #1D4ED8 70%, #DB2777 100%);
-  --grad-cta:     linear-gradient(135deg, #DB2777, #EA580C);
-  --grad-violet:  linear-gradient(135deg, #1D4ED8, #DB2777);
-  --grad-warm:    linear-gradient(135deg, #DC2626, #EA580C, #DB2777);
-  --grad-sidebar: linear-gradient(180deg, #0B1E3E 0%, #12274F 50%, #1A3A6B 100%);
+  --grad-hero:    linear-gradient(135deg, #0a0f2e 0%, #1a1060 40%, #3b0764 70%, #7c1d4a 100%);
+  --grad-cta:     linear-gradient(135deg, #f43f5e, #f97316);
+  --grad-violet:  linear-gradient(135deg, #7c3aed, #ec4899);
+  --grad-warm:    linear-gradient(135deg, #ef4444, #f97316, #ec4899);
+  --grad-sidebar: linear-gradient(180deg, #0a0f2e 0%, #130c35 50%, #0f1a40 100%);
   --grad-card:    linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
 
   /* Shadows */
