@@ -20,10 +20,18 @@ const ORANGE    = '#f97316'
 const VIOLET    = '#7c3aed'
 
 const MAIN_GRADIENT = `linear-gradient(90deg, ${NAV}, ${NAV_LIGHT}, ${VIOLET}, ${ROSE}, ${ORANGE})`
-const CARD_GRADIENT = `linear-gradient(135deg, ${NAV}, ${NAV_LIGHT}, ${VIOLET})`
+const CARD_GRADIENT = `linear-gradient(135deg, #6366f1, #ec4899)`
 // Dégradé premium inspiré de la page landing : bleu marine profond vers rose/violet
 const HEADER_GRADIENT = 'linear-gradient(135deg, #0a0f2e 0%, #13113c 50%, #2d1334 100%)'
 const HEADER_SHADOW   = '0 8px 30px rgba(10, 15, 46, 0.22)'
+// Dégradé des boutons d'action (violet → rose → orange) — image 1 & 2
+const BUTTON_GRADIENT = `linear-gradient(90deg, #4338ca, ${ROSE})`
+const ICON_GRADIENT = `linear-gradient(135deg, #6366f1, #ec4899)`
+// Dégradé bleu marine pur pour les headers de tableau — image 5
+const NAVY_GRADIENT   = `linear-gradient(135deg, ${NAV}, ${NAV_LIGHT})`
+// Dégradé KPI inspiré de la landing — marine dominant, transition rose/orange en fin
+const KPI_GRADIENT = `linear-gradient(135deg, ${NAV} 0%, ${ROSE} 70%, ${ORANGE} 100%)`
+const KPI_SHADOW    = '0 8px 24px rgba(10, 15, 46, 0.18)'
 
 // FIX #6 — inject print CSS inside a useEffect (SSR-safe, no duplicate injection)
 const PRINT_STYLE = `
@@ -56,12 +64,12 @@ const STEP_STYLE: Record<string, { bg: string; border: string; icon: React.Eleme
 }
 
 const AGENT_INFO: Record<string, { label: string; desc: string; icon: React.ElementType; gradient: string; accent: string }> = {
-  'Agent 1':   { label: 'Agent 1 — Analyse',              desc: 'Analyse sémantique de la user story',             icon: FileText,      gradient: `linear-gradient(135deg, ${NAV}, ${VIOLET})`, accent: VIOLET },
-  'Agent 1.5': { label: 'Agent 1.5 — Business Modeling',  desc: 'Goals métier & workflows end-to-end',              icon: GitBranch,     gradient: `linear-gradient(135deg, ${NAV}, ${VIOLET})`, accent: VIOLET },
-  'Agent 2':   { label: 'Agent 2 — Génération des tests', desc: 'Création des scénarios de tests manuels',         icon: TestTube,      gradient: `linear-gradient(135deg, ${VIOLET}, ${ROSE})`, accent: ROSE },
-  'Agent 3':   { label: 'Agent 3 — Validation',           desc: 'Couverture, ambiguïtés & cas limites',            icon: CheckCircle2,  gradient: `linear-gradient(135deg, ${ORANGE}, ${ROSE})`, accent: ORANGE },
-  'Agent 4':   { label: 'Agent 4 — Classification',       desc: 'Classification auto/manuel',                      icon: BarChart3,     gradient: CARD_GRADIENT, accent: '#7c3aed' },
-  'Agent 5':   { label: 'Agent 5 — Rapport',              desc: 'Rapport qualité & recommandations',               icon: FileBarChart2, gradient: CARD_GRADIENT, accent: NAV },
+  'Agent 1':   { label: 'Agent 1 — Analyse',              desc: 'Analyse sémantique de la user story',             icon: FileText,      gradient: ICON_GRADIENT, accent: VIOLET },
+  'Agent 1.5': { label: 'Agent 1.5 — Business Modeling',  desc: 'Goals métier & workflows end-to-end',              icon: GitBranch,     gradient: ICON_GRADIENT, accent: VIOLET },
+  'Agent 2':   { label: 'Agent 2 — Génération des tests', desc: 'Création des scénarios de tests manuels',         icon: TestTube,      gradient: ICON_GRADIENT, accent: ROSE },
+  'Agent 3':   { label: 'Agent 3 — Validation',           desc: 'Couverture, ambiguïtés & cas limites',            icon: CheckCircle2,  gradient: ICON_GRADIENT, accent: ORANGE },
+  'Agent 4':   { label: 'Agent 4 — Classification',       desc: 'Classification auto/manuel',                      icon: BarChart3,     gradient: ICON_GRADIENT, accent: VIOLET },
+  'Agent 5':   { label: 'Agent 5 — Rapport',              desc: 'Rapport qualité & recommandations',               icon: FileBarChart2, gradient: ICON_GRADIENT, accent: NAV },
 }
 
 const MODEL_OPTIONS = [
@@ -164,21 +172,21 @@ const Agent1Result: React.FC<{ output: any }> = ({ output }) => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {story_id && (
           <div className="rounded-2xl p-5 flex flex-col gap-1.5"
-            style={{ background: HEADER_GRADIENT, boxShadow: HEADER_SHADOW }}>
+            style={{ background: KPI_GRADIENT, boxShadow: KPI_SHADOW }}>
             <span className="text-[10px] font-bold uppercase tracking-widest text-white/60">Story ID</span>
             <span className="text-2xl font-extrabold text-white font-mono">{story_id}</span>
           </div>
         )}
         {story_type && (
           <div className="rounded-2xl p-5 flex flex-col gap-1.5"
-            style={{ background: HEADER_GRADIENT, boxShadow: HEADER_SHADOW }}>
+            style={{ background: KPI_GRADIENT, boxShadow: KPI_SHADOW }}>
             <span className="text-[10px] font-bold uppercase tracking-widest text-white/60">Story Type</span>
             <span className="text-xl font-bold text-white capitalize">{story_type}</span>
           </div>
         )}
         {actors && (
           <div className="rounded-2xl p-5 flex flex-col gap-2"
-            style={{ background: HEADER_GRADIENT, boxShadow: HEADER_SHADOW }}>
+            style={{ background: KPI_GRADIENT, boxShadow: KPI_SHADOW }}>
             <span className="text-[10px] font-bold uppercase tracking-widest text-white/60">Acteurs</span>
             <div className="flex flex-wrap gap-1.5">
               {(Array.isArray(actors) ? actors : [actors]).map((a: string, i: number) => (
@@ -346,9 +354,9 @@ const TestEditModal: React.FC<{
         <div className="flex items-center gap-3 px-6 py-4 sticky top-0 bg-white z-10 border-b rounded-t-3xl"
           style={{ borderColor: 'rgba(10,22,40,0.08)' }}>
           <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-            style={{ background: CARD_GRADIENT }}>
-            <Edit2 size={16} className="text-white" />
-          </div>
+          style={{ background: BUTTON_GRADIENT }}>
+          <Edit2 size={16} className="text-white" />
+        </div>
           <div className="flex-1 min-w-0">
             <p className="text-[10px] font-bold uppercase tracking-widest mb-0.5" style={{ color: `${NAV}50` }}>
               Éditer le test
@@ -504,7 +512,7 @@ const TestEditModal: React.FC<{
           </button>
           <button type="button" onClick={handleSave}
             className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold text-white transition-all hover:-translate-y-0.5"
-            style={{ background: CARD_GRADIENT, boxShadow: `0 4px 16px rgba(10,22,40,0.3)` }}>
+            style={{ background: BUTTON_GRADIENT, boxShadow: `0 4px 16px rgba(10,22,40,0.3)` }}>
             <span>💾</span> Sauvegarder
           </button>
         </div>
@@ -573,7 +581,7 @@ const TestAccordion: React.FC<{
             type="button"
             onClick={() => onXray?.(test)}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all hover:-translate-y-0.5"
-            style={{ background: `linear-gradient(135deg,${ROSE},${ORANGE})`, color: 'white', boxShadow: `0 2px 8px ${ROSE}40` }}>
+            style={{ background: BUTTON_GRADIENT, color: 'white', boxShadow: `0 2px 8px ${ROSE}40` }}>
             <Upload size={12} /> Xray
           </button>
         </div>
@@ -605,7 +613,7 @@ const TestAccordion: React.FC<{
 
           <div className="rounded-2xl overflow-hidden border" style={{ borderColor: 'rgba(10,22,40,0.1)' }}>
             <table className="w-full text-sm text-left">
-              <thead style={{ background: CARD_GRADIENT }}>
+              <thead style={{ background: NAVY_GRADIENT }}>
                 <tr>
                   <th className="w-12 px-4 py-3 font-bold text-white text-center text-xs">#</th>
                   <th className="px-4 py-3 font-bold text-white text-xs">Action</th>
@@ -1988,7 +1996,7 @@ export const PipelinePage: React.FC = () => {
                     <button type="button" onClick={handleRun}
                       disabled={!inputValue.trim()}
                       className="px-8 py-4 rounded-2xl font-bold text-white flex items-center gap-2 flex-shrink-0 transition-all hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none"
-                      style={{ background: `linear-gradient(135deg, ${VIOLET}, ${ROSE})`, boxShadow: `0 4px 18px rgba(219,39,119,0.38)` }}>
+                      style={{ background: BUTTON_GRADIENT, boxShadow: `0 4px 18px rgba(219,39,119,0.38)` }}>
                       <Play size={16} /> Lancer le Pipeline
                     </button>
                   </div>

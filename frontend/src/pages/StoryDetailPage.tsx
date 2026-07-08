@@ -6,7 +6,7 @@ import { useToast } from '../contexts/ToastContext'
 import {
   ArrowLeft, Trash2, FileText, CheckCircle2, XCircle,
   TestTube, FileBarChart2, ArrowRight, Workflow,
-  GitBranch, ChevronDown, Printer, HelpCircle
+  GitBranch, ChevronDown, Printer, HelpCircle , BarChart3
 } from 'lucide-react'
 import { Badge } from '../components/ui/Badge'
 import { Alert } from '../components/ui/Alert'
@@ -19,17 +19,26 @@ const ROSE      = '#f43f5e'
 const ORANGE    = '#f97316'
 const VIOLET    = '#7c3aed'
 
-const CARD_GRADIENT = `linear-gradient(135deg, ${NAV}, ${NAV_LIGHT}, ${VIOLET})`
+const CARD_GRADIENT = `linear-gradient(135deg, #6366f1, #ec4899)`
 // Dégradé premium inspiré de la page landing : bleu marine profond vers rose/violet
 const HEADER_GRADIENT = 'linear-gradient(135deg, #0a0f2e 0%, #13113c 50%, #2d1334 100%)'
 const HEADER_SHADOW   = '0 8px 30px rgba(10, 15, 46, 0.22)'
+// Dégradé des boutons d'action (violet → rose → orange) — image 1 & 2
+const BUTTON_GRADIENT = `linear-gradient(90deg, #4338ca, ${ROSE})`
+const ICON_GRADIENT = `linear-gradient(135deg, #6366f1, #ec4899)`
+// Dégradé bleu marine pur pour les headers de tableau — image 5
+const NAVY_GRADIENT   = `linear-gradient(135deg, ${NAV}, ${NAV_LIGHT})`
+// Dégradé KPI inspiré de la landing — marine dominant, transition rose/orange en fin
+const KPI_GRADIENT = `linear-gradient(135deg, ${NAV} 0%, ${ROSE} 70%, ${ORANGE} 100%)`
+const KPI_SHADOW    = '0 8px 24px rgba(10, 15, 46, 0.18)'
 
-const AGENT_INFO: Record<string, { label: string; desc: string; icon: React.ElementType; gradient: string }> = {
-  'Agent 1':   { label: 'Agent 1 — Analyse',              desc: 'Analyse sémantique de la user story',             icon: FileText,      gradient: CARD_GRADIENT },
-  'Agent 1.5': { label: 'Agent 1.5 — Business Modeling',  desc: 'Goals métier & workflows end-to-end',              icon: Workflow,      gradient: CARD_GRADIENT },
-  'Agent 2':   { label: 'Agent 2 — Génération des tests', desc: 'Création des scénarios de tests manuels',         icon: TestTube,      gradient: CARD_GRADIENT },
-  'Agent 3':   { label: 'Agent 3 — Validation',           desc: 'Couverture, ambiguïtés & cas limites',            icon: CheckCircle2,  gradient: CARD_GRADIENT },
-  'Agent 5':   { label: 'Agent 5 — Rapport',              desc: 'Rapport qualité & recommandations',               icon: FileBarChart2, gradient: CARD_GRADIENT },
+const AGENT_INFO: Record<string, { label: string; desc: string; icon: React.ElementType; gradient: string; accent: string }> = {
+  'Agent 1':   { label: 'Agent 1 — Analyse',              desc: 'Analyse sémantique de la user story',             icon: FileText,      gradient: ICON_GRADIENT, accent: VIOLET },
+  'Agent 1.5': { label: 'Agent 1.5 — Business Modeling',  desc: 'Goals métier & workflows end-to-end',              icon: GitBranch,     gradient: ICON_GRADIENT, accent: VIOLET },
+  'Agent 2':   { label: 'Agent 2 — Génération des tests', desc: 'Création des scénarios de tests manuels',         icon: TestTube,      gradient: ICON_GRADIENT, accent: ROSE },
+  'Agent 3':   { label: 'Agent 3 — Validation',           desc: 'Couverture, ambiguïtés & cas limites',            icon: CheckCircle2,  gradient: ICON_GRADIENT, accent: ORANGE },
+  'Agent 4':   { label: 'Agent 4 — Classification',       desc: 'Classification auto/manuel',                      icon: BarChart3,     gradient: ICON_GRADIENT, accent: VIOLET },
+  'Agent 5':   { label: 'Agent 5 — Rapport',              desc: 'Rapport qualité & recommandations',               icon: FileBarChart2, gradient: ICON_GRADIENT, accent: NAV },
 }
 
 // ── Section Title ─────────────────────────────────────────────────────────────
@@ -142,21 +151,21 @@ const Agent1Result: React.FC<{ output: any }> = ({ output }) => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {story_id && (
           <div className="rounded-2xl p-5 flex flex-col gap-1.5"
-            style={{ background: HEADER_GRADIENT, boxShadow: HEADER_SHADOW }}>
+            style={{ background: KPI_GRADIENT, boxShadow: KPI_SHADOW }}>
             <span className="text-[10px] font-bold uppercase tracking-widest text-white/60">Story ID</span>
             <span className="text-2xl font-extrabold text-white font-mono">{story_id}</span>
           </div>
         )}
         {story_type && (
           <div className="rounded-2xl p-5 flex flex-col gap-1.5"
-            style={{ background: HEADER_GRADIENT, boxShadow: HEADER_SHADOW }}>
+            style={{ background: KPI_GRADIENT, boxShadow: KPI_SHADOW }}>
             <span className="text-[10px] font-bold uppercase tracking-widest text-white/60">Story Type</span>
             <span className="text-xl font-bold text-white capitalize">{story_type}</span>
           </div>
         )}
         {actors && (
           <div className="rounded-2xl p-5 flex flex-col gap-2"
-            style={{ background: HEADER_GRADIENT, boxShadow: HEADER_SHADOW }}>
+            style={{ background: KPI_GRADIENT, boxShadow: KPI_SHADOW }}>
             <span className="text-[10px] font-bold uppercase tracking-widest text-white/60">Acteurs</span>
             <div className="flex flex-wrap gap-1.5">
               {(Array.isArray(actors) ? actors : [actors]).map((a: string, i: number) => (
