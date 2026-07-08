@@ -93,6 +93,12 @@ def node_enrich_story(state: PipelineState) -> dict:
 
     story_id = state["story_id"]
     force_refresh = bool(state.get("force_refresh"))
+    
+    # "Renforcer l'enrichissement" est activé si la user story n'a pas été traitée avant
+    if not get_story_by_id(story_id):
+        force_refresh = True
+        state["force_refresh"] = True
+
     _safe_update_step(story_id, "Agent 1", "running", progress=10)
     logger.info(f"[Orchestrator] Enriching story {story_id} (force_refresh={force_refresh})")
 

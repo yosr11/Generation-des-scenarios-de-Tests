@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react'
+﻿import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react'
 import { useToast } from '../contexts/ToastContext'
 import { useOrchestrator } from '../hooks'
 import { ManualTestsTable } from '../components/tests/ManualTestsTable'
@@ -68,59 +68,9 @@ const AGENT_INFO: Record<string, { label: string; desc: string; icon: React.Elem
   'Agent 1':   { label: 'Agent 1 — Analyse',              desc: 'Analyse sémantique de la user story',             icon: FileText,      gradient: ICON_GRADIENT, accent: VIOLET },
   'Agent 1.5': { label: 'Agent 1.5 — Business Modeling',  desc: 'Goals métier & workflows end-to-end',              icon: GitBranch,     gradient: ICON_GRADIENT, accent: VIOLET },
   'Agent 2':   { label: 'Agent 2 — Génération des tests', desc: 'Création des scénarios de tests manuels',         icon: TestTube,      gradient: ICON_GRADIENT, accent: ROSE },
-  'Agent 3':   { label: 'Agent 3 — Validation',           desc: 'Couverture, ambiguïtés & cas limites',            icon: CheckCircle2,  gradient: ICON_GRADIENT, accent: ORANGE },
-  'Agent 4':   { label: 'Agent 4 — Classification',       desc: 'Classification auto/manuel',                      icon: BarChart3,     gradient: ICON_GRADIENT, accent: VIOLET },
-  'Agent 5':   { label: 'Agent 5 — Rapport',              desc: 'Rapport qualité & recommandations',               icon: FileBarChart2, gradient: ICON_GRADIENT, accent: NAV },
+  'Agent 3':   { label: 'Agent 3 - Validation',           desc: 'Couverture, ambiguïtés & cas limites',            icon: CheckCircle2,  gradient: ICON_GRADIENT, accent: ORANGE },
+  'Agent 5':   { label: 'Agent 5 - Rapport',              desc: 'Rapport qualité & recommandations',               icon: FileBarChart2, gradient: ICON_GRADIENT, accent: NAV },
 }
-
-const MODEL_OPTIONS = [
-  'qwen3',
-  'llama4',
-  'gptoss',
-  'gptoss120b',
-  'qwen3.6',
-  'nova-lite-2',
-] as const
-
-type ModelOption = (typeof MODEL_OPTIONS)[number]
-
-// ── Shared small components ───────────────────────────────────────────────────
-
-// FIX #9 — disabled state gets visual feedback
-const ModelSelector: React.FC<{
-  label: string
-  value: ModelOption
-  onChange: (value: ModelOption) => void
-  disabled?: boolean
-}> = ({ label, value, onChange, disabled }) => (
-  <label className="block text-sm font-semibold text-slate-800">
-    <span className="mb-2 block text-xs uppercase tracking-[0.18em] text-slate-500">{label}</span>
-    <select
-      value={value}
-      disabled={disabled}
-      onChange={(e) => onChange(e.target.value as ModelOption)}
-      className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 transition focus:border-brand-violet focus:outline-none"
-      style={disabled ? { opacity: 0.4, cursor: 'not-allowed', background: '#f8fafc' } : undefined}
-    >
-      {MODEL_OPTIONS.map((opt) => (
-        <option key={opt} value={opt}>{opt}</option>
-      ))}
-    </select>
-  </label>
-)
-
-const Toggle: React.FC<{
-  checked: boolean
-  onChange: (v: boolean) => void
-  label: string
-  desc?: string
-}> = ({ checked, onChange, label, desc }) => (
-  <label className="flex items-center gap-3 cursor-pointer group py-1">
-    <button
-      type="button"
-      role="switch"
-      aria-checked={checked}
-      onClick={() => onChange(!checked)}
       className="relative w-11 h-6 rounded-full flex-shrink-0 transition-all duration-200 focus:outline-none"
       style={checked
         ? { background: NAV, boxShadow: `0 0 0 3px rgba(11,30,62,0.18)` }
@@ -328,16 +278,6 @@ export const PipelinePage: React.FC = () => {
 
   const [storyId,       setStoryId]       = useState('')
   const [inputValue,    setInputValue]    = useState('')
-  const [useRag,        setUseRag]        = useState(true)
-  const [useLegacyRag,  setUseLegacyRag]  = useState(false)
-  const [forceRefresh,  setForceRefresh]  = useState(false)
-  const [runAgent4,     setRunAgent4]     = useState(true)
-  const [modelAgent1,   setModelAgent1]   = useState<ModelOption>('llama4')
-  const [modelAgent15,  setModelAgent15]  = useState<ModelOption>('llama4')
-  const [modelAgent2,   setModelAgent2]   = useState<ModelOption>('llama4')
-  const [modelAgent3,   setModelAgent3]   = useState<ModelOption>('qwen3')
-  const [modelAgent4,   setModelAgent4]   = useState<ModelOption>('qwen3')
-  const [modelAgent5,   setModelAgent5]   = useState<ModelOption>('qwen3')
   const [manualTests,   setManualTests]   = useState<any[]>([])
   const [selectedAgent, setSelectedAgent] = useState<string | null>(null)
   const [showJson, setShowJson] = useState(true)
@@ -366,19 +306,9 @@ export const PipelinePage: React.FC = () => {
     setManualTests([])
     launchParamsRef.current = {
       id,
-      use_rag: useRag,
-      use_legacy_rag: useLegacyRag,
-      run_agent4: runAgent4,
-      force_refresh: forceRefresh,
-      model_agent1: modelAgent1,
-      model_agent15: modelAgent15,
-      model_agent2: modelAgent2,
-      model_agent3_quality: modelAgent3,
-      model_agent4: modelAgent4,
-      model_agent5: modelAgent5,
     }
     setLaunchToken(t => t + 1) // always increments → effect always fires
-  }, [inputValue, useRag, useLegacyRag, runAgent4, forceRefresh, modelAgent1, modelAgent15, modelAgent2, modelAgent3, modelAgent4, modelAgent5])
+  }, [inputValue])
 
   // FIX #5 — stable deps: run and toast are accessed via refs to avoid stale-closure warnings
   const runRef   = useRef(run)
@@ -388,19 +318,9 @@ export const PipelinePage: React.FC = () => {
 
   useEffect(() => {
     if (!launchToken || !launchParamsRef.current) return
-    const params = launchParamsRef.current
     const launch = async () => {
       try {
-        const resp = await runRef.current({
-          use_rag:             params.use_rag,
-          use_legacy_rag:      params.use_legacy_rag,
-          force_refresh:       params.force_refresh,
-          model_agent1:        params.model_agent1,
-          model_agent15:       params.model_agent15,
-          model_agent2:        params.model_agent2,
-          model_agent3_quality: params.model_agent3_quality,
-          model_agent5:        params.model_agent5,
-        })
+        const resp = await runRef.current({})
         const tests = (resp as any)?.result?.agent2_tests || (resp as any)?.agent2_tests || []
         setManualTests(tests)
         if ((resp as any)?.status === 'completed') toastRef.current.success('Pipeline terminé avec succès !')
@@ -547,25 +467,6 @@ export const PipelinePage: React.FC = () => {
               </div>
               <p className="text-xs mt-2 ml-1" style={{ color: `${NAV}50` }}>Appuyez sur Entrée ou cliquez sur « Lancer »</p>
             </div>
-
-            <div>
-              <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: `${NAV}60` }}>⚙️ Options</p>
-              <div className="space-y-4">
-                <Toggle checked={useRag}       onChange={setUseRag}       label="Contexte RAG"              desc="Enrichissement par la base de connaissances" />
-                <Toggle checked={useLegacyRag} onChange={setUseLegacyRag} label="RAG Legacy"                desc="Ancien système de récupération" />
-                <Toggle checked={forceRefresh} onChange={setForceRefresh} label="Renforcer l'enrichissement" desc="Force le rechargement des données complet" />
-                <Toggle checked={runAgent4}    onChange={setRunAgent4}    label="Rapport Agent 4"           desc="Génération du rapport qualité final" />
-              </div>
-            </div>
-          </div>
-
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 mt-2">
-            <ModelSelector label="Modèle Agent 1"   value={modelAgent1}  onChange={setModelAgent1}  />
-            <ModelSelector label="Modèle Agent 1.5" value={modelAgent15} onChange={setModelAgent15} />
-            <ModelSelector label="Modèle Agent 2"   value={modelAgent2}  onChange={setModelAgent2}  />
-            <ModelSelector label="Modèle Agent 3"   value={modelAgent3}  onChange={setModelAgent3}  />
-            <ModelSelector label="Modèle Agent 5"   value={modelAgent5}  onChange={setModelAgent5}  />
-            <ModelSelector label="Modèle Agent 4"   value={modelAgent4}  onChange={setModelAgent4}  disabled={!runAgent4} />
           </div>
 
           {showJson && (
@@ -640,22 +541,6 @@ export const PipelinePage: React.FC = () => {
                 style={{ width: `${progress}%`, height: '100%' }}
               />
             </div>
-            {data && (
-              <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-                {[
-                  { label: 'Agent 1',     value: modelAgent1 },
-                  { label: 'Agent 1.5',   value: modelAgent15 },
-                  { label: 'Agent 2',     value: modelAgent2 },
-                  { label: 'Agent 3',     value: modelAgent3 },
-                  { label: 'Agent 4 / 5', value: runAgent4 ? `${modelAgent4} / ${modelAgent5}` : modelAgent5 },
-                ].map(({ label, value }) => (
-                  <div key={label} className="rounded-2xl bg-slate-50 p-4 border border-slate-200">
-                    <p className="text-[10px] uppercase tracking-[0.18em] text-slate-500">{label}</p>
-                    <p className="mt-2 text-sm font-semibold text-slate-900">{value}</p>
-                  </div>
-                ))}
-              </div>
-            )}
           </div>
 
           {/* Agent tabs + workspace */}
