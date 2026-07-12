@@ -12,6 +12,7 @@ const PAGE_TITLES: Record<string, { title: string; subtitle: string }> = {
   '/admin/users':       { title: 'Gestion Utilisateurs', subtitle: 'Créer, modifier, activer/désactiver les comptes' },
   '/admin/pipelines':   { title: 'Historique Pipelines', subtitle: 'Qui a lancé quoi, quand et avec quel résultat' },
   '/admin/audit':       { title: 'Journal d\'Audit', subtitle: 'Traçabilité complète des actions utilisateurs' },
+  '/profile':           { title: 'Mon Profil', subtitle: 'Gérez vos informations personnelles et mot de passe' },
 }
 
 export const AppLayout: React.FC = () => {
@@ -120,7 +121,7 @@ export const AppLayout: React.FC = () => {
                 {/* Menu items */}
                 <div className="p-2">
                   <button type="button"
-                    onClick={() => { setDropdownOpen(false) }}
+                    onClick={() => { setDropdownOpen(false); navigate('/profile') }}
                     className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-brand-navy hover:bg-gray-50 transition-colors">
                     <User size={15} className="text-brand-muted" />
                     Mon profil

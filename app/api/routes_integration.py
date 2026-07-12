@@ -31,6 +31,7 @@ class IntegrationTestCase(BaseModel):
     story_key: Optional[str] = Field(None, description="Clé Jira de la User Story liée")
     objective: str = Field(..., description="Objectif du test")
     scenario_type: Optional[str] = Field(None, description="Type de scénario")
+    priority: Optional[str] = Field(None, description="Priorité du test (ex: HIGH, MEDIUM, LOW)")
     preconditions: List[str] = Field(default_factory=list, description="Préconditions du test")
     steps: List[IntegrationTestStep] = Field(default_factory=list)
     etapes: Optional[List[Dict[str, Any]]] = Field(default=None, alias='étapes')
@@ -321,6 +322,7 @@ async def integrate_tests(
                 steps=step_payload,
                 use_test_jira=use_test_jira,
                 session=jira_session,
+                priority=test_case.priority,
             )
 
             if issue.get("error"):
@@ -494,6 +496,7 @@ async def integrate_test_single(
                 steps=step_payload,
                 use_test_jira=use_test_jira,
                 session=jira_session,
+                priority=test_case.priority,
             )
 
             if issue.get("error"):

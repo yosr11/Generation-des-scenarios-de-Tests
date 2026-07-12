@@ -3,16 +3,40 @@ import { useNavigate, Navigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { useToast } from '../contexts/ToastContext'
 import { apiClient, API_BASE_URL } from '../api/client'
-import { Mail, Lock, User, Eye, EyeOff, ArrowRight, Shield } from 'lucide-react'
+import { Mail, Lock, User, Eye, EyeOff, ArrowRight, Shield, X } from 'lucide-react'
 
 export const LoginPage: React.FC = () => {
   const [identifier, setIdentifier] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [showForgotModal, setShowForgotModal] = useState(false)
+  const [resetEmail, setResetEmail] = useState('')
+  const [resetLoading, setResetLoading] = useState(false)
+  const [devResetUrl, setDevResetUrl] = useState('')
   const { setAuth, user, loading: authLoading } = useAuth()
   const toast = useToast()
   const navigate = useNavigate()
+
+  const handleForgotSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setResetLoading(true)
+    setDevResetUrl('')
+    try {
+      const resp = await apiClient.auth.requestPasswordReset(resetEmail)
+      toast.success(resp.message || 'Demande de réinitialisation envoyée.')
+      if (resp.dev_reset_url) {
+        setDevResetUrl(resp.dev_reset_url)
+      } else {
+        setShowForgotModal(false)
+        setResetEmail('')
+      }
+    } catch (err: any) {
+      toast.error(err?.message || 'Erreur lors de la demande.')
+    } finally {
+      setResetLoading(false)
+    }
+  }
 
   React.useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -185,9 +209,22 @@ export const LoginPage: React.FC = () => {
 
             {/* Password */}
             <div>
-              <label className="block text-xs font-bold text-brand-navy/70 uppercase tracking-widest mb-2">
-                Mot de passe
-              </label>
+              <div className="flex items-center justify-between mb-2">
+                <label className="block text-xs font-bold text-brand-navy/70 uppercase tracking-widest">
+                  Mot de passe
+                </label>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setDevResetUrl('')
+                    setResetEmail('')
+                    setShowForgotModal(true)
+                  }}
+                  className="text-xs font-semibold text-brand-rose hover:text-brand-orange transition-colors"
+                >
+                  Mot de passe oublié ?
+                </button>
+              </div>
               <div className="relative">
                 <Lock size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-muted" />
                 <input
@@ -275,6 +312,72 @@ export const LoginPage: React.FC = () => {
           </p>
         </div>
       </div>
+
+      {/* Forgot Password Modal */}
+      {showForgotModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={() => setShowForgotModal(false)} />
+          <div className="relative bg-white rounded-3xl w-full max-w-md shadow-2xl p-6 z-10 animate-scale-in">
+            <div className="flex items-center justify-between border-b border-gray-100 pb-3 mb-4">
+              <h3 className="font-bold text-brand-navy text-lg">Réinitialiser le mot de passe</h3>
+              <button onClick={() => setShowForgotModal(false)} className="p-1 rounded-lg hover:bg-gray-100 text-slate-400 transition-colors">
+                <X size={18} />
+              </button>
+            </div>
+
+            {devResetUrl ? (
+              <div className="space-y-4">
+                <div className="p-3 bg-amber-50 border border-amber-200 text-amber-900 text-xs rounded-xl">
+                  <p className="font-bold mb-1">Mode de développement (Pas de serveur email) :</p>
+                  <p>Le lien de réinitialisation a été généré avec succès. Vous pouvez cliquer ci-dessous pour changer de mot de passe directement.</p>
+                </div>
+                <a
+                  href={devResetUrl}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    setShowForgotModal(false)
+                    const path = devResetUrl.substring(devResetUrl.indexOf('/reset-password'))
+                    navigate(path)
+                  }}
+                  className="block w-full text-center py-3 rounded-xl bg-brand-rose text-white text-sm font-bold hover:opacity-95 transition"
+                >
+                  Accéder au changement de mot de passe
+                </a>
+              </div>
+            ) : (
+              <form onSubmit={handleForgotSubmit} className="space-y-4">
+                <p className="text-xs text-slate-500 leading-relaxed">
+                  Saisissez l'adresse email de votre compte. Un lien pour configurer un nouveau mot de passe vous sera transmis.
+                </p>
+                <div className="space-y-1">
+                  <label className="block text-xs font-bold text-brand-navy/70 uppercase tracking-widest">
+                    Adresse Email
+                  </label>
+                  <div className="relative">
+                    <Mail size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-muted" />
+                    <input
+                      type="email"
+                      placeholder="Ex: admin@soprahr.com"
+                      value={resetEmail}
+                      onChange={(e) => setResetEmail(e.target.value)}
+                      required
+                      className="w-full pl-11 pr-4 py-3.5 bg-white border-2 border-gray-100 rounded-xl text-sm font-medium text-brand-navy placeholder:text-gray-300 focus:border-brand-violet transition-all shadow-sm"
+                    />
+                  </div>
+                </div>
+                <button
+                  type="submit"
+                  disabled={resetLoading}
+                  className="w-full py-3.5 rounded-xl font-bold text-white text-sm flex items-center justify-center gap-2"
+                  style={{ background: 'linear-gradient(135deg, #ef4444, #f43f5e, #f97316)' }}
+                >
+                  {resetLoading ? 'Envoi...' : 'Générer le lien'}
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

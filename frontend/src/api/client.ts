@@ -279,6 +279,47 @@ export const apiClient = {
         throw handleError(error)
       }
     },
+
+    async getProfile(): Promise<any> {
+      try {
+        const response = await axiosInstance.get('/auth/profile')
+        return response.data
+      } catch (error) {
+        throw handleError(error)
+      }
+    },
+
+    async updateProfile(data: {
+      display_name?: string
+      jira_username?: string
+      current_password?: string
+      new_password?: string
+    }): Promise<any> {
+      try {
+        const response = await axiosInstance.patch('/auth/profile', data)
+        return response.data
+      } catch (error) {
+        throw handleError(error)
+      }
+    },
+
+    async requestPasswordReset(email: string): Promise<any> {
+      try {
+        const response = await axiosInstance.post('/auth/password-reset/request', { email })
+        return response.data
+      } catch (error) {
+        throw handleError(error)
+      }
+    },
+
+    async confirmPasswordReset(data: { token: string; new_password: string }): Promise<any> {
+      try {
+        const response = await axiosInstance.post('/auth/password-reset/confirm', data)
+        return response.data
+      } catch (error) {
+        throw handleError(error)
+      }
+    },
   },
 
   // ── Orchestrator ─────────────────────────────────────────────

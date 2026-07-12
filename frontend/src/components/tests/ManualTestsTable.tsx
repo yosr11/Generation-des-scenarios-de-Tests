@@ -63,6 +63,7 @@ function buildPayload(test: any, storyId?: string) {
     story_key: storyId || undefined,
     objective: test.objective || rawName,
     scenario_type: test.scenario_type,
+    priority: test.priority || test.priorite || undefined,
     preconditions: Array.isArray(test.preconditions) ? test.preconditions : [],
     étapes: groupedEtapes.length ? groupedEtapes : undefined,
     steps: flatSteps.map((s: any) => ({

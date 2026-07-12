@@ -343,6 +343,169 @@ async def get_me(user: CurrentUser = Depends(get_current_user)):
     }
 
 
+# ── /profile ─────────────────────────────────────────────────────────────────
+
+class UpdateProfileRequest(BaseModel):
+    """Mise à jour du profil utilisateur connecté."""
+    display_name: Optional[str] = None
+    jira_username: Optional[str] = None  # testeur uniquement
+    current_password: Optional[str] = None  # requis si new_password est fourni
+    new_password: Optional[str] = Field(default=None, min_length=6)
+
+
+@router.get("/profile")
+async def get_profile(
+    user: CurrentUser = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """Retourne le profil complet de l'utilisateur connecté."""
+    from app.services.user_service import get_user_by_id
+    if user.user_id:
+        profile = await get_user_by_id(db, user.user_id)
+        if profile:
+            return profile
+    # Fallback depuis le token
+    return {
+        "id": user.user_id,
+        "email": user.email,
+        "role": user.role,
+        "display_name": user.display_name,
+        "jira_username": user.jira_username,
+        "is_active": True,
+        "last_login_at": None,
+        "created_at": None,
+    }
+
+
+@router.patch("/profile")
+async def update_profile(
+    body: UpdateProfileRequest,
+    user: CurrentUser = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """Mise à jour du profil de l'utilisateur connecté."""
+    from app.services.user_service import get_user_by_id, update_user
+    from app.models.pg_models import User
+    from sqlalchemy import select
+    from app.core.security import verify_password
+
+    if not user.user_id:
+        raise HTTPException(status_code=400, detail="Utilisateur introuvable.")
+
+    # Si nouveau mot de passe demandé, vérifier l'ancien
+    new_password = None
+    if body.new_password:
+        if not body.current_password:
+            raise HTTPException(
+                status_code=400,
+                detail="Le mot de passe actuel est requis pour en définir un nouveau.",
+            )
+        result = await db.execute(select(User).where(User.id == user.user_id))
+        db_user = result.scalar_one_or_none()
+        if not db_user or not verify_password(body.current_password, db_user.hashed_password):
+            raise HTTPException(status_code=400, detail="Mot de passe actuel incorrect.")
+        new_password = body.new_password
+
+    # Les testeurs ne peuvent pas changer le rôle
+    result = await update_user(
+        db,
+        user.user_id,
+        display_name=body.display_name,
+        jira_username=body.jira_username if user.role == "tester" else None,
+        password=new_password,
+    )
+
+    if not result.get("ok"):
+        raise HTTPException(status_code=400, detail=result.get("error"))
+
+    return result["user"]
+
+
+# ── /password-reset ───────────────────────────────────────────────────────────
+import secrets
+import time
+from typing import Dict as _Dict
+
+# In-memory store: token -> {email, expires_at}
+_reset_tokens: _Dict[str, dict] = {}
+RESET_TOKEN_TTL = 3600  # 1 heure
+
+
+class PasswordResetRequestBody(BaseModel):
+    email: str = Field(..., min_length=1, description="Email du compte à réinitialiser")
+
+
+class PasswordResetConfirmBody(BaseModel):
+    token: str = Field(..., min_length=1)
+    new_password: str = Field(..., min_length=6)
+
+
+@router.post("/password-reset/request")
+async def request_password_reset(
+    body: PasswordResetRequestBody,
+    db: AsyncSession = Depends(get_db),
+):
+    """Génère un token de réinitialisation et l'affiche dans les logs (mode dev)."""
+    import logging
+    logger = logging.getLogger(__name__)
+
+    from app.services.user_service import get_user_by_email as _get_by_email
+    user = await _get_by_email(db, body.email.strip().lower())
+
+    # Réponse identique que l'email existe ou non (sécurité)
+    if not user:
+        logger.warning("[PasswordReset] Email introuvable: %s", body.email)
+        return {"status": "ok", "message": "Si ce compte existe, un lien de réinitialisation a été généré."}
+
+    token = secrets.token_urlsafe(32)
+    _reset_tokens[token] = {
+        "email": user.email,
+        "expires_at": time.time() + RESET_TOKEN_TTL,
+    }
+
+    reset_url = f"{settings.FRONTEND_BASE_URL.rstrip('/')}/reset-password?token={token}"
+    logger.warning(
+        "[PasswordReset][DEV] Lien de réinitialisation pour %s:\n%s",
+        user.email,
+        reset_url,
+    )
+
+    return {
+        "status": "ok",
+        "message": "Si ce compte existe, un lien de réinitialisation a été généré.",
+        "dev_reset_url": reset_url,
+    }
+
+
+@router.post("/password-reset/confirm")
+async def confirm_password_reset(
+    body: PasswordResetConfirmBody,
+    db: AsyncSession = Depends(get_db),
+):
+    """Valide le token et met à jour le mot de passe."""
+    token_data = _reset_tokens.get(body.token)
+    if not token_data:
+        raise HTTPException(status_code=400, detail="Token invalide ou expiré.")
+
+    if time.time() > token_data["expires_at"]:
+        if body.token in _reset_tokens:
+            del _reset_tokens[body.token]
+        raise HTTPException(status_code=400, detail="Token expiré. Veuillez recommencer.")
+
+    from app.services.user_service import get_user_by_email as _get_by_email, update_user
+    user = await _get_by_email(db, token_data["email"])
+    if not user:
+        raise HTTPException(status_code=404, detail="Compte introuvable.")
+
+    result = await update_user(db, user.id, password=body.new_password)
+    if not result.get("ok"):
+        raise HTTPException(status_code=400, detail=result.get("error"))
+
+    del _reset_tokens[body.token]
+
+    return {"status": "ok", "message": "Mot de passe mis à jour avec succès."}
+
+
 # ── /projects ─────────────────────────────────────────────────────────────────
 
 @router.get("/projects")

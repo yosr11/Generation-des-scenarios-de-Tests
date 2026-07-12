@@ -13,6 +13,8 @@ import { AdminDashboardPage } from './pages/admin/AdminDashboardPage'
 import { UsersPage } from './pages/admin/UsersPage'
 import { PipelineHistoryPage } from './pages/admin/PipelineHistoryPage'
 import { AuditPage } from './pages/admin/AuditPage'
+import { ProfilePage } from './pages/ProfilePage'
+import { ResetPasswordPage } from './pages/ResetPasswordPage'
 
 function AuthenticatedLayout() {
   return (
@@ -31,12 +33,14 @@ function App() {
             {/* Public Routes */}
             <Route path="/"      element={<LandingPage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
 
             {/* Authenticated Routes */}
             <Route element={<AuthenticatedLayout />}>
 
               {/* ── Redirect /home to role-aware default ── */}
               <Route path="/home" element={<Navigate to="/pipeline" replace />} />
+              <Route path="/profile" element={<ProfilePage />} />
 
               {/* ── Tester Routes ── */}
               <Route

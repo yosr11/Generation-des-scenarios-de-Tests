@@ -13,7 +13,7 @@ import { Alert } from '../components/ui/Alert'
 import { ManualTestsTable } from '../components/tests/ManualTestsTable'
 import { AgentRichOutput, AgentSectionTitle } from '../components/agents/AgentOutputs'
 
-// â”€â”€ Colors & Styles matching PipelinePage â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Colors & Styles matching PipelinePage ────────────────────────
 const NAV       = '#0a0f2e'
 const NAV_LIGHT = '#1a2060'
 const ROSE      = '#f43f5e'
@@ -21,25 +21,25 @@ const ORANGE    = '#f97316'
 const VIOLET    = '#7c3aed'
 
 const CARD_GRADIENT = `linear-gradient(135deg, #6366f1, #ec4899)`
-// DÃ©gradÃ© premium inspirÃ© de la page landing : bleu marine profond vers rose/violet
+// Dégradé premium inspiré de la page landing : bleu marine profond vers rose/violet
 const HEADER_GRADIENT = 'linear-gradient(135deg, #0a0f2e 0%, #13113c 50%, #2d1334 100%)'
 const HEADER_SHADOW   = '0 8px 30px rgba(10, 15, 46, 0.22)'
-// DÃ©gradÃ© des boutons d'action (violet â†’ rose â†’ orange) â€” image 1 & 2
+// Dégradé des boutons d'action (violet → rose → orange) — image 1 & 2
 const BUTTON_GRADIENT = `linear-gradient(90deg, #4338ca, ${ROSE})`
 const ICON_GRADIENT = `linear-gradient(135deg, #6366f1, #ec4899)`
-// DÃ©gradÃ© bleu marine pur pour les headers de tableau â€” image 5
+// Dégradé bleu marine pur pour les headers de tableau — image 5
 const NAVY_GRADIENT   = `linear-gradient(135deg, ${NAV}, ${NAV_LIGHT})`
-// DÃ©gradÃ© KPI inspirÃ© de la landing â€” marine dominant, transition rose/orange en fin
+// Dégradé KPI inspiré de la landing — marine dominant, transition rose/orange en fin
 const KPI_GRADIENT = `linear-gradient(135deg, ${NAV} 0%, ${ROSE} 70%, ${ORANGE} 100%)`
 const KPI_SHADOW    = '0 8px 24px rgba(10, 15, 46, 0.18)'
 
 const AGENT_INFO: Record<string, { label: string; desc: string; icon: React.ElementType; gradient: string; accent: string }> = {
-  'Agent 1':   { label: 'Agent 1 â€” Analyse',              desc: 'Analyse sÃ©mantique de la user story',             icon: FileText,      gradient: ICON_GRADIENT, accent: VIOLET },
-  'Agent 1.5': { label: 'Agent 1.5 â€” Business Modeling',  desc: 'Goals mÃ©tier & workflows end-to-end',              icon: GitBranch,     gradient: ICON_GRADIENT, accent: VIOLET },
-  'Agent 2':   { label: 'Agent 2 â€” GÃ©nÃ©ration des tests', desc: 'CrÃ©ation des scÃ©narios de tests manuels',         icon: TestTube,      gradient: ICON_GRADIENT, accent: ROSE },
-  'Agent 3':   { label: 'Agent 3 â€” Validation',           desc: 'Couverture, ambiguÃ¯tÃ©s & cas limites',            icon: CheckCircle2,  gradient: ICON_GRADIENT, accent: ORANGE },
-  'Agent 4':   { label: 'Agent 4 â€” Classification',       desc: 'Classification auto/manuel',                      icon: BarChart3,     gradient: ICON_GRADIENT, accent: VIOLET },
-  'Agent 5':   { label: 'Agent 5 â€” Rapport',              desc: 'Rapport qualitÃ© & recommandations',               icon: FileBarChart2, gradient: ICON_GRADIENT, accent: NAV },
+  'Agent 1':   { label: 'Agent 1 — Analyse',              desc: 'Analyse sémantique de la user story',             icon: FileText,      gradient: ICON_GRADIENT, accent: VIOLET },
+  'Agent 1.5': { label: 'Agent 1.5 — Business Modeling',  desc: 'Goals métier & workflows end-to-end',              icon: GitBranch,     gradient: ICON_GRADIENT, accent: VIOLET },
+  'Agent 2':   { label: 'Agent 2 — Génération des tests', desc: 'Création des scénarios de tests manuels',         icon: TestTube,      gradient: ICON_GRADIENT, accent: ROSE },
+  'Agent 3':   { label: 'Agent 3 — Validation',           desc: 'Couverture, ambiguïtés & cas limites',            icon: CheckCircle2,  gradient: ICON_GRADIENT, accent: ORANGE },
+  'Agent 4':   { label: 'Agent 4 — Classification',       desc: 'Classification auto/manuel',                      icon: BarChart3,     gradient: ICON_GRADIENT, accent: VIOLET },
+  'Agent 5':   { label: 'Agent 5 — Rapport',              desc: 'Rapport qualité & recommandations',               icon: FileBarChart2, gradient: ICON_GRADIENT, accent: NAV },
 }
 
 // SectionTitle â€” replaced by AgentSectionTitle from AgentOutputs.tsx
@@ -180,14 +180,14 @@ export const StoryDetailPage: React.FC = () => {
 
   const handleDeleteStory = async () => {
     if (!storyId) return
-    const confirmed = window.confirm(`Supprimer la story ${storyId} et toutes ses donnÃ©es enregistrÃ©es ?`)
+    const confirmed = window.confirm(`Supprimer la story ${storyId} et toutes ses données enregistrées ?`)
     if (!confirmed) return
     try {
       await apiClient.db.deleteStory(storyId)
-      toast.success(`Story ${storyId} supprimÃ©e`)
+      toast.success(`Story ${storyId} supprimée`)
       navigate('/history')
     } catch (error: any) {
-      toast.error(error?.message || 'Ã‰chec de la suppression')
+      toast.error(error?.message || 'Échec de la suppression')
     }
   }
 
@@ -209,7 +209,7 @@ export const StoryDetailPage: React.FC = () => {
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-[10px] font-extrabold uppercase tracking-widest text-slate-400 mb-1">{agentName}</p>
-            <h3 className="text-base font-extrabold text-slate-800 leading-snug group-hover:text-brand-rose">{info.label.split('â€”')[1]?.trim() || info.label}</h3>
+            <h3 className="text-base font-extrabold text-slate-800 leading-snug group-hover:text-brand-rose">{info.label.split('—')[1]?.trim() || info.label}</h3>
             <p className="text-xs text-slate-500 mt-1 leading-relaxed">{info.desc}</p>
           </div>
           {isAvailable ? (
@@ -235,7 +235,7 @@ export const StoryDetailPage: React.FC = () => {
             className="inline-flex items-center gap-2 text-sm font-semibold transition hover:-translate-x-0.5"
             style={{ color: ROSE }}
           >
-            <ArrowLeft size={16} /> Retour Ã  l'historique
+            <ArrowLeft size={16} /> Retour à l'historique
           </button>
           <div>
             <p className="text-xs uppercase tracking-widest font-bold text-slate-400">Historique User Story</p>
@@ -262,7 +262,7 @@ export const StoryDetailPage: React.FC = () => {
       </div>
 
       {story.error && (
-        <Alert type="error" title="Impossible de charger la story" description={story.error.message || 'VÃ©rifiez l\'ID.'} />
+        <Alert type="error" title="Impossible de charger la story" description={story.error.message || "Vérifiez l'ID."} />
       )}
 
       {/* Main Details block */}
@@ -276,28 +276,28 @@ export const StoryDetailPage: React.FC = () => {
               <Badge variant="success">{story.data.status}</Badge>
             )}
           </div>
-          <h2 className="text-xl font-bold" style={{ color: NAV }}>{story.data?.summary || 'Aucune synthÃ¨se'}</h2>
+          <h2 className="text-xl font-bold" style={{ color: NAV }}>{story.data?.summary || 'Aucune synthèse'}</h2>
           <p className="text-sm text-slate-600 leading-relaxed max-w-4xl">
-            {story.data?.description_clean || story.data?.description_raw || 'Aucune description enregistrÃ©e.'}
+            {story.data?.description_clean || story.data?.description_raw || 'Aucune description enregistrée.'}
           </p>
 
           <div className="grid gap-3 sm:grid-cols-3 mt-4">
             <div className="rounded-2xl bg-slate-50 p-4 border">
-              <p className="text-[11px] uppercase tracking-[0.18em] text-slate-400 font-bold">CrÃ©Ã©e le</p>
+              <p className="text-[11px] uppercase tracking-[0.18em] text-slate-400 font-bold">Créée le</p>
               <p className="mt-1.5 text-sm font-bold text-slate-800">
                 {story.data?.created_at
                   ? new Date(story.data.created_at).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' })
-                  : 'â€”'}
+                  : '—'}
               </p>
             </div>
             <div className="rounded-2xl bg-slate-50 p-4 border">
-              <p className="text-[11px] uppercase tracking-[0.18em] text-slate-400 font-bold">CritÃ¨res d'acceptation</p>
+              <p className="text-[11px] uppercase tracking-[0.18em] text-slate-400 font-bold">Critères d'acceptation</p>
               <p className="mt-1.5 text-xs text-slate-600 truncate">
-                {story.data?.acceptance_criteria_clean || 'Aucun critÃ¨re enregistrÃ©'}
+                {story.data?.acceptance_criteria_clean || 'Aucun critère enregistré'}
               </p>
             </div>
             <div className="rounded-2xl bg-slate-50 p-4 border">
-              <p className="text-[11px] uppercase tracking-[0.18em] text-slate-400 font-bold">Ã‰tiquettes</p>
+              <p className="text-[11px] uppercase tracking-[0.18em] text-slate-400 font-bold">Étiquettes</p>
               <p className="mt-1.5 text-sm text-slate-600">
                 {story.data?.labels?.length ? story.data.labels.join(', ') : 'Aucune'}
               </p>
@@ -321,7 +321,7 @@ export const StoryDetailPage: React.FC = () => {
       {/* JSON raw view */}
       {showJsonHistory && (
         <div className="mt-6 space-y-4">
-          <AgentSectionTitle>DonnÃ©es JSON â€” Historique</AgentSectionTitle>
+          <AgentSectionTitle>Données JSON — Historique</AgentSectionTitle>
 
           {storedStory?.images && storedStory.images.length > 0 && (
             <div className="rounded-3xl border bg-white p-5 shadow-sm">

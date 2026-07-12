@@ -973,6 +973,7 @@ def create_test_issue(
     steps: Optional[List[Dict[str, str]]] = None,
     use_test_jira: bool = False,
     session: Optional[requests.Session] = None,
+    priority: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
     Crée une issue Jira de type Test, puis tente d'ajouter les steps Xray.
@@ -1023,6 +1024,10 @@ def create_test_issue(
     # Ajouter la description dès la création si Jira l'autorise
     if description and (not allowed_fields or "description" in allowed_fields):
         create_fields["description"] = description
+
+    # Ajouter la priorité si fournie et autorisée
+    if priority and (not allowed_fields or "priority" in allowed_fields):
+        create_fields["priority"] = {"name": priority}
 
     # Test Type = Manual : requis pour activer l'onglet "Test Details".
     if not allowed_fields or XRAY_FIELD_TEST_TYPE in allowed_fields:
