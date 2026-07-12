@@ -47,6 +47,13 @@ class Settings:
     ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "yomahfoudh@soprahr.com")
     ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "soprahr2026")
 
+    # ── SMTP Mail ────────────────────────────────────────────
+    SMTP_HOST = os.getenv("SMTP_HOST", "")
+    SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
+    SMTP_USER = os.getenv("SMTP_USER", "")
+    SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "")
+    SMTP_FROM = os.getenv("SMTP_FROM", "")
+
     # ── LLM / Groq ──────────────────────────────────────────
     GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
     LLM_PROVIDER = os.getenv("LLM_PROVIDER", "groq")
