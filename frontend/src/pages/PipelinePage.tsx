@@ -14,24 +14,29 @@ import {
 
 // ── Constants ──────────────────────────────────────────────────────────────────
 
-const NAV       = '#0a0f2e'
+const NAV       = '#131b4e'
 const NAV_LIGHT = '#1a2060'
 const ROSE      = '#f43f5e'
 const ORANGE    = '#f97316'
 const VIOLET    = '#7c3aed'
 
-const MAIN_GRADIENT = `linear-gradient(90deg, ${NAV}, ${NAV_LIGHT}, ${VIOLET}, ${ROSE}, ${ORANGE})`
-const CARD_GRADIENT = `linear-gradient(135deg, #6366f1, #ec4899)`
+const MAIN_GRADIENT = `linear-gradient(90deg, ${NAV}, ${NAV_LIGHT}, ${ROSE})`
+const CARD_GRADIENT = `linear-gradient(135deg, ${NAV}, ${ROSE})`
 // Dégradé premium inspiré de la page landing : bleu marine profond vers rose/violet
 const HEADER_GRADIENT = 'linear-gradient(135deg, #0a0f2e 0%, #13113c 50%, #2d1334 100%)'
 const HEADER_SHADOW   = '0 8px 30px rgba(10, 15, 46, 0.22)'
-// Dégradé des boutons d'action (violet → rose → orange) — image 1 & 2
-const BUTTON_GRADIENT = `linear-gradient(90deg, #4338ca, ${ROSE})`
-const ICON_GRADIENT = `linear-gradient(135deg, #6366f1, #ec4899)`
+// Dégradé des boutons d'action (rose → rouge) — vibrant et moderne
+
+const BUTTON_GRADIENT = `linear-gradient(135deg,  #3d5a8f , ${NAV_LIGHT})`
+// Dégradé bleu marine pour les icones des agents
+const ICON_GRADIENT = `linear-gradient(135deg, ${NAV}, ${NAV_LIGHT})`
+// Bleu ciel très clair pour les icones des cartes agents
+const AGENT_CARD_ICON_BG = 'linear-gradient(135deg, #fce7ed, #fdd7e3)'
+
 // Dégradé bleu marine pur pour les headers de tableau — image 5
 const NAVY_GRADIENT   = `linear-gradient(135deg, ${NAV}, ${NAV_LIGHT})`
-// Dégradé KPI inspiré de la landing — marine dominant, transition rose/orange en fin
-const KPI_GRADIENT = `linear-gradient(135deg, ${NAV} 0%, ${ROSE} 70%, ${ORANGE} 100%)`
+// Dégradé KPI inspiré de la landing — marine dominant, transition rose en fin (minimaliste)
+const KPI_GRADIENT = `linear-gradient(135deg, ${NAV} 0%, ${ROSE} 100%)`
 const KPI_SHADOW    = '0 8px 24px rgba(10, 15, 46, 0.18)'
 
 // FIX #6 — inject print CSS inside a useEffect (SSR-safe, no duplicate injection)
@@ -64,29 +69,47 @@ const STEP_STYLE: Record<string, { bg: string; border: string; icon: React.Eleme
   pending:   { bg: 'rgba(10,22,40,0.02)',   border: 'rgba(10,22,40,0.08)',  icon: Clock },
 }
 
-const AGENT_INFO: Record<string, { label: string; desc: string; icon: React.ElementType; gradient: string; accent: string }> = {
-  'Agent 1':   { label: 'Agent 1 — Analyse',              desc: 'Analyse sémantique de la user story',             icon: FileText,      gradient: ICON_GRADIENT, accent: VIOLET },
-  'Agent 1.5': { label: 'Agent 1.5 — Business Modeling',  desc: 'Goals métier & workflows end-to-end',              icon: GitBranch,     gradient: ICON_GRADIENT, accent: VIOLET },
-  'Agent 2':   { label: 'Agent 2 — Génération des tests', desc: 'Création des scénarios de tests manuels',         icon: TestTube,      gradient: ICON_GRADIENT, accent: ROSE },
-  'Agent 3':   { label: 'Agent 3 - Validation',           desc: 'Couverture, ambiguïtés & cas limites',            icon: CheckCircle2,  gradient: ICON_GRADIENT, accent: ORANGE },
-  'Agent 5':   { label: 'Agent 5 - Rapport',              desc: 'Rapport qualité & recommandations',               icon: FileBarChart2, gradient: ICON_GRADIENT, accent: NAV },
+const AGENT_ORDER = ['Agent 1', 'Agent 1.5', 'Agent 2', 'Agent 3', 'Agent 5'] as const
+const STATUS_LABELS: Record<string, string> = {
+  completed: 'Terminé',
+  failed: 'Échec',
+  running: 'En cours',
+  pending: 'En attente',
 }
+
+const AGENT_INFO: Record<string, { label: string; desc: string; step: number; icon: React.ElementType; gradient: string; accent: string }> = {
+  'Agent 1':   { step: 1, label: 'Agent 1 — Analyse',           desc: 'Analyse sémantique de la user story',      icon: FileText,      gradient: ICON_GRADIENT, accent: ROSE },
+  'Agent 1.5': { step: 2, label: 'Agent 1.5 — Modélisation',    desc: 'Objectifs métier et parcours end-to-end',    icon: GitBranch,     gradient: ICON_GRADIENT, accent: VIOLET },
+  'Agent 2':   { step: 3, label: 'Agent 2 — Tests manuels',     desc: 'Scénarios de tests générés automatiquement', icon: TestTube,      gradient: ICON_GRADIENT, accent: ORANGE },
+  'Agent 3':   { step: 4, label: 'Agent 3 — Validation',        desc: 'Couverture, ambiguïtés et cas limites',    icon: CheckCircle2,  gradient: ICON_GRADIENT, accent: ROSE },
+  'Agent 5':   { step: 5, label: 'Agent 5 — Rapport qualité',   desc: 'Synthèse et recommandations finales',      icon: FileBarChart2, gradient: ICON_GRADIENT, accent: VIOLET },
+}
+
+const Toggle: React.FC<{ checked: boolean; onChange: () => void; label: string; desc?: string }> = ({ checked, onChange, label, desc }) => (
+  <label className="group flex items-center gap-3 cursor-pointer">
+    <button
+      type="button"
+      onClick={onChange}
       className="relative w-11 h-6 rounded-full flex-shrink-0 transition-all duration-200 focus:outline-none"
-      style={checked
-        ? { background: NAV, boxShadow: `0 0 0 3px rgba(11,30,62,0.18)` }
-        : { background: '#e2e8f0' }
+      style={
+        checked
+          ? { background: NAV, boxShadow: `0 0 0 3px rgba(11,30,62,0.18)` }
+          : { background: '#e2e8f0' }
       }
     >
-      <span className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-all duration-200 ${checked ? 'left-5' : 'left-0.5'}`} />
+      <span
+        className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-all duration-200 ${
+          checked ? 'left-5' : 'left-0.5'
+        }`}
+      />
     </button>
+
     <div className="flex-1 min-w-0">
-      <p className="text-sm font-semibold text-slate-800 group-hover:text-slate-900 leading-tight">{label}</p>
-      {desc && <p className="text-xs text-slate-500 mt-0.5">{desc}</p>}
+      <p className="text-sm font-semibold">{label}</p>
+      {desc && <p className="text-xs text-slate-500">{desc}</p>}
     </div>
   </label>
 )
-
-// SectionTitle removed — use AgentSectionTitle from AgentOutputs for agent panels
 
 // ── Agent Result Modal ────────────────────────────────────────────────────────
 
@@ -104,7 +127,7 @@ const AgentResultModal: React.FC<{
       <div className="absolute inset-0 backdrop-blur-sm print:hidden"
         style={{ background: 'rgba(10,22,40,0.6)' }}
         onClick={onClose} />
-      <div className="relative bg-white rounded-3xl w-full max-w-5xl shadow-2xl my-4 print:shadow-none print:max-w-full print:rounded-none flex flex-col modal-print-area">
+      <div className="relative bg-white rounded-3xl w-full max-w-6xl shadow-2xl my-4 print:shadow-none print:max-w-full print:rounded-none flex flex-col modal-print-area">
         <div className="flex items-center gap-4 px-6 py-5 sticky top-0 bg-white z-10 border-b rounded-t-3xl"
           style={{ borderColor: 'rgba(10,22,40,0.08)' }}>
           <div className="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0"
@@ -132,13 +155,16 @@ const AgentResultModal: React.FC<{
 const AgentResultCard: React.FC<{
   step: any
   isSelected: boolean
+  isLocked: boolean
+  lockedHint?: string
   onSelect: () => void
   onExpand: () => void
-}> = ({ step, isSelected, onSelect, onExpand }) => {
-  const info        = AGENT_INFO[step.agent] || { label: step.agent, icon: Bot, gradient: CARD_GRADIENT, accent: VIOLET }
+}> = ({ step, isSelected, isLocked, lockedHint, onSelect, onExpand }) => {
+  const info        = AGENT_INFO[step.agent] || { label: step.agent, icon: Bot, gradient: CARD_GRADIENT, accent: ROSE }
   const statusStyle = STEP_STYLE[step.status] || STEP_STYLE.pending
   const Icon        = info.icon
   const isReady     = step.status === 'completed' && step.output
+  const canSelect   = isReady && !isLocked
 
   const statusBadgeClass =
     step.status === 'completed' ? 'syn-badge--navy'
@@ -148,43 +174,50 @@ const AgentResultCard: React.FC<{
 
   return (
     <div
-      className={`syn-agent-tab ${isSelected ? 'syn-agent-tab--active' : ''} ${isReady ? 'cursor-pointer' : 'syn-agent-tab--disabled'}`}
+      className={`syn-agent-tab ${isSelected ? 'syn-agent-tab--active' : ''} ${canSelect ? 'cursor-pointer' : 'syn-agent-tab--disabled'}`}
       style={{ ['--agent-accent' as string]: info.gradient }}
-      onClick={() => isReady && onSelect()}
+      onClick={() => canSelect && onSelect()}
     >
       <div className="p-4 flex items-center gap-3">
         <div
           className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
           style={{
-            background: isReady ? info.gradient : statusStyle.bg,
-            boxShadow: isReady ? `0 4px 14px ${info.accent}35` : undefined,
+            background: isReady ? AGENT_CARD_ICON_BG : statusStyle.bg,
           }}
         >
           {statusStyle.spin
             ? <statusStyle.icon size={16} className="animate-spin text-white" />
-            : <Icon size={16} className={isReady ? 'text-white' : ''} style={{ color: isReady ? 'white' : NAV }} />
+            : <Icon size={16} style={{ color: isReady ? ROSE : NAV }} />
           }
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
+            <span
+              className="text-[10px] font-bold px-1.5 py-0.5 rounded-md flex-shrink-0"
+              style={{ background: `${NAV}10`, color: NAV }}
+            >
+              Étape {info.step ?? '?'}
+            </span>
             <span className="text-xs font-bold truncate text-brand-navy">
               {step.agent}
             </span>
             <span className={`syn-badge ${statusBadgeClass}`}>
-              {step.status}
+              {STATUS_LABELS[step.status] || step.status}
             </span>
           </div>
           <p className="text-[11px] mt-1 truncate text-brand-muted">
-            {step.agent === 'Agent 2' && step.status === 'completed'
-              ? 'Voir les tests générés'
-              : (step.description || info.desc)}
+            {isLocked
+              ? (lockedHint || 'Consultez l’étape précédente')
+              : isReady
+                ? 'Cliquer pour voir le résultat'
+                : (step.description || info.desc)}
           </p>
         </div>
-        {isReady && (
+        {canSelect && (
           <button
             type="button"
             onClick={(e) => { e.stopPropagation(); onExpand() }}
-            className="p-1.5 rounded-lg hover:bg-brand-violet/8 text-brand-muted hover:text-brand-violet transition-colors flex-shrink-0"
+            className="p-1.5 rounded-lg hover:bg-brand-rose/8 text-brand-muted hover:text-brand-rose transition-colors flex-shrink-0"
             title="Ouvrir en plein écran"
           >
             <Maximize2 size={14} />
@@ -207,15 +240,26 @@ const AgentWorkspace: React.FC<{
         <div className="syn-icon-box mx-auto mb-4 opacity-60">
           <Bot size={22} />
         </div>
-        <p className="text-sm font-semibold text-brand-navy">Aucun agent sélectionné</p>
-        <p className="text-xs text-brand-muted mt-1">
-          Cliquez sur une carte agent ci-dessus pour afficher ses résultats
+        <p className="text-sm font-semibold text-brand-navy">Sélectionnez un agent pour voir ses résultats</p>
+        <p className="text-xs text-brand-muted mt-1 max-w-sm mx-auto leading-relaxed">
+          Parcourez les étapes dans l'ordre : Analyse → Modélisation → Tests → Validation → Rapport
         </p>
+        <div className="flex flex-wrap justify-center gap-2 mt-4">
+          {AGENT_ORDER.map((agent, i) => (
+            <span
+              key={agent}
+              className="text-[10px] font-semibold px-2.5 py-1 rounded-full"
+              style={{ background: `${NAV}08`, color: `${NAV}90`, border: `1px solid ${NAV}15` }}
+            >
+              {i + 1}. {AGENT_INFO[agent]?.label.split('—')[1]?.trim() || agent}
+            </span>
+          ))}
+        </div>
       </div>
     )
   }
 
-  const info = AGENT_INFO[step.agent] || { label: step.agent, icon: Bot, gradient: CARD_GRADIENT, desc: '', accent: VIOLET }
+  const info = AGENT_INFO[step.agent] || { label: step.agent, icon: Bot, gradient: CARD_GRADIENT, desc: '', accent: ROSE }
   const Icon = info.icon
 
   const agent2Output = step.agent === 'Agent 2' && manualTests.length
@@ -278,9 +322,11 @@ export const PipelinePage: React.FC = () => {
 
   const [storyId,       setStoryId]       = useState('')
   const [inputValue,    setInputValue]    = useState('')
+  const [inputFocused,  setInputFocused]  = useState(false)
   const [manualTests,   setManualTests]   = useState<any[]>([])
   const [selectedAgent, setSelectedAgent] = useState<string | null>(null)
-  const [showJson, setShowJson] = useState(true)
+  const [visitedAgents, setVisitedAgents] = useState<string[]>([])
+  const [showJson, setShowJson] = useState(false)
 
   // FIX #4 — single open-modal slot tracked in the page, not inside cards
   const [openModalStep, setOpenModalStep] = useState<any | null>(null)
@@ -304,6 +350,8 @@ export const PipelinePage: React.FC = () => {
     if (!id) return
     setStoryId(id)
     setManualTests([])
+    setSelectedAgent(null)
+    setVisitedAgents([])
     launchParamsRef.current = {
       id,
     }
@@ -339,24 +387,40 @@ export const PipelinePage: React.FC = () => {
   }, [data])
 
   const steps          = useMemo(() => (data as any)?.steps || [], [data])
+  const orderedSteps   = useMemo(
+    () => AGENT_ORDER.map(agent => steps.find((s: any) => s.agent === agent)).filter(Boolean) as any[],
+    [steps]
+  )
   const pipelineResult = (data as any)?.result
   const tokenUsage     = (pipelineResult?.token_usage || {}) as Record<string, any>
   const agent1Step     = steps.find((s: any) => s.agent === 'Agent 1')
   const agent2Step     = steps.find((s: any) => s.agent === 'Agent 2')
-  const selectedStep   = steps.find((s: any) => s.agent === selectedAgent) || null
-
-  useEffect(() => {
-    if (agent2Step?.status === 'completed' && agent2Step.output) {
-      setSelectedAgent('Agent 2')
-    }
-  }, [agent2Step?.status, agent2Step?.output])
+  const selectedStep   = orderedSteps.find((s: any) => s.agent === selectedAgent) || null
 
   const handleSelectAgent = useCallback((agent: string) => {
     setSelectedAgent(agent)
+    setVisitedAgents(prev => (prev.includes(agent) ? prev : [...prev, agent]))
     setTimeout(() => {
       workspaceRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }, 80)
   }, [])
+
+  const getAgentLockHint = useCallback((agent: string) => {
+    const currentIndex = AGENT_ORDER.indexOf(agent as any)
+    if (currentIndex <= 0) return undefined
+    const prevAgent = AGENT_ORDER[currentIndex - 1]
+    if (!visitedAgents.includes(prevAgent)) {
+      return `Commencez par ${AGENT_INFO[prevAgent]?.label || prevAgent}`
+    }
+    return undefined
+  }, [visitedAgents])
+
+  const isAgentLocked = useCallback((agent: string) => {
+    const currentIndex = AGENT_ORDER.indexOf(agent as any)
+    if (currentIndex <= 0) return false
+    const prevAgent = AGENT_ORDER[currentIndex - 1]
+    return !visitedAgents.includes(prevAgent)
+  }, [visitedAgents])
 
   const pipelineWarnings = useMemo(() => {
     const warnings: Array<{ title: string; description: string }> = []
@@ -412,8 +476,8 @@ export const PipelinePage: React.FC = () => {
 
       {/* Header */}
       <div className="flex items-center gap-4">
-        <div className="syn-icon-box">
-          <GitBranch size={20} />
+        <div className="syn-icon-box" style={{ background: NAV_LIGHT}}>
+          <GitBranch size={20} style={{ color: 'white' }} />
         </div>
         <div>
           <h1 className="text-2xl font-extrabold text-brand-navy">Pipeline IA</h1>
@@ -445,13 +509,19 @@ export const PipelinePage: React.FC = () => {
                     value={inputValue}
                     onChange={e => setInputValue(e.target.value.toUpperCase())}
                     onKeyDown={e => e.key === 'Enter' && !loading && handleRun()}
-                    className="w-full pl-11 pr-4 py-4 border-2 rounded-2xl text-base font-mono font-bold text-brand-navy placeholder:text-gray-300 focus:outline-none transition-all bg-white border-gray-200 focus:border-brand-violet focus:shadow-[0_0_0_3px_rgba(124,58,237,0.12)]"
+                    onFocus={() => setInputFocused(true)}
+                    onBlur={() => setInputFocused(false)}
+                    className="w-full pl-11 pr-4 py-4 border-2 rounded-2xl text-base font-mono font-bold text-brand-navy placeholder:text-gray-300 focus:outline-none transition-all bg-white"
+                    style={{
+                      borderColor: inputFocused ? '#132f71' : '#e5e7eb',
+                      
+                    }}
                   />
                 </div>
                 {loading ? (
                   <button type="button" onClick={cancel}
                     className="px-6 py-4 rounded-2xl font-bold text-white flex items-center gap-2 flex-shrink-0 transition-all hover:-translate-y-0.5"
-                    style={{ background: 'linear-gradient(135deg,#dc2626,#b91c1c)', boxShadow: '0 4px 16px rgba(220,38,38,0.35)' }}>
+                    style={{ background: 'linear-gradient(135deg,#dc2626,#b91c1c)' }}>
                     <Square size={16} /> Arrêter
                   </button>
                 ) : (
@@ -459,7 +529,7 @@ export const PipelinePage: React.FC = () => {
                     <button type="button" onClick={handleRun}
                       disabled={!inputValue.trim()}
                       className="px-8 py-4 rounded-2xl font-bold text-white flex items-center gap-2 flex-shrink-0 transition-all hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none"
-                      style={{ background: BUTTON_GRADIENT, boxShadow: `0 4px 18px rgba(219,39,119,0.38)` }}>
+                      style={{ background: BUTTON_GRADIENT }}>
                       <Play size={16} /> Lancer le Pipeline
                     </button>
                   </div>
@@ -469,9 +539,19 @@ export const PipelinePage: React.FC = () => {
             </div>
           </div>
 
+          <div className="mt-4 flex items-center justify-between gap-3">
+            <AgentSectionTitle>Données JSON — Pipeline</AgentSectionTitle>
+            <button
+              type="button"
+              onClick={() => setShowJson(v => !v)}
+              className="px-3 py-2 rounded-xl text-sm font-semibold border transition-colors"
+              style={{ borderColor: 'rgba(19,27,78,0.15)', color: NAV }}
+            >
+              {showJson ? 'Masquer JSON' : 'Afficher JSON'}
+            </button>
+          </div>
           {showJson && (
-            <div className="mt-4">
-              <AgentSectionTitle>Données JSON — Pipeline</AgentSectionTitle>
+            <div className="mt-3">
               <pre className="rounded-2xl bg-slate-50 p-3 text-xs text-slate-700 overflow-auto" style={{ maxHeight: 360 }}>
                 {JSON.stringify((data as any)?.result || (data as any) || {}, null, 2)}
               </pre>
@@ -544,21 +624,23 @@ export const PipelinePage: React.FC = () => {
           </div>
 
           {/* Agent tabs + workspace */}
-          {steps.length > 0 && (
+          {orderedSteps.length > 0 && (
             <div className="space-y-4">
               <div className="flex items-center justify-between px-1">
                 <p className="syn-label">Résultats des agents</p>
                 <p className="text-[11px] text-brand-muted">
-                  Cliquez sur un agent · icône ⛶ pour le plein écran
+                  Parcours guidé : Analyse → Modélisation → Tests → Validation → Rapport
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-                {steps.map((step: any, idx: number) => (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+                {orderedSteps.map((step: any, idx: number) => (
                   <AgentResultCard
                     key={idx}
                     step={step}
                     isSelected={selectedAgent === step.agent}
+                    isLocked={isAgentLocked(step.agent)}
+                    lockedHint={getAgentLockHint(step.agent)}
                     onSelect={() => handleSelectAgent(step.agent)}
                     onExpand={() => setOpenModalStep(step)}
                   />
@@ -634,8 +716,8 @@ export const PipelinePage: React.FC = () => {
           )}
 
           {isCompleted && (
-            <Alert type="success" title="✅ Pipeline terminé avec succès !"
-              description="Tous les agents ont terminé. Consultez les résultats ci-dessous." />
+            <Alert type="success" title="Pipeline terminé avec succès"
+              description="Cliquez sur les cartes ci-dessus pour consulter chaque étape : commencez par l'Analyse (Agent 1), puis la Modélisation (Agent 1.5), les Tests (Agent 2), etc." />
           )}
           {isFailed && (
             <Alert type="error" title="Pipeline échoué"

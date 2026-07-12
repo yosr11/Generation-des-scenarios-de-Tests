@@ -36,14 +36,14 @@ def collect_story_images(story_id: str) -> List[Dict[str, Any]]:
     """
     Retourne les images directement attachées à la story avec leur description texte.
     """
-    from app.services.document_collector import _get_attachments, collect_documents_for_story
+    from app.services.document_collector import _get_attachments, collect_story_attachments_only
 
     sid = (story_id or "").strip().upper()
     if not sid:
         return []
 
     try:
-        docs = collect_documents_for_story(sid)
+        docs = collect_story_attachments_only(sid)
     except Exception:
         docs = []
 
@@ -54,7 +54,9 @@ def collect_story_images(story_id: str) -> List[Dict[str, Any]]:
     seen_filenames: set[str] = set()
 
     for doc in docs:
-        if doc.get("source") != "attachment" or doc.get("origin_key") != sid:
+        # Compare origin_key case-insensitively to avoid missing matches
+        origin = (doc.get("origin_key") or "").strip().upper()
+        if doc.get("source") != "attachment" or origin != sid:
             continue
         filename = doc.get("filename") or ""
         if not _is_image_filename(filename) or filename in seen_filenames:

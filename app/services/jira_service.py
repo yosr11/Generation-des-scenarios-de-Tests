@@ -239,8 +239,18 @@ def get_story_byID(issue_key: str) -> Dict[str, Any]:
 
 def get_epic_for_story(issue_key: str) -> Optional[Dict[str, Any]]:
     """
-    Récupère l'Epic parent d'une story.
+    Récupère l'Epic parent d'une story (cache DB d'abord, puis Jira).
     """
+    from app.repositories.story_repository import get_story_by_id
+
+    db_story = get_story_by_id(issue_key)
+    if db_story and db_story.get("epic_key"):
+        return {
+            "key": db_story["epic_key"],
+            "summary": db_story.get("epic_summary") or "",
+            "description": db_story.get("epic_description") or "",
+        }
+
     url = f"{JIRA_PROD_URL}/rest/api/2/issue/{issue_key}"
     params = {"fields": f"{JIRA_EPIC_LINK_FIELD},parent"}
 
@@ -307,6 +317,34 @@ def enrich_issuelinks_with_description(
     if not issuelinks:
         return []
 
+    from app.repositories.story_repository import get_stories_by_ids
+
+    enriched_links = [dict(link) for link in issuelinks]
+    keys = [link.get("key") for link in enriched_links if link.get("key")]
+    db_by_key = {s["id"]: s for s in get_stories_by_ids(keys)}
+
+    keys_to_fetch: list[tuple[int, str]] = []
+    for idx, link in enumerate(enriched_links):
+        if (link.get("description") or "").strip():
+            continue
+        key = link.get("key")
+        if not key:
+            continue
+        db_story = db_by_key.get(key)
+        if db_story:
+            desc = (
+                db_story.get("description_clean")
+                or db_story.get("description_llm")
+                or clean_text(db_story.get("description_raw") or "")
+            )
+            if desc.strip():
+                enriched_links[idx]["description"] = desc
+                continue
+        keys_to_fetch.append((idx, key))
+
+    if not keys_to_fetch:
+        return enriched_links
+
     def _fetch_description(key: str) -> str:
         if not key:
             return ""
@@ -320,14 +358,10 @@ def enrich_issuelinks_with_description(
             pass
         return ""
 
-    enriched_links = [dict(link) for link in issuelinks]  # copie défensive
-    keys = [link.get("key") for link in enriched_links]
-
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         future_to_index = {
             executor.submit(_fetch_description, key): idx
-            for idx, key in enumerate(keys)
-            if key
+            for idx, key in keys_to_fetch
         }
         for future in as_completed(future_to_index):
             idx = future_to_index[future]

@@ -23,6 +23,7 @@ export const TestEditPanel: React.FC<TestEditPanelProps> = ({
   const [chatHistory, setChatHistory] = useState<{ role: string; content: string }[]>([])
   const [assistantReply, setAssistantReply] = useState<string | null>(null)
   const [refining, setRefining] = useState(false)
+  const [openedStep, setOpenedStep] = useState<number | null>(0)
   const [saving, setSaving] = useState(false)
   const toast = useToast()
 
@@ -66,7 +67,7 @@ export const TestEditPanel: React.FC<TestEditPanelProps> = ({
     }
   }
 
-  const steps = editedTest?.steps || editedTest?.étapes?.flatMap((e: any) => e.steps || []) || []
+  const groupedSteps = editedTest?.étapes || []
 
   return (
     <>
@@ -112,39 +113,136 @@ export const TestEditPanel: React.FC<TestEditPanelProps> = ({
           </div>
 
           {/* Steps */}
-          {steps.length > 0 && (
-            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-              <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
-                <p className="text-xs font-bold text-brand-navy uppercase tracking-widest">
-                  Étapes
-                </p>
-                <span className="text-xs font-bold text-brand-muted bg-gray-100 px-2 py-0.5 rounded-full">
-                  {steps.length}
-                </span>
+         {/* Steps */}
+{groupedSteps.length > 0 && (
+  <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+
+    <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
+      <p className="text-xs font-bold text-brand-navy uppercase tracking-widest">
+        Étapes
+      </p>
+
+      <span className="text-xs font-bold text-brand-muted bg-gray-100 px-2 py-0.5 rounded-full">
+        {groupedSteps.length}
+      </span>
+    </div>
+
+    {groupedSteps.map((step: any, index: number) => {
+
+      const opened = openedStep === index
+
+      return (
+
+        <div
+          key={index}
+          className="border-b border-gray-100 last:border-b-0"
+        >
+
+          {/* HEADER */}
+
+          <button
+            type="button"
+            onClick={() =>
+              setOpenedStep(opened ? null : index)
+            }
+            className="w-full px-4 py-4 flex items-center justify-between hover:bg-gray-50 transition"
+          >
+
+            <div className="flex items-center gap-3">
+
+              <div
+                className="w-7 h-7 rounded-lg text-white text-xs font-bold flex items-center justify-center"
+                style={{ background: 'var(--grad-cta)' }}
+              >
+                {index + 1}
               </div>
-              <ol className="divide-y divide-gray-50">
-                {steps.map((step: any, idx: number) => (
-                  <li key={idx} className="px-4 py-3 flex items-start gap-3">
-                    <span
-                      className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 text-[11px] font-bold text-white mt-0.5"
-                      style={{ background: 'var(--grad-cta)' }}
-                    >
-                      {idx + 1}
-                    </span>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-brand-navy">{step.action || step.titre}</p>
-                      {step.expected_result && (
-                        <p className="text-xs text-brand-muted mt-1 flex items-center gap-1">
-                          <ChevronRight size={11} />
-                          {step.expected_result}
-                        </p>
-                      )}
-                    </div>
-                  </li>
-                ))}
-              </ol>
+
+              <div className="text-left">
+
+                <p className="font-semibold text-brand-navy">
+                  {step.titre}
+                </p>
+
+                {step.actor && (
+                  <p className="text-xs text-brand-muted">
+                    {step.actor}
+                  </p>
+                )}
+
+              </div>
+
             </div>
+
+            <ChevronRight
+              size={18}
+              className={`transition-transform ${
+                opened ? 'rotate-90' : ''
+              }`}
+            />
+
+          </button>
+
+          {/* DETAILS */}
+
+          {opened && (
+
+            <div className="px-5 pb-5 space-y-4">
+
+              {(step.steps || []).map(
+                (s: any, idx: number) => (
+
+                  <div
+                    key={idx}
+                    className="rounded-xl bg-gray-50 border border-gray-100 p-3"
+                  >
+
+                    <p className="text-xs font-bold text-brand-violet uppercase mb-1">
+                      Action
+                    </p>
+
+                    <p className="text-sm text-brand-navy">
+                      {s.action}
+                    </p>
+
+                    {s.data && (
+
+                      <>
+                        <p className="text-xs font-bold text-brand-violet uppercase mt-3 mb-1">
+                          Données
+                        </p>
+
+                        <p className="text-sm text-brand-navy">
+                          {s.data}
+                        </p>
+                      </>
+
+                    )}
+
+                    <p className="text-xs font-bold text-emerald-600 uppercase mt-3 mb-1">
+                      Résultat attendu
+                    </p>
+
+                    <p className="text-sm text-brand-navy">
+                      {s.expected_result}
+                    </p>
+
+                  </div>
+
+                )
+              )}
+
+            </div>
+
           )}
+
+        </div>
+
+      )
+
+    })}
+
+  </div>
+)}
 
           {/* AI Reply */}
           {assistantReply && (

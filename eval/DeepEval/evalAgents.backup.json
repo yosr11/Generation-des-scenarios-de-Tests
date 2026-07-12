@@ -5357,7 +5357,537 @@
       }
     }
   },
-  
+  {
+    "story_id": "NUXEPM-1725",
+    "agent1": {
+      "input": {
+        "summary": "News - Capacité à traduire une News",
+        "description": [
+          "En tant que AUTEUR des News",
+          "je souhaite pouvoir traduire une annonce",
+          "afin de publier une News dans une langue différente de ma langue de connexion.",
+          "A la création de la News, la langue de connexion est affichée.",
+          "L'auteur saisit le titre et le contenu de la News dans cette langue.",
+          "On appelle cette langue la langue d'origine (ou langue de création de la News).",
+          "Pour traduire la News dans une autre langue, il sélectionne la langue dans la liste des langues proposée.",
+          "Cette liste correspond aux langues disponibles pour l'application.",
+          "Une sélection multiple est possible.",
+          "Lorsque la langue est sélectionnée, les zones Titre, Texte, Mot-clé, aperçu et Document d'actualité (pour les actualités uniquement) avec la langue sélectionnée sont dynamiquement affichées sur le formulaire.",
+          "La période de publication, la confidentialité et l'illustration sont communes à toutes les langues.",
+          "Si la News n'est pas disponible dans la langue de connexion du lecteur, elle est affichée dans la langue d'origine de la News."
+        ],
+        "labels": [
+          "Candidat_V10",
+          "Chiffrage-9.0.X-Done",
+          "Grooming-1510",
+          "K-DATA",
+          "STREAM_CORE"
+        ],
+        "epic": {
+          "epic_key": "NUXEPM-1840",
+          "epic_summary": "K-NEWS - Gestion des news dans 4YOU (lot2) - Annonces - Actualités ",
+          "epic_description": "Description de la gestion des News dans 4YOU.\r\n\r\nProjet initialement appelé K-DATA\r\n\r\nListe des tickets non traités sur 4YOU9"
+        },
+        "issuelinks": [
+          {
+            "type": "Cloners",
+            "direction": "inward",
+            "key": "NUXEPM-1882",
+            "summary": "News - Capacité à choisir une langue pour une News",
+            "status": "Cancelled",
+            "description": "MAQUETTES et AFFINER le détail\nEn tant que AUTEUR des News\nje souhaite pouvoir choisir une langue lors de la création d'une annonce\nafin de publier les annonces dans la langue du choix de l'Auteur.\nLe choix de la langue se fait dans une liste. Cette liste est la même que celle de la mire de connexion.\nIdéalement par rapport à un référentiel."
+          },
+          {
+            "type": "Issue split",
+            "direction": "inward",
+            "key": "PPBACKLOG-9466",
+            "summary": "Intégration News Lot 2 travaux S2- 2025",
+            "status": "Done",
+            "description": "Finalisation des travaux d'intégration de la KData.\nScope :\nà définir"
+          },
+          {
+            "type": "Relates",
+            "direction": "inward",
+            "key": "YOU-13432",
+            "summary": "News - Capacité à traduire une News",
+            "status": "Done-Done",
+            "description": "En tant que AUTEUR des News\nje souhaite pouvoir traduire une annonce\nafin de publier une News dans une langue différente de ma langue de connexion.\nA la création de la News, la langue de connexion est affichée. L'auteur saisit le titre et le contenu de la News dans cette langue. On appelle cette langue la langue d'origine (ou langue de création de la News).\nPour traduire la News dans une autre langue, il sélectionne la langue dans la liste des langues proposée. Cette liste correspond aux langues disponibles pour l'application. Une sélection multiple est possible.\nLorsque la langue est sélectionnée, les zones Titre, Texte, Mot-clé, aperçu et Document d'actualité (pour les actualités uniquement) avec la langue sélectionnée sont dynamiquement affichées sur le formulaire.\nLa période de publication, la confidentialité et l'illustration sont communes à toutes les langues.\nAffichage dans le carrousel :\nSi la News n'est pas disponible dans la langue de connexion du lecteur, elle est affichée dans la langue d'origine de la News."
+          },
+          {
+            "type": "Relates",
+            "direction": "inward",
+            "key": "YOU-13618",
+            "summary": "News - [REDACTION QA] Capacité à traduire une News",
+            "status": "Done-Done",
+            "description": "En tant que AUTEUR des News\nje souhaite pouvoir traduire une annonce\nafin de publier une News dans une langue différente de ma langue de connexion.\nA la création de la News, la langue de connexion est affichée. L'auteur saisit le titre et le contenu de la News dans cette langue. On appelle cette langue la langue d'origine (ou langue de création de la News).\nPour traduire la News dans une autre langue, il sélectionne la langue dans la liste des langues proposée. Cette liste correspond aux langues disponibles pour l'application. Une sélection multiple est possible.\nLorsque la langue est sélectionnée, les zones Titre, Texte, Mot-clé, aperçu et Document d'actualité (pour les actualités uniquement) avec la langue sélectionnée sont dynamiquement affichées sur le formulaire.\nLa période de publication, la confidentialité et l'illustration sont communes à toutes les langues.\nAffichage dans le carrousel :\nSi la News n'est pas disponible dans la langue de connexion du lecteur, elle est affichée dans la langue d'origine de la News."
+          },
+          {
+            "type": "Resolve",
+            "direction": "inward",
+            "key": "YOUQA-17091",
+            "summary": "DEMKNEWSS1ST4_CT1-Consulter une NEWS Multi-Langues (Francais /Anglais)",
+            "status": "Ready for use",
+            "description": "[Auteur] Se connecter en tant que Auteu\\r\\\n[Auteur] Accéder à la page gestion des news\n[Auteur] Créer une annonce\n[Auteur] Consulter la présence de l'annonce sur la liste des News\n[Collaborateur]  Consulter la présence de la News avec la langue  francaise\n[Collaborateur]  Consulter la présence de la News avec la langue Anglaise"
+          },
+          {
+            "type": "Resolve",
+            "direction": "inward",
+            "key": "YOUQA-17110",
+            "summary": "DEMKNEWSS1ST4_CT2-Consulter une news avec une langue de lecture indisponible",
+            "status": "Ready for use",
+            "description": "[Auteur] Se connecter en tant que Auteu\\r\\\n[Auteur] Accéder à la page gestion des news\n[Auteur] Créer une actualité avec la langue francaise\n[Auteur] Consulter la présence de l'actualité sur la liste des News\n[Collaborateur]  Consulter la présence de la News avec la langue de lecture  francais\n[Collaborateur]  Consulter la présence de la News avec la langue de lecture Anglais"
+          }
+        ],
+        "images": [
+          {
+            "filename": "Formulaire_Mono langue.jpg",
+            "caption": "Formulaire_Mono langue.jpg",
+            "description": "### 1. CONTEXTE\nL'écran analysé est un formulaire de création de news (actualités) dans un système de gestion de contenu. L'intention probable est de permettre aux utilisateurs de créer et de configurer des annonces et des actualités.\n\n### 2. ANNOTATIONS AJOUTÉES PAR LE PO\nAucune annotation détectée.\n\n### 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI\n- **Pastille / Badge** : \n  - Un badge bleu apparaît à côté du champ \"Langue\" avec le texte \"English\".\n- **Boutons** :\n  - Bouton \"Quitter\" (forme rectangulaire, couleur grise ou bleue, texte \"Quitter\").\n  - Bouton \"+ Créer une annonce\" (forme rectangulaire, couleur verte ou bleue, texte \"+ Créer une annonce\").\n  - Bouton \"+ Créer une actualité\" (forme rectangulaire, couleur verte ou bleue, texte \"+ Créer une actualité\").\n  - Bouton \"Sauvegarder\" (forme rectangulaire, couleur grise ou bleue, texte \"Sauvegarder\").\n\n### 4. ICÔNES ET PICTOGRAMMES\n- **Icône de calendrier** : \n  - Position : à côté des champs \"Date de début de publication\" et \"Date de fin de publication\".\n  - Fonction probable : permet de sélectionner des dates.\n- **Icône d'information** (petit \"i\") :\n  - Position : à côté de plusieurs champs (Type de News, Publication, Contenu, etc.).\n  - Fonction probable : fournit des informations supplémentaires ou des aides contextuelles.\n- **Icône de téléchargement / sélection d'image** :\n  - Position : dans la section \"Illustration dans le carrousel\".\n  - Fonction probable : permet de sélectionner une image.\n\n### 5. AGENCEMENT ET RELATIONS\n- **Structure** : \n  - Le formulaire est divisé en sections : \"Publication\", \"Confidentialité\", \"Contenu\" et \"Illustration dans le carrousel\".\n  - Les champs obligatoires sont indiqués par une étoile (*).\n- **Regroupements visuels** :\n  - Les champs sont regroupés sous des intitulés (sections).\n- **Hiérarchie** :\n  - Les titres de sections sont plus gros et/ou en gras par rapport aux sous-titres et champs.\n- **Relations spatiales** :\n  - Le champ \"Type de News\" est en haut du formulaire.\n  - Les champs \"Date de début de publication\" et \"Date de fin de publication\" sont côte à côte.\n  - La section \"Illustration dans le carrousel\" est accompagnée d'un aperçu de l'illustration.",
+            "attachment_id": "425702",
+            "url": "/documents/attachment/NUXEPM-1725/425702",
+            "source": "NUXEPM-1725"
+          },
+          {
+            "filename": "Formulaire_Multi langue.jpg",
+            "caption": "Formulaire_Multi langue.jpg",
+            "description": "## 1. CONTEXTE\nL'écran semble être un formulaire de création de news ou d'actualités dans un système de gestion. Il contient des champs de saisie pour le type de news, les dates, la confidentialité, la langue et l'illustration.\n\n## 2. ANNOTATIONS AJOUTÉES PAR LE PO\nAucune annotation détectée.\n\n## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI\n- Un champ de sélection de langue affichant des onglets (English, Français, Italiano).\n- Des champs de texte pour le titre, le texte et les mots-clés selon la langue sélectionnée.\n- Une section d'illustration dans le carrousel.\n- Des champs obligatoires marqués par une étoile (*) et des icônes d'information.",
+            "attachment_id": "425703",
+            "url": "/documents/attachment/NUXEPM-1725/425703",
+            "source": "NUXEPM-1725"
+          },
+          {
+            "filename": "Traduction.png",
+            "caption": "Traduction.png",
+            "description": "## 1. CONTEXTE\nL'écran semble être un formulaire pour créer une News multilingue avec des champs de langue, de titre, de texte et de publication.\n\n## 2. ANNOTATIONS AJOUTÉES PAR LE PO\nAucune annotation détectée.\n\n## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI\n- Onglets de langue pour sélectionner English, Français ou Italiano.\n- Champs de saisie pour le titre et le texte dans la langue sélectionnée.\n- Une section de Confidentialité avec Société, Établissement, et Acteur autorisé à voir la News.\n- Des icônes de calendrier et d'information.",
+            "attachment_id": "420799",
+            "url": "/documents/attachment/NUXEPM-1725/420799",
+            "source": "NUXEPM-1725"
+          }
+        ]
+      },
+      "output": {
+        "story_id": "NUXEPM-1725",
+        "story_title": "News - Capacité à traduire une News",
+        "story_type": "functional",
+        "actors": [
+          "AUTEUR des News"
+        ],
+        "actions": [
+          "traduire une annonce",
+          "sélectionner la langue dans la liste des langues proposée",
+          "afficher dynamiquement les zones Titre, Texte, Mot-clé, aperçu et Document d'actualité avec la langue sélectionnée",
+          "afficher la News dans la langue d'origine si la langue de connexion du lecteur n'est pas disponible"
+        ],
+        "business_rules": [
+          "La liste des langues proposées correspond aux langues disponibles pour l'application",
+          "Une sélection multiple de langues est possible",
+          "La période de publication, la confidentialité et l'illustration sont communes à toutes les langues",
+          "Si la News n'est pas disponible dans la langue de connexion du lecteur, elle est affichée dans la langue d'origine de la News"
+        ],
+        "technical_scope": [],
+        "testable_points": [
+          "Vérifier que lors de la création d'une News, la langue de connexion est affichée",
+          "Vérifier que l'auteur peut sélectionner une ou plusieurs langues dans la liste des langues proposées",
+          "Vérifier que les zones Titre, Texte, Mot-clé, aperçu et Document d'actualité (pour les actualités uniquement) sont dynamiquement affichées avec la langue sélectionnée",
+          "Vérifier que la période de publication, la confidentialité et l'illustration sont communes à toutes les langues",
+          "Vérifier que si la News n'est pas disponible dans la langue de connexion du lecteur, elle est affichée dans la langue d'origine de la News",
+          "Vérifier l'affichage correct des badges de langue (ex: 'English', 'Français', 'Italiano') dans le formulaire",
+          "Vérifier que les champs de texte (Titre dans le carrousel, Texte, Mots-clés) sont affichés avec le bon libellé de langue sélectionnée",
+          "Vérifier que l'aperçu du contenu s'affiche correctement dans la langue sélectionnée",
+          "Vérifier que la sélection multiple de langues permet de saisir le contenu dans plusieurs langues simultanément",
+          "Vérifier que les données saisies dans chaque langue sont sauvegardées et rechargées correctement lors de l'édition"
+        ],
+        "user_flows": [
+          "L'auteur se connecte avec sa langue de connexion",
+          "L'auteur accède à la page de création de News",
+          "L'auteur sélectionne le type de News (Actualités)",
+          "L'auteur sélectionne une ou plusieurs langues dans la liste des langues proposées",
+          "L'auteur saisit le titre et le contenu de la News dans chaque langue sélectionnée",
+          "L'auteur remplit les champs communs à toutes les langues (période de publication, confidentialité, illustration)",
+          "L'auteur sauvegarde la News",
+          "Le lecteur se connecte avec une langue différente de celle de création",
+          "Le système affiche la News dans la langue disponible ou dans la langue d'origine si aucune traduction n'existe"
+        ],
+        "acceptance_criteria_explicit": [
+          "La langue de connexion est affichée à la création de la News",
+          "La liste des langues proposées correspond aux langues disponibles pour l'application",
+          "Une sélection multiple de langues est possible",
+          "Les zones Titre, Texte, Mot-clé, aperçu et Document d'actualité sont dynamiquement affichées avec la langue sélectionnée",
+          "La période de publication, la confidentialité et l'illustration sont communes à toutes les langues",
+          "Si la News n'est pas disponible dans la langue de connexion du lecteur, elle est affichée dans la langue d'origine de la News"
+        ],
+        "acceptance_criteria_inferred": [],
+        "clarification_questions": [
+          "Quelles sont les langues disponibles pour l'application ?",
+          "Comment est gérée la sauvegarde et la recharge des données lors de l'édition d'une News existante ?",
+          "Y a-t-il des limites à la sélection multiple de langues ?",
+          "Comment est gérée la synchronisation des données entre les différentes langues lors de la mise à jour ?"
+        ],
+        "analysis_reason": [
+          "La story décrit clairement une fonctionnalité permettant à un auteur de traduire une News dans plusieurs langues",
+          "Des actions spécifiques sont décrites : sélection de langue, affichage dynamique des champs, affichage dans le carrousel",
+          "Les règles métier sont explicitement mentionnées : liste des langues, sélection multiple, affichage dans la langue d'origine"
+        ],
+        "resolved_from_references": []
+      }
+    },
+    "agent1_5": {
+      "input": {
+        "summary": "News - Capacité à traduire une News",
+        "agent1_analysis": {
+          "actors": [
+            "AUTEUR des News"
+          ],
+          "testable_points": [
+            "Vérifier que lors de la création d'une News, la langue de connexion est affichée",
+            "Vérifier que l'auteur peut sélectionner une ou plusieurs langues dans la liste des langues proposées",
+            "Vérifier que les zones Titre, Texte, Mot-clé, aperçu et Document d'actualité (pour les actualités uniquement) sont dynamiquement affichées avec la langue sélectionnée",
+            "Vérifier que la période de publication, la confidentialité et l'illustration sont communes à toutes les langues",
+            "Vérifier que si la News n'est pas disponible dans la langue de connexion du lecteur, elle est affichée dans la langue d'origine de la News",
+            "Vérifier l'affichage correct des badges de langue (ex: 'English', 'Français', 'Italiano') dans le formulaire",
+            "Vérifier que les champs de texte (Titre dans le carrousel, Texte, Mots-clés) sont affichés avec le bon libellé de langue sélectionnée",
+            "Vérifier que l'aperçu du contenu s'affiche correctement dans la langue sélectionnée",
+            "Vérifier que la sélection multiple de langues permet de saisir le contenu dans plusieurs langues simultanément",
+            "Vérifier que les données saisies dans chaque langue sont sauvegardées et rechargées correctement lors de l'édition"
+          ],
+          "business_rules": [
+            "La liste des langues proposées correspond aux langues disponibles pour l'application",
+            "Une sélection multiple de langues est possible",
+            "La période de publication, la confidentialité et l'illustration sont communes à toutes les langues",
+            "Si la News n'est pas disponible dans la langue de connexion du lecteur, elle est affichée dans la langue d'origine de la News"
+          ]
+        }
+      },
+      "output": {
+        "story_id": "NUXEPM-1725",
+        "business_goals": [
+          {
+            "id": "BG-1",
+            "label": "Créer une News multilingue"
+          },
+          {
+            "id": "BG-2",
+            "label": "Afficher une News dans la langue appropriée"
+          }
+        ],
+        "business_workflows": [
+          {
+            "id": "BW-1",
+            "label": "Création d'une News multilingue",
+            "linked_goal_id": "BG-1",
+            "trigger": "L'auteur se connecte avec sa langue de connexion",
+            "actors_involved": [
+              "AUTEUR des News"
+            ],
+            "steps": [
+              "Accéder à la page de création de News",
+              "Sélectionner le type de News (Actualités)",
+              "Sélectionner une ou plusieurs langues dans la liste des langues proposées",
+              "Saisir le titre et le contenu de la News dans chaque langue sélectionnée",
+              "Remplir les champs communs à toutes les langues",
+              "Sauvegarder la News"
+            ],
+            "success_criteria": [
+              "L'auteur peut sélectionner une ou plusieurs langues dans la liste des langues proposées",
+              "Les zones Titre, Texte, Mot-clé, aperçu et Document d'actualité sont dynamiquement affichées avec la langue sélectionnée",
+              "La période de publication, la confidentialité et l'illustration sont communes à toutes les langues"
+            ],
+            "alternative_paths": []
+          },
+          {
+            "id": "BW-2",
+            "label": "Affichage d'une News dans la langue appropriée",
+            "linked_goal_id": "BG-2",
+            "trigger": "Le lecteur se connecte avec une langue différente de celle de création",
+            "actors_involved": [
+              "AUTEUR des News"
+            ],
+            "steps": [
+              "Vérifier la disponibilité de la News dans la langue de connexion du lecteur",
+              "Afficher la News dans la langue disponible ou dans la langue d'origine si aucune traduction n'existe"
+            ],
+            "success_criteria": [
+              "Si la News n'est pas disponible dans la langue de connexion du lecteur, elle est affichée dans la langue d'origine de la News"
+            ],
+            "alternative_paths": []
+          }
+        ],
+        "modeling_notes": ""
+      }
+    },
+    "agent2": {
+      "input": {
+        "summary": "News - Capacité à traduire une News",
+        "description": [
+          "En tant que AUTEUR des News",
+          "je souhaite pouvoir traduire une annonce",
+          "afin de publier une News dans une langue différente de ma langue de connexion.",
+          "La langue de connexion est affichée à la création de la News.",
+          "L'auteur saisit le titre et le contenu de la News dans la langue d'origine.",
+          "Pour traduire la News dans une autre langue, il sélectionne la langue dans la liste des langues proposée.",
+          "Une sélection multiple est possible.",
+          "Les zones Titre, Texte, Mot-clé, aperçu et Document d'actualité sont dynamiquement affichées avec la langue sélectionnée.",
+          "La période de publication, la confidentialité et l'illustration sont communes à toutes les langues.",
+          "Si la News n'est pas disponible dans la langue de connexion du lecteur, elle est affichée dans la langue d'origine."
+        ],
+        "agent1_analysis": {
+          "testable_points": [
+            "Vérifier que lors de la création d'une News, la langue de connexion est affichée",
+            "Vérifier que l'auteur peut sélectionner une ou plusieurs langues dans la liste des langues proposées",
+            "Vérifier que les zones Titre, Texte, Mot-clé, aperçu et Document d'actualité sont dynamiquement affichées avec la langue sélectionnée",
+            "Vérifier que la période de publication, la confidentialité et l'illustration sont communes à toutes les langues",
+            "Vérifier que si la News n'est pas disponible dans la langue de connexion du lecteur, elle est affichée dans la langue d'origine de la News"
+          ]
+        },
+        "agent15_business_model": {
+          "business_goals": [
+            {
+              "id": "BG-1",
+              "label": "Créer une News multilingue"
+            }
+          ],
+          "business_workflows": [
+            {
+              "id": "BW-1",
+              "label": "Création d'une News multilingue"
+            }
+          ]
+        },
+        "legacy_rag_examples": [],
+        "rag_context": []
+      },
+      "retrieval_context": [
+        "YOUQA-17091 - DEMKNEWSS1ST4_CT1-Consulter une NEWS Multi-Langues (Francais /Anglais)",
+        "YOUQA-17110 - DEMKNEWSS1ST4_CT2-Consulter une news avec une langue de lecture indisponible"
+      ],
+      "output": {
+        "tests": [
+          {
+            "test_name": "Création d'une News multilingue",
+            "objective": "Permettre à l'auteur de créer une News en sélectionnant une ou plusieurs langues et en saisissant le contenu pour chaque langue",
+            "scenario_type": "NOM",
+            "priority": "High",
+            "steps": [
+              "Accéder à la page de création de News",
+              "Sélectionner le type de News (Actualités)",
+              "Sélectionner une ou plusieurs langues dans la liste des langues proposées",
+              "Saisir le titre et le contenu de la News dans chaque langue sélectionnée",
+              "Remplir les champs communs à toutes les langues",
+              "Sauvegarder la News"
+            ]
+          },
+          {
+            "test_name": "Affichage des badges de langue dans le formulaire de création",
+            "objective": "Confirmer que le formulaire affiche correctement les badges de langue disponibles",
+            "scenario_type": "NOM",
+            "priority": "Medium",
+            "steps": [
+              "Accéder à la page de création de News",
+              "Vérifier la présence des badges de langue",
+              "Vérifier que chaque langue sélectionnée affiche le bon libellé"
+            ]
+          },
+          {
+            "test_name": "Affichage dynamique des zones Titre, Texte, Mot-clé et Aperçu",
+            "objective": "Valider l'affichage dynamique des champs de contenu selon la langue sélectionnée",
+            "scenario_type": "NOM",
+            "priority": "High",
+            "steps": [
+              "Sélectionner une langue dans la liste des langues proposées",
+              "Vérifier que les champs Titre, Texte et Mot-clé s'affichent avec la langue sélectionnée",
+              "Vérifier que l'aperçu se met à jour dans la langue sélectionnée"
+            ]
+          },
+          {
+            "test_name": "Paramètres communs multilingues",
+            "objective": "Vérifier que la période de publication, la confidentialité et l'illustration restent partagées entre les langues",
+            "scenario_type": "NOM",
+            "priority": "High",
+            "steps": [
+              "Sélectionner plusieurs langues pour la News",
+              "Remplir la période de publication, la confidentialité et l'illustration",
+              "Vérifier que ces paramètres sont conservés pour chaque langue sélectionnée"
+            ]
+          }
+        ],
+        "_normalized": true
+      }
+    },
+    "agent3": {
+      "input": {
+        "story_summary": "News - Capacité à traduire une News",
+        "coverage_threshold": 0.7,
+        "testable_points": [
+          "Vérifier que lors de la création d'une News, la langue de connexion est affichée",
+          "Vérifier que l'auteur peut sélectionner une ou plusieurs langues dans la liste des langues proposées",
+          "Vérifier que les zones Titre, Texte, Mot-clé, aperçu et Document d'actualité (pour les actualités uniquement) sont dynamiquement affichées avec la langue sélectionnée",
+          "Vérifier que la période de publication, la confidentialité et l'illustration sont communes à toutes les langues",
+          "Vérifier que si la News n'est pas disponible dans la langue de connexion du lecteur, elle est affichée dans la langue d'origine de la News",
+          "Vérifier l'affichage correct des badges de langue (ex: 'English', 'Français', 'Italiano') dans le formulaire",
+          "Vérifier que les champs de texte (Titre dans le carrousel, Texte, Mots-clés) sont affichés avec le bon libellé de langue sélectionnée",
+          "Vérifier que l'aperçu du contenu s'affiche correctement dans la langue sélectionnée",
+          "Vérifier que la sélection multiple de langues permet de saisir le contenu dans plusieurs langues simultanément",
+          "Vérifier que les données saisies dans chaque langue sont sauvegardées et rechargées correctement lors de l'édition"
+        ],
+        "tests_count": 4
+      },
+      "output": {
+        "coverage_rate": 1.0,
+        "uncovered_testable_points": [],
+        "duplicate_pairs": [],
+        "ambiguity_findings": [
+          {
+            "test_name": "Création d'une News multilingue",
+            "step_index": 0,
+            "field": "objective",
+            "reason": "verbe interdit « vérifier » dans action/résultat/objectif",
+            "original_text": "Vérifier la création d'une News avec plusieurs langues"
+          },
+          {
+            "test_name": "Affichage des badges de langue dans le formulaire de création",
+            "step_index": 0,
+            "field": "objective",
+            "reason": "verbe interdit « vérifier » dans action/résultat/objectif",
+            "original_text": "Vérifier l'affichage correct des badges de langue"
+          },
+          {
+            "test_name": "Affichage dynamique des zones Titre, Texte, Mot-clé et Aperçu",
+            "step_index": 0,
+            "field": "objective",
+            "reason": "verbe interdit « vérifier » dans action/résultat/objectif",
+            "original_text": "Valider l'affichage dynamique des champs de contenu selon la langue sélectionnée"
+          }
+        ],
+        "validation_status": "PARTIALLY_VALID",
+        "correction_instructions": [
+          {
+            "instruction_type": "fix_objective",
+            "test_name": "Création d'une News multilingue",
+            "rationale": "vague objective: préciser des critères observables et mesurables.",
+            "original_text": "Vérifier la création d'une News avec plusieurs langues"
+          },
+          {
+            "instruction_type": "fix_objective",
+            "test_name": "Affichage des badges de langue dans le formulaire de création",
+            "rationale": "vague objective: préciser des critères observables et mesurables.",
+            "original_text": "Vérifier l'affichage correct des badges de langue"
+          },
+          {
+            "instruction_type": "fix_step",
+            "test_name": "Affichage des badges de langue dans le formulaire de création",
+            "step_index": 1,
+            "field": "action",
+            "rationale": "missing functional precision: reformuler en critère observable.",
+            "original_text": "Vérifier la présence des badges de langue"
+          }
+        ]
+      }
+    },
+    "agent5": {
+      "input": {
+        "agent1_analysis": {
+          "story_id": "NUXEPM-1725",
+          "story_type": "functional",
+          "actors": [
+            "AUTEUR des News"
+          ],
+          "business_rules": [
+            "La liste des langues proposées correspond aux langues disponibles pour l'application",
+            "Une sélection multiple de langues est possible",
+            "La période de publication, la confidentialité et l'illustration sont communes à toutes les langues",
+            "Si la News n'est pas disponible dans la langue de connexion du lecteur, elle est affichée dans la langue d'origine de la News"
+          ]
+        },
+        "agent2_tests_count": 4,
+        "agent3_validation": {
+          "coverage_rate": 1.0,
+          "validation_status": "PARTIALLY_VALID",
+          "ambiguity_count": 3,
+          "duplicate_pairs": 0
+        },
+        "correction_iterations": 2,
+        "max_correction_iterations": 2
+      },
+      "output": {
+        "report_title": "Rapport QA — NUXEPM-1725: News - Capacité à traduire une News",
+        "report_version": "2026.07.06",
+        "executive_summary": {
+          "overall_status": "REQUIRES_REVIEW",
+          "key_findings": [
+            "La couverture atteint 100% (EXCELLENT) avec 10 points couverts sur 10",
+            "Aucun doublon n'a été détecté parmi les tests",
+            "Le statut global est REQUIRES_REVIEW",
+            "3 étapes ambiguës ont été identifiées, principalement liées à l'utilisation de verbes interdits",
+            "La validation est PARTIALLY_VALID"
+          ],
+          "next_steps": [
+            "Clarifier les étapes ambiguës pour améliorer la qualité des tests",
+            "Revoir les objectifs et les libellés des tests pour améliorer leur précision",
+            "Valider à nouveau les tests après correction des formulations"
+          ]
+        },
+        "coverage_metrics": {
+          "coverage_rate": 100,
+          "total_testable_points": 10,
+          "covered_points": 10,
+          "uncovered_points": [],
+          "coverage_status": "EXCELLENT"
+        },
+        "quality_assurance": {
+          "validation_status": "PARTIALLY_VALID",
+          "duplicate_pairs": 0,
+          "ambiguity_count": 3,
+          "issues": [
+            {
+              "issue_type": "ambiguity",
+              "severity": "warning",
+              "description": "Étape 0 du test Création d'une News multilingue: verbe interdit « vérifier » dans action/résultat/objectif",
+              "affected_tests": [
+                "Création d'une News multilingue"
+              ]
+            },
+            {
+              "issue_type": "ambiguity",
+              "severity": "warning",
+              "description": "Étape 0 du test Affichage des badges de langue dans le formulaire de création: verbe interdit « vérifier » dans action/résultat/objectif",
+              "affected_tests": [
+                "Affichage des badges de langue dans le formulaire de création"
+              ]
+            },
+            {
+              "issue_type": "ambiguity",
+              "severity": "warning",
+              "description": "Étape 0 du test Affichage dynamique des zones Titre, Texte, Mot-clé et Aperçu: verbe interdit « vérifier » dans action/résultat/objectif",
+              "affected_tests": [
+                "Affichage dynamique des zones Titre, Texte, Mot-clé et Aperçu"
+              ]
+            }
+          ]
+        },
+        "recommendations": [
+          {
+            "priority": "high",
+            "action": "Clarifier les étapes ambiguës pour éviter toute confusion",
+            "rationale": "3 étapes ambiguës ont été détectées, ce qui peut impacter la qualité des tests."
+          },
+          {
+            "priority": "medium",
+            "action": "Revoir les objectifs et les libellés des tests pour améliorer leur qualité",
+            "rationale": "La formulation doit être précise et mesurable pour garantir l'efficacité des cas de test."
+          },
+          {
+            "priority": "low",
+            "action": "Vérifier que les tests restent alignés sur les règles métier multilingues",
+            "rationale": "La fonctionnalité implique des comportements partagés entre plusieurs langues et des règles communes."
+          }
+        ],
+        "processing_notes": [
+          "Sections narratives générées par LLM (llama4)",
+          "Itérations de gap-fill (Agent 3 → Agent 2): 2 / 2 max"
+        ]
+      }
+    }
+  },
   {
     "story_id": "NUXEPM-1261",
     "agent1": {

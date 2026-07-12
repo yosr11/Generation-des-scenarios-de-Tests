@@ -12,6 +12,8 @@ jobs_db: Dict[str, Dict[str, Any]] = {}
 
 def create_job(story_id: str) -> Dict[str, Any]:
     sid = story_id.strip().upper()
+    from app.utils.pipeline_cancel import clear_pipeline_cancelled
+    clear_pipeline_cancelled(sid)
     job = {
         "storyId": sid,
         "status": "running",

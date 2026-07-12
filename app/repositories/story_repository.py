@@ -185,3 +185,18 @@ def get_stories_by_ids(story_ids: List[str]) -> List[Dict[str, Any]]:
         return [_row_to_dict(r) for r in rows]
     finally:
         conn.close()
+
+
+def get_stories_by_epic_key(epic_key: str) -> List[Dict[str, Any]]:
+    """Stories déjà en base pour un epic donné."""
+    if not epic_key:
+        return []
+    conn = get_connection()
+    try:
+        rows = conn.execute(
+            "SELECT * FROM stories WHERE epic_key = ? ORDER BY created_at DESC",
+            (epic_key.strip().upper(),),
+        ).fetchall()
+        return [_row_to_dict(r) for r in rows]
+    finally:
+        conn.close()

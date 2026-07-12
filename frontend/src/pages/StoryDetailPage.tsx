@@ -129,7 +129,7 @@ const AgentResultModal: React.FC<{
   return (
     <div className="fixed inset-0 z-[9999] flex items-start justify-center p-4 md:p-8 overflow-y-auto">
       <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative bg-white rounded-3xl w-full max-w-5xl shadow-2xl my-4 flex flex-col z-10">
+      <div className="relative bg-white rounded-3xl w-full max-w-6xl shadow-2xl my-4 flex flex-col z-10">
         <div className="flex items-center gap-4 px-6 py-5 sticky top-0 bg-white z-10 border-b rounded-t-3xl">
           <div className="w-11 h-11 rounded-2xl flex items-center justify-center text-white" style={{ background: info.gradient }}>
             <Icon size={20} />
@@ -225,7 +225,7 @@ export const StoryDetailPage: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6 animate-fade-in max-w-6xl mx-auto">
+    <div className="space-y-6 animate-fade-in max-w-7xl mx-auto">
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-2">

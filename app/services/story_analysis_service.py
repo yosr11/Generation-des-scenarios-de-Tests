@@ -522,7 +522,7 @@ def analyze_story_with_groq(
 
 def classify_story_with_adaptive_llm(
     story: Dict[str, Any],
-    model_alias: str = "llama4",
+    model_alias: str = "nova-lite-2",
     rag_context: list = None,
     story_attachments: list = None,
 ) -> StoryClassificationResult:
@@ -563,7 +563,7 @@ def classify_story_with_adaptive_llm(
 
 def extract_story_analysis_with_adaptive_llm(
     story: Dict[str, Any],
-    model_alias: str = "llama4",
+    model_alias: str = "nova-lite-2",
     rag_context: list = None,
     story_attachments: list = None,
 ) -> StoryAnalysisResult:
@@ -604,7 +604,7 @@ def extract_story_analysis_with_adaptive_llm(
 
 def analyze_story_with_adaptive_llm(
     story: Dict[str, Any],
-    model_alias: str = "llama4",
+    model_alias: str = "nova-lite-2",
     rag_context: list = None,
     story_attachments: list = None,
 ) -> StoryAnalysisResult:

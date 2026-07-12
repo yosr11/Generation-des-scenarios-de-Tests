@@ -1,0 +1,796 @@
+{
+  "meta": {
+    "input_file": "C:\\Users\\yomahfoudh\\Desktop\\Agent_Test\\eval\\DeepEval\\evalAgents.json",
+    "case_count": 22
+  },
+  "summary": {
+    "agent1": {
+      "score_moyen": 0.993,
+      "score_min": 0.85,
+      "score_max": 1.0,
+      "taux_sous_0_7": 0.0,
+      "pires_stories": [
+        [
+          "NUXEPM-1582",
+          0.85
+        ],
+        [
+          "NUXEPM-1412",
+          1.0
+        ],
+        [
+          "NUXEPM-1870",
+          1.0
+        ]
+      ]
+    },
+    "agent1_5": {
+      "score_moyen": 0.998,
+      "score_min": 0.95,
+      "score_max": 1.0,
+      "taux_sous_0_7": 0.0,
+      "pires_stories": [
+        [
+          "NUXEPM-2382",
+          0.95
+        ],
+        [
+          "NUXEPM-1412",
+          1.0
+        ],
+        [
+          "NUXEPM-1870",
+          1.0
+        ]
+      ]
+    },
+    "agent2_qa_quality": {
+      "score_moyen": 1.0,
+      "score_min": 1.0,
+      "score_max": 1.0,
+      "taux_sous_0_7": 0.0,
+      "pires_stories": [
+        [
+          "NUXEPM-1412",
+          1.0
+        ],
+        [
+          "NUXEPM-1870",
+          1.0
+        ],
+        [
+          "NUXEPM-1885",
+          1.0
+        ]
+      ]
+    },
+    "agent3": {
+      "score_moyen": 1.0,
+      "score_min": 1.0,
+      "score_max": 1.0,
+      "taux_sous_0_7": 0.0,
+      "pires_stories": [
+        [
+          "NUXEPM-1412",
+          1.0
+        ],
+        [
+          "NUXEPM-1870",
+          1.0
+        ],
+        [
+          "NUXEPM-1885",
+          1.0
+        ]
+      ]
+    },
+    "agent5": {
+      "score_moyen": 1.0,
+      "score_min": 1.0,
+      "score_max": 1.0,
+      "taux_sous_0_7": 0.0,
+      "pires_stories": [
+        [
+          "NUXEPM-1412",
+          1.0
+        ],
+        [
+          "NUXEPM-1870",
+          1.0
+        ],
+        [
+          "NUXEPM-1885",
+          1.0
+        ]
+      ]
+    },
+    "couverture_moyenne_tests": 0.939
+  },
+  "results": [
+    {
+      "story_id": "NUXEPM-1412",
+      "agent1": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent1_5": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_qa_quality": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_coverage": {
+        "coverage_rate": 0.75,
+        "missing_tests_count": 1,
+        "missing_tests": [
+          "Vérifier que la fonctionnalité est accessible via les démarches suivantes : Je gère les fins de contrat de mon équipe, Je gère les fins de période d'essai de mon équipe, Je gère les temps de travail de mon équipe, Je gère les départs de mon équipe, Mes questions RH, Dossier Numérique"
+        ],
+        "duplicate_count": 0,
+        "validation_status": "PARTIALLY_VALID"
+      },
+      "agent3": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent5": {
+        "score": 1.0,
+        "issues": []
+      }
+    },
+    {
+      "story_id": "NUXEPM-1870",
+      "agent1": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent1_5": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_qa_quality": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_coverage": {
+        "coverage_rate": 0.9231,
+        "missing_tests_count": 1,
+        "missing_tests": [
+          "Vérifier que les mots-clefs apparaissent dans la limite de largeur disponible dans l'aperçu"
+        ],
+        "duplicate_count": 0,
+        "validation_status": "PARTIALLY_VALID"
+      },
+      "agent3": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent5": {
+        "score": 1.0,
+        "issues": []
+      }
+    },
+    {
+      "story_id": "NUXEPM-1885",
+      "agent1": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent1_5": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_qa_quality": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_coverage": {
+        "coverage_rate": 1,
+        "missing_tests_count": 0,
+        "missing_tests": [],
+        "duplicate_count": 0,
+        "validation_status": "PARTIALLY_VALID"
+      },
+      "agent3": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent5": {
+        "score": 1.0,
+        "issues": []
+      }
+    },
+    {
+      "story_id": "NUXEPM-1446",
+      "agent1": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent1_5": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_qa_quality": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_coverage": {
+        "coverage_rate": 1,
+        "missing_tests_count": 0,
+        "missing_tests": [],
+        "duplicate_count": 0,
+        "validation_status": "PARTIALLY_VALID"
+      },
+      "agent3": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent5": {
+        "score": 1.0,
+        "issues": []
+      }
+    },
+    {
+      "story_id": "NUXEPM-2171",
+      "agent1": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent1_5": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_qa_quality": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_coverage": {
+        "coverage_rate": 1,
+        "missing_tests_count": 0,
+        "missing_tests": [],
+        "duplicate_count": 0,
+        "validation_status": "PARTIALLY_VALID"
+      },
+      "agent3": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent5": {
+        "score": 1.0,
+        "issues": []
+      }
+    },
+    {
+      "story_id": "NUXEPM-2382",
+      "agent1": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent1_5": {
+        "score": 0.95,
+        "issues": [
+          {
+            "message": "goals jamais utilisés par un workflow: ['BG-3']",
+            "severity": "MINEUR"
+          }
+        ]
+      },
+      "agent2_qa_quality": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_coverage": {
+        "coverage_rate": 1,
+        "missing_tests_count": 0,
+        "missing_tests": [],
+        "duplicate_count": 0,
+        "validation_status": "PARTIALLY_VALID"
+      },
+      "agent3": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent5": {
+        "score": 1.0,
+        "issues": []
+      }
+    },
+    {
+      "story_id": "NUXEPM-1755",
+      "agent1": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent1_5": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_qa_quality": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_coverage": {
+        "coverage_rate": 1.0,
+        "missing_tests_count": 0,
+        "missing_tests": [],
+        "duplicate_count": 0,
+        "validation_status": "PARTIALLY_VALID"
+      },
+      "agent3": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent5": {
+        "score": 1.0,
+        "issues": []
+      }
+    },
+    {
+      "story_id": "NUXEPM-1863",
+      "agent1": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent1_5": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_qa_quality": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_coverage": {
+        "coverage_rate": 0.6667,
+        "missing_tests_count": 1,
+        "missing_tests": [
+          "Vérifier que l'ordre alphabétique actuel est remplacé par l'ordre défini dans l'AGL"
+        ],
+        "duplicate_count": 0,
+        "validation_status": "INVALID"
+      },
+      "agent3": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent5": {
+        "score": 1.0,
+        "issues": []
+      }
+    },
+    {
+      "story_id": "NUXEPM-2385",
+      "agent1": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent1_5": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_qa_quality": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_coverage": {
+        "coverage_rate": 1.0,
+        "missing_tests_count": 0,
+        "missing_tests": [],
+        "duplicate_count": 0,
+        "validation_status": "PARTIALLY_VALID"
+      },
+      "agent3": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent5": {
+        "score": 1.0,
+        "issues": []
+      }
+    },
+    {
+      "story_id": "NUXEPM-2455",
+      "agent1": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent1_5": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_qa_quality": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_coverage": {
+        "coverage_rate": 1.0,
+        "missing_tests_count": 0,
+        "missing_tests": [],
+        "duplicate_count": 0,
+        "validation_status": "PARTIALLY_VALID"
+      },
+      "agent3": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent5": {
+        "score": 1.0,
+        "issues": []
+      }
+    },
+    {
+      "story_id": "NUXEPM-1261",
+      "agent1": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent1_5": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_qa_quality": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_coverage": {
+        "coverage_rate": 1.0,
+        "missing_tests_count": 0,
+        "missing_tests": [],
+        "duplicate_count": 0,
+        "validation_status": "PARTIALLY_VALID"
+      },
+      "agent3": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent5": {
+        "score": 1.0,
+        "issues": []
+      }
+    },
+    {
+      "story_id": "NUXEPM-1609",
+      "agent1": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent1_5": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_qa_quality": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_coverage": {
+        "coverage_rate": 1,
+        "missing_tests_count": 0,
+        "missing_tests": [],
+        "duplicate_count": 0,
+        "validation_status": "PARTIALLY_VALID"
+      },
+      "agent3": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent5": {
+        "score": 1.0,
+        "issues": []
+      }
+    },
+    {
+      "story_id": "NUXEPM-2305",
+      "agent1": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent1_5": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_qa_quality": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_coverage": {
+        "coverage_rate": 1,
+        "missing_tests_count": 0,
+        "missing_tests": [],
+        "duplicate_count": 0,
+        "validation_status": "PARTIALLY_VALID"
+      },
+      "agent3": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent5": {
+        "score": 1.0,
+        "issues": []
+      }
+    },
+    {
+      "story_id": "NUXEPM-2144",
+      "agent1": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent1_5": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_qa_quality": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_coverage": {
+        "coverage_rate": 1,
+        "missing_tests_count": 0,
+        "missing_tests": [],
+        "duplicate_count": 0,
+        "validation_status": "PARTIALLY_VALID"
+      },
+      "agent3": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent5": {
+        "score": 1.0,
+        "issues": []
+      }
+    },
+    {
+      "story_id": "NUXEPM-2324",
+      "agent1": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent1_5": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_qa_quality": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_coverage": {
+        "coverage_rate": 0.8889,
+        "missing_tests_count": 1,
+        "missing_tests": [
+          "Vérifier que la popin propose le choix entre : ouvrir le document dans la même fenêtre / dans un autre onglet, ou consulter dans le lecteur PDF/image intégré"
+        ],
+        "duplicate_count": 0,
+        "validation_status": "PARTIALLY_VALID"
+      },
+      "agent3": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent5": {
+        "score": 1.0,
+        "issues": []
+      }
+    },
+    {
+      "story_id": "NUXEPM-1772",
+      "agent1": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent1_5": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_qa_quality": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_coverage": {
+        "coverage_rate": 1,
+        "missing_tests_count": 0,
+        "missing_tests": [],
+        "duplicate_count": 0,
+        "validation_status": "PARTIALLY_VALID"
+      },
+      "agent3": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent5": {
+        "score": 1.0,
+        "issues": []
+      }
+    },
+    {
+      "story_id": "NUXEPM-1707",
+      "agent1": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent1_5": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_qa_quality": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_coverage": {
+        "coverage_rate": 0.8462,
+        "missing_tests_count": 2,
+        "missing_tests": [
+          "Vérifier que la nouvelle option 'Processus RH' est disponible dans le menu burger du RH de proximité",
+          "Vérifier que chaque vignette de processus contient le libellé du processus précédé d'une icône spécifique"
+        ],
+        "duplicate_count": 0,
+        "validation_status": "PARTIALLY_VALID"
+      },
+      "agent3": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent5": {
+        "score": 1.0,
+        "issues": []
+      }
+    },
+    {
+      "story_id": "NUXEPM-1159",
+      "agent1": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent1_5": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_qa_quality": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_coverage": {
+        "coverage_rate": 1,
+        "missing_tests_count": 0,
+        "missing_tests": [],
+        "duplicate_count": 0,
+        "validation_status": "PARTIALLY_VALID"
+      },
+      "agent3": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent5": {
+        "score": 1.0,
+        "issues": []
+      }
+    },
+    {
+      "story_id": "NUXEPM-1592",
+      "agent1": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent1_5": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_qa_quality": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_coverage": {
+        "coverage_rate": 0.75,
+        "missing_tests_count": 1,
+        "missing_tests": [
+          "Vérifier que l'onglet 'Ses absences' est accessible pour le RH de proximité"
+        ],
+        "duplicate_count": 0,
+        "validation_status": "PARTIALLY_VALID"
+      },
+      "agent3": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent5": {
+        "score": 1.0,
+        "issues": []
+      }
+    },
+    {
+      "story_id": "NUXEPM-1430",
+      "agent1": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent1_5": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_qa_quality": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_coverage": {
+        "coverage_rate": 1,
+        "missing_tests_count": 0,
+        "missing_tests": [],
+        "duplicate_count": 0,
+        "validation_status": "PARTIALLY_VALID"
+      },
+      "agent3": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent5": {
+        "score": 1.0,
+        "issues": []
+      }
+    },
+    {
+      "story_id": "NUXEPM-558",
+      "agent1": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent1_5": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_qa_quality": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_coverage": {
+        "coverage_rate": 1,
+        "missing_tests_count": 0,
+        "missing_tests": [],
+        "duplicate_count": 0,
+        "validation_status": "PARTIALLY_VALID"
+      },
+      "agent3": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent5": {
+        "score": 1.0,
+        "issues": []
+      }
+    },
+    {
+      "story_id": "NUXEPM-1582",
+      "agent1": {
+        "score": 0.85,
+        "issues": [
+          {
+            "message": "acceptance_criteria_explicit non vide mais business_rules vide (règle métier potentiellement perdue)",
+            "severity": "MAJEUR"
+          }
+        ]
+      },
+      "agent1_5": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_qa_quality": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent2_coverage": {
+        "coverage_rate": 0.8333,
+        "missing_tests_count": 1,
+        "missing_tests": [
+          "Vérifier que le bouton 'Envoyer' est remplacé par 'Sauvegarder'"
+        ],
+        "duplicate_count": 0,
+        "validation_status": "PARTIALLY_VALID"
+      },
+      "agent3": {
+        "score": 1.0,
+        "issues": []
+      },
+      "agent5": {
+        "score": 1.0,
+        "issues": []
+      }
+    }
+  ]
+}

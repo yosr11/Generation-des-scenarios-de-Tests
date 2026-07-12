@@ -1,0 +1,43 @@
+[Image jointe : image-2024-08-14-17-01-30-681.png]
+── Textes détectés (OCR) ──
+‘ Lazher QGESTRH1 | FPEFRQ000006747
+2 ans et 4 mois chez FPE - Etablissement de Etablissement (51)
+responsable Préliquidation - DIR
+Titulaire | Tempsplein | Cyclenormal | 35.00 heures
+MODIFICATION DE LA PHOTO *
+La modification de la photo sera publiée dès la sauvegarde
+Sélectionnez une image.
+“ Annuler )
+( Annuler ”
+Lazher QGESTRH1 | FPEFRQ000006747
+,Ç
+Titulaire
+Temps plein
+Cycle normal
+35.00 heures
+® @
+MODIFICATION DE LA PHOTO
+( Annuler
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran semble être une fenêtre contextuelle (popup) pour la modification d'une photo de profil. Cette fenêtre est probablement utilisée pour permettre à un utilisateur de modifier sa photo de profil.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+- Type : Flèche
+- Couleur : Rouge
+- La flèche rouge désigne la zone où se trouve une photo de profil, probablement pour attirer l'attention sur la fonctionnalité de modification de la photo.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un badge ou une étiquette dans la partie supérieure gauche de l'écran principal (hors popup) avec une silhouette de tête humaine en bleu clair.
+- Le bouton "Annuler" dans la fenêtre contextuelle est de couleur grise avec du texte noir.
+- Le bouton "Envoyer" dans la fenêtre contextuelle est de couleur grise avec du texte noir.
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Une icône de silhouette de tête humaine en bleu clair, située dans la partie supérieure gauche de l'écran.
+- Une icône de crayon ou de modification superposée à la photo de profil.
+- Une icône de fermeture (croix) dans le coin supérieur droit de la fenêtre contextuelle.
+
+## 5. AGENCEMENT ET RELATIONS
+- La fenêtre contextuelle est positionnée à côté de la photo de profil de l'utilisateur.
+- La photo de profil est accompagnée d'informations sur l'utilisateur (nom, référence, ancienneté, poste, etc.).
+- La fenêtre contextuelle propose deux boutons : "Annuler" et "Envoyer", ce qui suggère que l'utilisateur peut soit annuler la modification, soit la sauvegarder.

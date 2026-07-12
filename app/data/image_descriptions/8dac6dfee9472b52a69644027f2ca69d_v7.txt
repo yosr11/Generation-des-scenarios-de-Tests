@@ -1,0 +1,54 @@
+[Image jointe : image-2025-02-06-11-45-27-121.png]
+── Textes détectés (OCR) ──
+Illustration : Page « Mes collaborateurs »
+Liste des collaborateurs
+= ® Mes collaborateurs = ® Mes collaborateurs
+E ” E
+; ; Equipe DEPQA2 - Equipe A2
+e . - o .
+e - e .-
+- Afficher la liste des collaborateurs regroupés selon leur affectation (équipe)
+- Affichage du libellé de I'affectation
+- Liste des équipes sera affichée triée sur la concaténation des codes société
+établissement et UO/entité
+- l'utilisateur peut afficher chaque équipe dans la structure organisationnelle de
+Equipe = UO/Entité l'entreprise depuis l'icone Informations « i » situé après le libellé de l'équipe.
+8 e>
+L e
+Mes collaborateurs
+E: qe
+E. 4
+€y
+E.+
+Afficher la liste des collaborateurs regroupés selon leur affectation (équipe)
+Affichage du libellé de l’affectation
+Liste des équipes sera affichée triée sur la concaténation des codes société
+l'utilisateur peut afficher chaque équipe dans la structure organisationnelle de
+Equipe = UO/Entité
+l'entreprise depuis l'icone Informations « i » situé après le libellé de l'équipe.
+TS
+U>
+e,
+── Analyse visuelle (VLM) ──
+Voici mon analyse de l'image :
+
+**1. CONTEXTE**
+L'image présente un mockup de la page "Mes collaborateurs" d'une application, montrant deux captures d'écran de listes de collaborateurs. L'intention probable est de visualiser et de comparer les fonctionnalités de la page.
+
+**2. ANNOTATIONS AJOUTÉES PAR LE PO**
+Aucune annotation détectée.
+
+**3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI**
+- Un champ de recherche avec un icône de loupe.
+- Des étiquettes (tags) avec des noms d'équipes (par exemple, "Equipe A1", "Equipe A2").
+- Des badges ou étiquettes avec des informations sur les équipes (par exemple, "Société 4YOU - Etablissement QA2 - Equipe DEPQA2 - Equipe A2").
+
+**4. ICÔNES ET PICTOGRAMMES**
+- Un icône d'informations "i" à côté du libellé de l'équipe.
+- Un icône de loupe dans le champ de recherche.
+
+**5. AGENCEMENT ET RELATIONS**
+- La page est divisée en deux colonnes, chacune contenant une capture d'écran de la liste des collaborateurs.
+- Les listes de collaborateurs sont organisées en sections avec des libellés d'équipes.
+- Les champs de recherche sont situés en haut des listes de collaborateurs.
+- Les icônes d'informations "i" sont situées à côté des libellés d'équipes.

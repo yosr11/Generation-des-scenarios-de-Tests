@@ -72,7 +72,7 @@ def _empty_result(story_id: str, note: str = "") -> BusinessModelingResult:
 
 def build_business_model(
     analysis: Dict[str, Any],
-    model_alias: str = "llama4",
+    model_alias: str = "nova-lite-2",
     max_retries: int = 2,
 ) -> BusinessModelingResult:
     """

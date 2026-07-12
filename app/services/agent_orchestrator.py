@@ -20,6 +20,7 @@ from app.services.pipeline_export_service import (
     build_agent2_input,
     build_evaluation_export,
 )
+from app.utils.pipeline_cancel import check_pipeline_cancelled, PipelineCancelled, clear_pipeline_cancelled
 
 logger = logging.getLogger(__name__)
 
@@ -92,6 +93,7 @@ def node_enrich_story(state: PipelineState) -> dict:
     from app.services.epic_service import JIRA_AC_FIELD
 
     story_id = state["story_id"]
+    check_pipeline_cancelled(story_id)
     force_refresh = bool(state.get("force_refresh"))
     
     # "Renforcer l'enrichissement" est activé si la user story n'a pas été traitée avant
@@ -105,24 +107,15 @@ def node_enrich_story(state: PipelineState) -> dict:
     # Vérifier le cache (sauf si force_refresh demande un re-fetch Jira complet)
     db_story = None if force_refresh else get_story_by_id(story_id)
     if db_story and db_story.get("description_clean"):
-        try:
-            jira_data = get_story_byID(story_id)
-            if jira_data.get("status") == 200:
-                jira_updated = (jira_data["data"].get("fields") or {}).get("updated", "")
-                cached_updated = db_story.get("jira_updated", "")
-                if not jira_updated or jira_updated == cached_updated:
-                    # Cache valide
-                    if not db_story.get("epic_key"):
-                        epic_info = get_epic_for_story(story_id)
-                        if epic_info:
-                            db_story["epic_key"] = epic_info["key"]
-                            db_story["epic_summary"] = epic_info["summary"]
-                            db_story["epic_description"] = epic_info.get("description") or ""
-                            save_story(db_story)
-                    return {"story": db_story}
-        except Exception:
-            # Jira inaccessible → utiliser le cache
-            return {"story": db_story}
+        if not db_story.get("epic_key"):
+            epic_info = get_epic_for_story(story_id)
+            if epic_info:
+                db_story["epic_key"] = epic_info["key"]
+                db_story["epic_summary"] = epic_info["summary"]
+                db_story["epic_description"] = epic_info.get("description") or ""
+                save_story(db_story)
+        logger.info(f"[Orchestrator] Story {story_id} chargée depuis la base locale")
+        return {"story": db_story}
 
     # Fetch depuis Jira
     result = get_story_byID(story_id)
@@ -133,6 +126,11 @@ def node_enrich_story(state: PipelineState) -> dict:
         }
 
     fields = result["data"].get("fields", {}) or {}
+    flat_links = flatten_issuelinks(fields.get("issuelinks") or [])
+    needs_desc = any(not (link.get("description") or "").strip() for link in flat_links)
+    if needs_desc:
+        flat_links = enrich_issuelinks_with_description(flat_links)
+
     raw_story = {
         "id": story_id,
         "summary": fields.get("summary") or "",
@@ -140,8 +138,7 @@ def node_enrich_story(state: PipelineState) -> dict:
         "acceptance_criteria_raw": fields.get(JIRA_AC_FIELD) or "",
         "labels": fields.get("labels") or [],
         "components": [c.get("name") for c in (fields.get("components") or [])],
-        "issuelinks": flatten_issuelinks(fields.get("issuelinks") or []),
-        "issuelinks": enrich_issuelinks_with_description(flatten_issuelinks(fields.get("issuelinks") or [])),
+        "issuelinks": flat_links,
         "priority": (fields.get("priority") or {}).get("name"),
         "status": (fields.get("status") or {}).get("name"),
         "fixVersions": [v.get("name") for v in (fields.get("fixVersions") or [])],
@@ -157,6 +154,10 @@ def node_enrich_story(state: PipelineState) -> dict:
         enriched["epic_key"] = epic_info["key"]
         enriched["epic_summary"] = epic_info["summary"]
         enriched["epic_description"] = epic_info.get("description") or ""
+    elif db_story and db_story.get("epic_key"):
+        enriched["epic_key"] = db_story["epic_key"]
+        enriched["epic_summary"] = db_story.get("epic_summary") or ""
+        enriched["epic_description"] = db_story.get("epic_description") or ""
 
     save_story(enriched)
     return {"story": enriched}
@@ -171,6 +172,8 @@ def node_build_rag_context(state: PipelineState) -> dict:
     """
     if not state.get("use_rag"):
         return {"rag_context": None}
+
+    check_pipeline_cancelled(state["story_id"])
 
     from app.services.jira_service import get_epic_for_story
     from app.services.document_collector import collect_documents_for_epic
@@ -191,6 +194,11 @@ def node_build_rag_context(state: PipelineState) -> dict:
         else:
             logger.warning(f"[Orchestrator] No parent epic for {story_id} → RAG skipped")
             return {"rag_context": None, "story": enriched}
+    elif not enriched.get("epic_summary"):
+        epic_info = get_epic_for_story(story_id)
+        if epic_info:
+            enriched["epic_summary"] = epic_info["summary"]
+            enriched["epic_description"] = epic_info.get("description") or ""
 
     logger.info(f"[Orchestrator] Building RAG context for {story_id} (epic={epic_key}, force_refresh={force_refresh})")
 
@@ -204,7 +212,10 @@ def node_build_rag_context(state: PipelineState) -> dict:
 
     if not is_epic_indexed(epic_key):
         logger.info(f"[Orchestrator] Indexing epic {epic_key} for RAG (VLM focus={story_id})")
-        epic_docs = collect_documents_for_epic(epic_key, vlm_focus_story=story_id)
+        check_pipeline_cancelled(story_id)
+        epic_docs = collect_documents_for_epic(
+            epic_key, vlm_focus_story=story_id, cancel_story_id=story_id,
+        )
         all_docs = list(epic_docs.get("epic_documents", []))
         for docs in epic_docs.get("documents_by_story", {}).values():
             all_docs.extend(docs)
@@ -235,15 +246,16 @@ def node_classify_story(state: PipelineState) -> dict:
         merge_story_analysis,
     )
     from app.repositories.analysis_repository import save_analysis
-    from app.services.document_collector import collect_documents_for_story
+    from app.services.document_collector import collect_story_attachments_only
 
     story = state["story"]
     story_id = state["story_id"]
+    check_pipeline_cancelled(story_id)
     model = state.get("model_agent1", "llama4")
     rag_context = None
     _safe_update_step(story_id, "Agent 1", "running", progress=15)
 
-    story_attachments = collect_documents_for_story(story_id)
+    story_attachments = collect_story_attachments_only(story_id)
     if story_attachments:
         logger.info(f"[Orchestrator] Classification Agent: {story_id} has {len(story_attachments)} attachment(s)")
 
@@ -287,11 +299,12 @@ def node_extract_analysis(state: PipelineState) -> dict:
         merge_story_analysis,
     )
     from app.repositories.analysis_repository import save_analysis
-    from app.services.document_collector import collect_documents_for_story
+    from app.services.document_collector import collect_story_attachments_only
 
     story = state["story"]
     story_id = state["story_id"]
-    model = state.get("model_agent1", "llama4")
+    check_pipeline_cancelled(story_id)
+    model = state.get("model_agent1", "nova-lite-2")
     rag_context = None
     classification = state.get("classification")
     _safe_update_step(story_id, "Agent 1", "running", progress=20)
@@ -300,7 +313,7 @@ def node_extract_analysis(state: PipelineState) -> dict:
         logger.error(f"[Orchestrator] Missing classification for {story_id}")
         return {"status": "failed", "errors": ["Missing classification output"]}
 
-    story_attachments = collect_documents_for_story(story_id)
+    story_attachments = collect_story_attachments_only(story_id)
     logger.info(f"[Orchestrator] Analysis Agent extracting {story_id} (model={model})")
 
     try:
@@ -345,8 +358,9 @@ def node_agent15_business_model(state: PipelineState) -> dict:
 
     story_id = state["story_id"]
     analysis_dict = state.get("analysis_dict") or {}
-    model = state.get("model_agent15") or state.get("model_agent1", "llama4")
+    model = state.get("model_agent15") or state.get("model_agent1", "nova-lite-2")
 
+    check_pipeline_cancelled(story_id)
     _safe_update_step(story_id, "Agent 1.5", "running", progress=27)
     logger.info(f"[Orchestrator] Agent 1.5 modélisation de {story_id} (modèle={model})")
 
@@ -378,6 +392,7 @@ def node_agent2_generate(state: PipelineState) -> dict:
     story = state["story"]
     analysis_dict = dict(state.get("analysis_dict") or {})
     story_id = state["story_id"]
+    check_pipeline_cancelled(story_id)
 
     # Enrichir analysis_dict avec le business model si disponible
     business_model = state.get("business_model")
@@ -385,7 +400,7 @@ def node_agent2_generate(state: PipelineState) -> dict:
         bm_dict = business_model.model_dump() if hasattr(business_model, "model_dump") else dict(business_model)
         analysis_dict["business_goals"] = bm_dict.get("business_goals", [])
         analysis_dict["business_workflows"] = bm_dict.get("business_workflows", [])
-    model = state.get("model_agent2", "llama4")
+    model = state.get("model_agent2", "nova-lite-2")
     rag_context = state.get("rag_context")
     _safe_update_step(story_id, "Agent 2", "running", progress=35)
 
@@ -422,6 +437,7 @@ def node_agent2_generate(state: PipelineState) -> dict:
     logger.info(f"[Orchestrator] Agent 2 generating tests for {story_id} (model={model})")
 
     try:
+        check_pipeline_cancelled(story_id)
         with track_agent("agent2"):
             result = generate_manual_tests_for_story_data(
                 story=story,
@@ -431,7 +447,9 @@ def node_agent2_generate(state: PipelineState) -> dict:
                 legacy_examples=legacy_examples,
             )
 
-        # Persister
+        check_pipeline_cancelled(story_id)
+
+        # Persister uniquement si le pipeline n'a pas été annulé
         if result.tests:
             save_manual_tests_snapshot(
                 story_id,
@@ -451,6 +469,8 @@ def node_agent2_generate(state: PipelineState) -> dict:
             "agent2_message": getattr(result, "message", None),
         }
 
+    except PipelineCancelled:
+        raise
     except Exception as e:
         logger.error(f"[Orchestrator] Agent 2 failed for {story_id}: {e}")
         _safe_update_step(story_id, "Agent 2", "failed", error=str(e), progress=50)
@@ -466,11 +486,12 @@ def node_agent3_validate(state: PipelineState) -> dict:
     from app.repositories.validation_repository import save_validation_result
 
     story_id = state["story_id"]
+    check_pipeline_cancelled(story_id)
     analysis = state.get("analysis")
     tests = state.get("tests", [])
     story = state.get("story", {})
     coverage_threshold = state.get("coverage_threshold", 0.70)
-    quality_model = state.get("model_agent3_quality", "qwen3")
+    quality_model = state.get("model_agent3_quality", "llama4")
 
     testable_points = list(analysis.testable_points) if analysis else []
     story_summary = story.get("summary", "") if isinstance(story, dict) else ""
@@ -519,11 +540,12 @@ def node_agent2_gap_fill(state: PipelineState) -> dict:
     from app.repositories.manual_tests_repository import save_manual_tests_snapshot
 
     story_id = state["story_id"]
+    check_pipeline_cancelled(story_id)
     story = state.get("story", {})
     analysis_dict = state.get("analysis_dict", {})
     tests = state.get("tests", [])
     validation = state.get("validation")
-    model = state.get("model_agent2", "llama4")
+    model = state.get("model_agent2", "nova-lite-2")
     iteration = state.get("correction_iteration", 0)
 
     uncovered = validation.report.uncovered_testable_points if validation else []
@@ -575,7 +597,8 @@ def node_agent2_gap_fill(state: PipelineState) -> dict:
                 )
             merged_tests = deduped_tests
 
-        # Persister le nouveau snapshot
+        # Persister le nouveau snapshot (sauf si annulé entre-temps)
+        check_pipeline_cancelled(story_id)
         save_manual_tests_snapshot(
             story_id,
             [t.model_dump() for t in merged_tests],
@@ -603,10 +626,11 @@ def node_agent5_report(state: PipelineState) -> dict:
     from app.services.agent5_report_service import Agent5ReportGeneratorService
 
     story_id = state["story_id"]
+    check_pipeline_cancelled(story_id)
     analysis = state.get("analysis")
     generation_result = state.get("generation_result")
     validation = state.get("validation")
-    model = state.get("model_agent5", "qwen3")
+    model = state.get("model_agent5", "llama4")
     _safe_update_step(story_id, "Agent 5", "running", progress=90)
 
     logger.info(f"[Orchestrator] Agent 5 generating report for {story_id}")
@@ -869,14 +893,14 @@ def run_pipeline(
     *,
     use_rag: bool = False,
     use_legacy_rag: bool = True,
-    model_agent1: str = "llama4",
-    model_agent15: str = "llama4",
-    model_agent2: str = "llama4",
+    model_agent1: str = "nova-lite-2",
+    model_agent15: str = "nova-lite-2",
+    model_agent2: str = "nova-lite-2",
     model_agent3_quality: str = "llama4",
     model_agent5: str = "llama4",
     coverage_threshold: float = 0.70,
     max_correction_iterations: int = 2,
-    force_reanalyze: bool = False,
+    force_reanalyze: bool = True,
     force_refresh: bool = False,
 ) -> PipelineState:
     """
@@ -910,11 +934,20 @@ def run_pipeline(
 
     logger.info(f"[Orchestrator] ▶ Starting pipeline for {story_id}")
 
-    # Exécuter le graphe sous un tracker de tokens partagé
-    with track_pipeline() as token_usage:
-        final_state = graph.invoke(initial_state)
+    try:
+        # Exécuter le graphe sous un tracker de tokens partagé
+        with track_pipeline() as token_usage:
+            final_state = graph.invoke(initial_state)
+    except PipelineCancelled as exc:
+        logger.info(f"[Orchestrator] Pipeline {story_id} annulé")
+        clear_pipeline_cancelled(story_id)
+        return {
+            **initial_state,
+            "status": "failed",
+            "errors": [str(exc)],
+            "duration_ms": int((time.time() - start_time) * 1000),
+        }
 
-    
     duration_ms = int((time.time() - start_time) * 1000)
     final_state["duration_ms"] = duration_ms
     final_state["token_usage"] = token_usage

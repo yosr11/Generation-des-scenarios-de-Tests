@@ -8,6 +8,11 @@ import { ProjectPicker } from '../projects/ProjectPicker'
 import { XrayTestView } from './XrayTestView'
 
 /* ── types ── */
+const ROSE      = '#f43f5e'
+const NAV        = '#121b53'
+const RED       = '#e70f16'
+const BUTTON_GRADIENT = `linear-gradient(90deg, #4338ca, ${ROSE})`
+const ICON_GRADIENT = `linear-gradient(135deg, #051268, #1a2060)`
 interface ManualTestsTableProps {
   tests: any[]
   storyId?: string
@@ -87,6 +92,7 @@ const TestEditDrawer: React.FC<{
   const [chatHistory, setChatHistory] = useState<{ role: string; content: string }[]>([])
   const [aiReply, setAiReply] = useState<string | null>(null)
   const [refining, setRefining] = useState(false)
+  const [openedGroup, setOpenedGroup] = useState<number | null>(null)
   const [saving, setSaving] = useState(false)
   const toast = useToast()
 
@@ -241,8 +247,8 @@ const TestEditDrawer: React.FC<{
         <div className="flex-1 overflow-y-auto p-5 space-y-5 bg-white">
 
           {/* Affiner avec l'IA — en haut */}
-          <section className="rounded-xl border border-brand-violet/15 bg-brand-violet/[0.03] p-4">
-            <p className="syn-label text-brand-violet mb-2">Affiner avec l'IA</p>
+          <section className="rounded-xl border border-brand-red/15 bg-brand-red/[0.03] p-4">
+            <p className="syn-label text-brand-red mb-2">Affiner avec l'IA</p>
             <textarea
               value={message}
               onChange={(e) => setMessage(e.target.value)}
@@ -253,20 +259,25 @@ const TestEditDrawer: React.FC<{
             />
             <div className="flex justify-end mt-2">
               <button
-                type="button"
-                onClick={handleRefine}
-                disabled={refining || !message.trim()}
-                className="syn-btn-xray !text-xs !py-2 !px-4"
-              >
-                {refining ? (
-                  <>
-                    <span className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    Affinement…
-                  </>
-                ) : (
-                  'Affiner'
-                )}
-              </button>
+  type="button"
+  onClick={handleRefine}
+  disabled={refining || !message.trim()}
+  className="syn-btn-xray !text-xs !py-2 !px-4 !text-white !font-bold"
+  style={{
+    background: BUTTON_GRADIENT,
+    border: "none",
+    boxShadow: "0 4px 18px rgba(219,39,119,0.38)",
+  }}
+>
+  {refining ? (
+    <>
+      <span className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+      Affinement…
+    </>
+  ) : (
+    "Affiner"
+  )}
+</button>
             </div>
             {aiReply && (
               <div className="mt-3 pt-3 border-t border-brand-violet/10">
@@ -278,7 +289,10 @@ const TestEditDrawer: React.FC<{
 
           {/* Objectif */}
           <section>
-            <p className="syn-label mb-2">Objectif</p>
+            <div className="flex items-center gap-2">
+            <div className="w-1 h-4 rounded-full" style={{ background: 'linear-gradient(135deg, #0B1E3E, #1E3A8A)' }} />
+            <p className="text-sm font-extrabold uppercase tracking-widest text-brand-navy font-sans">Objectif</p>
+            </div>
             <textarea
               className="w-full text-sm text-brand-navy leading-relaxed rounded-lg px-3 py-2.5 border border-brand-navy/[0.08] bg-brand-offwhite/30 focus:border-brand-violet focus:outline-none focus:ring-2 focus:ring-brand-violet/10 resize-none"
               value={editedTest?.objective || ''}
@@ -294,34 +308,70 @@ const TestEditDrawer: React.FC<{
             <section className="space-y-4">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <div className="w-1 h-4 rounded-full" style={{ background: 'linear-gradient(180deg,#1e40af,#3b82f6)' }} />
-                  <p className="text-sm font-extrabold uppercase tracking-widest text-brand-navy font-sans">Étapes (Format Groupé)</p>
+                  <div className="w-1 h-4 rounded-full" style={{ background: 'linear-gradient(135deg, #0B1E3E, #1E3A8A)' }} />
+                  <p className="text-sm font-extrabold uppercase tracking-widest text-brand-navy font-sans">Étapes </p>
                 </div>
                 <span className="px-2 py-0.5 rounded-full text-xs font-bold font-sans"
-                  style={{ background: 'rgba(30,64,175,0.1)', color: '#1e40af' }}>
+                  style={{ background: 'rgba(22, 46, 123, 0.1)', color: '#0b182e' }}>
                   {editedTest.étapes.length}
                 </span>
               </div>
 
               <div className="space-y-4">
-                {editedTest.étapes.map((group: any, gi: number) => (
+                {editedTest.étapes.map((group: any, gi: number) => {
+
+                  const opened = openedGroup === gi
+
+                  return (
+
                   <div
                     key={gi}
                     className="rounded-2xl border overflow-hidden"
-                    style={{ borderColor: 'rgba(30,64,175,0.2)', background: 'rgba(30,64,175,0.01)' }}
+                    style={{ borderColor: 'rgba(5, 19, 65, 0.2)', background: 'rgba(12, 24, 63, 0.01)' }}
                   >
                     {/* Group Header */}
-                    <div className="px-4 py-3 flex items-center gap-2"
-                      style={{ background: 'rgba(30,64,175,0.06)', borderBottom: '1px solid rgba(30,64,175,0.12)' }}>
-                      <span className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-extrabold text-white flex-shrink-0"
-                        style={{ background: 'linear-gradient(135deg,#1e40af,#3b82f6)' }}>{gi + 1}</span>
-                      <span className="text-xs font-extrabold text-brand-navy uppercase tracking-wider font-sans">Étape {gi + 1}</span>
-                    </div>
+                    <button
+    type="button"
+    onClick={() =>
+        setOpenedGroup(opened ? null : gi)
+    }
+    className="w-full px-4 py-3 flex items-center justify-between"
+    style={{
+        background:'rgba(19, 37, 98, 0.06)',
+        borderBottom:'1px solid rgba(27, 43, 94, 0.12)'
+    }}
+>
 
+    <div className="flex items-center gap-2">
+
+        <span
+            className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-extrabold text-white"
+            style={{
+                background:'linear-gradient(135deg, #0B1E3E, #1E3A8A)'
+            }}
+        >
+            {gi+1}
+        </span>
+
+        <span className="text-xs font-extrabold text-brand-navy uppercase tracking-wider">
+            {group.titre || `Étape ${gi+1}`}
+        </span>
+
+    </div>
+
+    <ChevronRight
+        size={18}
+        className={`transition-transform ${
+            opened ? 'rotate-90' : ''
+        }`}
+    />
+
+</button>
+                  {opened && (
                     <div className="p-4 space-y-4">
                       {/* Group Title (main action) */}
                       <div>
-                        <p className="text-[10px] font-extrabold uppercase tracking-widest mb-1.5 font-sans" style={{ color: '#1e40af' }}>
+                        <p className="text-[10px] font-extrabold uppercase tracking-widest mb-1.5 font-sans" style={{ color: '#ad1406'  }}>
                           Titre de l'étape (Action principale)
                         </p>
                         <input
@@ -332,10 +382,10 @@ const TestEditDrawer: React.FC<{
                           placeholder="ex : Se connecter en tant que Collaborateur…"
                         />
                       </div>
-
+                       
                       {/* Group Actor */}
                       <div>
-                        <p className="text-[10px] font-extrabold uppercase tracking-widest mb-1.5 font-sans" style={{ color: '#475569' }}>
+                        <p className="text-[10px] font-extrabold uppercase tracking-widest mb-1.5 font-sans" style={{ color: '#102b75'}}>
                           Acteur
                         </p>
                         <input
@@ -350,14 +400,14 @@ const TestEditDrawer: React.FC<{
                       {/* Sub-steps of this group */}
                       {Array.isArray(group.steps) && group.steps.length > 0 && (
                         <div className="space-y-3 pt-2 border-t border-dashed border-brand-navy/10">
-                          <p className="text-[10px] font-extrabold uppercase tracking-widest text-brand-navy/50 font-sans">
+                          <p className="text-[10px] font-extrabold uppercase tracking-widest text-brand-navy/50 font-sans"style={{ color: '#a70909'  }}>
                             Actions & Résultats détaillés
                           </p>
                           {group.steps.map((subStep: any, si: number) => (
-                            <div key={si} className="p-3 rounded-xl bg-white border border-brand-navy/[0.08] space-y-3">
+                            <div key={si} className="p-4 rounded-xl bg-white border border-brand-violet/[10] space-y-3">
                               {/* SubStep Action */}
                               <div>
-                                <p className="text-[9px] font-bold uppercase tracking-wider mb-1 font-sans text-brand-muted">
+                                <p className="text-[10px] font-extrabold uppercase tracking-widest mb-1.5 font-sans"style={{ color: '#102b75' }}>
                                   Action détaillée
                                 </p>
                                 <input
@@ -371,7 +421,7 @@ const TestEditDrawer: React.FC<{
 
                               {/* SubStep Expected Result */}
                               <div>
-                                <p className="text-[9px] font-bold uppercase tracking-wider mb-1 font-sans text-emerald-600">
+                                <p className="text-[10px] font-extrabold uppercase tracking-widest mb-1.5 font-sans"style={{ color: '#102b75' }}>
                                   Résultat attendu
                                 </p>
                                 <textarea
@@ -386,7 +436,7 @@ const TestEditDrawer: React.FC<{
 
                               {/* SubStep Data */}
                               <div>
-                                <p className="text-[9px] font-bold uppercase tracking-wider mb-1 font-sans text-violet-600">
+                                <p className="text-[10px] font-extrabold uppercase tracking-widest mb-1.5 font-sans" style={{ color: '#102b75' }}>
                                   Données de test
                                 </p>
                                 <input
@@ -402,9 +452,15 @@ const TestEditDrawer: React.FC<{
                         </div>
                       )}
                     </div>
+                  )}
+                
                   </div>
-                ))}
+                  )
+                })
+              }
+
               </div>
+
             </section>
           ) : (
             /* Flat steps fallback */
@@ -497,20 +553,25 @@ const TestEditDrawer: React.FC<{
             Annuler
           </button>
           <button
-            type="button"
-            onClick={handleSave}
-            disabled={saving}
-            className="flex-1 syn-btn-xray !py-2.5 justify-center disabled:opacity-50"
-          >
-            {saving ? (
-              <>
-                <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                Sauvegarde…
-              </>
-            ) : (
-              'Sauvegarder'
-            )}
-          </button>
+  type="button"
+  onClick={handleSave}
+  disabled={saving}
+  className="flex-1 syn-btn-xray !py-2.5 justify-center disabled:opacity-50 !text-white !font-bold"
+  style={{
+    background: BUTTON_GRADIENT,
+    border: "none",
+    boxShadow: "0 4px 18px rgba(219,39,119,0.38)",
+  }}
+>
+  {saving ? (
+    <>
+      <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+      Sauvegarde…
+    </>
+  ) : (
+    "Sauvegarder"
+  )}
+</button>
         </div>
 
       </aside>
@@ -812,17 +873,18 @@ export const ManualTestsTable: React.FC<ManualTestsTableProps> = ({
                   onClick={() => toggleExpanded(idx)}
                   className="w-full px-4 py-3.5 flex items-center gap-3 text-left hover:bg-brand-offwhite/50 transition-colors"
                 >
-                  <span className={`flex-shrink-0 text-brand-muted transition-transform ${isExpanded ? 'rotate-90 text-brand-violet' : ''}`}>
-                    <ChevronRight size={16} />
-                  </span>
-                  <span className="flex-shrink-0 w-6 text-xs font-bold text-brand-violet tabular-nums">
-                    {idx + 1}.
-                  </span>
-                  <span className={`flex-1 text-sm font-medium leading-snug min-w-0 ${
-                    isExpanded ? 'text-brand-violet' : 'text-brand-navy'
-                  }`}>
-                    {title}
-                  </span>
+                  <span
+  className="flex-shrink-0 text-brand-muted transition-transform"
+  style={isExpanded ? { transform: 'rotate(90deg)', color: NAV } : undefined}
+>
+  <ChevronRight size={16} />
+</span>
+                  <span className="flex-shrink-0 w-6 text-xs font-bold tabular-nums" style={{ color: RED }}>
+  {idx + 1}.
+</span>
+<span className="flex-1 text-sm font-medium leading-snug min-w-0" style={{ color: NAV }}>
+  {title}
+</span>
                   <span className="flex-shrink-0 text-xs text-brand-muted">
                     {allSteps.length} étape{allSteps.length !== 1 ? 's' : ''}
                   </span>
@@ -842,19 +904,25 @@ export const ManualTestsTable: React.FC<ManualTestsTableProps> = ({
                         <Pencil size={13} /> Éditer
                       </button>
                       <button
-                        type="button"
-                        disabled={integratingIndex === idx || !projectKey}
-                        title={!projectKey ? 'Sélectionnez un projet Jira' : 'Exporter vers Xray'}
-                        onClick={(e) => handleIntegrate(e, test, idx)}
-                        className="syn-btn-xray"
-                      >
-                        {integratingIndex === idx ? (
-                          <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                        ) : (
-                          <Upload size={13} />
-                        )}
-                        Xray
-                      </button>
+  type="button"
+  disabled={integratingIndex === idx || !projectKey}
+  title={!projectKey ? "Sélectionnez un projet Jira" : "Exporter vers Xray"}
+  onClick={(e) => handleIntegrate(e, test, idx)}
+  className="syn-btn-xray !text-xs !py-2 !px-4 !text-white !font-bold"
+  style={{
+    background: BUTTON_GRADIENT,
+    border: "none",
+    boxShadow: "0 4px 18px rgba(219,39,119,0.38)",
+  }}
+>
+  {integratingIndex === idx ? (
+    <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+  ) : (
+    <Upload size={13} />
+  )}
+  Xray
+</button>
+
                     </div>
                   </div>
                 )}

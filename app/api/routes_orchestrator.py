@@ -65,8 +65,8 @@ class PipelineRequest(BaseModel):
     model_agent1: str = Field(default="nova-lite-2", description="Modèle LLM pour Agent 1 (analyse). Options: qwen3, llama4, gptoss, gptoss120b, qwen3.6, nova-lite-2")
     model_agent15: str = Field(default="nova-lite-2", description="Modèle LLM pour Agent 1.5 (business modeling)")
     model_agent2: str = Field(default="nova-lite-2", description="Modèle LLM pour Agent 2 (génération)")
-    model_agent3_quality: str = Field(default="qwen3", description="Modèle LLM pour Agent 3 (qualité)")
-    model_agent5: str = Field(default="qwen3", description="Modèle LLM pour Agent 5 (rapport)")
+    model_agent3_quality: str = Field(default="llama4", description="Modèle LLM pour Agent 3 (qualité)")
+    model_agent5: str = Field(default="llama4", description="Modèle LLM pour Agent 5 (rapport)")
     coverage_threshold: float = Field(default=0.70, ge=0.0, le=1.0, description="Seuil de couverture")
     max_correction_iterations: int = Field(default=2, ge=0, le=5, description="Max itérations gap-fill")
     force_refresh: bool = Field(
@@ -273,6 +273,8 @@ async def run_story_pipeline(
     # Cancel previous run task if any
     if sid in running_tasks:
         try:
+            from app.utils.pipeline_cancel import mark_pipeline_cancelled
+            mark_pipeline_cancelled(sid)
             running_tasks[sid].cancel()
         except Exception:
             pass
@@ -318,6 +320,13 @@ async def run_story_pipeline(
                 jobs_db[sid]["error"] = "Annulé par l'utilisateur."
             raise
         except Exception as exc:
+            from app.utils.pipeline_cancel import PipelineCancelled
+            if isinstance(exc, PipelineCancelled):
+                logger.info(f"Pipeline run for {sid} was cancelled (cooperative).")
+                if sid in jobs_db:
+                    jobs_db[sid]["status"] = "failed"
+                    jobs_db[sid]["error"] = "Annulé par l'utilisateur."
+                return
             error_msg = str(exc)
             logger.error(f"Pipeline error for {sid}: {exc}", exc_info=True)
             if sid in jobs_db:
@@ -374,6 +383,8 @@ def cancel_pipeline(
 ):
     sid = story_id.strip().upper()
     if sid in running_tasks:
+        from app.utils.pipeline_cancel import mark_pipeline_cancelled
+        mark_pipeline_cancelled(sid)
         running_tasks[sid].cancel()
         from app.utils.job_manager import jobs_db
         if sid in jobs_db:

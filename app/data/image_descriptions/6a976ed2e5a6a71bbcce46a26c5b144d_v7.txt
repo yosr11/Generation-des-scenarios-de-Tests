@@ -1,0 +1,34 @@
+[Image jointe : pptx_slide_2.png]
+── Textes détectés (OCR) ──
+Ses données individuelles
+34 ans, marié(e) et 1 enfant.
+Habite 10 TER Chaussée BORHENE TABBOUBI à PARIS CEDEX 08 (75404) .
+joignable sur le mobile FRA H H +33 9 08 07 06 05.
+1 contact en cas d'urgence. En priorité nous préviendrons M. Wael TESTT (Parent) FRA H H +33 4 33 33 33 33 .
+un compte bancaire chez BNP.
+@ © @
+1 contact en cas d'urgence. En priorité nous préviendrons M. Wael TESTT (Parent) FRA H H +33 4 33 33 33 33
+── Analyse visuelle (VLM) ──
+Voici mon analyse de l'image :
+
+**1. CONTEXTE**
+L'écran semble être une page de profil ou de détails d'un utilisateur, probablement dans un système de gestion des ressources humaines (Sopra HR). L'intention probable est de visualiser les informations personnelles d'un employé.
+
+**2. ANNOTATIONS AJOUTÉES PAR LE PO**
+Aucune annotation détectée.
+
+**3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI**
+- Un bandeau noir en haut de l'écran avec trois icônes circulaires blanches (voir section 5).
+- Les numéros de téléphone sont mis en forme avec des codes pays (drapeaux) à côté.
+
+**4. ICÔNES ET PICTOGRAMMES**
+- Trois icônes circulaires blanches en haut à gauche dans un bandeau noir :
+  1. Une palme,
+  2. Un document,
+  3. Deux mains se serrant,
+  4. Une silhouette de personne.
+
+**5. AGENCEMENT ET RELATIONS**
+- L'écran est divisé en une section principale contenant les informations personnelles.
+- Les informations sont présentées sous forme de texte avec des éléments mis en forme (adresses, numéros de téléphone, liens éventuels).
+- Les informations sont structurées en quelques lignes de texte, suggérant une présentation simple et facile à lire des détails de l'utilisateur.

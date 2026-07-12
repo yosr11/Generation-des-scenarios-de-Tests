@@ -1,0 +1,112 @@
+[Image jointe : pptx_slide_2.png]
+── Textes détectés (OCR) ──
+v 4 4You90-Releas X o comsoprahrfact X o 4YOU-Startyou X o 4YOU-Startyou X o 4YOU-Seconne X 4 [YOUQA-11265]F X  + — X
+€ G 2 hra-jira.ptx.fr.sopra/browse/YOUQA-11265?jql=project%20%3D%20YOUQA%20AND%20issuetype%20%.. & A % 3 - Nouvelle version de Chrome disponible :
+w Copilot avec GPT-4 2 Portail env. & Suivi périmètre V9... D NUXE4You9.0-R.. ) JIRA-RMT1-App-.. & Vision Roadmap V9... & DocWik o 4You8 - Document... &> Roadmap V8 2023 »
+@ obtenu.gif b4 x
+S () & ntys. ‘foryou-hradu-dv77-snapshot.apps.shr-okd.marc.fr.ssg, 100 Corc =<l pert . L g Cs = …. -
+= @ E Espace gestionnaire O‘ ? Q)
+PILOTAGE CSP 49 CONTROLES DE PAIE DSN
+DOSSIERS INDIVIDUELS À
+DEMANDES OUVERTES DELAIS DE TRAÎTEMENT CONTRÔLER
+_ _ _ Espace DSN
+o A 5 A 0 ÏÜ RÉSULTATS DE PAIE À CONTRÔLER
+< 0 >
+PAIE - NIR A CONTROLER HABILITATIONS A ECHEANCE TAUX DGFIP ABSENTS >3M
+r‘ > 22 Dossier(s) 22 Dossier(s) 22 dossiers(s)
+Show all files À
+.. . —l - - . A - A I ce _ , 01747 |
+Ml / Taper ici pour rechercher Cj 9 © D : ™~ ° S w t4 € x P ds 18°C N = 1 A M L /na/2074 F
+AYou 9.0 - Releas
+com.soprahr.fact
+4YOU - Start you
+AYOU - Se conne
+=> [YOUQA-11265] F
+-0
+O-
+hra-jira.ptx.fr. sopra/browse/YOUQA-11265?jql=project%20%3D%20YOUQA%20AND%20issuetype%20%.. & A % )
+[ 1
+Nouvelle version de Chrome disponible
+w Copilot avec GPT-4
+Portail env.
+= Suivi périmètre V9...
+> NUXE 4You 9.0 - R...
+Y JIRA - RM1 - App -...
+=> Vision Roadmap V9...
+Doc Wik
+=> 4You8 - Document...
+= Roadmap V8 2023
+obtenu.gif
+oy
+i« ‘foryou-hradu-dv77-snapshot.apps.shr-okd.marc.fr.ssg, 10 70510
+<;j/']…\ ‘ l‘.(;.[-[
+Q ? 0
+CONTRÔLES DE PAIE
+DSN
+PILOTAGE CSP
+49
+DEMANDES OUVERTES
+DELAIS DE TRAÎTEMENT
+CONTROLER
+RESULTATS DE PAIE A CONTROLER
+Espace DSN
+oj
+0a 5~
+PAIE -
+NIR À CONTRÔLER
+HABILITATIONS À ECHEANCE
+TAUX DGFIP ABSENTS >3M
+2.6
+0.6
+22 Dossier(s)
+22 dossiers(s)
+32
+m t t mm e e
+/' .com
+17:47
+1|
+51
+e q
+o™
+Taper ici pour rechercher
+9 &
+& 18°C
+29/04/2024
+── Analyse visuelle (VLM) ──
+### 1. CONTEXTE
+L'écran capturé semble être un dashboard de gestion pour une application liée aux ressources humaines, spécifiquement conçu pour le pilotage et le contrôle des processus de paie et de gestion des dossiers individuels. L'interface est divisée en sections qui fournissent des informations sur les contrôles de paie, les demandes ouvertes, les délais de traitement, et d'autres indicateurs clés.
+
+### 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée. Il n'y a pas de cadres colorés, flèches, cercles, soulignements, surlignages, biffures, étoiles, ou post-it ajoutés sur l'écran.
+
+### 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- **Pastilles (pills) / Badges** : 
+  - Une pastille rouge avec le chiffre "5" à l'intérieur, dans la section "DEMANDES OUVERTES".
+  - Une pastille grise avec le chiffre "0" à l'intérieur, dans la section "DELAIS DE TRAITEMENT".
+- **Boutons** : 
+  - Un bouton ou lien texte "Taper ici pour rechercher" en bas à gauche de l'écran.
+- **Étiquettes (tags/chips)** : 
+  - Aucune étiquette supplémentaire visible.
+
+### 4. ICÔNES ET PICTOGRAMMES
+- **Icônes de statut** :
+  - Une icône de triangle rouge avec un point d'exclamation à l'intérieur dans la section "DEMANDES OUVERTES".
+  - Une icône de main pointant vers le bas avec un chiffre "0" à l'intérieur dans la section "DELAIS DE TRAITEMENT".
+- **Icônes de navigation** :
+  - Une icône de loupe (probablement pour la recherche) en haut à droite du tableau central.
+  - Une icône de menu (hamburger) en haut à gauche.
+
+### 5. AGENCEMENT ET RELATIONS
+- **Structure** : L'écran est divisé en plusieurs sections ou cartes, regroupées sous des titres tels que "PILOTAGE CSP", "CONTROLES DE PAIE", "DSN".
+- **Regroupements visuels** :
+  - Les sections sont organisées en grille.
+  - Chaque section a un titre et contient des informations chiffrées ou des indicateurs.
+- **Hiérarchie** :
+  - Les titres des sections sont plus grands et plus gras que les textes sous-jacents.
+- **Champs obligatoires** :
+  - Aucun champ obligatoire identifié par une étoile "*" ou un autre indicateur.
+- **États** :
+  - Certaines sections montrent des chiffres et des indicateurs de statut (par exemple, "22 Dossier(s)" dans la section "NIR À CONTRÔLER").
+- **Relations spatiales** :
+  - Le champ de recherche est en bas à gauche.
+  - Les sections de contrôle sont alignées en grille, suggérant une relation entre les différents indicateurs présentés.

@@ -1,0 +1,52 @@
+[Image jointe : image-2024-08-19-09-53-24-150.png]
+── Textes détectés (OCR) ──
+VS
+Ses absences
+Son solde de congés validés est de 25,5 sur 49 jours de droit annuel décomposés de la manière suivante :
+RTT 9 sur 9 ours à prendre avantle 31/12/2024
+Congés payés -1 sur 12 Jours à prendre avant le 31/05/2025
+Congés payés 1,5 sur 12 Jours à prendre avant le 31/05/2026
+Congés payés 16 sur 16 jours à prendre avantle 31/05/2027
+© 0000
+Son solde de congés validés est de 25,5 sur 49 jours de droit annuel décomposés de la manière suivante
+RTT
+sur
+ours à prendre avant le
+31/12/2024
+I R
+Congés payés
+-1
+12
+31/05/2025
+1.5 sur
+31/05/2026
+16
+31/05/2027
+── Analyse visuelle (VLM) ──
+### 1. CONTEXTE
+L'écran semble être une page de détail concernant les absences d'un utilisateur, probablement dans un contexte de gestion des ressources humaines. Il affiche des informations sur les congés validés et les différents types d'absences.
+
+### 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+### 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Deux pastilles (pills) de couleur verte :
+  - Une contient le texte « 25,5 j / 49 j ».
+  - L'autre contient le texte « 0 j pris ».
+
+### 4. ICÔNES ET PICTOGRAMMES
+- Icône de retour (flèche gauche) en haut à gauche.
+- Quatre icônes en haut (dans le bandeau gris) :
+  - Une flèche de retour.
+  - Un document.
+  - Un calendrier ou un pictogramme similaire.
+  - Un utilisateur.
+
+### 5. AGENCEMENT ET RELATIONS
+- Le titre « Ses absences » est affiché en haut de la section principale.
+- Un tableau ou une liste structurée affiche les informations sur les congés :
+  - Une ligne pour les RTT (9 sur 9 jours à prendre avant le 31/12/2024).
+  - Trois lignes pour les Congés payés avec différentes quantités et dates d'échéance.
+- Deux encadrés verts en haut à droite affichent des informations synthétiques :
+  - « Son solde de congés : 25,5 j / 49 j ».
+  - « Ses autres absences : 0 j pris ».

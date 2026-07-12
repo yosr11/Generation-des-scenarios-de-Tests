@@ -135,7 +135,7 @@ def generate_manual_tests_for_story_data(
 @router.post("/generate/{story_id}", response_model=ManualTestGenerationResult)
 def generate_manual_tests(
     story_id: str,
-    model_alias: str = Query("llama4", description=f"Model alias. Allowed: {list(ALL_MODELS.keys())}"),
+    model_alias: str = Query("nova-lite-2", description=f"Model alias. Allowed: {list(ALL_MODELS.keys())}"),
     use_legacy_rag: bool = Query(
         True,
         description=(
@@ -188,8 +188,8 @@ def generate_manual_tests(
 @router.post("/generate/epic/{epic_key}")
 def generate_manual_tests_for_epic(
     epic_key: str,
-    analysis_model: str = Query("llama4", description=f"Modèle pour l'Agent 1 (analyse). Allowed: {list(GROQ_MODELS.keys())}"),
-    generation_model: str = Query("llama4", description=f"Modèle pour l'Agent 2 (génération tests). Allowed: {list(ALL_MODELS.keys())}"),
+    analysis_model: str = Query("nova-lite-2", description=f"Modèle pour l'Agent 1 (analyse). Allowed: {list(GROQ_MODELS.keys())}"),
+    generation_model: str = Query("nova-lite-2", description=f"Modèle pour l'Agent 2 (génération tests). Allowed: {list(ALL_MODELS.keys())}"),
     use_legacy_rag: bool = Query(
         True,
         description=(

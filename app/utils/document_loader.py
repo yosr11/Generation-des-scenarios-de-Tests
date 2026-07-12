@@ -21,6 +21,10 @@ def extract_text_from_bytes(content: bytes, filename: str) -> Optional[str]:
         return _extract_pdf(content)
     elif name_lower.endswith(".docx"):
         return _extract_docx(content)
+    elif name_lower.endswith((".pptx", ".ppt")):
+        return _extract_pptx(content)
+    elif name_lower.endswith((".xlsx", ".xls")):
+        return _extract_excel(content)
     elif name_lower.endswith((".txt", ".csv", ".json", ".xml", ".properties", ".cfg", ".conf", ".md")):
         return _extract_text(content)
     else:
@@ -47,6 +51,38 @@ def _extract_docx(content: bytes) -> Optional[str]:
         doc = Document(io.BytesIO(content))
         paragraphs = [p.text for p in doc.paragraphs if p.text.strip()]
         return "\n".join(paragraphs) if paragraphs else None
+    except Exception:
+        return None
+
+
+def _extract_pptx(content: bytes) -> Optional[str]:
+    try:
+        from pptx import Presentation
+        prs = Presentation(io.BytesIO(content))
+        slides_text = []
+        for slide_num, slide in enumerate(prs.slides, 1):
+            slide_text = [f"--- Slide {slide_num} ---"]
+            for shape in slide.shapes:
+                if hasattr(shape, "text") and shape.text.strip():
+                    slide_text.append(shape.text)
+            if len(slide_text) > 1:
+                slides_text.append("\n".join(slide_text))
+        return "\n\n".join(slides_text) if slides_text else None
+    except Exception:
+        return None
+
+
+def _extract_excel(content: bytes) -> Optional[str]:
+    try:
+        import pandas as pd
+        excel_file = io.BytesIO(content)
+        xls = pd.ExcelFile(excel_file)
+        all_sheets = []
+        for sheet_name in xls.sheet_names:
+            df = pd.read_excel(excel_file, sheet_name=sheet_name)
+            sheet_text = f"=== Feuille: {sheet_name} ===\n{df.to_string()}"
+            all_sheets.append(sheet_text)
+        return "\n\n".join(all_sheets) if all_sheets else None
     except Exception:
         return None
 

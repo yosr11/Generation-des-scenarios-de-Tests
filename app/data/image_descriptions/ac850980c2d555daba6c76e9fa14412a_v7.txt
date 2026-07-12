@@ -1,0 +1,41 @@
+[Image jointe : image-2024-08-14-16-23-08-308.png]
+── Textes détectés (OCR) ──
+= @ — Profil du collaborateur
+Cupidon QRHGTA
+4 ans et 4 mois chez Société 4YOU - Etablissement
+Employé qualifié - DEP QA1
+Durée indéterminée | Temps plein | Cycle normal (RTT semaine) | 35.00 heures
+e_ _ - IO = . - : -
+& T ISS
+DEP®O
+@ — Profil du collaborateur
+4 ans et 4 mois chez Sociéré 4YOU - Etablissement
+—— —
+es
+ae
+_——
+JS
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran capturé semble être un profil de collaborateur, probablement dans un système de gestion des ressources humaines. Il affiche des informations sur un employé, notamment son nom, son ID, son ancienneté, son poste, et ses conditions de travail.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un badge ou étiquette circulaire avec une image à l'intérieur, probablement une photo de profil, située à gauche du texte "Cupidon QRHGTAHR01".
+- Quatre icônes en bas de l'écran, représentant probablement des actions ou des onglets :
+  - Une icône ressemblant à un graphique ou à un tableau de bord.
+  - Une icône qui pourrait représenter un document ou une liste.
+  - Une icône ressemblant à une personne, potentiellement pour les informations de profil.
+  - Une icône qui pourrait symboliser des paramètres ou des configurations.
+
+## 4. ICÔNES ET PICTOGRAMMES
+- En haut à gauche, trois lignes horizontales superposées, probablement un menu hamburger.
+- Une petite photo de profil à gauche du nom du collaborateur.
+
+## 5. AGENCEMENT ET RELATIONS
+- Le nom du collaborateur "Cupidon QRHGTAHR01" et son ID "FRLFR4Y1070" sont affichés en tête.
+- Les informations sur l'ancienneté ("4 ans et 4 mois chez Société 4YOU - Etablissement de Etablissement QA1 0") sont situées en dessous.
+- Les détails sur le poste ("Employé qualifié - DEP QA1"), la durée du contrat ("Durée indéterminée"), le type de contrat ("Temps plein"), le cycle de travail ("Cycle normal (RTT semaine)"), et les heures de travail ("35.00 heures") sont listés.
+- Les icônes en bas semblent être des éléments de navigation ou d'action, mais leur fonction exacte n'est pas claire sans contexte supplémentaire.

@@ -68,12 +68,6 @@ export const AppLayout: React.FC = () => {
             </div>
           )}
 
-          {/* Notification bell */}
-          <button type="button" className="relative p-2.5 rounded-xl hover:bg-brand-bg transition-colors">
-            <Bell size={18} className="text-brand-muted" />
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-brand-rose rounded-full" />
-          </button>
-
           {/* Profile Dropdown */}
           <div ref={dropdownRef} className="relative">
             <button
@@ -83,7 +77,10 @@ export const AppLayout: React.FC = () => {
             >
               <div
                 className="w-9 h-9 rounded-xl flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
-                style={{ background: isAdmin ? 'linear-gradient(135deg,#ef4444,#f43f5e)' : 'var(--grad-cta)' }}
+                style={{
+                  background: 'linear-gradient(135deg, #ef4444, #f43f5e, #f97316)',
+                  boxShadow: '0 6px 24px rgba(244,63,94,0.4)'
+                }}
               >
                 {initials}
               </div>

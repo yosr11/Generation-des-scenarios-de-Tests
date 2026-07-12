@@ -1,0 +1,66 @@
+[Image jointe : pptx_slide_2.png]
+── Textes détectés (OCR) ──
+= @ Espace gestionnaire O‘ ? Q)
+ACTIVITÉS CONTRÔLES DE PAIE DSN
+MES ACTIVTÉS 1 ACTIVITÉS NCN ATTR BJÉES 1 DCSS ERS INDIVIC JELS À CONTRÉLER
+14 -E A - 1a -E .A R 68
+_ ; _ Espace DSN
+ACTVTÉS STTS/BLÉES AUX AUTRES 0 RÉSULTATS DE PAIE À CONTROLER
+A Æ 4 @ 0
+PAIE - NIR A CONTROLER HABILITATIONS A ECHEANCE TAUX DGFIP ABSENTS >3M
+space gestionnaire
+® &
+? 0
+ACTIVITÉS
+CONTRÔLES DE PAIE
+DSN
+MES ACTIY TÉS
+ACTIVITÉS NCN ATTR BJÉES
+DCSS ERS INDIVIC.JELS À CONTRÉLER
+-A -8
+1a =Æ
+14 -E
+68
+PR
+És
+RÉSULTATS DE PAIE À CONTRÔLER
+Espace DSN
+=L
+=s
+ATTRIBLÉES AUX SUTRES
+-À -
+PAIE -
+NIR À CONTRÔLER
+HABILITATIONS À ÉCHÉANCE
+TAUX DGFIP ABSENTS >3M
+22 Scssiers)
+22 dessiers(s,
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran capture semble être un tableau de bord ou un dashboard pour un gestionnaire, probablement dans un contexte de gestion des ressources humaines ou de paie. Il présente diverses sections liées aux activités, contrôles de paie, et données diverses.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un graphique linéaire (dans la section "PAIE -") avec un axe Y intitulé "Nb de Dossiers" et un axe X avec les libellés "Valid", "Bul", "Paie", "Arch" et "Remon". 
+  - Le graphique contient une ligne grise avec un marqueur.
+- Des pastilles ou badges de statut dans la section "ACTIVITÉS" :
+  - Dans "MES ACTIVITÉS", il y a 1 badge avec un triangle rouge et un chiffre "1" à l'intérieur.
+  - Dans "ACTIVITÉS NON ATTRIBUÉES", il y a aussi 1 badge avec un triangle rouge et un chiffre "1" à l'intérieur.
+  - Ces badges sont de forme carrée avec un nombre à l'intérieur.
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Une icône de menu ou de navigation (représentée par trois lignes horizontales) en haut à gauche.
+- Une icône de recherche (représentée par une loupe) en haut à droite.
+- Une icône d'aide ou d'information (représentée par un point d'interrogation) en haut à droite.
+- Une icône pour basculer en mode sombre (représentée par une lune ou un thème sombre) en haut à droite.
+
+## 5. AGENCEMENT ET RELATIONS
+- L'écran est divisé en plusieurs sections :
+  - "ACTIVITÉS" : avec des sous-sections comme "MES ACTIVITÉS", "ACTIVITÉS NON ATTRIBUÉES", et "ACTIVITÉS ATTRIBUÉES AUX AUTRES".
+  - "CONTRÔLES DE PAIE" : avec des informations sur les dossiers individuels à contrôler et les résultats de paie à contrôler.
+  - "DSN" : avec une section intitulée "Espace DSN".
+  - Des sections pour "PAIE -", "NIR À CONTRÔLER", "HABILITATIONS À ÉCHÉANCE", et "TAUX DGFIP ABSENTS >3M", chacune affichant un nombre de dossiers.
+
+L'écran semble présenter une vue d'ensemble des tâches et des données pour un gestionnaire, permettant une navigation rapide vers différentes sections liées à la gestion des activités et des contrôles de paie.

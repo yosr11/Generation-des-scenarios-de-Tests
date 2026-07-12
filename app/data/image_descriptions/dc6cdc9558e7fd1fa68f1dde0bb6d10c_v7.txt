@@ -1,0 +1,52 @@
+[Image jointe : pptx_slide_2.png]
+── Textes détectés (OCR) ──
+= @ Navigation 360
+Rana Q11SYDAYO2 | CNACH4Y1018
+4 ans et 5 mois chez QACH4YOU - Etablissement de ETABLISSEMENT QA1 (60)
+Responsable Finition
+pN
+Ses données individuelles
+Navigation 360
+© 0006
+Aucune donnée individuelle à ce jour.
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran semble être un profil utilisateur ou une page de détails sur un employé dans un système de gestion des ressources humaines. L'intention probable est de visualiser les informations relatives à l'utilisateur.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un badge ou étiquette de notification : 
+  - Forme : Rectangulaire avec des coins arrondis.
+  - Couleur de fond : Bleue.
+  - Texte OCR : "Aucune donnée individuelle à ce jour."
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Icône de menu (ou de navigation) : 
+  - Fonction probable : Permet d'accéder à un menu ou à des options de navigation.
+  - Position : En haut à gauche.
+- Icône de profil ou de silhouette : 
+  - Fonction probable : Représente le profil de l'utilisateur.
+  - Position : Dans le coin supérieur gauche, à côté des informations de l'utilisateur.
+- Icônes circulaires en bas :
+  - Cinq icônes circulaires alignées horizontalement en bas de la section sombre.
+    1. Icône de gauche : 
+       - Fonction probable : Bouton de navigation ou d'action.
+    2. Icône avec une palme :
+       - Fonction probable : Permet d'accéder à une section spécifique, potentiellement liée à des avantages ou à des congés.
+    3. Icône avec un document :
+       - Fonction probable : Accès à des documents ou à des informations liées à l'utilisateur.
+    4. Icône avec deux personnes :
+       - Fonction probable : Informations sur les relations ou les collègues.
+    5. Icône avec une silhouette de personne :
+       - Fonction probable : Informations sur le profil ou les données de l'utilisateur.
+
+## 5. AGENCEMENT ET RELATIONS
+- La page est divisée en sections :
+  - Une section sombre en haut avec des informations sur l'utilisateur.
+  - Une section blanche en bas avec un message indiquant l'absence de données individuelles.
+- Les informations de l'utilisateur sont structurées avec :
+  - Un titre "Rana Q11SYDAYO2 | CNACH4Y1018" suivi de détails sur son poste et son ancienneté.
+  - Un sous-titre "Responsable Finition".
+- Les icônes circulaires sont alignées horizontalement et semblent être des boutons d'action ou de navigation.

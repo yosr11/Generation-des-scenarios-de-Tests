@@ -11,7 +11,7 @@ from app.services.llm_client import GROQ_MODELS
 from app.repositories.story_repository import get_story_by_id, save_story
 from app.repositories.analysis_repository import save_analysis
 from app.services.epic_service import JIRA_AC_FIELD, get_stories_by_epic_detailed
-from app.services.document_collector import collect_documents_for_epic, collect_documents_for_story
+from app.services.document_collector import collect_documents_for_epic, collect_story_attachments_only
 from app.services.rag_service import index_documents, retrieve_context, is_epic_indexed, _get_chroma_client
 import logging
 
@@ -153,7 +153,7 @@ def _get_story_attachments(story_id: str) -> list:
     source == 'attachment' et origin_key == story_id).
     """
     try:
-        docs = collect_documents_for_story(story_id)
+        docs = collect_story_attachments_only(story_id)
     except Exception as exc:
         print(f"[ATTACH] Erreur lors de la collecte des PJ de {story_id}: {exc}", flush=True)
         return []
@@ -253,8 +253,8 @@ def _get_rag_context(enriched: Dict[str, Any], force_refresh: bool = False) -> l
 def analyze_epic_stories(
     epic_key: str,
     model_alias: str = Query(
-        "llama4",
-        description="Model alias. Allowed: qwen3, gptoss, llama4"
+        "nova-lite-2",
+        description="Model alias. Allowed: qwen3, gptoss, llama4, nova-lite-2"
     ),
     use_rag: bool = Query(
         False,
@@ -376,8 +376,8 @@ def analyze_epic_stories(
 def analyze_story(
     issue_key: str,
     model_alias: str = Query(
-        "llama4",
-        description="Model alias. Allowed: qwen3, gptoss, llama4"
+        "nova-lite-2",
+        description="Model alias. Allowed: qwen3, gptoss, llama4, nova-lite-2"
     ),
     use_rag: bool = Query(
         False,

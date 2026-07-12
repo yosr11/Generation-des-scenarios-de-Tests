@@ -17,6 +17,8 @@ import React from 'react'
 const XRAY_GREEN = '#15803d' // vert acteur (crochets étape)
 // Utiliser la même couleur pour les crochets dans la description
 const DESC_ACTOR = XRAY_GREEN
+const NAV = '#0f1646'
+const RED       = '#e70f16'
 
 /* Formate la priorité au format Xray : P1-High / P2-Medium / P3-Low. */
 function formatPriority(priority?: string): string {
@@ -203,10 +205,10 @@ export const XrayTestView: React.FC<{ test: any }> = ({ test }) => {
     <div className="space-y-4">
       {/* Méta du test */}
       <div className="flex flex-wrap items-center gap-2">
-        <span className="syn-badge syn-badge--orange">{scenarioType}</span>
+        <span className="syn-badge syn-badge--rose">{scenarioType}</span>
         {test.priority && <span className="syn-badge syn-badge--navy">{formatPriority(test.priority)}</span>}
         {labels.map((l, i) => (
-          <span key={i} className="syn-badge syn-badge--violet">
+          <span key={i} className="syn-badge syn-badge--blue">
             {l}
           </span>
         ))}
@@ -214,14 +216,14 @@ export const XrayTestView: React.FC<{ test: any }> = ({ test }) => {
 
       {test.objective && (
         <div>
-          <p className="syn-label mb-1">Objectif</p>
+          <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: '#ec0b0be0' }}>Objectif</p>
           <p className="text-sm leading-relaxed text-brand-navy">{test.objective}</p>
         </div>
       )}
 
       {test.execution_context && (
         <div>
-          <p className="syn-label mb-1">Contexte d'exécution</p>
+          <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: '#ec0b0be0' }}>Contexte d'exécution</p>
           <p className="text-sm leading-relaxed text-brand-navy">{test.execution_context}</p>
         </div>
       )}
@@ -229,7 +231,9 @@ export const XrayTestView: React.FC<{ test: any }> = ({ test }) => {
       {/* Description = titres des étapes */}
       {etapes.length > 0 && (
         <div>
-          <p className="syn-label mb-2">Description</p>
+    <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: '#ec0b0be0' }}>
+      Description
+    </p>
           <ul className="list-disc space-y-1.5 pl-5">
             {etapes.map((e, i) => (
               <li key={i} className="text-sm leading-snug">
@@ -245,7 +249,7 @@ export const XrayTestView: React.FC<{ test: any }> = ({ test }) => {
       <div>
         <p className="syn-label mb-2">Étapes de test (format Xray)</p>
         {etapes.length ? (
-          <div className="overflow-hidden rounded-xl border border-brand-navy/[0.08]">
+          <div className="overflow-hidden rounded-xl border border-brand-blue/[0.08]">
             <table className="w-full border-collapse text-sm">
               <thead>
                 <tr className="syn-table-head">
@@ -262,7 +266,7 @@ export const XrayTestView: React.FC<{ test: any }> = ({ test }) => {
                     key={i}
                     className="border-t border-brand-navy/[0.06] align-top odd:bg-white even:bg-brand-offwhite/30"
                   >
-                    <td className="px-3 py-3 text-xs font-bold text-brand-violet tabular-nums">{i + 1}</td>
+                    <td className="px-3 py-3 text-xs font-bold tabular-nums" style={{ color: NAV }}>{i + 1}</td>
                     <td className="px-3 py-3">
                       <p className="leading-snug">
                         <span className="text-[10px] font-bold uppercase tracking-widest text-brand-muted">

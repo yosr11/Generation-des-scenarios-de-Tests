@@ -16,23 +16,58 @@ import {
 } from 'lucide-react'
 import { ManualTestsTable } from '../tests/ManualTestsTable'
 
-// ── Design Tokens ─────────────────────────────────────────────────────────────
+// ── Design Tokens (landing page palette) ─────────────────────────────────────
 const T = {
-  text:    '#0f172a',   // slate-900
-  muted:   '#64748b',   // slate-500
-  faint:   '#94a3b8',   // slate-400
-  border:  'rgba(15,23,42,0.08)',
-  borderMd:'rgba(15,23,42,0.12)',
+  navy:    '#0f184e',
+  navyMid: '#131b4e',
+  muted:   '#6489c2',
+  faint:   '#788eac',
+  border:  'rgba(10,15,46,0.08)',
+  borderMd:'rgba(10,15,46,0.12)',
   surface: '#ffffff',
-  bg:      '#f8fafc',   // slate-50
-  violet:  '#7c3aed',
-  rose:    '#f43f5e',
+  bg:      '#f8f7ff',
+  violet:  '#1040a8',
+  rose:    '#f43f6f',
   orange:  '#f97316',
   emerald: '#10b981',
 } as const
 
+const GRAD_STRIP = 'linear-gradient(90deg, #0a0f2e, #7c3aed, #f43f5e)'
+
+/** French labels for common backend field keys */
+const FIELD_LABELS_FR: Record<string, string> = {
+  story_id: 'Identifiant story',
+  story_title: 'Titre de la story',
+  story_type: 'Type de story',
+  actors: 'Acteurs',
+  acceptance_criteria: 'Critères d\'acceptation',
+  functional_requirements: 'Exigences fonctionnelles',
+  non_functional_requirements: 'Exigences non fonctionnelles',
+  business_rules: 'Règles métier',
+  dependencies: 'Dépendances',
+  assumptions: 'Hypothèses',
+  constraints: 'Contraintes',
+  risks: 'Risques',
+  testable_points: 'Points testables',
+  user_story: 'User story',
+  description: 'Description',
+  summary: 'Résumé',
+  business_goals: 'Objectifs métier',
+  business_workflows: 'Parcours métier',
+  modeling_notes: 'Notes de modélisation',
+  trigger: 'Déclencheur',
+  steps: 'Étapes',
+  success_criteria: 'Critères de succès',
+  priority: 'Priorité',
+  label: 'Libellé',
+  linked_goal_id: 'Objectif lié',
+}
+
+const formatLabel = (key: string) =>
+  FIELD_LABELS_FR[key] || key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+
 // ── Accent Helpers ────────────────────────────────────────────────────────────
-type AccentColor = 'violet' | 'rose' | 'orange' | 'emerald' | 'slate'
+type AccentColor = 'violet' | 'rose' | 'orange' | 'emerald' | 'slate' | 'navy' |'border'|'muted'
 
 const accentHex: Record<AccentColor, string> = {
   violet:  T.violet,
@@ -40,6 +75,9 @@ const accentHex: Record<AccentColor, string> = {
   orange:  T.orange,
   emerald: T.emerald,
   slate:   T.muted,
+  navy:    T.navy,
+  border:  T.border,
+  muted :  T.muted
 }
 
 // ════════════════════════════════════════════════════════════════════════════
@@ -51,18 +89,18 @@ export const AgentSectionTitle: React.FC<{
   children: React.ReactNode
   count?: number
   accent?: AccentColor
-}> = ({ children, count, accent = 'violet' }) => (
+}> = ({ children, count, accent = 'navy' }) => (
   <div className="flex items-center gap-2.5 mb-3">
     <div
-      className="w-0.5 h-4 rounded-full flex-shrink-0"
+      className="w-1 h-5 rounded-full flex-shrink-0"
       style={{ background: accentHex[accent] }}
     />
-    <p className="text-[11px] font-bold uppercase tracking-widest text-slate-500">
+    <p className="text-xs font-bold uppercase tracking-wider" style={{ color: T.navy }}>
       {children}
     </p>
     {count !== undefined && (
       <span
-        className="px-1.5 py-0.5 rounded-md text-[10px] font-bold tabular-nums"
+        className="px-2 py-0.5 rounded-full text-[10px] font-bold tabular-nums"
         style={{ background: `${accentHex[accent]}14`, color: accentHex[accent] }}
       >
         {count}
@@ -71,25 +109,107 @@ export const AgentSectionTitle: React.FC<{
   </div>
 )
 
-/** White metric card with large value */
+/** Shared hero banner for agent results */
+const AgentResultHero: React.FC<{
+  title: string
+  subtitle?: string
+  badge?: string
+}> = ({ title, subtitle, badge }) => (
+  <div
+    className="rounded-2xl overflow-hidden"
+    style={{ border: `1px solid ${T.border}`, boxShadow: '0 4px 20px rgba(10,15,46,0.06)' }}
+  >
+    <div className="h-1" style={{ background: GRAD_STRIP }} />
+    <div className="px-5 py-4" style={{ background: `linear-gradient(135deg, ${T.bg}, white)` }}>
+      {badge && (
+        <span
+          className="inline-block text-[10px] font-bold uppercase tracking-widest mb-2 px-2 py-0.5 rounded-md"
+          style={{ background: `${T.rose}12`, color: T.rose }}
+        >
+          {badge}
+        </span>
+      )}
+      <p className="text-base font-extrabold leading-snug" style={{ color: T.navy }}>{title}</p>
+      {subtitle && (
+        <p className="text-sm mt-1 leading-relaxed" style={{ color: T.muted }}>{subtitle}</p>
+      )}
+    </div>
+  </div>
+)
+
+/** Unified numbered item card (Agent 1 lists + Agent 1.5 goals) */
+const AgentItemCard: React.FC<{
+  index: number
+  title: string
+  description?: string
+  tags?: Array<{ label: string; accent?: AccentColor }>
+  meta?: Array<{ key: string; value: string }>
+  accent?: AccentColor
+}> = ({ index, title, description, tags, meta, accent = 'navy' }) => (
+  <div
+    className="flex items-start gap-3 p-4 rounded-xl bg-white transition-shadow hover:shadow-md"
+    style={{ border: `1px solid ${T.border}` }}
+  >
+    <div
+      className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 text-[11px] font-bold text-white tabular-nums"
+      style={{ background: `linear-gradient(135deg, ${T.navy}, ${accentHex[accent]})` }}
+    >
+      {index}
+    </div>
+    <div className="flex-1 min-w-0">
+      <p className="text-sm font-semibold leading-snug" style={{ color: T.navy }}>{title}</p>
+      {description && (
+        <p className="text-xs mt-1.5 leading-relaxed" style={{ color: T.muted }}>{description}</p>
+      )}
+      {tags && tags.length > 0 && (
+        <div className="flex flex-wrap gap-1.5 mt-2">
+          {tags.map((t, i) => (
+            <AgentTag key={i} accent={t.accent || 'slate'} size="sm">{t.label}</AgentTag>
+          ))}
+        </div>
+      )}
+      {meta && meta.length > 0 && (
+        <div className="flex flex-wrap gap-1.5 mt-2">
+          {meta.map(({ key, value }) => (
+            <span
+              key={key}
+              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-medium"
+              style={{ background: `${T.navy}06`, color: T.muted }}
+            >
+              <span className="font-bold uppercase tracking-wider opacity-70">{formatLabel(key)}</span>
+              {value}
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+  </div>
+)
+
+/** White metric card with large value — brand-aligned */
 export const AgentKPICard: React.FC<{
   label: string
   value: React.ReactNode
   accent?: AccentColor
-}> = ({ label, value, accent = 'slate' }) => (
+}> = ({ label, value, accent = 'navy' }) => (
   <div
-    className="bg-white rounded-xl p-4 flex flex-col"
+    className="rounded-xl p-4 flex flex-col overflow-hidden relative"
     style={{
       border: `1px solid ${T.border}`,
-      boxShadow: '0 1px 4px rgba(15,23,42,0.05)',
+      background: 'white',
+      boxShadow: '0 2px 12px rgba(10,15,46,0.05)',
     }}
   >
-    <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">
+    <div
+      className="absolute top-0 left-0 right-0 h-0.5"
+      style={{ background: accent === 'slate' ? T.borderMd : accentHex[accent] }}
+    />
+    <span className="text-[10px] font-bold uppercase tracking-widest mb-2" style={{ color: T.muted }}>
       {label}
     </span>
     <div
       className="text-2xl font-extrabold leading-none tabular-nums"
-      style={{ color: accent === 'slate' ? T.text : accentHex[accent] }}
+      style={{ color: accent === 'slate' ? T.navy : accentHex[accent] }}
     >
       {value}
     </div>
@@ -147,12 +267,12 @@ export const AgentInfoTable: React.FC<{ rows: [string, string][] }> = ({ rows })
         {rows.map(([k, v], i) => (
           <tr key={i} className="border-t first:border-0" style={{ borderColor: T.border }}>
             <td
-              className="px-4 py-2.5 text-[10px] font-bold uppercase tracking-wider w-44 text-slate-400"
-              style={{ background: T.bg }}
+              className="px-4 py-3 text-[10px] font-bold uppercase tracking-wider w-48"
+              style={{ background: T.bg, color: T.muted }}
             >
               {k}
             </td>
-            <td className="px-4 py-2.5 text-sm font-medium text-slate-800">{v}</td>
+            <td className="px-4 py-3 text-sm font-medium" style={{ color: T.navy }}>{v}</td>
           </tr>
         ))}
       </tbody>
@@ -234,54 +354,52 @@ export const Agent1Result: React.FC<{ output: any }> = ({ output }) => {
   const listEntries = Object.entries(rest).filter(([, v]) => Array.isArray(v) && (v as any[]).length > 0)
   const objEntries  = Object.entries(rest).filter(([, v]) => !Array.isArray(v) && typeof v === 'object' && v !== null && Object.keys(v as object).length > 0)
 
+  const actorList = actors ? (Array.isArray(actors) ? actors : [actors]) : []
+
   return (
     <div className="space-y-6 w-full">
 
       {/* KPI row */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {story_id && (
-          <AgentKPICard label="Story ID" value={<span className="font-mono">{story_id}</span>} accent="violet" />
+          <AgentKPICard label="Identifiant" value={<span className="font-mono text-xl">{story_id}</span>} accent="rose" />
         )}
         {story_type && (
-          <AgentKPICard label="Story Type" value={<span className="text-xl capitalize">{story_type}</span>} accent="slate" />
+          <AgentKPICard label="Type de story" value={<span className="text-xl capitalize">{story_type}</span>} accent="navy" />
         )}
-        {actors && (
-          <div
-            className="bg-white rounded-xl p-4"
-            style={{ border: `1px solid ${T.border}`, boxShadow: '0 1px 4px rgba(15,23,42,0.05)' }}
-          >
-            <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 block mb-2">
-              Acteurs
-            </span>
-            <div className="flex flex-wrap gap-1.5">
-              {(Array.isArray(actors) ? actors : [actors]).map((a: string, i: number) => (
-                <AgentTag key={i} accent="violet">{a}</AgentTag>
-              ))}
-            </div>
-          </div>
+        {actorList.length > 0 && (
+          <AgentKPICard label="Acteurs" value={actorList.length} accent="navy" />
         )}
       </div>
 
-      {/* Story title */}
+      {/* Story title hero */}
       {story_title && (
-        <div
-          className="rounded-xl px-5 py-4"
-          style={{ background: T.bg, border: `1px solid ${T.border}` }}
-        >
-          <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 block mb-1">
-            Titre de la Story
-          </span>
-          <p className="text-sm font-semibold text-slate-800">{story_title}</p>
+        <AgentResultHero
+          badge="Analyse sémantique"
+          title={story_title}
+          subtitle={story_type ? `Type : ${story_type}` : undefined}
+        />
+      )}
+
+      {/* Actors tags */}
+      {actorList.length > 0 && (
+        <div>
+          <AgentSectionTitle accent="navy">Acteurs identifiés</AgentSectionTitle>
+          <div className="flex flex-wrap gap-2">
+            {actorList.map((a: string, i: number) => (
+              <AgentTag key={i} accent="muted" size="md">{a}</AgentTag>
+            ))}
+          </div>
         </div>
       )}
 
       {/* Array sections */}
       {listEntries.map(([key, val]) => (
         <div key={key}>
-          <AgentSectionTitle count={(val as any[]).length}>
-            {key.replace(/_/g, ' ')}
+          <AgentSectionTitle count={(val as any[]).length} accent="violet">
+            {formatLabel(key)}
           </AgentSectionTitle>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 gap-2">
             {(val as any[]).map((item: any, i: number) => {
               const isObj   = item && typeof item === 'object'
               const primary = isObj
@@ -296,38 +414,13 @@ export const Agent1Result: React.FC<{ output: any }> = ({ output }) => {
                   )
                 : []
               return (
-                <div
+                <AgentItemCard
                   key={i}
-                  className="flex items-start gap-3 p-3 rounded-lg bg-white"
-                  style={{ border: `1px solid ${T.border}` }}
-                >
-                  <div
-                    className="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5 text-[9px] font-bold text-white tabular-nums"
-                    style={{ background: T.violet }}
-                  >
-                    {i + 1}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <span className="text-[13px] leading-snug text-slate-800 block">
-                      {primary || (isObj ? JSON.stringify(item) : '')}
-                    </span>
-                    {secondary.length > 0 && (
-                      <div className="flex flex-wrap gap-1 mt-1.5">
-                        {secondary.map(([k, v]) => (
-                          <span
-                            key={k}
-                            className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-500"
-                          >
-                            <span className="uppercase tracking-wider opacity-60">
-                              {k.replace(/_/g, ' ')}
-                            </span>
-                            &nbsp;{String(v)}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
+                  index={i + 1}
+                  title={primary || (isObj ? JSON.stringify(item) : '')}
+                  meta={secondary.map(([k, v]) => ({ key: k, value: String(v) }))}
+                  accent="violet"
+                />
               )
             })}
           </div>
@@ -336,18 +429,21 @@ export const Agent1Result: React.FC<{ output: any }> = ({ output }) => {
 
       {/* Scalar fields table */}
       {tableRows.length > 0 && (
-        <AgentInfoTable
-          rows={tableRows.map(([k, v]) => [k.replace(/_/g, ' '), String(v)])}
-        />
+        <div>
+          <AgentSectionTitle accent="navy">Informations complémentaires</AgentSectionTitle>
+          <AgentInfoTable
+            rows={tableRows.map(([k, v]) => [formatLabel(k), String(v)])}
+          />
+        </div>
       )}
 
-      {/* Object fields (JSON) */}
+      {/* Object fields */}
       {objEntries.map(([key, val]) => (
         <div key={key}>
-          <AgentSectionTitle>{key.replace(/_/g, ' ')}</AgentSectionTitle>
+          <AgentSectionTitle accent="rose">{formatLabel(key)}</AgentSectionTitle>
           <pre
-            className="text-xs p-4 rounded-xl overflow-x-auto font-mono text-slate-700"
-            style={{ background: T.bg, border: `1px solid ${T.border}` }}
+            className="text-xs p-4 rounded-xl overflow-x-auto font-mono"
+            style={{ background: T.bg, border: `1px solid ${T.border}`, color: T.navyMid }}
           >
             {JSON.stringify(val, null, 2)}
           </pre>
@@ -366,27 +462,33 @@ const priorityAccent = (p: string): AccentColor =>
   : p === 'basse' || p === 'low'  ? 'slate'
   : 'violet'
 
-/** Controlled accordion for a single workflow */
-const WorkflowAccordion: React.FC<{ workflow: any }> = ({ workflow: w }) => {
+/** Controlled accordion for a single workflow — same visual language as Agent 1 */
+const WorkflowAccordion: React.FC<{ workflow: any; index: number }> = ({ workflow: w, index }) => {
   const [open, setOpen] = useState(false)
   return (
     <div
-      className="rounded-xl overflow-hidden transition-all"
-      style={{ border: `1px solid ${open ? T.rose + '40' : T.border}` }}
+      className="rounded-xl overflow-hidden transition-all bg-white"
+      style={{ border: `1px solid ${open ? T.violet + '40' : T.border}`, boxShadow: open ? '0 4px 16px rgba(10,15,46,0.08)' : 'none' }}
     >
       <button
         type="button"
         onClick={() => setOpen(v => !v)}
-        className="w-full flex items-center gap-2.5 p-4 text-left select-none bg-white hover:bg-slate-50 transition-colors"
+        className="w-full flex items-center gap-3 p-4 text-left select-none hover:bg-brand-offwhite/50 transition-colors"
       >
-        <AgentTag accent="rose" size="sm">{w.id}</AgentTag>
-        <span className="font-semibold text-sm text-slate-800 flex-1 min-w-0 truncate">{w.label}</span>
+        <div
+          className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 text-[11px] font-bold text-white tabular-nums"
+          style={{ background: `linear-gradient(135deg, ${T.navy}, ${T.rose})` }}
+        >
+          {index}
+        </div>
+        {w.id && <AgentTag accent="violet" size="sm">{w.id}</AgentTag>}
+        <span className="font-semibold text-sm flex-1 min-w-0 truncate" style={{ color: T.navy }}>{w.label}</span>
         {w.linked_goal_id && (
-          <AgentTag accent="violet" size="sm">→ {w.linked_goal_id}</AgentTag>
+          <AgentTag accent="rose" size="sm">→ {w.linked_goal_id}</AgentTag>
         )}
         {open
-          ? <ChevronUp size={14} className="text-slate-400 flex-shrink-0" />
-          : <ChevronDown size={14} className="text-slate-400 flex-shrink-0" />
+          ? <ChevronUp size={16} className="flex-shrink-0" style={{ color: T.muted }} />
+          : <ChevronDown size={16} className="flex-shrink-0" style={{ color: T.muted }} />
         }
       </button>
       {open && (
@@ -396,27 +498,25 @@ const WorkflowAccordion: React.FC<{ workflow: any }> = ({ workflow: w }) => {
         >
           {w.trigger && (
             <div className="pt-3">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">
+              <p className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: T.muted }}>
                 Déclencheur
               </p>
-              <p className="text-xs text-slate-600">{w.trigger}</p>
+              <p className="text-sm leading-relaxed" style={{ color: T.navy }}>{w.trigger}</p>
             </div>
           )}
           {w.steps?.length > 0 && (
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">
-                Étapes ({w.steps.length})
-              </p>
-              <ol className="space-y-1.5">
+              <AgentSectionTitle count={w.steps.length} accent="orange">Étapes du parcours</AgentSectionTitle>
+              <ol className="space-y-2">
                 {w.steps.map((s: string, j: number) => (
-                  <li key={j} className="flex gap-2.5 items-start text-xs text-slate-600">
+                  <li key={j} className="flex gap-3 items-start text-sm" style={{ color: T.navy }}>
                     <span
-                      className="w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5 tabular-nums"
-                      style={{ background: T.rose }}
+                      className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0 tabular-nums"
+                      style={{ background: T.orange }}
                     >
                       {j + 1}
                     </span>
-                    <span className="leading-relaxed">{s}</span>
+                    <span className="leading-relaxed pt-0.5">{s}</span>
                   </li>
                 ))}
               </ol>
@@ -424,17 +524,11 @@ const WorkflowAccordion: React.FC<{ workflow: any }> = ({ workflow: w }) => {
           )}
           {w.success_criteria?.length > 0 && (
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">
-                Critères de succès
-              </p>
-              <ul className="space-y-1">
+              <AgentSectionTitle count={w.success_criteria.length} accent="emerald">Critères de succès</AgentSectionTitle>
+              <ul className="space-y-2">
                 {w.success_criteria.map((c: string, j: number) => (
-                  <li key={j} className="flex gap-2 items-start text-xs text-slate-600">
-                    <CheckCircle2
-                      size={12}
-                      className="flex-shrink-0 mt-0.5"
-                      style={{ color: T.emerald }}
-                    />
+                  <li key={j} className="flex gap-2 items-start text-sm" style={{ color: T.navy }}>
+                    <CheckCircle2 size={14} className="flex-shrink-0 mt-0.5" style={{ color: T.emerald }} />
                     <span className="leading-relaxed">{c}</span>
                   </li>
                 ))}
@@ -460,43 +554,42 @@ export const Agent15Result: React.FC<{ output: any }> = ({ output }) => {
   return (
     <div className="space-y-6 w-full">
 
-      {/* KPI row */}
-      <div className="grid grid-cols-2 gap-3">
-        <AgentKPICard label="Business Goals" value={goals.length} accent="violet" />
-        <AgentKPICard label="Workflows"       value={workflows.length} accent="rose" />
+      {/* KPI row — same 3-column layout as Agent 1 */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <AgentKPICard label="Objectifs métier" value={goals.length} accent="violet" />
+        <AgentKPICard label="Parcours métier" value={workflows.length} accent="rose" />
+        <AgentKPICard
+          label="Étapes totales"
+          value={workflows.reduce((n: number, w: any) => n + (w.steps?.length || 0), 0)}
+          accent="orange"
+        />
       </div>
 
-      {/* Business Goals */}
+      {/* Hero summary */}
+      <AgentResultHero
+        badge="Modélisation métier"
+        title={`${goals.length} objectif${goals.length > 1 ? 's' : ''} · ${workflows.length} parcours`}
+        subtitle={notes || 'Analyse des objectifs métier et des parcours end-to-end'}
+      />
+
+      {/* Business Goals — same card style as Agent 1 lists */}
       {goals.length > 0 && (
         <div>
-          <AgentSectionTitle count={goals.length} accent="violet">Business Goals</AgentSectionTitle>
-          <div className="space-y-2">
+          <AgentSectionTitle count={goals.length} accent="violet">Objectifs métier</AgentSectionTitle>
+          <div className="grid grid-cols-1 gap-2">
             {goals.map((g: any, i: number) => (
-              <div
+              <AgentItemCard
                 key={i}
-                className="bg-white rounded-xl p-4 space-y-2"
-                style={{ border: `1px solid ${T.border}` }}
-              >
-                <div className="flex items-center gap-2 flex-wrap">
-                  <AgentTag accent="violet" size="sm">{g.id}</AgentTag>
-                  <span className="font-semibold text-sm text-slate-800 flex-1">{g.label}</span>
-                  {g.priority && (
-                    <AgentTag accent={priorityAccent(g.priority)} size="sm">
-                      {g.priority}
-                    </AgentTag>
-                  )}
-                </div>
-                {g.description && (
-                  <p className="text-xs text-slate-500 leading-relaxed">{g.description}</p>
-                )}
-                {g.actors?.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5 pt-1">
-                    {g.actors.map((a: string, j: number) => (
-                      <AgentTag key={j} accent="slate" size="sm">{a}</AgentTag>
-                    ))}
-                  </div>
-                )}
-              </div>
+                index={i + 1}
+                title={g.label || g.id}
+                description={g.description}
+                tags={[
+                  ...(g.id ? [{ label: g.id, accent: 'violet' as AccentColor }] : []),
+                  ...(g.priority ? [{ label: g.priority, accent: priorityAccent(g.priority) }] : []),
+                  ...(g.actors || []).map((a: string) => ({ label: a, accent: 'navy' as AccentColor })),
+                ]}
+                accent="violet"
+              />
             ))}
           </div>
         </div>
@@ -505,22 +598,22 @@ export const Agent15Result: React.FC<{ output: any }> = ({ output }) => {
       {/* Business Workflows */}
       {workflows.length > 0 && (
         <div>
-          <AgentSectionTitle count={workflows.length} accent="rose">Business Workflows</AgentSectionTitle>
+          <AgentSectionTitle count={workflows.length} accent="rose">Parcours métier</AgentSectionTitle>
           <div className="space-y-2">
             {workflows.map((w: any, i: number) => (
-              <WorkflowAccordion key={i} workflow={w} />
+              <WorkflowAccordion key={i} workflow={w} index={i + 1} />
             ))}
           </div>
         </div>
       )}
 
       {notes && (
-        <p
-          className="text-xs text-slate-400 italic border-t pt-3"
-          style={{ borderColor: T.border }}
+        <div
+          className="rounded-xl px-4 py-3 text-xs leading-relaxed italic"
+          style={{ background: T.bg, border: `1px solid ${T.border}`, color: T.muted }}
         >
           {notes}
-        </p>
+        </div>
       )}
     </div>
   )
@@ -1168,7 +1261,7 @@ export const Agent5Result: React.FC<{ output: any; storyId?: string }> = ({ outp
             style={{
               background: T.bg,
               border: `1px solid ${T.border}`,
-              color: T.text,
+              color: T.navy,
               boxShadow: '0 1px 3px rgba(15,23,42,0.06)',
             }}
           >

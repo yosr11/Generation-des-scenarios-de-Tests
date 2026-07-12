@@ -73,10 +73,10 @@ class Settings:
     XRAY_TEST_ISSUETYPE_ID = os.getenv("XRAY_TEST_ISSUETYPE_ID", "10800")
 
     # ── Agent 1 — Analysis ───────────────────────────────────
-    AGENT1_DEFAULT_MODEL = os.getenv("AGENT1_DEFAULT_MODEL", "llama4")
+    AGENT1_DEFAULT_MODEL = os.getenv("AGENT1_DEFAULT_MODEL", "nova-lite-2")
 
     # ── Agent 2 — Test Generation ────────────────────────────
-    AGENT2_DEFAULT_MODEL = os.getenv("AGENT2_DEFAULT_MODEL", "llama4")
+    AGENT2_DEFAULT_MODEL = os.getenv("AGENT2_DEFAULT_MODEL", "nova-lite-2")
 
     # ── Agent 3 — Validation ─────────────────────────────────
     AGENT3_COVERAGE_THRESHOLD = float(os.getenv("AGENT3_COVERAGE_THRESHOLD", "0.70"))
@@ -85,10 +85,10 @@ class Settings:
     AGENT3_EMBEDDING_MODEL = os.getenv(
         "AGENT3_EMBEDDING_MODEL", "paraphrase-multilingual-MiniLM-L12-v2"
     )
-    AGENT3_QUALITY_MODEL = os.getenv("AGENT3_QUALITY_MODEL", "qwen3")
+    AGENT3_QUALITY_MODEL = os.getenv("AGENT3_QUALITY_MODEL", "llama4")
 
     # ── Agent 5 — Reporting ──────────────────────────────────
-    AGENT5_DEFAULT_MODEL = os.getenv("AGENT5_DEFAULT_MODEL", "qwen3")
+    AGENT5_DEFAULT_MODEL = os.getenv("AGENT5_DEFAULT_MODEL", "llama4")
 
     # ── Orchestrator ─────────────────────────────────────────
     ORCHESTRATOR_MAX_RETRIES = int(os.getenv("ORCHESTRATOR_MAX_RETRIES", "2"))
