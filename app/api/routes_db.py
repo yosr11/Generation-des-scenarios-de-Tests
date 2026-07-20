@@ -1,9 +1,16 @@
 # app/api/routes_db.py
 from fastapi import APIRouter, HTTPException, Query
 from typing import List, Dict, Any
+from sqlalchemy import delete
+
+from app.db.postgres import get_sync_session
+from app.models.pg_models import (
+    Story, StoryAnalysis, StoryManualTests, Agent3Validation,
+    AutomationClassification, GeneratedScenario, StoryBusinessModel
+)
 
 from app.repositories.story_repository import (
-    save_story, get_story_by_id, get_all_stories,
+    get_story_by_id, get_all_stories,
 )
 from app.repositories.analysis_repository import (
     get_analyses_by_story, get_latest_analysis,
@@ -37,22 +44,28 @@ def get_stored_story(story_id: str):
 @db_router.delete("/stories/{story_id}")
 def delete_stored_story(story_id: str):
     """Supprime une story et toutes les données associées de la base."""
-    from app.db.database import get_connection
-
-    conn = get_connection()
+    session = get_sync_session()
     try:
-        conn.execute("DELETE FROM story_analysis WHERE story_id = ?", (story_id,))
-        conn.execute("DELETE FROM story_manual_tests WHERE story_id = ?", (story_id,))
-        conn.execute("DELETE FROM agent3_validations WHERE story_id = ?", (story_id,))
-        conn.execute("DELETE FROM automation_classifications WHERE story_id = ?", (story_id,))
-        conn.execute("DELETE FROM generated_scenarios WHERE story_id = ?", (story_id,))
-        deleted = conn.execute("DELETE FROM stories WHERE id = ?", (story_id,)).rowcount
-        conn.commit()
-        if deleted == 0:
+        # Supprimer toutes les dépendances liées à la story_id
+        session.execute(delete(StoryAnalysis).where(StoryAnalysis.story_id == story_id))
+        session.execute(delete(StoryManualTests).where(StoryManualTests.story_id == story_id))
+        session.execute(delete(Agent3Validation).where(Agent3Validation.story_id == story_id))
+        session.execute(delete(AutomationClassification).where(AutomationClassification.story_id == story_id))
+        session.execute(delete(GeneratedScenario).where(GeneratedScenario.story_id == story_id))
+        session.execute(delete(StoryBusinessModel).where(StoryBusinessModel.story_id == story_id))
+        
+        # Supprimer la story elle-même
+        result = session.execute(delete(Story).where(Story.id == story_id))
+        session.commit()
+        
+        if result.rowcount == 0:
             raise HTTPException(status_code=404, detail=f"Story {story_id} introuvable en base")
         return {"status": "ok", "story_id": story_id}
+    except Exception as e:
+        session.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
     finally:
-        conn.close()
+        session.close()
 
 
 # ══════════════════════════════════════════════════════
@@ -110,4 +123,3 @@ def list_all_scenarios():
     """Liste tous les scénarios générés."""
     scenarios = get_all_scenarios()
     return {"count": len(scenarios), "scenarios": scenarios}
-

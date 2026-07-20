@@ -1,122 +1,100 @@
 """
 app/repositories/scenario_repository.py
 ────────────────────────────────────────
-CRUD pour la table generated_scenarios.
+CRUD pour la table generated_scenarios — PostgreSQL (SQLAlchemy ORM).
 """
 
-import json
-from typing import Dict, Any, Optional, List
-from app.db.database import get_connection
+from typing import Any, Dict, List, Optional
+
+from sqlalchemy import select
+
+from app.db.postgres import get_sync_session
+from app.models.pg_models import GeneratedScenario
 
 
-def _serialize(value) -> str:
-    if isinstance(value, (list, dict)):
-        return json.dumps(value, ensure_ascii=False)
-    return str(value) if value is not None else ""
-
-
-def _deserialize_json(raw: Optional[str], default=None):
-    if not raw:
-        return default if default is not None else []
-    try:
-        return json.loads(raw)
-    except (json.JSONDecodeError, TypeError):
-        return default if default is not None else []
-
-
-def _row_to_dict(row) -> Dict[str, Any]:
+def _row_to_dict(obj: GeneratedScenario) -> Dict[str, Any]:
     return {
-        "id":              row["id"],
-        "story_id":        row["story_id"],
-        "title":           row["title"] or "",
-        "type":            row["type"] or "",
-        "priority":        row["priority"] or "",
-        "preconditions":   _deserialize_json(row["preconditions"]),
-        "steps":           _deserialize_json(row["steps"]),
-        "expected_result": row["expected_result"] or "",
-        "source_ustype":   row["source_ustype"] or "",
-        "model":           row["model"] or "",
-        "created_at":      row["created_at"] or "",
+        "id":              obj.id,
+        "story_id":        obj.story_id,
+        "title":           obj.title or "",
+        "type":            obj.scenario_type or "",
+        "priority":        obj.priority or "",
+        "preconditions":   obj.preconditions or [],
+        "steps":           obj.steps or [],
+        "expected_result": obj.expected_result or "",
+        "source_ustype":   obj.source_ustype or "",
+        "model":           obj.model or "",
+        "created_at":      str(obj.created_at) if obj.created_at else "",
     }
 
 
-# ── SAVE ─────────────────────────────────────────────────────
+# ── SAVE ─────────────────────────────────────────────────────────────────────
 
 def save_scenario(scenario: Dict[str, Any]) -> int:
-    conn = get_connection()
+    session = get_sync_session()
     try:
-        cur = conn.execute(
-            """
-            INSERT INTO generated_scenarios
-                (story_id, title, type, priority, preconditions,
-                 steps, expected_result, source_ustype, model)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """,
-            (
-                scenario.get("source_story", ""),
-                scenario.get("title", ""),
-                scenario.get("type", ""),
-                scenario.get("priority", ""),
-                _serialize(scenario.get("preconditions", [])),
-                _serialize(scenario.get("steps", [])),
-                scenario.get("expected_result", ""),
-                scenario.get("source_ustype", ""),
-                scenario.get("model", ""),
-            ),
+        obj = GeneratedScenario(
+            story_id=scenario.get("source_story", ""),
+            title=scenario.get("title", ""),
+            scenario_type=scenario.get("type", ""),
+            priority=scenario.get("priority", ""),
+            preconditions=scenario.get("preconditions", []),
+            steps=scenario.get("steps", []),
+            expected_result=scenario.get("expected_result", ""),
+            source_ustype=scenario.get("source_ustype", ""),
+            model=scenario.get("model", ""),
         )
-        conn.commit()
-        return cur.lastrowid
+        session.add(obj)
+        session.commit()
+        session.refresh(obj)
+        return obj.id
     finally:
-        conn.close()
+        session.close()
 
 
 def save_scenarios_bulk(scenarios: List[Dict[str, Any]], model: str = "") -> int:
-    conn = get_connection()
+    session = get_sync_session()
     try:
         for s in scenarios:
-            conn.execute(
-                """
-                INSERT INTO generated_scenarios
-                    (story_id, title, type, priority, preconditions,
-                     steps, expected_result, source_ustype, model)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """,
-                (
-                    s.get("source_story", ""),
-                    s.get("title", ""),
-                    s.get("type", ""),
-                    s.get("priority", ""),
-                    _serialize(s.get("preconditions", [])),
-                    _serialize(s.get("steps", [])),
-                    s.get("expected_result", ""),
-                    s.get("source_ustype", ""),
-                    model or s.get("model", ""),
-                ),
+            obj = GeneratedScenario(
+                story_id=s.get("source_story", ""),
+                title=s.get("title", ""),
+                scenario_type=s.get("type", ""),
+                priority=s.get("priority", ""),
+                preconditions=s.get("preconditions", []),
+                steps=s.get("steps", []),
+                expected_result=s.get("expected_result", ""),
+                source_ustype=s.get("source_ustype", ""),
+                model=model or s.get("model", ""),
             )
-        conn.commit()
+            session.add(obj)
+        session.commit()
         return len(scenarios)
     finally:
-        conn.close()
+        session.close()
 
 
-# ── GET ──────────────────────────────────────────────────────
+# ── GET ───────────────────────────────────────────────────────────────────────
 
 def get_scenarios_by_story(story_id: str) -> List[Dict[str, Any]]:
-    conn = get_connection()
+    session = get_sync_session()
     try:
-        rows = conn.execute(
-            "SELECT * FROM generated_scenarios WHERE story_id = ? ORDER BY created_at DESC",
-            (story_id,),
-        ).fetchall()
+        rows = session.execute(
+            select(GeneratedScenario)
+            .where(GeneratedScenario.story_id == story_id)
+            .order_by(GeneratedScenario.created_at.desc())
+        ).scalars().all()
         return [_row_to_dict(r) for r in rows]
     finally:
-        conn.close()
+        session.close()
 
 
 def get_all_scenarios() -> List[Dict[str, Any]]:
-    conn = get_connection()
+    session = get_sync_session()
     try:
-        rows = conn.execute("SELECT * FROM generated_scenarios ORDER BY created_at DESC").fetchall()
+        rows = session.execute(
+            select(GeneratedScenario).order_by(GeneratedScenario.created_at.desc())
+        ).scalars().all()
         return [_row_to_dict(r) for r in rows]
     finally:
-        conn.close()
+        session.close()

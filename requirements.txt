@@ -41,7 +41,7 @@ pytesseract>=0.3.10
 # PDF & Office
 xhtml2pdf>=0.2.16
 python-pptx>=0.6.21
-openpyxl>=3.10.0
+openpyxl>=3.1.0
 pandas>=1.5.0
 
 # UI

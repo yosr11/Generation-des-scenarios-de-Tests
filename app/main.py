@@ -12,7 +12,6 @@ from app.api.routes_analysis import router as analysis_router
 from app.api.routes_db import db_router
 from app.api.routes_documents import router as documents_router
 from app.api.routes_agent3 import router as agent3_router
-from app.db.init_db import init_tables
 from app.db.init_postgres import init_postgres
 from app.api.manual_test_generation import router as manual_test_generation_router
 from app.api.routes_agent5 import router as agent5_router
@@ -29,12 +28,12 @@ logger = logging.getLogger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    init_tables()
     try:
         await init_postgres()
     except Exception as exc:
         logger.warning("PostgreSQL init skipped or failed: %s", exc)
     yield
+
 
 
 app = FastAPI(

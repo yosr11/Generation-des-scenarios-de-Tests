@@ -1,222 +1,174 @@
 """
 app/repositories/analysis_repository.py
 ────────────────────────────────────────
-CRUD pour la table story_analysis (résultats LLM).
+CRUD pour la table story_analysis — PostgreSQL (SQLAlchemy ORM).
 """
 
-import json
-from typing import Dict, Any, Optional, List
-from app.db.database import get_connection
+import logging
+from typing import Any, Dict, List, Optional
+
+from sqlalchemy import select
+
+from app.db.postgres import get_sync_session
+from app.models.pg_models import StoryAnalysis
+
+logger = logging.getLogger(__name__)
 
 
-def _serialize(value) -> str:
-    if isinstance(value, (list, dict)):
-        return json.dumps(value, ensure_ascii=False)
-    return str(value) if value is not None else ""
-
-
-def _deserialize_json(raw: Optional[str], default=None):
-    if not raw:
-        return default if default is not None else []
-    try:
-        return json.loads(raw)
-    except (json.JSONDecodeError, TypeError):
-        return default if default is not None else []
-
-
-def _row_to_dict(row) -> Dict[str, Any]:
+def _row_to_dict(obj: StoryAnalysis) -> Dict[str, Any]:
     return {
-        "id":                          row["id"],
-        "story_id":                    row["story_id"],
-        "model":                       row["model"] or "",
-        "story_title":                 row["story_title"] or "",
-        "story_type":                  row["story_type"] or "",
-        "actors":                      _deserialize_json(row["actors"]),
-        "actions":                     _deserialize_json(row["actions"]),
-        "business_rules":              _deserialize_json(row["business_rules"]),
-        "technical_scope":             _deserialize_json(row["technical_scope"]),
-        "testable_points":             _deserialize_json(row["testable_points"]),
-        "acceptance_criteria_explicit": _deserialize_json(row["acceptance_criteria_explicit"]),
-        "acceptance_criteria_inferred": _deserialize_json(row["acceptance_criteria_inferred"]),
-        "clarification_questions":     _deserialize_json(row["clarification_questions"]),
-        "analysis_reason":             _deserialize_json(row["analysis_reason"]),
-        "user_flows":                  _deserialize_json(row["user_flows"]),
-        "resolved_from_references":    _deserialize_json(row["resolved_from_references"]),
-        "created_at":                  row["created_at"] or "",
+        "id":                           obj.id,
+        "story_id":                     obj.story_id,
+        "model":                        obj.model or "",
+        "story_title":                  obj.story_title or "",
+        "story_type":                   obj.story_type or "",
+        "actors":                       obj.actors or [],
+        "actions":                      obj.actions or [],
+        "business_rules":               obj.business_rules or [],
+        "technical_scope":              obj.technical_scope or [],
+        "testable_points":              obj.testable_points or [],
+        "acceptance_criteria_explicit": obj.acceptance_criteria_explicit or [],
+        "acceptance_criteria_inferred": obj.acceptance_criteria_inferred or [],
+        "clarification_questions":      obj.clarification_questions or [],
+        "analysis_reason":              obj.analysis_reason or [],
+        "user_flows":                   obj.user_flows or [],
+        "resolved_from_references":     obj.resolved_from_references or [],
+        "created_at":                   str(obj.created_at) if obj.created_at else "",
     }
 
 
-# ── SAVE ─────────────────────────────────────────────────────
+# ── SAVE ────────────────────────────────────────────────────────────────────
 
 def save_analysis(analysis: Dict[str, Any]) -> int:
-    import logging
-    logger = logging.getLogger(__name__)
-    
-    conn = get_connection()
+    session = get_sync_session()
+    story_id = analysis.get("story_id", "")
+    logger.info("[SAVE] Saving analysis for %s", story_id)
     try:
-        story_id = analysis.get("story_id", "")
-        logger.info(f"[SAVE] Saving analysis for {story_id} with keys: {list(analysis.keys())}")
-        
-        cur = conn.execute(
-            """
-            INSERT INTO story_analysis
-                (story_id, model, story_title, story_type,
-                 actors, actions, business_rules, technical_scope, testable_points,
-                 acceptance_criteria_explicit, acceptance_criteria_inferred,
-                 clarification_questions, analysis_reason,
-                 user_flows, resolved_from_references)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """,
-            (
-                story_id,
-                analysis.get("model", ""),
-                analysis.get("story_title", ""),
-                analysis.get("story_type", ""),
-                _serialize(analysis.get("actors", [])),
-                _serialize(analysis.get("actions", [])),
-                _serialize(analysis.get("business_rules", [])),
-                _serialize(analysis.get("technical_scope", [])),
-                _serialize(analysis.get("testable_points", [])),
-                _serialize(analysis.get("acceptance_criteria_explicit", [])),
-                _serialize(analysis.get("acceptance_criteria_inferred", [])),
-                _serialize(analysis.get("clarification_questions", [])),
-                _serialize(analysis.get("analysis_reason", [])),
-                _serialize(analysis.get("user_flows", [])),
-                _serialize(analysis.get("resolved_from_references", [])),
-            ),
+        obj = StoryAnalysis(
+            story_id=story_id,
+            model=analysis.get("model", ""),
+            story_title=analysis.get("story_title", ""),
+            story_type=analysis.get("story_type", ""),
+            actors=analysis.get("actors", []),
+            actions=analysis.get("actions", []),
+            business_rules=analysis.get("business_rules", []),
+            technical_scope=analysis.get("technical_scope", []),
+            testable_points=analysis.get("testable_points", []),
+            acceptance_criteria_explicit=analysis.get("acceptance_criteria_explicit", []),
+            acceptance_criteria_inferred=analysis.get("acceptance_criteria_inferred", []),
+            clarification_questions=analysis.get("clarification_questions", []),
+            analysis_reason=analysis.get("analysis_reason", []),
+            user_flows=analysis.get("user_flows", []),
+            resolved_from_references=analysis.get("resolved_from_references", []),
         )
-        conn.commit()
-        logger.info(f"[SAVE] Analysis saved for {story_id} with rowid={cur.lastrowid}")
-        return cur.lastrowid
+        session.add(obj)
+        session.commit()
+        session.refresh(obj)
+        logger.info("[SAVE] Analysis saved for %s (id=%s)", story_id, obj.id)
+        return obj.id
     except Exception as e:
-        logger.error(f"[SAVE] Error saving analysis: {e}", exc_info=True)
+        logger.error("[SAVE] Error saving analysis: %s", e, exc_info=True)
+        session.rollback()
         return -1
     finally:
-        conn.close()
+        session.close()
 
 
 def save_analyses_bulk(analyses: List[Dict[str, Any]]) -> int:
-    conn = get_connection()
+    session = get_sync_session()
     try:
         for a in analyses:
-            conn.execute(
-                """
-                INSERT INTO story_analysis
-                    (story_id, model, story_title, story_type,
-                     actors, actions, business_rules, technical_scope, testable_points,
-                     acceptance_criteria_explicit, acceptance_criteria_inferred,
-                     clarification_questions, analysis_reason,
-                     user_flows, resolved_from_references)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """,
-                (
-                    a.get("story_id", ""),
-                    a.get("model", ""),
-                    a.get("story_title", ""),
-                    a.get("story_type", ""),
-                    _serialize(a.get("actors", [])),
-                    _serialize(a.get("actions", [])),
-                    _serialize(a.get("business_rules", [])),
-                    _serialize(a.get("technical_scope", [])),
-                    _serialize(a.get("testable_points", [])),
-                    _serialize(a.get("acceptance_criteria_explicit", [])),
-                    _serialize(a.get("acceptance_criteria_inferred", [])),
-                    _serialize(a.get("clarification_questions", [])),
-                    _serialize(a.get("analysis_reason", [])),
-                    _serialize(a.get("user_flows", [])),
-                    _serialize(a.get("resolved_from_references", [])),
-                ),
+            obj = StoryAnalysis(
+                story_id=a.get("story_id", ""),
+                model=a.get("model", ""),
+                story_title=a.get("story_title", ""),
+                story_type=a.get("story_type", ""),
+                actors=a.get("actors", []),
+                actions=a.get("actions", []),
+                business_rules=a.get("business_rules", []),
+                technical_scope=a.get("technical_scope", []),
+                testable_points=a.get("testable_points", []),
+                acceptance_criteria_explicit=a.get("acceptance_criteria_explicit", []),
+                acceptance_criteria_inferred=a.get("acceptance_criteria_inferred", []),
+                clarification_questions=a.get("clarification_questions", []),
+                analysis_reason=a.get("analysis_reason", []),
+                user_flows=a.get("user_flows", []),
+                resolved_from_references=a.get("resolved_from_references", []),
             )
-        conn.commit()
+            session.add(obj)
+        session.commit()
         return len(analyses)
     finally:
-        conn.close()
+        session.close()
 
 
-# ── GET ──────────────────────────────────────────────────────
+# ── GET ─────────────────────────────────────────────────────────────────────
 
 def get_analyses_by_story(story_id: str) -> List[Dict[str, Any]]:
-    conn = get_connection()
+    session = get_sync_session()
     try:
-        rows = conn.execute(
-            "SELECT * FROM story_analysis WHERE story_id = ? ORDER BY created_at DESC",
-            (story_id,),
-        ).fetchall()
+        rows = session.execute(
+            select(StoryAnalysis)
+            .where(StoryAnalysis.story_id == story_id)
+            .order_by(StoryAnalysis.created_at.desc())
+        ).scalars().all()
         return [_row_to_dict(r) for r in rows]
     finally:
-        conn.close()
+        session.close()
 
 
 def get_latest_analysis(story_id: str, model: Optional[str] = None) -> Optional[Dict[str, Any]]:
-    import logging
-    logger = logging.getLogger(__name__)
-    
-    conn = get_connection()
+    session = get_sync_session()
     try:
+        stmt = (
+            select(StoryAnalysis)
+            .where(StoryAnalysis.story_id == story_id)
+        )
         if model:
-            logger.info(f"[FETCH] Getting analysis for {story_id} with model={model}")
-            row = conn.execute(
-                "SELECT * FROM story_analysis WHERE story_id = ? AND model = ? ORDER BY created_at DESC LIMIT 1",
-                (story_id, model),
-            ).fetchone()
-        else:
-            logger.info(f"[FETCH] Getting latest analysis for {story_id}")
-            row = conn.execute(
-                "SELECT * FROM story_analysis WHERE story_id = ? ORDER BY created_at DESC LIMIT 1",
-                (story_id,),
-            ).fetchone()
-        
-        if not row:
-            logger.warning(f"[FETCH] No analysis found for {story_id}")
+            stmt = stmt.where(StoryAnalysis.model == model)
+        stmt = stmt.order_by(StoryAnalysis.created_at.desc()).limit(1)
+        obj = session.execute(stmt).scalar_one_or_none()
+        if not obj:
+            logger.warning("[FETCH] No analysis found for %s", story_id)
             return None
-        
-        result = _row_to_dict(row)
-        logger.info(f"[FETCH] Analysis found for {story_id}")
-        return result
+        return _row_to_dict(obj)
     except Exception as e:
-        logger.error(f"[FETCH] Error getting analysis for {story_id}: {e}", exc_info=True)
+        logger.error("[FETCH] Error getting analysis for %s: %s", story_id, e, exc_info=True)
         return None
     finally:
-        conn.close()
+        session.close()
 
 
-def debug_analysis_in_db(story_id: str):
-    """Fonction de diagnostic : affiche exactement ce qui est en base pour une story."""
-    import logging
-    logger = logging.getLogger(__name__)
-    
-    conn = get_connection()
+def debug_analysis_in_db(story_id: str) -> int:
+    """Fonction de diagnostic : affiche les enregistrements en base pour une story."""
+    session = get_sync_session()
     try:
-        rows = conn.execute(
-            "SELECT * FROM story_analysis WHERE story_id = ? ORDER BY created_at DESC",
-            (story_id,),
-        ).fetchall()
-        
-        logger.info(f"[DEBUG] Found {len(rows)} analysis records for {story_id}")
-        for i, row in enumerate(rows):
-            logger.info(f"[DEBUG] Record {i}: {dict(row)}")
-        
+        rows = session.execute(
+            select(StoryAnalysis)
+            .where(StoryAnalysis.story_id == story_id)
+            .order_by(StoryAnalysis.created_at.desc())
+        ).scalars().all()
+        logger.info("[DEBUG] Found %d analysis records for %s", len(rows), story_id)
+        for i, obj in enumerate(rows):
+            logger.info("[DEBUG] Record %d: id=%s model=%s", i, obj.id, obj.model)
         return len(rows)
     except Exception as e:
-        logger.error(f"[DEBUG] Error checking DB for {story_id}: {e}", exc_info=True)
+        logger.error("[DEBUG] Error checking DB for %s: %s", story_id, e, exc_info=True)
         return -1
     finally:
-        conn.close()
+        session.close()
 
 
 def get_latest_analysis_as_pydantic(story_id: str, model: Optional[str] = None):
     """Retourne StoryAnalysisResult (objet Pydantic) au lieu de dict."""
     from app.models.analysis import StoryAnalysisResult
-    import logging
-    logger = logging.getLogger(__name__)
-    
+
     data = get_latest_analysis(story_id, model)
     if not data:
-        logger.warning(f"[Agent5] No analysis data found in DB for {story_id}")
+        logger.warning("[Agent5] No analysis data found in DB for %s", story_id)
         return None
-    
-    logger.info(f"[Agent5] Analysis data found for {story_id}: keys={list(data.keys())}")
-    
+
+    logger.info("[Agent5] Analysis data found for %s: keys=%s", story_id, list(data.keys()))
     try:
         result = StoryAnalysisResult(
             story_id=data.get("story_id", story_id),
@@ -234,10 +186,12 @@ def get_latest_analysis_as_pydantic(story_id: str, model: Optional[str] = None):
             analysis_reason=data.get("analysis_reason", []),
             resolved_from_references=data.get("resolved_from_references", []),
         )
-        logger.info(f"[Agent5] Successfully converted analysis to Pydantic for {story_id}")
+        logger.info("[Agent5] Successfully converted analysis to Pydantic for %s", story_id)
         return result
     except Exception as e:
-        logger.error(f"[Agent5] Error converting analysis to Pydantic for {story_id}: {e}", exc_info=True)
+        logger.error("[Agent5] Error converting analysis to Pydantic for %s: %s", story_id, e, exc_info=True)
         return None
+
+
 def fetch_analysis_by_story_id(story_id: str) -> Optional[Dict[str, Any]]:
     return get_latest_analysis(story_id)

@@ -1,15 +1,16 @@
 """
-Repository pour les classifications d'automatisation (Agent 4).
+Repository pour les classifications d'automatisation (Agent 4) — PostgreSQL (SQLAlchemy ORM).
 
 Stocke le dernier snapshot par story (les classifications sont remplacées
 à chaque run du pipeline) et permet au PO de mettre à jour le `po_feedback`
 d'une classification individuelle.
 """
 
-import json
-from typing import Any, Dict, List, Optional
+from typing import List, Optional
 
-from app.db.database import get_connection
+from sqlalchemy import select
+
+from app.db.postgres import get_sync_session
 from app.models.automation_classification import (
     AutomationDecision,
     ConfidenceLevel,
@@ -17,68 +18,64 @@ from app.models.automation_classification import (
     StoryAutomationClassificationResult,
     TestAutomationClassification,
 )
+from app.models.pg_models import AutomationClassification
 
 
 def save_classifications(result: StoryAutomationClassificationResult) -> None:
     """Remplace les classifications existantes pour la story."""
-    conn = get_connection()
+    session = get_sync_session()
     try:
-        conn.execute(
-            "DELETE FROM automation_classifications WHERE story_id = ?",
-            (result.story_id,),
-        )
-        for c in result.classifications:
-            conn.execute(
-                """
-                INSERT INTO automation_classifications
-                    (story_id, test_name, classification, confidence, raison,
-                     po_feedback, model, error)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                """,
-                (
-                    result.story_id,
-                    c.test_name,
-                    c.classification.value,
-                    c.confidence.value,
-                    c.raison,
-                    c.po_feedback.value,
-                    result.model,
-                    c.error,
-                ),
+        # Supprimer les anciennes classifications
+        existing = session.execute(
+            select(AutomationClassification).where(
+                AutomationClassification.story_id == result.story_id
             )
-        conn.commit()
+        ).scalars().all()
+        for row in existing:
+            session.delete(row)
+
+        # Insérer les nouvelles
+        for c in result.classifications:
+            obj = AutomationClassification(
+                story_id=result.story_id,
+                test_name=c.test_name,
+                classification=c.classification.value,
+                confidence=c.confidence.value,
+                raison=c.raison,
+                po_feedback=c.po_feedback.value,
+                model=result.model,
+                error=c.error,
+            )
+            session.add(obj)
+        session.commit()
     finally:
-        conn.close()
+        session.close()
 
 
 def get_classifications(story_id: str) -> Optional[StoryAutomationClassificationResult]:
-    conn = get_connection()
+    session = get_sync_session()
     try:
-        cur = conn.execute(
-            """
-            SELECT test_name, classification, confidence, raison,
-                   po_feedback, model, error
-              FROM automation_classifications
-             WHERE story_id = ?
-             ORDER BY id ASC
-            """,
-            (story_id,),
-        )
-        rows = cur.fetchall()
+        rows = session.execute(
+            select(AutomationClassification)
+            .where(AutomationClassification.story_id == story_id)
+            .order_by(AutomationClassification.id.asc())
+        ).scalars().all()
+
         if not rows:
             return None
+
         items: List[TestAutomationClassification] = []
         model = ""
         for r in rows:
-            model = r["model"] or model
+            model = r.model or model
             items.append(
                 TestAutomationClassification(
-                    test_name=r["test_name"] or "",
-                    classification=AutomationDecision(r["classification"]),
-                    confidence=ConfidenceLevel(r["confidence"]),
-                    raison=r["raison"] or "",
-                    po_feedback=PoFeedback(r["po_feedback"] or "pending"),
-                    error=r["error"],
+                    test_name=r.test_name or "",
+                    classification=AutomationDecision(r.classification),
+                    confidence=ConfidenceLevel(r.confidence),
+                    raison=r.raison or "",
+                    po_feedback=PoFeedback(r.po_feedback or "pending"),
+                    error=r.error,
                 )
             )
         return StoryAutomationClassificationResult(
@@ -87,22 +84,23 @@ def get_classifications(story_id: str) -> Optional[StoryAutomationClassification
             classifications=items,
         )
     finally:
-        conn.close()
+        session.close()
 
 
 def update_po_feedback(story_id: str, test_name: str, feedback: PoFeedback) -> bool:
     """Met à jour le retour du PO sur une classification. Retourne True si une ligne touchée."""
-    conn = get_connection()
+    session = get_sync_session()
     try:
-        cur = conn.execute(
-            """
-            UPDATE automation_classifications
-               SET po_feedback = ?
-             WHERE story_id = ? AND test_name = ?
-            """,
-            (feedback.value, story_id, test_name),
-        )
-        conn.commit()
-        return cur.rowcount > 0
+        obj = session.execute(
+            select(AutomationClassification).where(
+                AutomationClassification.story_id == story_id,
+                AutomationClassification.test_name == test_name,
+            )
+        ).scalar_one_or_none()
+        if not obj:
+            return False
+        obj.po_feedback = feedback.value
+        session.commit()
+        return True
     finally:
-        conn.close()
+        session.close()

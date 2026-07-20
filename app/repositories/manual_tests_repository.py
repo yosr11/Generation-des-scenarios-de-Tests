@@ -1,69 +1,75 @@
-"""Dernier jeu de tests manuels (Agent 2) par story — pour chargement automatique par Agent 3."""
+"""Dernier jeu de tests manuels (Agent 2) par story — PostgreSQL (SQLAlchemy ORM)."""
 
 from __future__ import annotations
 
-import json
 from typing import Any, Dict, List, Optional
 
-from app.db.database import get_connection
+from sqlalchemy import select
+
+from app.db.postgres import get_sync_session
+from app.models.pg_models import StoryManualTests
 
 
 def save_manual_tests_snapshot(story_id: str, tests: List[Dict[str, Any]], generation_model: str = "") -> int:
     """Sauvegarde un snapshot de tests en remplaçant l'ancien (idempotent)."""
     if not story_id:
         return -1
-    conn = get_connection()
+    session = get_sync_session()
     try:
-        # Supprimer l'ancien snapshot pour cette story (idempotence)
-        conn.execute("DELETE FROM story_manual_tests WHERE story_id = ?", (story_id,))
-        cur = conn.execute(
-            """
-            INSERT INTO story_manual_tests (story_id, tests_json, generation_model)
-            VALUES (?, ?, ?)
-            """,
-            (story_id, json.dumps(tests, ensure_ascii=False), generation_model or ""),
+        # Supprimer l'ancien snapshot (idempotence)
+        existing = session.execute(
+            select(StoryManualTests).where(StoryManualTests.story_id == story_id)
+        ).scalars().all()
+        for row in existing:
+            session.delete(row)
+
+        obj = StoryManualTests(
+            story_id=story_id,
+            tests_json=tests,  # JSONB natif — pas de json.dumps()
+            generation_model=generation_model or "",
         )
-        conn.commit()
-        return int(cur.lastrowid)
+        session.add(obj)
+        session.commit()
+        session.refresh(obj)
+        return obj.id
     finally:
-        conn.close()
+        session.close()
 
 
 def get_latest_manual_tests(story_id: str) -> Optional[List[Dict[str, Any]]]:
-    """Retourne la liste des tests (dicts ManualTestCase) du dernier enregistrement, ou None."""
+    """Retourne la liste des tests du dernier enregistrement, ou None."""
     if not story_id:
         return None
-    conn = get_connection()
+    session = get_sync_session()
     try:
-        row = conn.execute(
-            """
-            SELECT tests_json FROM story_manual_tests
-            WHERE story_id = ?
-            ORDER BY id DESC
-            LIMIT 1
-            """,
-            (story_id,),
-        ).fetchone()
-        if not row or not row["tests_json"]:
+        obj = session.execute(
+            select(StoryManualTests)
+            .where(StoryManualTests.story_id == story_id)
+            .order_by(StoryManualTests.id.desc())
+            .limit(1)
+        ).scalar_one_or_none()
+        if not obj or not obj.tests_json:
             return None
-        data = json.loads(row["tests_json"])
-        if isinstance(data, list):
-            return data
-        return None
+        data = obj.tests_json  # Déjà désérialisé par SQLAlchemy/JSONB
+        return data if isinstance(data, list) else None
     finally:
-        conn.close()
+        session.close()
 
 
 def get_latest_manual_tests_as_pydantic(story_id: str):
     """Retourne ManualTestGenerationResult (objet Pydantic) au lieu de liste de dicts."""
-    from app.models.test_manual import ManualTestGenerationResult, ManualTestCase, RecommendedTestStrategy, ManualGenerationStatus
-    
+    from app.models.test_manual import (
+        ManualGenerationStatus,
+        ManualTestCase,
+        ManualTestGenerationResult,
+        RecommendedTestStrategy,
+    )
+
     tests_raw = get_latest_manual_tests(story_id)
     if not tests_raw:
         return None
-    
+
     try:
-        # Convertir chaque dict en ManualTestCase
         tests = []
         for test_dict in tests_raw:
             try:
@@ -71,7 +77,7 @@ def get_latest_manual_tests_as_pydantic(story_id: str):
             except Exception as e:
                 print(f"Error converting test to ManualTestCase: {e}")
                 continue
-        
+
         return ManualTestGenerationResult(
             story_id=story_id,
             recommended_test_strategy=RecommendedTestStrategy.MANUAL,
