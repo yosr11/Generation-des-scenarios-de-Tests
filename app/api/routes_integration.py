@@ -9,6 +9,7 @@ from app.core.deps import CurrentUser, get_client_ip, get_current_user, get_test
 from app.db.postgres import get_db
 from app.services.audit_service import log_action
 from app.services.jira_service import (
+    _normalize_priority_for_jira,
     _update_issue_fields,
     add_xray_test_steps,
     create_test_issue,
@@ -261,9 +262,14 @@ async def integrate_tests(
                 desc = _build_description(test_case)
                 step_payload = _build_step_payload(test_case)
 
+                update_fields = {"description": desc}
+                normalized_priority = _normalize_priority_for_jira(test_case.priority)
+                if normalized_priority:
+                    update_fields["priority"] = {"name": normalized_priority}
+
                 update_result = _update_issue_fields(
                     issue_key=existing,
-                    fields={"description": desc},
+                    fields=update_fields,
                     use_test_jira=use_test_jira,
                     session=jira_session,
                 )
@@ -436,9 +442,14 @@ async def integrate_test_single(
             desc = _build_description(test_case)
             step_payload = _build_step_payload(test_case)
 
+            update_fields = {"description": desc}
+            normalized_priority = _normalize_priority_for_jira(test_case.priority)
+            if normalized_priority:
+                update_fields["priority"] = {"name": normalized_priority}
+
             update_result = _update_issue_fields(
                 issue_key=existing,
-                fields={"description": desc},
+                fields=update_fields,
                 use_test_jira=use_test_jira,
                 session=jira_session,
             )

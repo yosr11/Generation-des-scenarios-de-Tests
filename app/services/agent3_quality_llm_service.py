@@ -9,7 +9,7 @@ import json
 import logging
 from typing import Any, Dict, List, Optional
 
-from app.services.llm_client import call_groq
+from app.services.llm_client import call_llm
 
 logger = logging.getLogger(__name__)
 
@@ -80,7 +80,7 @@ def llm_quality_feedback(
     )
 
     try:
-        raw = call_groq(
+        raw = call_llm(
             system_prompt=system,
             user_prompt=json.dumps(user, ensure_ascii=False),
             model_alias=model_alias,

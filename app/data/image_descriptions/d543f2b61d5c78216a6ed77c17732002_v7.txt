@@ -1,0 +1,86 @@
+[Image jointe : image-2025-05-07-10-19-16-784.png]
+── Textes détectés (OCR) ──
+lype ce News *
+ACTUALITE v [ ] vauioe
+litre dans le carrousel *
+Les News sortent dans 4YOU9.0 Date de début de publication *
+—- 7
+Texte -
+Date de fin de publication *
+Les News permettent de d'informer les collaborateurs manager gestionnaires.
+La localisation de la News est France secteur privé.
+Date de créat -—/f——f-
+6 e crednon / / La langue de publication de la News est le Fran@ais.
+Date de modification ——/——/——
+Document d'actualité *
+- ; -— . - T4 -
+Actual-é.pns [ Confidentialité /
+Ilustration dans le carrousel e
+Veuillez sélectionner une image M
+Œ] Neiws png [l]] Etablissement
+33 _ . B
+39 Acteur autorisé à voir la News
+( \ ’ /' Aperçu
+palle)
+ce
+adia et
+Publication /
+lype ce News
+ACTUALITE
+[ ] VALIDE
+Date de début de publication
+Les News sortent dans 4YOU9.0
+__/__/__
+Texte
+Date de fin de publication
+Date de création
+La langue de publication de la News est le Fran@ais.
+Date de modification ——/__/__
+Document d’actualité *
+@} Actualé.png N
+Confidentialité /
+Société
+Illustration dans le carrousel
+Veuillez sélectionner une image
+Etablissement
+@ News.pna
+-t .
+39
+Acteur autorisé à voir la News
+Aperçu
+AF
+(o[ ]
+── Analyse visuelle (VLM) ──
+### 1. CONTEXTE
+L'écran analysé est un formulaire de création de "News" dans un système de gestion d'informations internes, probablement pour une plateforme de ressources humaines. Le formulaire inclut divers champs pour saisir des informations sur une news, tels que le type, le titre, le texte, les dates de publication, et les paramètres de confidentialité.
+
+### 2. ANNOTATIONS AJOUTÉES PAR LE PO
+- **Type** : cadre
+- **Couleur** : rouge
+- **Texte désigné** : "Type de News *" 
+- **Type** : cadre
+- **Couleur** : vert
+- **Texte désigné** : " VALIDE"
+
+### 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- **Élément** : Badge/étiquette 
+  - **Forme** : Rectangulaire
+  - **Couleur de fond** : Bleu clair
+  - **Texte** : "ACTUALITE"
+- **Élément** : Bouton 
+  - **Forme** : Rectangulaire
+  - **Couleur de fond** : Non renseignée
+  - **Texte** : " VALIDE"
+
+### 4. ICÔNES ET PICTOGRAMMES
+- **Icône de poubelle** : probablement utilisée pour supprimer des éléments, située à côté des champs "Document d'actualité" et "Illustration dans le carrousel".
+- **Icône d'aperçu** : située sous la section "Illustration dans le carrousel", probablement utilisée pour visualiser l'illustration sélectionnée.
+
+### 5. AGENCEMENT ET RELATIONS
+Le formulaire est structuré en sections verticales :
+- **Section 1** : Informations générales (type de news, titre, texte).
+- **Section 2** : Dates de publication et création.
+- **Section 3** : Confidentialité (société, établissement, acteur autorisé).
+- **Section 4** : Publication (date de début et fin de publication, validité).
+- **Champs obligatoires** : indiqués par un astérisque (*).
+- **Relations spatiales** : le bouton " VALIDE" est situé à côté des champs de publication, suggérant qu'il est lié à la validation des informations de publication.

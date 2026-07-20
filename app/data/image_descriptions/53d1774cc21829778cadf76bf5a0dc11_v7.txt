@@ -1,0 +1,41 @@
+[Image jointe : image-2023-06-12-19-06-38-780.png]
+── Textes détectés (OCR) ──
+Rechercher Q
+Mes congés
+Suggestions pour cong
+Demande d'absence (Collaborateur)
+Annulation d'absence (Collaborateur)
+A Anun rhs e [ R E A A
+‘ Rechercher
+à |
+cong O,
+Suggestions pour
+cong
+u £
+── Analyse visuelle (VLM) ──
+Voici mon analyse de l'image :
+
+**1. CONTEXTE**
+L'écran semble être une page de recherche avec des suggestions de résultats. Il s'agit probablement d'une fonctionnalité de recherche dans une application de gestion des ressources humaines.
+
+**2. ANNOTATIONS AJOUTÉES PAR LE PO**
+Aucune annotation détectée.
+
+**3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI**
+Il n'y a pas d'éléments graphiques natifs de l'UI (pastilles, badges, étiquettes, boutons) autres que les éléments de formulaire et les icônes de recherche.
+
+**4. ICÔNES ET PICTOGRAMMES**
+Deux icônes de loupe sont présentes :
+- Une icône de loupe est située à droite du champ de recherche en haut de l'écran, probablement pour lancer la recherche.
+- Une autre icône de loupe est située à droite du deuxième champ de recherche, probablement pour lancer la recherche dans ce champ.
+
+**5. AGENCEMENT ET RELATIONS**
+L'écran est divisé en deux champs de recherche :
+- Le premier champ de recherche est en haut de l'écran avec un libellé "Rechercher" et une icône de loupe à droite.
+- Le deuxième champ de recherche est en dessous du premier et contient le texte "congl".
+Sous le deuxième champ de recherche, il y a une liste de suggestions avec les éléments suivants :
+  - "Mes congés"
+  - "Suggestions pour cong" (surligné)
+  - "Demande d'absence (Collaborateur)"
+  - "Annulation d'absence (Collaborateur)"
+  - Un élément de texte partiellement visible : "Mon changement de situation familiale"

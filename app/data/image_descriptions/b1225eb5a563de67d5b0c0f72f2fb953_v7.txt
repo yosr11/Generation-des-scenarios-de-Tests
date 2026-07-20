@@ -1,0 +1,65 @@
+[Image jointe : image-2025-01-13-18-00-12-311.png]
+── Textes détectés (OCR) ──
+RUASFA(OIVIF« B G BASE DE CONNAISSANCEE... & w
+PLAN MOTS-CLÉS
+Type de Document
+Confidentialité
+Dossier numérique COLLABORATEUR MANAGER Ÿ GESTIONNAIRE RH GESTIONNAIRE PAIE
+» p 1. Informations personnelles et familiales
+Population
+» m 2 Dossier RH
+« @@ 3 Carrière/Contrat
+SOCIÉTÉ AYOU x SIÈGE SOCIAL x
+» Bm 3.1 Vie professionnelle
+» m 3.2 Formation
+4 @@ 3.3 Contrats/Avenants
+AGENCE x DURÉE DÉTERMINÉE x
+B Avenants
+Contrat de ti il
+Ë ontrat de traval Action(s) autorisée(s)
+B Convention de stage
+» i@ 34 Disciplinaire
+CRÉER x | LIRE x Ÿ MODIFIER x | SUPPRIMER x
+» m 4 Temps de travail
+SALARIE 4
+[-3 EIBASE DE CONNAISSANCEE... &
+PLAN
+MOTS-CLES
+( Nouveau Type de Document ) ( Dupliquer un Type de Document ) ( Supprimer )
+Dossier numérique
+COLLABORATEUR
+MANAGER Ÿ
+GESTIONNAIRE RH
+GESTIONNAIRE PAIE
+B Contrat de travail
+Action(s) autorisée(s)
+» iR 4 Temps de travail
+» @ 5 Réminération
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+
+L'écran semble être un formulaire de configuration ou de création d'un type de document dans un système de gestion des ressources humaines. Le formulaire est structuré avec plusieurs sections et champs pour saisir des informations spécifiques.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+
+Aucune annotation n'est ajoutée par-dessus l'écran original.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+
+- Un badge ou pastille de type "étiquette" de couleur bleue avec le texte "SOCIÉTÉ 4YOU" est visible.
+- Un badge ou pastille de type "étiquette" de couleur bleue avec le texte "SIÈGE SOCIAL" est visible.
+- Un badge ou pastille de type "étiquette" de couleur bleue avec le texte "AGENCE" est visible.
+- Un badge ou pastille de type "étiquette" de couleur bleue avec le texte "DURÉE DÉTERMINÉE" est visible.
+- Des boutons avec les textes "CRÉER", "LIRE", "MODIFIER", "SUPPRIMER" de couleur bleue sont visibles.
+
+## 4. ICÔNES ET PICTOGRAMMES
+
+- Une icône de recherche (représentée par une loupe) est visible dans le champ de recherche.
+- Des icônes représentant des actions (comme des flèches ou des croix) sont présentes sur les boutons et les champs, mais leur description précise n'est pas claire sans image.
+
+## 5. AGENCEMENT ET RELATIONS
+
+- L'écran est divisé en sections avec un volet gauche contenant un arbre de navigation ou une liste de dossiers et un volet droit avec le formulaire.
+- Le formulaire est organisé en champs avec des étiquettes à gauche et des champs de saisie ou des sélecteurs à droite.
+- Les champs du formulaire incluent "Population", "Établissement", "Unité d'Organisation", "Type de contrat", et "Action(s) autorisée(s)".
+- Les boutons "CRÉER", "LIRE", "MODIFIER", "SUPPRIMER" sont regroupés en bas du formulaire, suggérant des actions possibles sur le type de document en cours de configuration.

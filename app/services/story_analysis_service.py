@@ -294,7 +294,6 @@ def merge_story_analysis(
 def classify_story_with_llm(
     story: Dict[str, Any],
     llm_callable: Callable[[str, str], str],
-    rag_context: list = None,
     story_attachments: list = None,
 ) -> StoryClassificationResult:
     """Classify a story into functional/technical/invalid_or_too_weak."""
@@ -358,7 +357,6 @@ def classify_story_with_llm(
     system_prompt = build_story_analysis_system_prompt()
     user_prompt = build_story_analysis_user_prompt(
         enriched_story,
-        rag_context=rag_context,
         story_attachments=story_attachments,
     )
 
@@ -397,7 +395,6 @@ def classify_story_with_llm(
 def extract_story_analysis_with_llm(
     story: Dict[str, Any],
     llm_callable: Callable[[str, str], str],
-    rag_context: list = None,
     story_attachments: list = None,
 ) -> StoryAnalysisResult:
     """Extract analysis fields for a functional story without re-running classification."""
@@ -424,7 +421,6 @@ def extract_story_analysis_with_llm(
     system_prompt = build_story_analysis_system_prompt()
     user_prompt = build_story_analysis_user_prompt(
         enriched_story,
-        rag_context=rag_context,
         story_attachments=story_attachments,
     )
 
@@ -466,7 +462,6 @@ def extract_story_analysis_with_llm(
 def analyze_story_with_llm(
     story: Dict[str, Any],
     llm_callable: Callable[[str, str], str],
-    rag_context: list = None,
     story_attachments: list = None,
 ) -> StoryAnalysisResult:
     """
@@ -475,7 +470,6 @@ def analyze_story_with_llm(
     classification = classify_story_with_llm(
         story=story,
         llm_callable=llm_callable,
-        rag_context=rag_context,
         story_attachments=story_attachments,
     )
 
@@ -485,7 +479,6 @@ def analyze_story_with_llm(
     analysis = extract_story_analysis_with_llm(
         story=story,
         llm_callable=llm_callable,
-        rag_context=rag_context,
         story_attachments=story_attachments,
     )
 
@@ -499,7 +492,6 @@ def analyze_story_with_llm(
 def analyze_story_with_groq(
     story: Dict[str, Any],
     model_alias: str = "llama33",
-    rag_context: list = None,
     story_attachments: list = None,
 ) -> StoryAnalysisResult:
     """
@@ -515,7 +507,6 @@ def analyze_story_with_groq(
     return analyze_story_with_adaptive_llm(
         story=story,
         model_alias=model_alias,
-        rag_context=rag_context,
         story_attachments=story_attachments,
     )
 
@@ -523,7 +514,6 @@ def analyze_story_with_groq(
 def classify_story_with_adaptive_llm(
     story: Dict[str, Any],
     model_alias: str = "nova-lite-2",
-    rag_context: list = None,
     story_attachments: list = None,
 ) -> StoryClassificationResult:
     """Classification-only helper using the same provider selection as the analysis service."""
@@ -540,7 +530,6 @@ def classify_story_with_adaptive_llm(
         return classify_story_with_llm(
             story=story,
             llm_callable=_bedrock_callable,
-            rag_context=rag_context,
             story_attachments=story_attachments,
         )
 
@@ -556,7 +545,6 @@ def classify_story_with_adaptive_llm(
     return classify_story_with_llm(
         story=story,
         llm_callable=_groq_callable,
-        rag_context=rag_context,
         story_attachments=story_attachments,
     )
 
@@ -564,7 +552,6 @@ def classify_story_with_adaptive_llm(
 def extract_story_analysis_with_adaptive_llm(
     story: Dict[str, Any],
     model_alias: str = "nova-lite-2",
-    rag_context: list = None,
     story_attachments: list = None,
 ) -> StoryAnalysisResult:
     """Extraction-only helper using the same provider selection as the analysis service."""
@@ -581,7 +568,6 @@ def extract_story_analysis_with_adaptive_llm(
         return extract_story_analysis_with_llm(
             story=story,
             llm_callable=_bedrock_callable,
-            rag_context=rag_context,
             story_attachments=story_attachments,
         )
 
@@ -597,7 +583,6 @@ def extract_story_analysis_with_adaptive_llm(
     return extract_story_analysis_with_llm(
         story=story,
         llm_callable=_groq_callable,
-        rag_context=rag_context,
         story_attachments=story_attachments,
     )
 
@@ -605,7 +590,6 @@ def extract_story_analysis_with_adaptive_llm(
 def analyze_story_with_adaptive_llm(
     story: Dict[str, Any],
     model_alias: str = "nova-lite-2",
-    rag_context: list = None,
     story_attachments: list = None,
 ) -> StoryAnalysisResult:
     """
@@ -634,7 +618,6 @@ def analyze_story_with_adaptive_llm(
         return analyze_story_with_llm(
             story=story,
             llm_callable=_bedrock_callable,
-            rag_context=rag_context,
             story_attachments=story_attachments,
         )
     
@@ -652,6 +635,5 @@ def analyze_story_with_adaptive_llm(
         return analyze_story_with_llm(
             story=story,
             llm_callable=_groq_callable,
-            rag_context=rag_context,
             story_attachments=story_attachments,
         )

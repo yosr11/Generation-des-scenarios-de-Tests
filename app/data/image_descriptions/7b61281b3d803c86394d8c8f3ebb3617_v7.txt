@@ -1,0 +1,108 @@
+[Image jointe : image-2025-04-17-18-41-46-615.png]
+── Textes détectés (OCR) ──
+lype de News *
+ANNONCE v Cette News est MMMN NON VALIDE
+Titre dans le carrousel " Date de début de publication *
+Les News sortent dans 4YOUS.0 - / - / - =
+Texte ‘ Date de fin de publication *
+] =
+Les News permettent de d'informer les collaborateurs manager gestionnaires.
+Localisation
+/2 France secteur privé
+Langue
+Français
+Illustration dans le carrousel ; L-
+Confidentialité /
+Veuillez sélectionner une image
+— Société
+7 - - Etablissement
+— :
+36 ~ ’ /' Aperçu Acteur autorisé à voir la News
+! ! T Lsque RH de La 20n v
+Pouvoir tout cocher dans une liste
+[ ][e]
+ec
+Do 201
+t.
+Publication /
+lype de News
+ANNONCE
+Cette News est MRIN Z NON VALIDE
+Titre dans le carrousel °
+Date de début de publication
+Les News sortent dans 4YOU9.0
+__/__/__
+Texte
+Date de fin de publication
+France secteur privé
+Illustration dans le carrousel
+Société
+[T
+Etablissement
+— .
+36
+Aperçu
+Acteur autorisé à voir la News
+[ [ ]
+── Analyse visuelle (VLM) ──
+### 1. CONTEXTE
+L'écran analysé est un formulaire de création de "News" dans un système de gestion de contenu interne, probablement pour une application RH (Ressources Humaines). L'intention de cet écran est de permettre aux utilisateurs de créer et de configurer une nouvelle annonce ou news.
+
+### 2. ANNOTATIONS AJOUTÉES PAR LE PO
+- **Type de News** : 
+  - Type : Cadre
+  - Couleur : Vert
+  - Texte : "ANONCE"
+- **Titre dans le carrousel** : 
+  - Type : Cadre
+  - Couleur : Vert
+  - Texte : "Les News sortent dans 4YOU9.0"
+- **Texte** : 
+  - Type : Cadre
+  - Couleur : Vert
+  - Texte : "Les News permettent de d'informer les collaborateurs manager gestionnaires."
+- **Bouton de validation** : 
+  - Type : Bouton
+  - Couleur : Bleu
+  - Texte : "VALIDÉ" et "NON VALIDÉ" (à côté, sans cadre)
+
+Aucune autre annotation n'est ajoutée par-dessus l'écran original.
+
+### 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- **Type de News** : 
+  - Forme : Champ de sélection déroulant
+  - Couleur de fond : Blanc
+  - Texte : "ANONCE"
+- **Localisation** : 
+  - Forme : Champ de saisie
+  - Couleur de fond : Blanc
+  - Texte : "France secteur privé"
+- **Langue** : 
+  - Forme : Champ de saisie
+  - Couleur de fond : Blanc
+  - Texte : "Français"
+- **Confidentialité > Société** : 
+  - Forme : Champ de saisie
+  - Couleur de fond : Blanc
+  - Texte : Aucun
+- **Confidentialité > Etablissement** : 
+  - Forme : Champ de saisie
+  - Couleur de fond : Blanc
+  - Texte : Aucun
+- **Acteur autorisé à voir la News** : 
+  - Forme : Champ de saisie
+  - Couleur de fond : Blanc
+  - Texte : Aucun
+
+### 4. ICÔNES ET PICTOGRAMMES
+- Icône de poubelle (à côté de l'illustration) : probablement pour supprimer l'illustration.
+- Icône de crayon ou de modification (non visible mais probablement présente) : pour éditer les champs.
+
+### 5. AGENCEMENT ET RELATIONS
+- Le formulaire est divisé en sections :
+  - **Création de News** (à gauche) : inclut les champs pour le type de news, le titre, et le texte.
+  - **Publication** (à droite) : inclut les champs pour la date de début et de fin de publication, ainsi que le statut de validation.
+  - **Confidentialité** (en dessous de Publication) : inclut les champs pour la localisation, la langue, la société, l'établissement, et les acteurs autorisés.
+- Les champs obligatoires sont indiqués par une étoile (*).
+- Le champ "Illustration dans le carrousel" contient une image sélectionnée ("News.png") avec des outils de redimensionnement.
+- Le bouton "VALIDÉ" et "NON VALIDÉ" semblent être utilisés pour statuer sur la publication de la news.

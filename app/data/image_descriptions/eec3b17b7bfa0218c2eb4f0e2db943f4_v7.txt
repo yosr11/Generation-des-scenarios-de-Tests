@@ -1,0 +1,106 @@
+[Image jointe : image-2025-02-19-10-58-55-823.png]
+── Textes détectés (OCR) ──
+<  Liste des demarches manaaer Liste des choix legacy pour un gestionnaire
+cd
+O, co *
+Planning col'ectif GTA (Responsable opérationnel) (Manager)
+‘ ‘ & Dossier individuel > Entrée > Embaucher un candidat > Créer dossier > Règles
+Planning co'‘ectif GTA (Manager UO Affaire) (Manager) d'acquisition des congés
+Ma demande d'acompte ou d'avance Doss er ‘r¢iv.cuel > Ertrée > Evoaucrer ur cand dat > Conmrarrèque
+Mon changement de composition familiale Doss er irgivicuel > Ertrée > Emoaucrer ur cand dat > Comratréque >
+Je gére les fins de contrat de mon équipe Visua' sator ducortat
+L ; Dosser irgivicuel > Ertrée > Emoaucrer ur cand dat > Suivre a DPAE
+Je consuite :es coempteurs de mon éauipe dématér'alisée > Corsutation.Mise à jour des donrées nc:v duel'es
+Mes congés Doss er ‘rciv‘cuel » Ertrée > Evoaucrer ur cand dat > Comp'éter cosser
+Le planning de mes col:égues Dosser ‘roiv'cuel > Ertrée > Evoaucrer ur cand dat > Comp éter coss'er >
+Mise à jour de mes compétences (Co:ladorateur) Donrées suop émertaires
+; Dosser irgivicuel > Ertrée > Emvaucrer ur cand dat > Comp'éter coss'er >
+Suggestions pour
+88 po © Documer:s office’s
+Mon changement de situation familiale
+8 Dosser irgivicuel > Ertrée > Emdaucrer ur cand daz > Comp'éter coss'er >
+Je su:s malade VYér cu'es
+Je gére le planning de mon équipe Dosser irgivicuel > Ertrée > Emoaucrer ur cand dat > Comp'érer coss'er >
+Caractéristiques pnys'ques
+Doss er irgivicuel > Ertrée > Emdaucrer ur cand dat > Comp'éter coss er >
+Stuation méd ca'e
+Doss er irgiv.cuel > Ertrée > Empaucrer ur cand dar > Comp'éter Coss'er >
+. Znna ds racharcha alahala cuu 1s tAan hannar SRS SGr Hand cap ez nva'idité
+O. < * Dosser ircivicuel > Ertrée > Emdaucrer ur cand dat > Ecter Cortrar de traval
+. . Dosser rciv.cuel > Ertrée > Emoaucrer ur cand dat > Ecter Cortrar de zraval >
+Mise à jour de mes compétences (Collaborateur) Edition cu contra:
+Ma demande d'acompte cu d'avance Doss er ir¢iv.cuel > Ertrée > Evoaucre ‘ Réerrdaucre modélisée >
+Mcn changement de compcsition famil:ale famecntacr
+Mes congés
+Le p'ann:ng de mes col'êégues
+Suggestions pour <o
+Je suis ma:ade
+41  Carte d'identité Sopra HR Software 2020
+Liste des démarches manaaer
+Liste des choix legacy pour un gestionnaire
+O‘ co
+Dossier individuel > Entrée > Embaucher un candidat > Créer dossier > Règles
+Planning co'‘ectif GTA (Manager UO Affaire) (Manager)
+d'acquisition des congés
+Ma demande d'acompte ou d'avance
+Doss er ‘r¢iv.cuel > Ertrée > Evoaucrer ur cand dat > Conmrarrèque
+Doss er irgivicuel > Ertrée > Emdaucrer ur cand dat > Conratrèque >
+Mon changement de composition familiale
+Visua: sator du cortrat
+Je gére les fins de contrat de mon équipe
+Doss er ircivicuel > Ertrée > Emdaucrer ur cand dat > Suivre 3 DPAE
+Je consuite :es compteurs de mon éauipe
+démarér'alisée > Corsutation.Mise à jour des donrées ncivdueles
+Doss er irgivicuel > Ertrée > Emdaucrer ur cand dat > Comp éter coss'er
+Le planning de mes coliégues
+Dosser irgivicuel > Ertrée > Emvaucrer ur cand dat > Comp'éter coss'er >
+Donrées suop émertaires
+Mise à jour de mes compétences (Co:ladcrateur)
+co
+Documerts offices
+Doss er ircivicuel > Ertrée > Emdaucrer ur cand dat > Comp éter Coss'er >
+Je su:s malade
+VYér cu'es
+Je gère le planning de mon équipe
+Doss er irgivicuel > Ertrée > Emdaucrer ur cand dat > Comp'éter cosser >
+tuztion méd ca'e
+Hand cap et nva'idité
+er
+Dosser ircivicuel > Ertrée > Emdaucrer ur cand dat > Ecter Cortrar de traval
+Dosser irgivicuel » Ertrée > Emdaucrer ur cand dat > Ecter Cortrat Ce zraval >
+Mise à jour de mes compétences (Collaborateur)
+Edition du contra:
+Ma demande d'acompte cu d'avance
+Dosser irgivicuel > Ertrée > Emdaucre  Réerdaucre modélsée >
+Canvesemmni n
+Mcn changement de compcsition famil:ale
+<o
+41
+Carte d'identité Sopra HR Software 2020
+__ —— ——s
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE 
+L'image montre un mockup de l'interface utilisateur d'un logiciel HR. L'écran présente une liste de démarches pour un manager et des choix legacy pour un gestionnaire, avec des suggestions de recherche.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- **Pastille / Badge :** Aucune pastille ou badge visible.
+- **Boutons :** 
+  - Un bouton de recherche avec une loupe.
+  - Un bouton pour fermer les suggestions de recherche (petit "x" noir).
+- **Étiquettes / Tags / Chips :** Aucune étiquette, tag ou chip visible.
+
+## 4. ICÔNES ET PICTOGRAMMES
+- **Loupe :** Une icône de loupe est présente dans le champ de recherche.
+- **Croix :** Une croix (petit "x" noir) est utilisée pour fermer les suggestions de recherche.
+
+## 5. AGENCEMENT ET RELATIONS
+- **Structure :** L'écran est divisé en sections. Une section à gauche liste les "démarches manager" et une section à droite présente les "choix legacy pour un gestionnaire".
+- **Regroupements visuels :** Les éléments sont regroupés sous des titres clairs ("Liste des démarches manager" et "Liste des choix legacy pour un gestionnaire").
+- **Champs obligatoires :** Aucun champ obligatoire identifié (pas d'étoile *).
+- **États :** Aucun élément actif/inactif, sélectionné, désactivé identifié.
+- **Relations spatiales :** 
+  - Un champ de recherche est situé en haut à droite avec des suggestions déroulantes.
+  - La liste des démarches et des choix legacy est organisées en lignes sous leurs titres respectifs.

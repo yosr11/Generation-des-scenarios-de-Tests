@@ -1,0 +1,45 @@
+[Image jointe : Poser une question RH - Alimentation du bénéficiaire depuis le profil et les démarches collaborateur.png]
+── Textes détectés (OCR) ──
+= 6 Poser une question RH o ? D
+v ; i ; ; ; ; ; Créer
+ous avez bescin d'information ou d'aide sur les données personnelles contractuelles cu tout autre besoin, complétez le formulaire de demande de support ¢
+dessous. Vous avez la possibihté de joindre un document. Votre demande sera envoyee et traitée par votre gestionnaire.
+N f N E
+4 Quitter } { Sauvegarder } n cours
+KL 7 N /
+; Histori
+W Je saisis ma demande ' storique
+Bénéficiaire *
+@ Rania virginie Q11CONGEO1 FRLFR4Y1314
+Informer le beneétfictaire du suivi de la question RH, par mail
+Catégorie * Sous-catégorie
+Titre *
+Poser une question RH
+Q ?
+Créer
+Vous avez bescin d'information ou d'aide sur les données personnelles contractuelles cu tout autre besoin, complétez le formulaire de demande de support ¢
+'/Quluel }
+En cours
+i Sauvegarder }
+) 2 en oriconcio oz
+Catégorie *
+Sous-catégorie
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran semble être un formulaire pour poser une question RH, dans le cadre d'une application ou d'un portail de gestion des ressources humaines. Le formulaire est probablement utilisé pour envoyer une demande de support ou d'information.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un champ de saisie pour le bénéficiaire, avec un texte pré-rempli : "Rania virginie Q1CONGEO1 FRLFR4Y1314".
+- Un bouton avec l'icône d'une personne et le texte : Non visible, mais probablement lié à la sélection ou à l'édition du bénéficiaire.
+- Un champ de saisie pour la catégorie et une sous-catégorie.
+- Un champ de saisie pour le titre.
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Une icône représentant une personne, probablement utilisée pour afficher l'image du bénéficiaire.
+- Une icône en forme de crayon ou de stylo, potentiellement utilisée pour éditer les champs de texte, mais sa position n'est pas clairement définie.
+
+## 5. AGENCEMENT ET RELATIONS
+Le formulaire est structuré avec des champs de saisie et des libellés. Le bénéficiaire est pré-rempli et accompagné d'une icône de personne. Les champs obligatoires sont signalés par une étoile (*), comme "Bénéficiaire", "Catégorie" et "Titre". Le formulaire comporte également des boutons pour quitter, sauvegarder et envoyer la demande. Il existe un onglet ou un menu avec les options "Créer", "En cours" et "Historique". Le champ pour saisir la question ou la demande est accompagné d'options pour joindre un document.

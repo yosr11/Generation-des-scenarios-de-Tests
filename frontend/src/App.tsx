@@ -42,7 +42,7 @@ function App() {
               <Route path="/home" element={<Navigate to="/pipeline" replace />} />
               <Route path="/profile" element={<ProfilePage />} />
 
-              {/* ── Tester Routes ── */}
+              {/* ── Ingénieur QA Routes ── */}
               <Route
                 path="/pipeline"
                 element={

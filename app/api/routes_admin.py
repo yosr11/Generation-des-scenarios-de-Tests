@@ -4,14 +4,14 @@ from __future__ import annotations
 
 from typing import List, Optional
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Response
 from pydantic import BaseModel, EmailStr, Field
 from sqlalchemy import select, desc
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.deps import CurrentUser, get_current_user
 from app.db.postgres import get_db
-from app.models.pg_models import AuditLog, PipelineRun
+from app.models.pg_models import AuditLog, PipelineRun ,User
 from app.services.user_service import (
     create_user,
     delete_user,
@@ -21,7 +21,8 @@ from app.services.user_service import (
     update_user,
     get_stats,
 )
-
+from app.core.cookies import set_auth_cookie
+from app.services.auth_service import build_admin_token, build_user_token
 router = APIRouter(prefix="/admin", tags=["Admin"])
 
 
@@ -40,7 +41,6 @@ def _require_admin(user: CurrentUser) -> None:
 
 class CreateUserRequest(BaseModel):
     email: EmailStr
-    password: str = Field(default="__jira__", min_length=0)
     role: str = Field(default="tester", pattern="^(admin|tester)$")
     display_name: Optional[str] = None
     jira_username: Optional[str] = None
@@ -48,6 +48,7 @@ class CreateUserRequest(BaseModel):
 
 class UpdateUserRequest(BaseModel):
     display_name: Optional[str] = None
+    email: Optional[EmailStr] = None
     jira_username: Optional[str] = None
     password: Optional[str] = Field(default=None, min_length=6)
     role: Optional[str] = Field(default=None, pattern="^(admin|tester)$")
@@ -62,6 +63,7 @@ class UserOut(BaseModel):
     is_active: bool
     last_login_at: Optional[str]
     created_at: Optional[str]
+    email_sent: Optional[bool] = None
 
 
 # ──────────────────────────────────────────────────────────
@@ -100,14 +102,13 @@ async def admin_create_user(
     result = await create_user(
         db,
         email=body.email,
-        password=body.password,
         role=body.role,
         display_name=body.display_name,
         jira_username=body.jira_username,
     )
     if not result.get("ok"):
         raise HTTPException(status_code=400, detail=result.get("error"))
-    return result["user"]
+    return {**result["user"], "email_sent": result.get("email_sent", False)}
 
 
 @router.get("/users/{user_id}", response_model=UserOut)
@@ -127,20 +128,38 @@ async def admin_get_user(
 async def admin_update_user(
     user_id: int,
     body: UpdateUserRequest,
+    response: Response,
     current_user: CurrentUser = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
     _require_admin(current_user)
+    target_user = await get_user_by_id(db, user_id)
+    if target_user and target_user["role"] == "tester":
+        raise HTTPException(
+            status_code=403,
+            detail="Modification des comptes testeur non autorisée depuis cet écran.",
+        )
+
     result = await update_user(
         db,
         user_id,
         display_name=body.display_name,
+        email=body.email,
         jira_username=body.jira_username,
         password=body.password,
         role=body.role,
     )
     if not result.get("ok"):
         raise HTTPException(status_code=400, detail=result.get("error"))
+
+    # Si l'admin modifie SON PROPRE compte, réémet le cookie avec les infos à jour
+    if user_id == current_user.user_id_int:
+        fresh_result = await db.execute(select(User).where(User.id == user_id))
+        fresh_user = fresh_result.scalar_one_or_none()
+        if fresh_user:
+            new_token = build_admin_token(fresh_user) if fresh_user.role == "admin" else build_user_token(fresh_user)
+            set_auth_cookie(response, new_token)
+
     return result["user"]
 
 

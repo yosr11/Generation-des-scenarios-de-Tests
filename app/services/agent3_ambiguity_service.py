@@ -77,7 +77,7 @@ def detect_ambiguous_steps(test: ManualTestCase) -> List[AmbiguityFinding]:
 
 def detect_ambiguous_steps_with_llm(
     tests: List[ManualTestCase],
-    model_alias: str = "llama4",
+    model_alias: str = "nova-lite-2",
 ) -> List[AmbiguityFinding]:
     """
     Désactivé : la seule ambiguïté reconnue est « vérifier », déjà détectée par regex.

@@ -28,7 +28,7 @@ def get_agent5_service():
     """Lazy initialization of Agent5 service."""
     global _agent5_service
     if _agent5_service is None:
-        _agent5_service = Agent5ReportGeneratorService(model_name="llama4")
+        _agent5_service = Agent5ReportGeneratorService(model_name="nova-lite-2")
     return _agent5_service
 
 

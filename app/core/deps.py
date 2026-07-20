@@ -39,6 +39,16 @@ class CurrentUser:
     def is_tester(self) -> bool:
         return self.role == "tester"
 
+    @property
+    def user_id_int(self) -> Optional[int]:
+        """Retourne user_id converti en int si possible (cas admin, id PostgreSQL).
+        Retourne None si non convertible (cas testeur, où user_id est un
+        account_id Jira alphanumérique, pas un id PostgreSQL)."""
+        try:
+            return int(self.user_id)
+        except (TypeError, ValueError):
+            return None
+
 
 def _extract_token(access_token: Optional[str]) -> str:
     if not access_token:

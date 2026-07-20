@@ -1,0 +1,59 @@
+[Image jointe : image-2025-01-06-10-36-47-500.png]
+── Textes détectés (OCR) ──
+Si l’utilisateur modifie son choix vers Actualité ou sélectionne le bouton « + Créer une Actualité » : message de confirmation, idem pour le bouton « Quitter ».
+S'il confirme, les champs relatifs à une Actualité sont présentés.
+LÜ] E] Et vice versa.
+v t Les boutons « Enregistrer » passent à cliquable dès que tous les champs à caractères obligatoires ont été renseignés.
+Dans la partie droite de la section « Je crée une News », les icône des éléments obligatoires attendus et leurs statuts évoluent en fonction des niveaux
+d'avancement des saisies :
+= @ Gestion des News
+Vous gérez 1c1 vos Nevys, vous pouvez créer des Annonces et des Actualités. 'y
++ Creer une Annonce =+ Créer une Actualité Enregistrer
+V Liste des News
+> Je crée une News
+Lescravos 7c océs 037 é* sorios Zato res.
+Localisation
+AAAAAA
+Type de News *
+Annonce - ©
+29 _ Carte d'identité Sopra HR Software 2020
+Et vice versa.
+0, B,
+Les boutons « Enregistrer » passent à cliquable dès que tous les champs à caractéres obligatoires ont été renseignés.
+Gestion des News
+Vous gérez 1c1 vos Nevys, vous pouvez créer des Annonces et des Actualités. 'i'
+Enregistrer
++ Creer une Annonce
+Les cram2os 7c ocès 037 276 * SOTI Q0 2310 Tes.
+Annonce
+29
+Carte d'identité Sopra HR Software 2020
+__ ——>
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran semble être un formulaire pour créer une nouvelle annonce ou actualité dans un système de gestion de news. Il s'agit probablement d'une page de création de contenu dans une application web.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un badge ou un onglet : forme rectangulaire, couleur de fond noire avec texte blanc, contient le texte "Liste des News".
+- Un badge ou un onglet : forme rectangulaire, couleur de fond noire avec texte blanc, contient le texte "Je crée une News".
+- Un champ de saisie : forme rectangulaire, contient le texte "AAAAA" (localisation).
+- Un champ de sélection déroulant : forme rectangulaire, couleur de fond blanche avec texte noir, contient le texte "Annonce".
+- Trois boutons :
+  - Forme rectangulaire, couleur de fond grise avec texte noire, contient le texte "Quitter".
+  - Forme rectangulaire, couleur de fond verte avec texte blanc, contient le texte "+ Créer une Annonce".
+  - Forme rectangulaire, couleur de fond verte avec texte blanc, contient le texte "+ Créer une Actualité".
+  - Forme rectangulaire, couleur de fond grise avec texte noire, contient le texte "Enregistrer".
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Une icône de validation : située à côté du champ "Type de News", semble indiquer une validation ou un statut.
+- Une icône d'information : située dans le titre "Gestion des News", probablement pour fournir des informations supplémentaires.
+
+## 5. AGENCEMENT ET RELATIONS
+- Le formulaire est divisé en sections avec des titres "Liste des News" et "Je crée une News".
+- Le champ "Localisation" est situé au-dessus du champ "Type de News".
+- Le bouton "Enregistrer" est désactivé par défaut et semble nécessiter que tous les champs obligatoires soient renseignés pour être activé.
+- Les boutons "+ Créer une Annonce" et "+ Créer une Actualité" sont situés à côté du bouton "Quitter".
+- Le champ "Type de News" propose une option "Annonce" par défaut.

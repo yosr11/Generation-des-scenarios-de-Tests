@@ -1,0 +1,54 @@
+[Image jointe : image-2025-02-18-11-07-43-172.png]
+── Textes détectés (OCR) ──
+Tyreretens r La-gues Tre
+Datesecemicescr 112 * 1 Esteset-rencsrenr- <0 et
+= ; o
+Confidentialité i fidentialité
+i : seule [a population assaciée à la confidentialité de l’auteur peut voir cette Confidentialité i ;
+news. La confidentialité est restreinte avec les critères ci-dessous. e cn e Popu|at|on
+; Un gestionnaire de I'établissement A peut voir les news associées à + e
+l’établissement A, même s‘il appartient à l’établissement B L A 77 7
+cteur
+rrs ps e
+N T
+ta-gue<
+Bsze
+Esese
+Confidentialité i
+i : seule [a population associée à la confidentialité de l’auteur peut voir cette
+news. La confidentialité est restreinte avec les critères ci-dessous.
+Population
+Un gestionnaire de I'établissement A peut voir les news associées à
+l’établissement A, même s'il appartient à l’établissement B
+Acteur
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran semble être un formulaire pour créer une news. Il comporte plusieurs champs pour saisir des informations relatives à la news, ainsi que des options pour configurer la confidentialité.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+- Type : Flèche
+- Couleur : Rouge
+- Désigne : Le texte « Acteur » dans la section Confidentialité.
+- Type : Flèche
+- Couleur : Rouge
+- Désigne : Le texte « Population » dans la section Confidentialité.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Onglets (boutons) :
+  - Forme : Rectangulaires
+  - Couleur de fond : Bleu clair (ou blanc avec possibly une légère nuance de gris pour certains)
+  - Texte OCR : « Confidentialité », « Manager », « Gestionnaire RH », « Gestionnaire PAE »
+- Champ de texte :
+  - Plusieurs champs de texte de grande taille pour saisir du contenu.
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Icône d'information (petit « i ») :
+  - Fonction probable : Information ou aide
+  - Position : À côté de « Date de début de publication » et « Date de fin de publication »
+
+## 5. AGENCEMENT ET RELATIONS
+- Le formulaire est divisé en sections :
+  - Une section pour les détails de la news (Type de News, Langue, Titre, Texte, etc.)
+  - Une section pour la confidentialité avec des onglets pour « Confidentialité », « Acteur », et « Population ».
+- Les champs obligatoires sont indiqués par une étoile (*).
+- Les sections « Acteur » et « Population » semblent être des sous-sections de la configuration de confidentialité, accessibles via des onglets.

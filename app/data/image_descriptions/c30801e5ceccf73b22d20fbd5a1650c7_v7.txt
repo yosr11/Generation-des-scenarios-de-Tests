@@ -1,0 +1,91 @@
+[Image jointe : image-2025-01-06-10-35-01-149.png]
+── Textes détectés (OCR) ──
+Créer une annonce
+VOUS IEér 1 D5 NEWE VOUE DSIVET Créer des Arronces erdes ACTLa es 'i
+> Je crée une News ÜL lÈI,
+Tupedevens* Largue " Tévcé * v
+Acronce - 5 - “lev BI U AyY Av @ = = O + â
+Date de denn de suts caucn* Ÿ Date de tx de pub icauen É
+l'ustaton U cnmrent cmt cŸ
+o e e m Pas de caractére obligatoire car par défaut
+on pousse un avatar. L'avatar n’est pas Morel
+G In ] z , , _ * MOUCE
+we présenté par défaut ici. ; ;
+Aperçu Localisation
+™= A déplacer , près du champ « langue ».
+23 Carte d'identité Sopra HR Software 2020
+Gestion des News
+9 ?0
+s.
+15 zere
+fes ACroncés et
+Cuares
+L Q
++ Cre
+‘;
+> Je crée une News
+à ,
+a2y
+La
+1€
+estet ll
+arronce
+ol v
+B I ¥ A~
+Os +
+Date de
+uE caucn*
+e DU
+RN
+=H
+=s
+lustaton VI
+MULQUENT OIN T
+T4
+Pas de caractère obligatoire car par défaut
+on pousse un avatar. L'avatar n’est pas
+Mot-cle
+présenté par défaut ici.
+Aperçu
+Localisation
+AI
+A déplacer
+rès du champ « langue ».
+(5je]
+23
+Carte d'identité Sopra HR Software 2020
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran semble être un formulaire pour créer une annonce dans un système de gestion de news. Le titre de l'écran est "Créer une annonce".
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+- Type : cadre jaune avec texte
+- Couleur : jaune
+- Le cadre jaune entoure le texte "Pas de caractère obligatoire car par défaut on pousse un avatar. L'avatar n’est pas présenté par défaut ici." et est positionné près du champ "Illustration".
+- Type : triangle jaune avec texte
+- Couleur : jaune
+- Le triangle jaune contient le texte "A déplacer , près du champ « langue »." et est positionné près du champ "Localisation".
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un champ de sélection "Type de News" avec le texte "Annonce" sélectionné.
+- Un champ de texte "Titre" vide.
+- Un champ de texte "Texte" vide avec des outils de mise en forme.
+- Un champ de fichier "Illustration" avec un fichier sélectionné "deadpool-3-couverture-1.jpg".
+- Un champ de sélection "Mot-clé" vide.
+- Un champ de sélection "Localisation" avec des valeurs masquées.
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Une icône d'information (petit "i") à côté de "Type de News".
+- Une icône d'information (petit "i") à côté de "Date de début de publication".
+- Une icône d'information (petit "i") à côté de "Date de fin de publication".
+- Une icône d'information (petit "i") à côté de "Texte".
+- Une icône d'information (petit "i") à côté de "Document joint".
+- Une icône de téléchargement (petit nuage) à côté du champ "Illustration".
+
+## 5. AGENCEMENT ET RELATIONS
+- Le formulaire est divisé en sections avec des champs étiquetés.
+- Le champ "Type de News" est suivi de "Date de début de publication" et "Date de fin de publication" sur la même ligne.
+- Le champ "Titre" est sur une ligne dédiée.
+- Le champ "Texte" est sur une ligne dédiée avec des outils de mise en forme au-dessus.
+- Le champ "Illustration" est accompagné d'une miniature d'image.
+- Le champ "Mot-clé" et "Localisation" sont sur la même ligne.

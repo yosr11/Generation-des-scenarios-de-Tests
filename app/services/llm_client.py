@@ -22,7 +22,8 @@ GROQ_MODELS = {
     "gptoss": "openai/gpt-oss-20b",
     "gptoss120b": "openai/gpt-oss-120b",
     "llama4": "meta-llama/llama-4-scout-17b-16e-instruct",
-    "qwen3.6": "qwen/qwen3.6-27b"
+    "qwen3.6": "qwen/qwen3.6-27b",
+    "llama33": "llama-3.3-70b-versatile"
 }
 
 # Bedrock Models — Amazon Nova

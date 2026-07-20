@@ -41,7 +41,7 @@ class Agent3ThresholdsBody(BaseModel):
         default=False,
         description="Si true : génère un feedback qualitatif via LLM (ne change pas la décision).",
     )
-    quality_model_alias: str = Field(default="llama4", description="Alias modèle Groq pour feedback qualitatif.")
+    quality_model_alias: str = Field(default="nova-lite-2", description="Alias modèle Bedrock pour feedback qualitatif.")
 
     # Optionnel : détection d'ambiguïtés sémantiques via LLM
     run_llm_ambiguity_detection: bool = Field(

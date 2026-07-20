@@ -1,0 +1,79 @@
+[Image jointe : image-2025-01-06-10-28-05-994.png]
+── Textes détectés (OCR) ──
+= ,
+Formulaire d'une news 2
+Nombre de c- Lo T
+Annonce caractères à
+imposer.
+Corps de l’annonce Mettre un
+Zone de texte, 10 Tignes e, p Zone de texte, 10 lignes maximum.
+, - ur le WYSIWYG
+Présenter un éditeur de texte à l'aut&
+gras, gestion des paragraphes, interlignes, couleurs,
+etc....
+Syev B I U Av Av @ W = = © + 2
+Styev B I U Av Av @v [{v = = v + R
+Attacher un document, ajouter un lien vers
+une source
+20 — Offre d'interopérabilité Sopra HR Sî?‘rpuzaæshr
+— Usage restreint
+Nombre de
+Annonce
+caracteres à
+imposer
+Corps de l’annonce
+Mettre un
+Zone de texte, 10 lignes
+compteur sur
+le WYSIWYG
+Présenter un edlteur de texte à l’ aut
+gras, gestion des paragraphes, interlignes, couleurs
+etc
+Styev B I
+A v
+e @œ
+@]v
+©v + v
+B I
+AV
+Style v
+CDV @]v
+@v + v
+20
+Offre d'interopérabilité Sopra HR
+<— soprahr
+SOFTWAR
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran analysé semble être un formulaire ou un mockup pour la création d'une news, probablement dans un système de gestion de contenu ou un intranet. Il comporte plusieurs champs et éléments graphiques pour la saisie et la mise en forme de texte.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+- Type : cadre rouge avec texte blanc
+- Couleur : rouge avec texte blanc
+- Élément désigné : "Nombre de caractères à imposer. Mettre un compteur sur le WYSIWYG" qui se trouve surligné en jaune sous la section "Corps de l'annonce".
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- **Éditeur de texte** : 
+  - Forme : rectangle avec barre d'outils
+  - Couleur de fond : blanc
+  - Texte OCR : aucun, mais il contient des boutons de mise en forme (gras, italique, souligné, etc.)
+- **Barre d'outils de l'éditeur de texte** :
+  - Forme : rangée d'icônes
+  - Couleur de fond : gris clair
+  - Texte OCR : "Style", "B", "I", "U", etc.
+
+## 4. ICÔNES ET PICTOGRAMMES
+- **Icônes de la barre d'outils de l'éditeur de texte** :
+  - Fonction probable : mise en forme du texte (gras, italique, souligné, etc.)
+  - Position : sous les champs de texte
+- **Logo** :
+  - Fonction probable : logo de l'entreprise
+  - Position : coin inférieur droit
+
+## 5. AGENCEMENT ET RELATIONS
+- **Structure** : le formulaire est divisé en sections avec des titres ("Annonce", "Actualité")
+- **Regroupements visuels** : les champs de texte sont regroupés sous des titres descriptifs
+- **Hiérarchie** : les titres ("Formulaire d'une news 2", "Annonce", "Corps de l'annonce") sont plus gros et plus hauts que les sous-titres et les champs de texte
+- **Champs obligatoires** : aucun indiqué explicitement
+- **États** : certains champs semblent avoir des états par défaut (par exemple, les champs de texte vides)
+- **Relations spatiales** : le compteur de caractères est positionné à côté du champ "Corps de l'annonce", suggérant qu'il est lié à ce champ.

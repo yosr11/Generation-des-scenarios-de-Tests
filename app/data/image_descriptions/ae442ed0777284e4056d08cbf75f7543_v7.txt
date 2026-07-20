@@ -1,0 +1,69 @@
+[Image jointe : pptx_slide_1.png]
+── Textes détectés (OCR) ──
+= @ Processus RH o ? D
+O Rechercher un processus
+Vue réduite Ù Vue par catégorie
+L) Vue p 9 A F 4 @
+» Poser une question RH o 2 - - -
+1 à complèter | 1 en attente d'acceptation | 2 en cours de validation
+» Processus À
+» Processus B
+vue complète Ù X, Vue par catégorie
+| [X p 9 A ® A @
+- Poser une question RH o
+Attestations 1 - - -
+Congés 1 - - -
+Données administratives - - - -
+» Processus À (2)
+2 en cours de validation
+Processus RH
+O, Rechercher un processus
+Vue réduite Ù (] Vue par catégorie
+pN
+ll
+=]
+» Poser une question RH
+vue compléte $ X' Vue par catégorie
+l-
+Poser une question RH
+Attestations
+Congés
+Données administratives
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran semble être une interface de gestion des processus RH, avec des options pour afficher les processus sous forme réduite ou complète, ainsi que par catégorie. L'intention probable est de permettre à l'utilisateur de naviguer et de gérer les processus RH de manière efficace.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+- Type : cadre rouge
+- Couleur : rouge
+- Élément désigné : "Vue réduite"
+
+- Type : flèche rouge
+- Couleur : rouge
+- Élément désigné : "Vue par catégorie"
+
+- Type : ligne rouge
+- Couleur : rouge
+- Élément désigné : sépare les deux vues (réduite et complète)
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Pastille (badge) : 
+  - Forme : ronde
+  - Couleur de fond : noire
+  - Texte OCR : "2"
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Icône de menu (peut-être un hamburger) : 
+  - Fonction probable : ouvre le menu
+  - Position : en haut à gauche
+
+- Icône de recherche :
+  - Fonction probable : permet de rechercher un processus
+  - Position : dans le champ de recherche en haut
+
+- Icônes de cloche et autres symboles dans le header : 
+  - Fonctions probables : notifications, etc.
+  - Position : en haut à droite
+
+## 5. AGENCEMENT ET RELATIONS
+L'écran est divisé en sections, avec des titres et des sous-titres. Les éléments sont regroupés sous des catégories. Il y a une hiérarchie visible avec des titres et des sous-titres. Les champs semblent être organisés en lignes et en colonnes. Il n'y a pas de champs obligatoires explicitement indiqués par une étoile *. Certains éléments semblent être actifs ou sélectionnés, mais sans plus de contexte, il est difficile de déterminer leur état exact. Le bouton de vue complète est probablement lié à la visualisation détaillée des processus, tandis que le bouton de vue réduite semble offrir une vue synthétique.

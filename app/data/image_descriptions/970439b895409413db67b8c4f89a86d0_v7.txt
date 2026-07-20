@@ -1,0 +1,61 @@
+[Image jointe : image (5).png]
+── Textes détectés (OCR) ──
+= @ Poser une question RH O ? ON
+Vous avez besoin d'information ou d'aide sur les données personnelles contractuelles ou tout autre besoin, complétez le formulaire de demande de support ci-dessous. Vous avez la _
+possibilité de joindre un document. Votre demande sera envoyée et traitée par votre gestionnaire.
+En cours
+Historique
+“ e saisis ma demande '
+Bénéficiaire *
+i | Adam TEST FRLFR4Y1336
+\ /
+Informer le bénéficiaire du suivi de la question RH, par mail
+Catégorie * Sous-catégorie
+Données personnelles v|© | Enfants à charge v\ &
+Titre *
+Description *
+Piéce jointe e
+Les champs ;ndiqués par Lre * son: coligatoires.
+Poser une question RH
+Vous avez besoin d'information ou d'aide sur les données personnelles contractuelles ou tout autre besoin, complétez le formulaire de demande de support ci-dessous. Vous avez la
+\,
+ﬁ) Adam TEST FRLFRAY1336
+Catégorie *
+Sous-catégorie
+‘ Données personnelles
+© ‘ Enfants à charge
+v)
+Pièce jointe e
+(2]
+Les champs indiqués par Lre * son: coligatoires
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran capturé est un formulaire de demande de support pour poser une question RH, probablement dans un système de gestion des ressources humaines. Le formulaire est divisé en sections pour recueillir des informations sur la demande.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un champ de recherche ou de saisie avec une icône de personne, contenant le texte "Adam TEST FRLFR4Y1336".
+- Un bouton avec une icône d'information à côté de "Pièce jointe".
+- Des boutons :
+  - Quitter
+  - Supprimer
+  - Sauvegarder
+  - Envoyer
+  - Accepter la réponse
+- Des champs obligatoires indiqués par une étoile *.
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Une icône de personne à côté du champ "Bénéficiaire".
+- Une icône d'information à côté de "Pièce jointe".
+- Des icônes de fermeture ou de suppression (petits cercles avec des traits) à côté de certains champs.
+
+## 5. AGENCEMENT ET RELATIONS
+Le formulaire est structuré avec des sections claires :
+- Une section pour les informations sur le bénéficiaire.
+- Une section pour la catégorie et la sous-catégorie de la question.
+- Un champ pour le titre de la question.
+- Un champ pour la description de la question.
+- Un champ pour joindre une pièce jointe.
+Les champs obligatoires sont indiqués par une étoile *. Le formulaire semble être divisé en sections pour une meilleure organisation et une saisie plus facile des informations.

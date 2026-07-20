@@ -1,0 +1,57 @@
+{
+  "evaluation_model": "gpt-4.1 (GitHub Models) + paraphrase-multilingual-MiniLM-L12-v2",
+  "summary": {
+    "evaluated_stories": 1,
+    "skipped_stories": 0,
+    "averages": {
+      "cosine_similarity": 0.62,
+      "coverage_score": 60.0,
+      "missing_tests_score": 50.0,
+      "qa_quality_score": 80.0,
+      "business_similarity": 70.0,
+      "final_score": 65.0
+    },
+    "verdict_distribution": {
+      "GOOD": 0,
+      "PARTIAL": 1,
+      "BAD": 0
+    },
+    "per_story_scores": [
+      {
+        "story_id": "YOU-10156",
+        "user_story_title": "RH de proximité - création du widget population \"Mes collaborateurs\"",
+        "cosine_similarity": 0.6239,
+        "coverage_score": 60,
+        "missing_tests_score": 50,
+        "qa_quality_score": 80,
+        "business_similarity": 70,
+        "final_score": 65.0,
+        "verdict": "PARTIAL"
+      }
+    ]
+  },
+  "results": [
+    {
+      "story_id": "YOU-10156",
+      "user_story_title": "RH de proximité - création du widget population \"Mes collaborateurs\"",
+      "priority": "P1-High",
+      "gold_tests_count": 1,
+      "generated_tests_count": 1,
+      "metric_1_cosine_similarity": 0.6239,
+      "metric_2_llm_judge": {
+        "coverage_score": 60,
+        "missing_tests_score": 50,
+        "qa_quality_score": 80,
+        "business_similarity": 70,
+        "final_score": 65.0,
+        "missing_scenarios": [
+          "Vérification de l'affichage du bandeau 4YOU avec ses fonctions (Menu, Accueil, Accéder à mon espace, Rechercher, Aide, Se déconnecter)",
+          "Affichage du widget 'ACTIVITÉS' avec ses sous-widgets 'MES ACTIVITÉS' et 'ACTIVITÉS NON ATTRIBUÉES'",
+          "Affichage du widget 'PROCESSUS RH'"
+        ],
+        "summary": "Les tests générés couvrent partiellement les fonctionnalités attendues, en se concentrant sur le widget 'Mes collaborateurs'. Plusieurs éléments clés de la page d'accueil, tels que le bandeau et d'autres widgets, sont absents. La qualité des tests est bonne, mais la couverture métier reste limitée.",
+        "verdict": "PARTIAL"
+      }
+    }
+  ]
+}

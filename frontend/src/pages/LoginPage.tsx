@@ -24,13 +24,17 @@ export const LoginPage: React.FC = () => {
     setDevResetUrl('')
     try {
       const resp = await apiClient.auth.requestPasswordReset(resetEmail)
-      toast.success(resp.message || 'Demande de réinitialisation envoyée.')
-      if (resp.dev_reset_url) {
-        setDevResetUrl(resp.dev_reset_url)
-      } else {
-        setShowForgotModal(false)
-        setResetEmail('')
-      }
+if (resp.status === 'error') {
+  toast.error(resp.message)
+  return
+}
+toast.success(resp.message)
+if (resp.dev_reset_url) {
+  setDevResetUrl(resp.dev_reset_url)
+} else {
+  setShowForgotModal(false)
+  setResetEmail('')
+}
     } catch (err: any) {
       toast.error(err?.message || 'Erreur lors de la demande.')
     } finally {
@@ -82,7 +86,7 @@ export const LoginPage: React.FC = () => {
       toast.success(`Bienvenue, ${loginUser.display_name || loginUser.jira_username}`)
       navigate('/pipeline')
     } catch (err: any) {
-      toast.error(err?.message || 'Échec de connexion')
+      toast.error(err?.message || 'Vérifiez votre identifiant et votre mot de passe.')
     } finally {
       setLoading(false)
     }

@@ -75,14 +75,93 @@ async def send_reset_email(to_email: str, reset_url: str) -> bool:
     msg.attach(MIMEText(html_content, "html"))
 
     try:
-        # Connexion au serveur SMTP
-        server = smtplib.SMTP(smtp_host, smtp_port)
-        server.starttls()
-        server.login(smtp_user, smtp_password)
-        server.sendmail(smtp_from, to_email, msg.as_string())
-        server.quit()
-        logger.info("[EmailService] Email envoyé avec succès à %s", to_email)
-        return True
+      server = smtplib.SMTP(smtp_host, smtp_port)
+      # STARTTLS uniquement si le serveur le supporte (MailHog en local ne le supporte pas)
+      if server.has_extn("STARTTLS"):
+          server.starttls()
+      # Login uniquement si des identifiants sont fournis (MailHog n'en a pas besoin)
+      if smtp_user and smtp_password and smtp_user.lower() != "test":
+          server.login(smtp_user, smtp_password)
+      server.sendmail(smtp_from, to_email, msg.as_string())
+      server.quit()
+      logger.info("[EmailService] Email envoyé avec succès à %s", to_email)
+      return True
     except Exception as exc:
-        logger.error("[EmailService] Échec de l'envoi de l'email à %s: %s", to_email, str(exc))
+      logger.error("[EmailService] Échec de l'envoi de l'email à %s: %s", to_email, str(exc))
+      return False
+    
+
+async def send_account_created_email(to_email: str, jira_username: str, display_name: str | None = None) -> bool:
+    """
+    Envoie un email de bienvenue lors de la création d'un compte testeur.
+    Informe l'utilisateur qu'il peut se connecter avec ses identifiants Jira.
+    """
+    smtp_host = getattr(settings, "SMTP_HOST", None)
+    smtp_port = getattr(settings, "SMTP_PORT", 587)
+    smtp_user = getattr(settings, "SMTP_USER", None)
+    smtp_password = getattr(settings, "SMTP_PASSWORD", None)
+    smtp_from = getattr(settings, "SMTP_FROM", smtp_user or "no-reply@soprahr.com")
+
+    if not smtp_host or not smtp_user or not smtp_password:
+        logger.warning(
+            "[EmailService] SMTP non configuré. Email de bienvenue non envoyé à %s (jira_username=%s)",
+            to_email, jira_username,
+        )
         return False
+
+    msg = MIMEMultipart("alternative")
+    msg["Subject"] = "Synaptest — Votre accès a été créé"
+    msg["From"] = smtp_from
+    msg["To"] = to_email
+
+    text_content = (
+        f"Bonjour {display_name or ''},\n\n"
+        f"Vous avez accès à Synaptest.\n"
+        f"Vous pouvez vous connecter avec vos identifiants de session"
+        f"L'équipe Synaptest"
+    )
+
+    html_content = f"""
+    <html>
+      <body style="font-family: Arial, sans-serif; color: #1e293b; line-height: 1.6;">
+        <div style="max-w: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff;">
+          <div style="text-align: center; border-bottom: 2px solid #f43f5e; padding-bottom: 15px; margin-bottom: 20px;">
+            <h2 style="color: #0a0f2e; margin: 0;">Synap<span style="color: #f43f5e;">test</span></h2>
+            <p style="font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin: 5px 0 0 0;">Plateforme de tests QA</p>
+          </div>
+          <p>Bonjour {display_name or ''},</p>
+          <p><strong>Vous avez accès à Synaptest.</strong></p>
+          <p>Vous pouvez vous connecter avec vos identifiants de session:</p>
+
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="{settings.FRONTEND_BASE_URL.rstrip('/')}/login" style="background: linear-gradient(135deg, #ef4444, #f43f5e); color: #ffffff; text-decoration: none; padding: 12px 24px; font-weight: bold; border-radius: 8px; box-shadow: 0 4px 12px rgba(244,63,94,0.3); display: inline-block;">
+              Accéder à Synaptest
+            </a>
+          </div>
+          <p style="font-size: 12px; color: #94a3b8; border-top: 1px solid #f1f5f9; padding-top: 15px; margin-top: 25px;">
+            Si vous n'êtes pas à l'origine de cette demande, contactez votre administrateur.
+          </p>
+        </div>
+      </body>
+    </html>
+    """
+
+    msg.attach(MIMEText(text_content, "plain"))
+    msg.attach(MIMEText(html_content, "html"))
+
+    try:
+      server = smtplib.SMTP(smtp_host, smtp_port)
+      # STARTTLS uniquement si le serveur le supporte (MailHog en local ne le supporte pas)
+      if server.has_extn("STARTTLS"):
+          server.starttls()
+      # Login uniquement si des identifiants sont fournis (MailHog n'en a pas besoin)
+      if smtp_user and smtp_password and smtp_user.lower() != "test":
+          server.login(smtp_user, smtp_password)
+      server.sendmail(smtp_from, to_email, msg.as_string())
+      server.quit()
+      logger.info("[EmailService] Email envoyé avec succès à %s", to_email)
+      return True
+    except Exception as exc:
+      logger.error("[EmailService] Échec de l'envoi de l'email à %s: %s", to_email, str(exc))
+      return False
+    

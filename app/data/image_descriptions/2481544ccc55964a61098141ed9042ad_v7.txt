@@ -1,0 +1,97 @@
+[Image jointe : pptx_slide_1.png]
+── Textes détectés (OCR) ──
+= @ Q ? 0
+Mes activités MES ACTIVITÉS (0) NON ATTRIBUÉES (1] Poser une question RH @) x
+0 A E 4 R A « A R A « à m
+-À
+Contrôles de
+paie
+1 Par échéance v | Dans les 5 prochains jours v
+dossiers
+OPaies A E N =]
+o~ À ex OSTATO2 Demande n°12501 En cours
+H Dans les 5 prochains ... o 9‘ Q 00000681 Test
+Espace Par catégorie > descrption
+DSN À traiter avont i€ 30/07/2025 Aucun justificatif pour cette demande
+1 élément ° Nombre d'éléments par page — 10 v
+Mes activités
+MES ACTIVITES
+NON ATTRIBUEES
+Poser une question RH @} x
+— [
+-L
+=]
+— |
+Par
+Date de Clôture
+oz
+Nl cr .| oo
+Par échéance
+ldossiers
+OPaies
+ll
+:2Æ:°_-_ _—
+À ex QSTATD2
+Demande n°12501
+En cours
+H Dans les 5 prochains ...
+00000681
+Test
+Espace
+description
+À traiter avont ie: 30/07/2025
+DSN
+Aucun justificatif pour cette demande
+1 élément
+Nombre d'éléments par page
+10
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran capture une interface utilisateur d'une application web, probablement une application de gestion des ressources humaines (Sopra HR). Il semble s'agir d'une page de liste ou de tableau de bord, affichant des activités ou des demandes.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- **Pastille/Badge** : 
+  - Forme : Rond
+  - Couleur de fond : Verte
+  - Texte OCR : Non applicable
+- **Boutons** :
+  - Forme : Rectangulaire avec des libellés
+  - Couleur de fond : Variés (probablement en fonction de leur état ou action)
+  - Texte OCR : 
+    - « M'a attribuer la demande »
+    - « Poser une question RH »
+- **Étiquettes/Tag** :
+  - Forme : Rectangulaire
+  - Couleur de fond : Probablement des couleurs différentes pour chaque étiquette
+  - Texte OCR : 
+    - « A traiter »
+    - « En attente de » (partiellement masqué)
+
+## 4. ICÔNES ET PICTOGRAMMES
+- **Icône de cloche** (sonnette) : Probablement utilisé pour les notifications.
+  - Position : Dans le menu supérieur.
+- **Icône de recherche** (loupe) : Utilisée pour la recherche.
+  - Position : Dans le menu supérieur.
+- **Icône d'ajout** (plus) : Probablement pour ajouter une nouvelle demande ou activité.
+  - Position : Dans le menu supérieur.
+- **Icône de menu** (hamburger ou trois lignes horizontales) : Pour ouvrir le menu latéral.
+  - Position : Dans le coin supérieur gauche.
+
+## 5. AGENCEMENT ET RELATIONS
+- **Structure** : L'écran est divisé en sections.
+  - Une section en haut avec des onglets (Mes activités, Non attribuées).
+  - Une section en dessous avec un tableau ou liste d'activités/demandes.
+- **Regroupements visuels** :
+  - Les activités/demandes sont regroupées sous des en-têtes comme « À traiter », « En attente de ».
+- **Hiérarchie** :
+  - Les titres « Mes activités » et « Non attribuées » semblent être des en-têtes de niveau supérieur.
+  - Les libellés « Par échéance », « Par catégorie » semblent être des filtres ou des options de tri.
+- **Champs obligatoires** : Aucun champ obligatoire explicitement indiqué par une étoile (*).
+- **États** :
+  - Les demandes/activités ont des états comme « À traiter », « En cours ».
+- **Relations spatiales** :
+  - Le bouton « M'a attribuer la demande » est proche de chaque demande, suggérant qu'il est lié à l'action sur les demandes.
+  - Les filtres « Par échéance » et « Par catégorie » sont situés au-dessus de la liste, indiquant qu'ils permettent de filtrer les éléments de la liste.

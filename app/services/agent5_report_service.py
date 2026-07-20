@@ -28,7 +28,7 @@ from app.models.agent5_report import (
 from app.models.analysis import StoryAnalysisResult
 from app.models.test_manual import ManualTestGenerationResult
 from app.models.agent3_validation import Agent3ValidationResult
-from app.services.llm_client import call_groq
+from app.services.llm_client import call_llm
 from app.prompts.agent5_report_prompt import (
     build_agent5_report_system_prompt,
     build_agent5_report_user_prompt,
@@ -41,7 +41,7 @@ logger = logging.getLogger(__name__)
 class Agent5ReportGeneratorService:
     """Génère rapports finaux à partir des résultats d'agents précédents."""
 
-    def __init__(self, llm_client=None, model_name: str = "qwen3"):
+    def __init__(self, llm_client=None, model_name: str = "nova-lite-2"):
         self.llm_client = llm_client
         self.model_alias = model_name
 
@@ -357,7 +357,7 @@ class Agent5ReportGeneratorService:
                 llm_quality_summary=llm_quality_summary,
             )
 
-            raw_response = call_groq(
+            raw_response = call_llm(
                 system_prompt=system_prompt,
                 user_prompt=user_prompt,
                 model_alias=self.model_alias,

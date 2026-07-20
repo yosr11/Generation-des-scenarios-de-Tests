@@ -3,6 +3,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { Sidebar } from './Sidebar'
 import { Bell, LogOut, User, ChevronDown, Settings } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
+import { getRoleDisplayName } from '../../utils/role'
 
 const PAGE_TITLES: Record<string, { title: string; subtitle: string }> = {
   '/pipeline':          { title: 'Pipeline IA', subtitle: 'Générez vos tests depuis vos user stories Jira' },
@@ -89,7 +90,7 @@ export const AppLayout: React.FC = () => {
                 <p className="text-sm font-semibold text-brand-navy leading-tight">
                   {user?.display_name || user?.email || user?.jira_username}
                 </p>
-                <p className="text-[10px] text-brand-muted capitalize">{user?.role}</p>
+                <p className="text-[10px] text-brand-muted">{getRoleDisplayName(user?.role)}</p>
               </div>
               <ChevronDown
                 size={14}
@@ -114,7 +115,7 @@ export const AppLayout: React.FC = () => {
                       background: isAdmin ? 'rgba(244,63,94,0.1)' : 'rgba(124,58,237,0.1)',
                       color: isAdmin ? '#f43f5e' : '#7c3aed',
                     }}>
-                    {user?.role}
+                    {getRoleDisplayName(user?.role)}
                   </span>
                 </div>
 

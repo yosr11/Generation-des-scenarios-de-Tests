@@ -1,0 +1,62 @@
+[Image jointe : pptx_slide_1.png]
+── Textes détectés (OCR) ──
+MODIFIER LES FILTRES %
+Date de création à partir du = jusqu'au &
+Date de planification à partir du & jusqu'au [==3
+Date d'attribution à partir du = jusqu'au &
+Attribuée(s) à moi
+Pièce(s) jointe(s) @ Toutes O Avec O Sans
+Qualifiée(s) comme relance @ Toutes O Avec O Sans
+Critique @ Toutes O Oui O Non
+Message(s) non lu(s) @ Toutes © Avec O Sans
+MODIFIER LES FILTRES
+Date de création
+à partir du
+jusqu'au
+Date de planification
+Date d'attribution
+Pièce(s) jointe(s)
+Toutes
+Avec
+O Sans
+Qualifiée(s) comme relance
+Critique
+Oui
+O Non
+Message(s) non lu(s)
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran est un formulaire modal intitulé "MODIFIER LES FILTRES". Il semble destiné à personnaliser les critères de recherche ou de filtrage pour une liste probablement située sur la même page ou ailleurs dans l'application.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un badge bleu avec texte blanc : 
+  - Forme : Rectangulaire
+  - Couleur de fond : Bleu
+  - Texte OCR : "Attribuée(s) à moi"
+- Des pastilles (pills) pour les options de filtre :
+  - Forme : Rondes
+  - Couleur de fond : Bleue pour les valeurs par défaut ("Toutes")
+  - Texte OCR : 
+    - "Toutes"
+    - "Avec"
+    - "Sans"
+    - "Oui"
+    - "Non"
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Icônes de calendrier :
+  - Fonction probable : Sélection de dates
+  - Position : À côté des champs de saisie de dates
+- Icône de fermeture (petit "x" noir) :
+  - Fonction probable : Fermer le formulaire modal
+  - Position : En haut à droite du formulaire
+
+## 5. AGENCEMENT ET RELATIONS
+- Le formulaire est organisé en sections verticales avec des libellés à gauche et des champs ou options à droite.
+- Les champs de saisie de dates sont regroupés sous les libellés "Date de création", "Date de planification", et "Date d'attribution".
+- Les options de filtre (pièces jointes, qualifiées comme relance, critique, messages non lus) sont présentées sous forme de groupes avec des boutons radio.
+- Le bouton "Appliquer les filtres" est placé en bas à droite, suggérant qu'il est utilisé pour valider les modifications de filtre.
+- Le bouton "Annuler" est en bas à gauche, probablement pour fermer le formulaire sans appliquer les changements.

@@ -1,5 +1,6 @@
 ﻿import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react'
 import { useToast } from '../contexts/ToastContext'
+import { apiClient } from '../api/client'
 import { useOrchestrator } from '../hooks'
 import { ManualTestsTable } from '../components/tests/ManualTestsTable'
 import { Alert } from '../components/ui/Alert'
@@ -344,19 +345,36 @@ export const PipelinePage: React.FC = () => {
   // FIX #3 — use a single ref-based launch trigger so re-using the same storyId still fires
   const launchParamsRef = useRef<any>(null)
   const [launchToken, setLaunchToken] = useState(0)
+  const [rerunConfirmationId, setRerunConfirmationId] = useState<string | null>(null)
+  const [showRerunConfirmation, setShowRerunConfirmation] = useState(false)
 
-  const handleRun = useCallback(() => {
-    const id = inputValue.trim().toUpperCase()
-    if (!id) return
+  const launchPipeline = useCallback((id: string) => {
     setStoryId(id)
     setManualTests([])
     setSelectedAgent(null)
     setVisitedAgents([])
-    launchParamsRef.current = {
-      id,
-    }
+    launchParamsRef.current = { id }
     setLaunchToken(t => t + 1) // always increments → effect always fires
-  }, [inputValue])
+  }, [])
+
+  const handleRun = useCallback(async () => {
+    const id = inputValue.trim().toUpperCase()
+    if (!id) return
+
+    try {
+      await apiClient.db.getStory(id)
+      setRerunConfirmationId(id)
+      setShowRerunConfirmation(true)
+      return
+    } catch (error: any) {
+      if (error.status !== 404) {
+        toast.error(error?.message || 'Impossible de vérifier l’historique de la story')
+        return
+      }
+    }
+
+    launchPipeline(id)
+  }, [inputValue, launchPipeline, toast])
 
   // FIX #5 — stable deps: run and toast are accessed via refs to avoid stale-closure warnings
   const runRef   = useRef(run)
@@ -403,6 +421,18 @@ export const PipelinePage: React.FC = () => {
     setTimeout(() => {
       workspaceRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }, 80)
+  }, [])
+
+  const confirmRerun = useCallback(() => {
+    if (!rerunConfirmationId) return
+    setShowRerunConfirmation(false)
+    launchPipeline(rerunConfirmationId)
+    setRerunConfirmationId(null)
+  }, [launchPipeline, rerunConfirmationId])
+
+  const cancelRerun = useCallback(() => {
+    setShowRerunConfirmation(false)
+    setRerunConfirmationId(null)
   }, [])
 
   const getAgentLockHint = useCallback((agent: string) => {
@@ -723,6 +753,35 @@ export const PipelinePage: React.FC = () => {
             <Alert type="error" title="Pipeline échoué"
               description="Une erreur est survenue lors de l'exécution." />
           )}
+        </div>
+      )}
+
+      {showRerunConfirmation && rerunConfirmationId && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-slate-950/50 backdrop-blur-sm" onClick={cancelRerun} />
+          <div className="relative bg-white rounded-3xl shadow-2xl border border-slate-200 max-w-lg w-full p-6">
+            <h2 className="text-lg font-bold text-slate-900">Story déjà traitée</h2>
+            <p className="mt-3 text-sm text-slate-600">
+              La story <span className="font-semibold">{rerunConfirmationId}</span> existe déjà dans l'historique.
+              Voulez-vous relancer l'exécution du pipeline pour cette story ?
+            </p>
+            <div className="mt-6 flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={cancelRerun}
+                className="px-4 py-3 rounded-2xl border border-slate-300 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition"
+              >
+                Non
+              </button>
+              <button
+                type="button"
+                onClick={confirmRerun}
+                className="px-4 py-3 rounded-2xl bg-gradient-to-r from-red-600 to-orange-500 text-sm font-semibold text-white hover:brightness-110 transition"
+              >
+                Oui, relancer
+              </button>
+            </div>
+          </div>
         </div>
       )}
 

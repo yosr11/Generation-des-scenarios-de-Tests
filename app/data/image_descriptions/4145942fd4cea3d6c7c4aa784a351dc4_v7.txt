@@ -1,0 +1,68 @@
+[Image jointe : image-2025-02-19-10-38-31-009.png]
+── Textes détectés (OCR) ──
+€2 K1 VO3 REWA YO QOUVE Z (1807 GON SNNONCES ¢t Gy S Tudbe A o
+. L R YN U QETRER €8 SANENE MY À EN S(TONS CONCOÈTES Cs G0 (RALA0r CBs Grmundendt DLUU (ORI AN (T oty OuU de Vadagtes raçusement LRs (CmpUrtent UIO Grane Îr bEnNes Mammym
+. TUSIRÉS MO DAL e CRES Vet (DACE D i (o e 3¢ MINelr e COMMEUIE UE (€ G 32 DI E Gm Teveregrne rerdorçant [ ETE €4 L0 (LN e dPNtr e e SE NCEIIREY T ON Pt Bate | et (CrMOOrtent UN rELUME U UPEOTT 38 1Y T Mee! QU LA eN V1S UNe
+DO
+- —> czzz>
+B AT LT [NXET N R Y V1) AI (H CHÉADOËN BIL GOL e AT MYy COATE (ol DiPGE00 VRIN » AN N o8y AI 14 FFN
+m. ut te 4 e * N A 10 A 0 A . " 41 Y ». ur
+u- R e - ... 0 N 10 PR K RE « “ T0 . 2024 . .."
+becectu se soze * . [ . .
+40 — Carte d'identité Sopra HR Software 2020
+Voun pêves rrs hews vouns pouvez crêes Ges ennonces e des ecvustets K3
+L R YN U QETRER €8 SANENE DEN À EN S(TONS CONCOÈTES Cs Î4 CODZ A CBs S MANTENN DLUU (ORI AN (T oty OÙ de Vadagtes raçusement LRs CCMEONEM Une Grane Îr bEnNes Mammym
+TUsiRÉ4 MIOIS PRELLINCES CRES Vet (LG D Wicemed de MInelr e CONMEUE 1! (€ Gt 10 DIV G Trveregr ne rerdorçant ?
+et € L0 (LN e deNtreprine wrm NCEIIREr T ON reedBate | BCN (rOOrtent UN ÉÉ UN SUPECrt de
+T Poet OU LA eN Veiy UNE
+e cETE
+PER
+Nt ATl
+titkt
+sk b f tA 8
+DAIL (H CHÉADOËN
+(S R RI
+LAY
+DAYE (o PP 000 VVN » AY) oYy
+e Al
+PRUN
+DEc E
+….
+YN
+DE
+..
+T e,
+DTN
+… sa;e
+40
+Carte d'identité Sopra HR Software 2020
+__ ——>
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran capturé semble être une page de gestion de news ou d'annonces dans un logiciel de gestion des ressources humaines, probablement Sopra HR Software. Il s'agit d'une liste qui permet de visualiser et de gérer les annonces et les actualités.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un champ de recherche avec une icône de loupe.
+- Des onglets ou boutons pour filtrer les news : 
+  - "TOUTES"
+  - "ANNONCES"
+  - "ACTUALITÉS"
+- Des pastilles (pills) de statut de publication :
+  - "En cours de publication" (vert)
+- Des badges ou étiquettes pour indiquer l'état des news :
+  - "Oui" dans la colonne "VALIDE", probablement en vert.
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Une icône de loupe dans le champ de recherche.
+- Des flèches de navigation à droite et à gauche de la pagination.
+- Des icônes représentant des éléments d'action dans la colonne "ACTIONS", probablement des icônes de suppression ou de modification.
+
+## 5. AGENCEMENT ET RELATIONS
+- La page est divisée en sections :
+  - Une section supérieure avec des boutons pour créer des annonces ou des actualités.
+  - Une section de liste avec des colonnes pour les détails des news (titre, propriétaire, date de création, date de publication, date de fin de publication, état de validation).
+- La liste est paginée avec des contrôles de navigation (flèches et indicateurs de page).
+- Les champs obligatoires sont signalés par une étoile (*), mais aucune étoile n'est visible dans les textes fournis.

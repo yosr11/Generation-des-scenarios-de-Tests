@@ -1,0 +1,87 @@
+[Image jointe : pptx_slide_1.png]
+── Textes détectés (OCR) ──
+= @ Espace de gestion O‘ ? (I)
+ACTIVITES PROCESSUS RH MES COLLABORATEURS
+MES ACTIVTÉS 0 PILOTAGE CSP a Poser une question RH 24 Q ::;A;r; 'x] 24
+-À -E -A -H 4 A 04 Fretér que RARA ER
+; ; DELAIS DE TRAITEMENT e 5 OMBAED
+ACTIVITÉS NON ATTRIBUEES 5 n PTTREE 14
+- Gtiss ACNTAVARE 14
+.\; BRLTET L
+PAIE - CONTRÔLES DE PAIE DSN INDICATEUR SPÉCIFIQUE
+- DOSS'ERS INDIVID JELS À CONTRÉLER
+. 8 103
+& 53
+. 93 _ _ _ Espace DSN
+2 5 RÉSULTATS DE PAIE À CONTROLER
+O— —— r e
+O,
+@ - Espace de gestion
+ACTIVITES
+PROCESSUS RH
+MES COLLABORATEURS
+e e ARSO AT
+MES ACTIVTÉS
+PILOTAGE CSP
+Poser une question RH
+24
+- À
+- &
+Fredérque RERB E
+2 4
+&LTET
+DELAIS DE TRAITEMENT
+ACTIVITÉS NON ATTRIBUEES
+digal
+ORSAED
+14
+40 -E -A
+158
+drins %
+FFLTET
+W‘-L\‘T-‘—\'-'—RL
+PAIE -
+CONTROLES DE PAIE
+DSN
+INDICATEUR SPÉCIFIQUE
+DCSS.ERS INDIVIDJELS À CONTRÉLER
+98
+5%
+03
+95
+103
+04
+92
+93
+Espace DSN
+RÉSULTATS DE PAIE A CONTRÔLER
+O— — rr
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran capturé semble être un tableau de bord ou un dashboard de gestion pour une application RH (Ressources Humaines), probablement Sopra HR. Il présente diverses sections telles que "ACTIVITÉS", "PROCESSUS RH", "MES COLLABORATEURS", "PAIE - CONTRÔLES DE PAIE", "DSN" et "INDICATEUR SPÉCIFIQUE".
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation n'est ajoutée par-dessus l'écran original.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un graphique linéaire est présent dans la section "PAIE - CONTRÔLES DE PAIE".
+- Des pastilles (pills) avec des nombres et des couleurs différentes sont affichées dans la section "ACTIVITÉS" (ex : 0, 60, 5).
+- Des badges ou étiquettes avec des noms de collaborateurs et des nombres sont présents dans "MES COLLABORATEURS" (ex : Houssem ABSOUANI, 2).
+- Un bouton ou lien "Poser une question RH" est visible dans "PROCESSUS RH".
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Une icône de nuage avec un éclair et un "+839 j" est affichée dans la section "DLAIS DE TRAITEMENT".
+- Des icônes de type alertes (triangle rouge) sont présentes dans "ACTIVITÉS" et "MES COLLABORATEURS".
+- Une icône représentant un éclair est utilisée dans le contexte des délais de traitement.
+- Des icônes de profil pour les collaborateurs sont présentes dans "MES COLLABORATEURS".
+
+## 5. AGENCEMENT ET RELATIONS
+L'écran est divisé en plusieurs sections ou blocs, chacun ayant un titre et contenant des informations spécifiques. Les sections sont :
+- "ACTIVITÉS" avec des sous-sections comme "MES ACTIVITÉS", "ACTIVITÉS NON ATTRIBUÉES" et "PILOTAGE CSP".
+- "PROCESSUS RH" avec un lien pour poser une question RH.
+- "MES COLLABORATEURS" listant des collaborateurs avec des indicateurs.
+- "PAIE - CONTRÔLES DE PAIE" avec des statistiques sur les dossiers individuels et résultats de paie à contrôler.
+- "DSN" avec un espace dédié.
+- "INDICATEUR SPÉCIFIQUE" actuellement vide.
+
+Les sections sont agencées en grille, suggérant une organisation catégorisée des informations.

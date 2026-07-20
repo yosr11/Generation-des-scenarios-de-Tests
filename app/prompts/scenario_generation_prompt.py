@@ -156,6 +156,16 @@ def build_manual_test_generation_system_prompt() -> str:
 Senior QA expert. Generate Xray manual tests as strict JSON from analysed Jira User Stories.
 ALL generated content (test names, objectives, actions, expected results, notes, messages) MUST be written in French.
 
+PRIORITÉS (ordre d'importance) :
+1. Sens métier du test — le scénario doit refléter l'objectif fonctionnel et métier de la story.
+2. Couverture des éléments essentiels — chaque comportement important doit être testé.
+3. Clarté et exécutabilité — les tests doivent être faciles à comprendre et à exécuter.
+4. Expected results précis et atomiques — chaque assertion doit être indépendante et vérifiable.
+
+Dans le doute : privilégie un test métier bien aligné plutôt qu'une formulation plus élégante.
+Ne génère aucun scénario qui ne trouve pas sa justification métier dans la story ou l'analyse.
+Les testable_points servent à compléter la couverture métier, ils ne définissent pas le périmètre principal.
+
 1. FIDELITY
 - SOURCES AND AUTHORITY LEVELS — priorité décroissante :
   1. PRIMARY AUTHORITATIVE SOURCES (vérité fonctionnelle) :
@@ -360,6 +370,12 @@ IMPORTANT: `data` peut rester vide ("") lorsque l'acteur, le contexte ou les val
 10. JSON
 {"story_id":"...","recommended_test_strategy":"manual|automated|needs_refinement","generation_status":"generated|not_generated","message":"...","tests":[{"story_id":"...","test_name":"...","objective":"...","description":"...","execution_context":"...","preconditions":["..."],"scenario_type":"NOM|ALT|EXC","priority":"High|Medium|Low","labels":["..."],"étapes":[{"titre":"...","actor":"...","steps":[{"index":1,"action":"...","data":"...","actor":"...","expected_result":"...","revision_po":""}]}],"steps":[]}],"notes":["..."]}
 
+SELF-CHECK PRIORITÉ : sens métier > couverture > clarté > expected results atomiques.
+- Vérifie que le test priorise le périmètre métier de la story.
+- Vérifie que chaque action ou testable_point essentiel est couvert.
+- Vérifie que les tests sont exploitable et lisibles.
+- Vérifie que les expected_result sont des assertions atomiques, une par ligne.
+
 IMPORTANT FOR "étapes" STRUCTURE:
 - "étapes" is a list of grouped steps, where each étape groups related actions by the same actor or workflow phase
 - Each étape has: "titre" (general title describing the phase), "actor" (optional, the main actor), "steps" (list of detailed actions)
@@ -525,6 +541,8 @@ def build_manual_test_generation_user_prompt(
         f"\n\nMANDATORY COVERAGE REMINDER:\n"
         f"- The analysis contains {len(actions)} actions. Each action must be covered by at least 1 test.\n"
         f"- The analysis contains {len(testable_points)} testable points.\n"
+        f"- If business_goals or business_workflows are present, cover them first with end-to-end scenarios.\n"
+        f"- Do not use business_goals/testable_points as a substitute for a clear business objective.\n"
     )
     if restrictions:
         coverage_reminder += f"- {len(restrictions)} restriction(s) detected in business rules → generate 1 EXC test per restriction:\n"
@@ -536,7 +554,11 @@ def build_manual_test_generation_user_prompt(
         "\n\nEXPECTED_RESULT FORMAT REMINDER (RÈGLE 4 — PRIORITÉ MAXIMALE) :\n"
         "- expected_result doit être une LISTE d'assertions atomiques séparées par des \\n,\n"
         "  pas une phrase unique.\n"
+        "- Le dernier step de chaque étape doit contenir le résultat attendu complet de la phase fonctionnelle.\n"
         "- Une ligne = un seul élément observable (bouton, champ, message, icône, statut...).\n"
+        "- Si tu dois choisir entre une couverture métier plus large et un détail stylistique mineur, privilégie la couverture métier.\n"
+        "- Le détail dans expected_result ne doit pas venir au détriment de l'objectif métier principal.\n"
+        "- Les expected_result doivent rester atomiques et vérifiables : une assertion par ligne.\n"
         "- Le résultat agrégé et détaillé d'une étape doit être placé sur la DERNIÈRE action de\n"
         "  cette étape (voir règle 3 — grouping étape/action).\n"
     )

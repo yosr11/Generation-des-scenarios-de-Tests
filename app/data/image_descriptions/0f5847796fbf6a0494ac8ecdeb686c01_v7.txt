@@ -1,0 +1,30 @@
+[Image jointe : image-2025-04-08-10-27-08-948.png]
+── Textes détectés (OCR) ──
+Soclété 4YOU DEV
+‘ ETABDEVO!
+- ETABDEVO2
+Société 4YOU DEV
+ETABDEVO!
+ETABDEVO2
+── Analyse visuelle (VLM) ──
+Voici mon analyse de l'image :
+
+**1. CONTEXTE**
+L'écran semble être une liste déroulante ou un champ de sélection avec des options, probablement utilisée pour sélectionner un établissement. L'intention probable est de permettre à l'utilisateur de choisir un établissement parmi une liste.
+
+**2. ANNOTATIONS AJOUTÉES PAR LE PO**
+Aucune annotation détectée.
+
+**3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI**
+- Un champ de sélection avec un texte grisé "Établissement" (dans le cadre du haut).
+- Deux cases à cocher avec des libellés :
+  - Case à cocher grisée (non cochée) avec le libellé "ETABDEV01".
+  - Case à cocher grisée (non cochée) avec le libellé "ETABDEV02".
+
+**4. ICÔNES ET PICTOGRAMMES**
+Aucune icône ou pictogramme visible.
+
+**5. AGENCEMENT ET RELATIONS**
+- Le champ "Établissement" est en haut, suivi d'une liste de deux options.
+- La liste des options est présentée sous forme de cases à cocher avec des libellés.
+- La deuxième option "ETABDEV02" a un fond gris clair, indiquant qu'elle est peut-être sélectionnée ou survolée.

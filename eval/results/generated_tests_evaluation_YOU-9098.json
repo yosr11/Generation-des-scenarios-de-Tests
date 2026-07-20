@@ -1,0 +1,58 @@
+{
+  "evaluation_model": "gpt-4.1 (GitHub Models) + paraphrase-multilingual-MiniLM-L12-v2",
+  "summary": {
+    "evaluated_stories": 1,
+    "skipped_stories": 0,
+    "averages": {
+      "cosine_similarity": 0.58,
+      "coverage_score": 85.0,
+      "missing_tests_score": 80.0,
+      "qa_quality_score": 90.0,
+      "business_similarity": 95.0,
+      "final_score": 87.5
+    },
+    "verdict_distribution": {
+      "GOOD": 1,
+      "PARTIAL": 0,
+      "BAD": 0
+    },
+    "per_story_scores": [
+      {
+        "story_id": "YOU-9098",
+        "user_story_title": "Menu de navigation",
+        "cosine_similarity": 0.5837,
+        "coverage_score": 85,
+        "missing_tests_score": 80,
+        "qa_quality_score": 90,
+        "business_similarity": 95,
+        "final_score": 87.5,
+        "verdict": "GOOD"
+      }
+    ]
+  },
+  "results": [
+    {
+      "story_id": "YOU-9098",
+      "user_story_title": "Menu de navigation",
+      "priority": null,
+      "gold_tests_count": 1,
+      "generated_tests_count": 11,
+      "metric_1_cosine_similarity": 0.5837,
+      "metric_2_llm_judge": {
+        "coverage_score": 85,
+        "missing_tests_score": 80,
+        "qa_quality_score": 90,
+        "business_similarity": 95,
+        "final_score": 87.5,
+        "missing_scenarios": [
+          "Validation de l'absence du nom, prénom et matricule de l'utilisateur dans le champ bénéficiaire du formulaire de question RH",
+          "Interdiction de création de question RH pour soi-même par Manager OnBehalf",
+          "Modification et vérification de la configuration du menu via le nouveau composant",
+          "Débranchement sur le legacy : Ressources humaines > Contrat > Affectation"
+        ],
+        "summary": "Les tests générés couvrent la majorité des fonctionnalités et objectifs métier des tests gold, avec une bonne qualité rédactionnelle et structure. Quelques scénarios spécifiques liés à la configuration du menu, à la gestion des bénéficiaires et au débranchement legacy sont absents. L'ensemble reste très pertinent pour la validation du menu de navigation, mais une couverture complète nécessiterait l'ajout des scénarios manquants.",
+        "verdict": "GOOD"
+      }
+    }
+  ]
+}

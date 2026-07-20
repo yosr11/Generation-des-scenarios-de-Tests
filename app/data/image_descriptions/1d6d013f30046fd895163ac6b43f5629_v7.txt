@@ -1,0 +1,63 @@
+[Image jointe : image-2025-11-13-11-14-41-509.png]
+── Textes détectés (OCR) ──
+€ G 25 foryou-hradu-develop.apps.shr-okd.marc.fr.ssg/app/foryou/#/demarches/ticketinghrlocal/create * S _äî
+= @ Poser une question RH QO ? D
+bous avez besoin d'information ou d'aide sur les données personnelles contractuelles ou tout autre besoin, complétez le formulaire de demande de support ci-dessous. Vous avez la _
+possibilité de joindre un document. Votre demande sera envoyée et traitée par votre gestionnaire.
+En cours
+Historique
+“ e saisis ma demande '
+Bénéficiaire *
+///‘\\\
+{ | Ines INES FRLFR4Y1868
+Informer le bénéficiaire du suivi de la question RH, par mail
+Catégorie * Sous-catégorie
+Données personnelles v|® Situation familiale 1O
+Titre *
+Description *
+Pièce jointe e
+Les champs ;ndiqués par Lre * son: coligatoires.
+fildie su
+foryou-hradu-develop.apps.shr-okd.marc.fr.ssg/app/foryou/#/demarches/ticketinghrlocal/create
+Poser une question RH
+bous avez besoin d'information ou d'aide sur les données personnelles contractuelles ou tout autre besoin, complétez le formulaire de demande de support ci-dessous. Vous avez la
+™,
+\,
+) Ines INES FRLFRAY1868
+Catégorie *
+Sous-catégorie
+Données personnelles
+v)
+© ‘ Situation familiale
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran analysé est un formulaire de demande de support pour poser une question RH. Il semble s'agir d'une interface de création de ticket pour les ressources humaines.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un champ de saisie pour le bénéficiaire avec un cercle bleu à côté, contenant le texte "Ines INES FRLFR4Y1868".
+- Une case à cocher avec un texte "Informer le bénéficiaire du suivi de la question RH, par mail".
+- Des champs déroulants pour :
+  - Catégorie : fond gris clair, texte "Données personnelles".
+  - Sous-catégorie : fond gris clair, texte "Situation familiale".
+- Un champ de saisie pour le titre.
+- Un champ de saisie pour la description.
+- Un champ pour joindre une pièce jointe.
+- Des boutons en haut à gauche : "Quitter", "Supprimer", "Sauvegarder", "Envoyer", "Accepter la réponse".
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Une icône de suppression (poubelle) à côté du champ bénéficiaire.
+- Une icône d'information à côté du champ "Pièce jointe".
+
+## 5. AGENCEMENT ET RELATIONS
+Le formulaire est structuré en sections verticales. Les champs obligatoires sont indiqués par une étoile *. Le formulaire comprend :
+- Un champ pour le bénéficiaire.
+- Une case à cocher pour informer le bénéficiaire.
+- Des champs déroulants pour la catégorie et la sous-catégorie.
+- Des champs de saisie pour le titre et la description.
+- Un champ pour joindre une pièce jointe.
+- Un fil de suivi en bas de page.
+
+Le bouton "Envoyer" est probablement utilisé pour valider la demande. Les onglets "En cours" et "Historique" semblent être utilisés pour naviguer entre les demandes en cours et archivées.

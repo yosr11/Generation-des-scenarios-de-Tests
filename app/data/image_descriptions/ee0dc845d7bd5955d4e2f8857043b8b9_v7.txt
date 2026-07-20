@@ -1,0 +1,64 @@
+[Image jointe : image-2025-05-07-10-22-06-921.png]
+── Textes détectés (OCR) ──
+IR LIRS HRS LU R SIS ¥ UE R . . ‘
+Publication /
+Type de News *
+v [ ] vauDe
+Titre dans le carrousel “ Date de début de publication ”
+f-J" 2
+lexte * Date de fin de publication “
+]} a
+La localisation de la News est France secteur privé.
+Date de création __/__/__ ; ; ;
+La langue de publication de la News est le Fran @ais.
+Date de modification ——/——/——
+Illustration dans le carrousel Confidentialité /
+Veuillez sélectionner une image Société
+@, v
+Etablissement
+36
+Acteur autorisé à voir la News
+RLN
+Dl
+e e
+[ ] VALIDE
+Titre dans le carrousel “
+Date de début de publication
+__/__/__
+lexte *
+Date de fin de publication
+Date de création
+La langue de publication de la News est le Fran@ais.
+Date de modification ——/__/__
+Illustration dans le carrousel
+Confidentialité /
+Société
+Veuillez sélectionner une image
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran semble être un formulaire de création de news. Il est probablement utilisé pour ajouter de nouvelles publications.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un badge ou pastille : forme rectangulaire, couleur de fond probablement verte ou bleue (mais la couleur exacte n'est pas identifiable), texte OCR : "VALIDE".
+- Étiquettes / tags : 
+  - "Société" (sans couleur de fond identifiable).
+  - "Etablissement" (sans couleur de fond identifiable).
+  - "Acteur autorisé à voir la News" (sans couleur de fond identifiable).
+- Bouton : 
+  - Un élément cliquable avec le texte "VALIDE" (mais sans bordure visible).
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Icône d'information / info-bulle : probablement présente à côté de "Publication" et "Confidentialité", sa fonction est d'apporter plus d'information.
+- Icône de calendrier ou de date : présente à côté des champs de date, sa fonction est probablement d'aider à sélectionner les dates.
+
+## 5. AGENCEMENT ET RELATIONS
+- Le formulaire est structuré en sections :
+  - Une section pour les informations générales de la news (type de news, titre, texte).
+  - Une section pour la publication (date de début et de fin de publication, un champ pour VALIDE).
+  - Une section pour l'illustration dans le carrousel.
+  - Une section pour la confidentialité (société, établissement, acteur autorisé).
+- Les champs obligatoires sont indiqués par une étoile *.
+- Le champ "VALIDE" est accompagné d'une case à cocher.

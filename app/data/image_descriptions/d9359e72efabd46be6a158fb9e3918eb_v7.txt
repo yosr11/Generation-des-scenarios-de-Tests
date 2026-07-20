@@ -1,0 +1,76 @@
+[Image jointe : image-2025-05-06-18-37-34-478.png]
+── Textes détectés (OCR) ──
+T Publication /
+lype de News *
+ACTUALITE M Cette News est [_] VALIDE
+Titre dans le carrousel * Date de début de publication *
+Les News sortent dans 4YOU9.0 - / - / - -
+Texte * Date de fin de publication *
+—- 7
+Les News permettent de d'informer les collaborateurs manager gestionnaires.
+A La localisation de la News est France secteur privé.
+_ La langue de publication de la News est le Fran@ais.
+Document d'’actualité *
+N « —
+Œ ,ﬂ—ﬂ.,:,tu;x\u«fr.mqm]
+Ilustration dans le carrousel Confidentialité /
+Veuillez sélectionner une image s
+— Société
+5 q - Etablissement
+-l .
+39 * ' /' Aperçu Acteur autorisé à voir la News
+T 5 — v
+*I b
+Pouvoir tout cocher dans une liste
+(] ]
+RLER
+i c0t0
+(R
+Publication /
+lype ce News
+ACTUALITE
+Cette News est || VALIDE
+Titre dans le carrousel *
+Date de début de publication
+Les News sortent dans 4YOU9.0
+__/__/__
+Date de fin de publication
+Texte
+La localisation de la News est France secteur privé.
+La langue de publication de la News est le Fran@ais.
+Aclualilé.png m
+Confidentialité /
+Illustration dans le carrousel
+Veuillez sélectionner une image
+Société
+Etablissement
+-— .
+39
+Aperçu
+Acteur autorisé à voir la News
+(o] ]
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran semble être un formulaire de création ou édition d'une news, probablement dans un système de gestion de contenu interne à une entreprise. Le formulaire est structuré avec des champs obligatoires indiqués par un astérisque.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un champ de sélection déroulant pour le "Type de News" avec le texte "ACTUALITE".
+- Des champs de texte avec des bordures vertes indiquant qu'ils sont obligatoires ou mis en avant.
+- Un champ pour télécharger ou sélectionner une image avec un aperçu visible, comportant une image avec un logo.
+- Des boutons ou liens avec des icônes de poubelle à côté de "Document d'actualité" et "Illustration dans le carrousel".
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Une icône de poubelle à côté de "Document d'actualité" et "Illustration dans le carrousel", probablement pour supprimer les fichiers.
+- Une icône d'information ou d'aide à côté de "Publication" et "Confidentialité", indiquant des informations supplémentaires.
+
+## 5. AGENCEMENT ET RELATIONS
+Le formulaire est divisé en sections :
+- Une section pour les détails de la news (type, titre, texte).
+- Une section pour la publication (dates de début et fin, validité).
+- Une section pour les documents et illustrations.
+- Une section pour la confidentialité avec des options déroulantes pour la localisation et les acteurs autorisés.
+
+Les champs obligatoires sont mis en évidence par une bordure verte. Le formulaire semble être structuré pour une utilisation facile, avec des regroupements logiques d'informations.

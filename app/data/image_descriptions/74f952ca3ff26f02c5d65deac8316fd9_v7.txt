@@ -1,0 +1,92 @@
+[Image jointe : pptx_slide_2.png]
+── Textes détectés (OCR) ──
+= @ 9 ? 0
+Pilotage MONITORING - RETARD GLOBAL +2035 ) MONITORING - CATEGORIES
+el - 19 jours Attestations
+8 Jours 1 ] Données personnelles
+Mes activités
+4 MONITORING DES DELAIS DE TRAITEMENT PAR GESTIONNAIRE
+: : Tout D Hors délal D A échéance D Normal D
+N o Nombre de demandes
+Contrôles d > n
+on pra]:s ê Gestionnaire 8 30908 63 5 50G -203518 5 i3] 15
+TEEE FRLFR4Y1011
+Espace o B. ;
+DSN FRLFR4YDO10
+p 8.7 2
+FRLFR4YS517 7 - i}
+Q Ju enn DUVEGES . - _
+ï FRLTESTO12
+Indicateur
+spécifique
+23 etementis! o 2 3 > >l “ombre deiements por page CT v
+O,
+Pilotage
+MONITORING - RETARD GLOBAL
++2035 J
+MONITORING - CATÉGORIES
+309
+Attestations
+163
+- 19 Jours
+8 Jours
+Données personnelles
+50 À
+4 Jours
+Congés
+MONITORING DES DÉLAIS DE TRAITEMENT PAR GESTIONNAIRE
+Tout D
+Hors délal D
+A échéance D
+Normal D
+Nomb-re de demandes
+Contrôles de
+Gestionnalre
+85
+50
+-20351 8
+5]
+tgl
+15]
+pale
+Samr QUIGESTIAT
+F3e
+FRLFR4Y1011
+Lazner DITGESTRAI
+Espace
+DSN
+FRLFR4YD010
+Hamadi DJEESI
+FRLFR4YS517
+Ju enr DUVEGES
+FRLTESTO12
+23 etementis!
+> >
+“omire daiements cor page
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran analysé est un tableau de bord de monitoring, probablement utilisé pour suivre les performances et les délais de traitement des demandes par différents gestionnaires. Il contient des graphiques et des tableaux pour afficher les données.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un badge circulaire avec le nombre "7" à l'intérieur, de couleur rouge, probablement utilisé pour indiquer un retard ou une alerte.
+- Quatre badges circulaires avec des nombres "1" à l'intérieur, de couleur rouge, probablement utilisés pour indiquer des seuils ou des alertes.
+- Un graphique à barres colorées pour afficher les pourcentages de demandes dans différentes catégories (Monitoring - Catégories).
+- Quatre graphiques à barres horizontales colorées pour afficher les délais de traitement par gestionnaire.
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Une icône de cloche en haut à droite, probablement utilisée pour les notifications.
+- Une icône de recherche en haut à droite, utilisée pour effectuer des recherches.
+- Une icône de question en haut à droite, probablement utilisée pour accéder à l'aide ou à la documentation.
+- Une icône de téléchargement (ou impression) en haut à droite.
+- Des icônes de gestionnaire (cercle avec une photo ou une icône) à côté des noms des gestionnaires.
+
+## 5. AGENCEMENT ET RELATIONS
+Le tableau de bord est divisé en sections :
+- Une section "Monitoring - Retard Global" avec des indicateurs chiffrés.
+- Une section "Monitoring - Catégories" avec des pourcentages affichés dans des barres colorées.
+- Une section "Monitoring des délais de traitement par gestionnaire" avec un tableau et des graphiques à barres.
+
+Les éléments sont organisés de manière structurée pour faciliter la lecture et la compréhension des données. Les graphiques et les tableaux sont utilisés pour visualiser les données et faciliter l'analyse.

@@ -1,0 +1,64 @@
+[Image jointe : image-2025-04-04-17-29-29-664.png]
+── Textes détectés (OCR) ──
+ETE RR P A TS . . .
+Publication /
+Type de News *
+v Cette News est MRIS Z NON VALIDE
+Titre dans le carrousel “ Date de début de publication ”
+f-J" 2
+lexte * Date de fin de publication *
+]} a
+/ Localisation
+_ France secteur privé
+Langue
+Illustration dans le carrousel Confidentialité /
+Fichier illustration Société
+@, v
+Etablissement
+35
+Acteur autorisé à voir la News
+RLN
+rrs ce t uu
+e e
+Cette News est MRVARIS - NON VALIDE
+Titre dans le carrousel “
+Date de début de publication
+__/__/__
+lexte *
+Date de fin de publication
+Localisation
+France secteur privé
+Confidentialité /
+Illustration dans le carrousel
+Fichier illustration
+Société
+── Analyse visuelle (VLM) ──
+Voici mon analyse de l'interface :
+
+**1. CONTEXTE**
+L'écran est un formulaire de création de news, probablement dans un contexte d'administration ou de gestion de contenu. Le formulaire est divisé en plusieurs sections.
+
+**2. ANNOTATIONS AJOUTÉES PAR LE PO**
+Aucune annotation détectée.
+
+**3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI**
+- Un champ de sélection "Type de News" avec une flèche déroulante.
+- Un champ de texte "Titre dans le carrousel" avec un astérisque (*).
+- Un champ de texte multiligne "Texte" avec un astérisque (*).
+- Un champ de fichier "Fichier illustration" avec une icône de trombone.
+- Des champs de date "Date de début de publication" et "Date de fin de publication" avec des sélecteurs de date.
+- Des champs de texte "Localisation", "Langue", "Société", "Etablissement" et "Acteur autorisé à voir la News" avec des flèches déroulantes.
+- Des boutons radio "VALIDÉ" et "NON VALIDÉ" sous la section "Publication".
+
+**4. ICÔNES ET PICTOGRAMMES**
+- Une icône d'information (petit "i") à droite de "Publication" et "Confidentialité".
+- Une icône de trombone pour le champ "Fichier illustration".
+- Des flèches déroulantes à droite des champs de sélection.
+
+**5. AGENCEMENT ET RELATIONS**
+Le formulaire est divisé en sections :
+- Une section "Je crée une News" en haut avec un champ de sélection "Type de News".
+- Une section "Publication" avec des champs de date et des boutons radio.
+- Une section "Illustration dans le carrousel" avec un champ de fichier.
+- Une section "Confidentialité" avec des champs de texte et des flèches déroulantes.
+Les champs obligatoires sont indiqués par un astérisque (*). Les sections sont séparées par des titres et des espaces.

@@ -18,17 +18,45 @@ def _jira_url(path: str, base_url: Optional[str] = None) -> str:
     return f"{base}{path}"
 
 
+def _extract_jira_error_message(response: httpx.Response) -> Optional[str]:
+    try:
+        body = response.json()
+    except ValueError:
+        text = (response.text or "").strip()
+        if not text:
+            return None
+        if text.lower().startswith("<"):
+            return None
+        return text
+
+    if isinstance(body, dict):
+        if error_messages := body.get("errorMessages"):
+            if isinstance(error_messages, list):
+                return "; ".join(str(msg) for msg in error_messages if msg)
+            return str(error_messages)
+        if message := body.get("message"):
+            return str(message)
+        if error := body.get("error"):
+            return str(error)
+    return None
+
+
 async def validate_jira_credentials(username: str, password: str) -> Dict[str, Any]:
     """Vérifie les identifiants via l'API Jira /myself."""
     url = _jira_url("/rest/api/2/myself")
     async with httpx.AsyncClient(verify=False, timeout=30.0) as client:
         resp = await client.get(url, auth=(username, password))
-        if resp.status_code == 401:
-            return {"valid": False, "error": "Invalid Jira credentials"}
-        if resp.status_code != 200:
+        if resp.status_code in (401, 403):
             return {
                 "valid": False,
-                "error": f"Jira API error ({resp.status_code}): {resp.text[:500]}",
+                "error": "Vérifiez vos identifiants Jira et votre mot de passe.",
+            }
+        if resp.status_code != 200:
+            jira_error = _extract_jira_error_message(resp)
+            return {
+                "valid": False,
+                "error": jira_error
+                or "Impossible de se connecter à Jira. Vérifiez vos identifiants ou contactez l'administrateur.",
             }
         data = resp.json()
         return {

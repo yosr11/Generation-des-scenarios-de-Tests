@@ -1,0 +1,65 @@
+[Image jointe : image-2025-05-05-18-44-32-703.png]
+── Textes détectés (OCR) ──
+Revu le 06 mai 2025
+Espace Auteur
+Actions possibles Actions possibles
+- Une news est modifiable uniquement par les . p blier une n l suffit la n
+acteurs portant a minima la confidentialité de la our publier UNE NEWS, 11 SUITIL QUE 1a NEWs
+News soit « Valide » et que la date du jour soit
+L- _ 4 comprise dans la période de publication.
+- Lors d'une modification de News la confidentialité
+de la News n’est pas modifiable - Une fois la date de début de publication
+- Lors de la duplication d’une News la confidentialité passée, '"fte'd"'le la '?‘°d'f"'iat'°“l_de la
+n’est pas reportée, la news dupliquée ne porte pas news sauf pour la retirer de la publication.
+de confidentialité. ; ..
+_ | - Pour retirer une news de la publication,
+- Tout auteur peut voir, dupliquer une news?? on la rend invalide ou on met la date de fin de
+publication dans le passé.
+7  Offre d'interopérabilité Sopra HR Sssoep…æshr
+— Usage restreint
+Actions possibles
+Une news est modifiable uniquement par les
+Pour publier une news, il suffit que la news
+acteurs portant a minima la confidentialité de la
+soit « Valide » et que la date du jour soit
+News
+comprise dans la période de publication.
+Lors d’une modification de News la confidentialité
+de la News n’est pas modifiable
+Une fois la date de début de publication
+Lors de la duplication d’une News la confidentialité
+passée, interdire la modification de la
+n’est pas reportée, la news dupliquée ne porte pas
+news sauf pour la retirer de la publication.
+de confidentialité.
+Pour retirer une news de la publication,
+Tout auteur peut voir, dupliquer une news??
+on la rend invalide ou on met la date de fin de
+<— sopra hr
+Offre d'interopérabilité Sopra HR
+SOFTWARE
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE 
+L'écran semble être une capture d'une présentation ou d'un document de type aide ou documentation Sopra HR, probablement un slide. Il s'agit d'une page intitulée « Espace Auteur », qui liste des « Actions possibles » liées à la publication de news.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO 
+- Plusieurs annotations jaunes ont été ajoutées au texte de la colonne de gauche :
+   - type : cadre
+   - couleur : jaune
+   - éléments concernés : 
+     - « acteurs portant a minima la confidentialité de la News »,
+     - « Lors d’une modification de News la confidentialité de la News n’est pas modifiable »,
+     - « Lors de la duplication d’une News la confidentialité n’est pas reportée, la news dupliquée ne porte pas de confidentialité. »
+     - « Tout auteur peut voir, dupliquer une news?? ».
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Aucun élément graphique natif de l'UI n'est visible dans cette capture.
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Aucune icône n'est visible sur cette capture.
+
+## 5. AGENCEMENT ET RELATIONS 
+- Le document est divisé en deux colonnes.
+- La colonne de gauche est sur fond blanc.
+- La colonne de droite est sur fond dégradé.
+- Les textes sont mis en forme avec des titres et des sous-titres.

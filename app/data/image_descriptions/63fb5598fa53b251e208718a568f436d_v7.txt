@@ -1,0 +1,89 @@
+[Image jointe : image-2025-04-08-14-19-46-605.png]
+── Textes détectés (OCR) ──
+» CLN OS REWA VOUX QOUVE Z CHÉET OEN SANONCES ¢t Gy ACTUSIS S o
+. € (R PCOITIMNEN U gereea €8 SOt BA À G0 MTONY (Ot e Coy G0 CGT T By Gevmandent st (O3atxr ey T agy Ou de Vadaptes 1 agn3rment [ Ry (CmpOrtent UIO GV ane Jr bnes Mammym
+Ul Ac tusices MOrv pressantes ches 100 (AAEE à (e med 3¢ MAnelr e CONREUE W (€ QU 18 QISE Gorm Tveregrine rerhorçant I CEI ¢4 Lo (U E RNLTepr e 1rm PCEAIREY Ta OON VEMÉDATE | REN COMOOENE UN FÉLUINIÉ VN LUK de TYDE PUPwer QU WA IN VETS une
+DO
+Q X Rechercher
+° … o .- ©
+BLUM A THM Y bocts R YT GATE 08 CHTATHIN TARTE [4 000 ATy CATY D PRUN VH.> ATY M WAL PRUN
+s. Ln T6 4 e* . e 4 u e CCN ‘ LN3 20 N , , 1 DE
+sacect se zaçe . . e . ,
+45 — Carte d'identité Sopra HR Software 2020
+Noun pêves x vos hews vour pouvr; crées es anrances e des ecvusieés L3
+EN (R PCOITIMNEN U QECRER €8 SOt BA À DEN MTONY (Ot e Cas G0 CGT E ls demaNnddend st (O3atxr ey T agy Ou de Vadaptes raguasement [ Ry (CmpOrtent UIO lN dr bgnes Manmam
+TUsité4 MO PRELLINCES Ces Vet (RAÉE à dc rNEE 30 MInslr e COMEUE W0 (¢ Ql 18 Pe Girv freerepr ne rerdorçant D
+et ¢t Lo (U e LI eprine srm NCEsIRer da 1on rrenddate | es (rmEOrtent UN FÉLIMÉ UN SUPHOOT de
+Pahser QU VA 1) vets Une
+*rs
+..
+ave
+x MEFN
+ce
+BN A TO
+GRS d
+Vecits RY YT )
+DAI (H CHÉATHON
+tiale (4 P
+Anx
+CATE D0 1P HL> A
+sAI 1
+PETEUN
+DVR
+….
+DIR
+t4
+m.
+DR
+yeq
+» s
+45
+Carte d'identité Sopra HR Software 2020
+e ——"
+── Analyse visuelle (VLM) ──
+### 1. CONTEXTE
+L'écran capturé est une interface de gestion de news et d'actualités dans un système logiciel, probablement Sopra HR Software. Il s'agit d'une liste/tableau de publications avec diverses informations.
+
+### 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+### 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- **Pastilles/Badges** : 
+  - Forme : Carrées/ Rondes
+  - Couleur de fond : Verte
+  - Texte OCR : "en cours"
+- **Boutons** :
+  - Forme : Rectangulaires
+  - Couleur de fond : Variable
+  - Texte OCR : 
+    - "Quitter"
+    - "Créer une annonce"
+    - "Créer une actualité"
+    - "Rechercher"
+
+### 4. ICÔNES ET PICTOGRAMMES
+- **Icônes de statut** (petits carrés) :
+  - Fonction probable : Indicateur de statut (en cours de publication)
+  - Position : Dans la colonne "PUBLICATION"
+- **Icône de recherche** :
+  - Fonction probable : Permet de rechercher des éléments dans la liste
+  - Position : À côté du champ de recherche
+- **Flèche de fermeture** :
+  - Fonction probable : Ferme le champ de recherche ou une section
+  - Position : Dans le champ de recherche
+
+### 5. AGENCEMENT ET RELATIONS
+- **Structure** : 
+  - L'écran est divisé en sections avec un en-tête, un champ de recherche, des onglets (TOUTES, ANNONCES, ACTUALITÉS), et une liste/tableau en dessous.
+- **Regroupements visuels** :
+  - Les publications sont regroupées sous des onglets catégorisés.
+- **Hiérarchie** :
+  - Les titres des onglets ("TOUTES", "ANNONCES", "ACTUALITÉS") sont en haut.
+  - Les en-têtes de colonnes ("PUBLICATION", "TITRE", "PROPRIÉTAIRE", etc.) sont dans la ligne suivante.
+- **Champs obligatoires** :
+  - Aucun indiqué par une étoile (*).
+- **États** :
+  - Les lignes de publications ont un statut "en cours" indiqué par une pastille verte.
+- **Relations spatiales** :
+  - Le champ de recherche est en haut, suivi des onglets et de la liste des publications.
+  - Les boutons ("Quitter", "Créer une annonce", "Créer une actualité") sont alignés en haut à gauche/droite.

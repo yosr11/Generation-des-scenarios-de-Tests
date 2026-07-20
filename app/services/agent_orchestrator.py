@@ -113,7 +113,8 @@ def node_enrich_story(state: PipelineState) -> dict:
                 db_story["epic_key"] = epic_info["key"]
                 db_story["epic_summary"] = epic_info["summary"]
                 db_story["epic_description"] = epic_info.get("description") or ""
-                save_story(db_story)
+        # Réenregistrer la story existante pour mettre à jour l’historique (created_at)
+        save_story(db_story)
         logger.info(f"[Orchestrator] Story {story_id} chargée depuis la base locale")
         return {"story": db_story}
 
@@ -252,7 +253,6 @@ def node_classify_story(state: PipelineState) -> dict:
     story_id = state["story_id"]
     check_pipeline_cancelled(story_id)
     model = state.get("model_agent1", "llama4")
-    rag_context = None
     _safe_update_step(story_id, "Agent 1", "running", progress=15)
 
     story_attachments = collect_story_attachments_only(story_id)
@@ -266,7 +266,6 @@ def node_classify_story(state: PipelineState) -> dict:
             classification = classify_story_with_adaptive_llm(
                 story=story,
                 model_alias=model,
-                rag_context=rag_context,
                 story_attachments=story_attachments,
             )
 
@@ -305,7 +304,6 @@ def node_extract_analysis(state: PipelineState) -> dict:
     story_id = state["story_id"]
     check_pipeline_cancelled(story_id)
     model = state.get("model_agent1", "nova-lite-2")
-    rag_context = None
     classification = state.get("classification")
     _safe_update_step(story_id, "Agent 1", "running", progress=20)
 
@@ -321,7 +319,6 @@ def node_extract_analysis(state: PipelineState) -> dict:
             extracted = extract_story_analysis_with_adaptive_llm(
                 story=story,
                 model_alias=model,
-                rag_context=rag_context,
                 story_attachments=story_attachments,
             )
 
@@ -491,7 +488,7 @@ def node_agent3_validate(state: PipelineState) -> dict:
     tests = state.get("tests", [])
     story = state.get("story", {})
     coverage_threshold = state.get("coverage_threshold", 0.70)
-    quality_model = state.get("model_agent3_quality", "llama4")
+    quality_model = state.get("model_agent3_quality", "nova-lite-2")
 
     testable_points = list(analysis.testable_points) if analysis else []
     story_summary = story.get("summary", "") if isinstance(story, dict) else ""
@@ -630,7 +627,7 @@ def node_agent5_report(state: PipelineState) -> dict:
     analysis = state.get("analysis")
     generation_result = state.get("generation_result")
     validation = state.get("validation")
-    model = state.get("model_agent5", "llama4")
+    model = state.get("model_agent5", "nova-lite-2")
     _safe_update_step(story_id, "Agent 5", "running", progress=90)
 
     logger.info(f"[Orchestrator] Agent 5 generating report for {story_id}")
@@ -671,10 +668,9 @@ def node_agent5_report(state: PipelineState) -> dict:
 # ═══════════════════════════════════════════════════════════════
 
 def route_after_enrich(state: PipelineState) -> str:
-    """Après enrichissement : si échec → END, sinon → Classification Agent."""
     if state.get("status") == "failed":
         return END
-    return "build_rag_context"
+    return "classify_story"
 
 
 def route_after_agent1(state: PipelineState) -> str:
@@ -830,13 +826,13 @@ def build_pipeline_graph() -> StateGraph:
     # Point d'entrée
     graph.set_entry_point("enrich_story")
 
-    # Arêtes conditionnelles
+     # Arêtes conditionnelles
     graph.add_conditional_edges("enrich_story", route_after_enrich, {
-        "build_rag_context": "build_rag_context",
+        "classify_story": "classify_story",   # ← REMPLACER "build_rag_context" par "classify_story"
         END: END,
     })
 
-    graph.add_edge("build_rag_context", "classify_story")
+    
 
     graph.add_conditional_edges("classify_story", route_after_agent1, {
         "analysis_agent": "analysis_agent",
@@ -896,8 +892,8 @@ def run_pipeline(
     model_agent1: str = "nova-lite-2",
     model_agent15: str = "nova-lite-2",
     model_agent2: str = "nova-lite-2",
-    model_agent3_quality: str = "llama4",
-    model_agent5: str = "llama4",
+    model_agent3_quality: str = "nova-lite-2",
+    model_agent5: str = "nova-lite-2",
     coverage_threshold: float = 0.70,
     max_correction_iterations: int = 2,
     force_reanalyze: bool = True,

@@ -22,9 +22,9 @@ from app.services.jira_auth_service import (
 # ── Seed ──────────────────────────────────────────────────────────────────────
 
 async def seed_admin_user(db: AsyncSession) -> None:
-    """Crée l'admin par défaut depuis .env s'il n'existe pas."""
-    result = await db.execute(select(User).where(User.email == settings.ADMIN_EMAIL))
-    if result.scalar_one_or_none():
+    """Crée l'admin par défaut UNIQUEMENT si aucun admin n'existe déjà."""
+    result = await db.execute(select(User).where(User.role == "admin"))
+    if result.scalars().first():
         return
     admin = User(
         email=settings.ADMIN_EMAIL,
@@ -69,10 +69,13 @@ async def create_user(
 
 # ── Admin auth helpers (kept for internal use) ────────────────────────────────
 
+
 async def _authenticate_admin(db: AsyncSession, email: str, password: str) -> Optional[User]:
-    result = await db.execute(select(User).where(User.email == email))
+    result = await db.execute(
+        select(User).where(User.email == email, User.role == "admin")
+    )
     user = result.scalar_one_or_none()
-    if not user or user.role != "admin":
+    if not user:
         return None
     if not verify_password(password, user.hashed_password):
         return None
@@ -80,13 +83,13 @@ async def _authenticate_admin(db: AsyncSession, email: str, password: str) -> Op
 
 
 def build_admin_token(user: User) -> str:
-    return create_access_token(
-        {
-            "sub": str(user.id),
-            "email": user.email,
-            "role": "admin",
-        }
-    )
+    payload = {
+        "sub": str(user.id),
+        "email": user.email,
+        "role": "admin",
+    }
+    payload["display_name"] = user.display_name or user.email.split("@")[0]
+    return create_access_token(payload)
 
 def build_user_token(user: User) -> str:
     payload = {

@@ -1,0 +1,84 @@
+[Image jointe : image-2025-04-17-18-38-16-585.png]
+── Textes détectés (OCR) ──
+PRU T Publication /
+lype ce News *
+ACTUALITE v Cette News est RV/\R(p]@ NON VALIDE
+Titre dans le carrousel * Date de début de publication *
+Les News sortent dans 4YOU9.0 __ / - / __ -
+Texte ‘ Date de fin de publication *
+—- 2
+Les News permettent de d'informer les collaborateurs manager gestionnaires.
+Localisation
+/4 France secteur privé
+Document d'actualité tanaue
+; ,( . Francais
+Actualile.ping m
+Ilustration dans le carrousel Confidentialité /
+tichier illustration o
+— Société
+) - - Etablissement
+— .
+37 ( * ’ /' Aperçu Acteur autorisé à voir la News
+' 1 = v
+{l } u
+Pouvoir tout cocher dans une liste
+(][]
+ce
+adia et
+Publication /
+lype ce News
+ACTUALITE
+Cette News est MRIN 78 NON VALIDE
+Titre dans le carrousel °
+Date de début de publication
+Les News sortent dans 4YOU9.0
+__/__/__
+Date de fin de publication
+Texte
+France secteur privé
+Langue
+Document d’actualité
+Français
+Aclualilé.png Il
+Confidentialité /
+Illustration dans le carrousel
+ichier illustration
+Société
+Etablissement
+-— .
+37
+Aperçu
+Acteur autorisé à voir la News
+[ [ ]
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran semble être un formulaire de création ou de modification d'une "News" dans un système de gestion de contenu interne, probablement pour une plateforme RH (Ressources Humaines). Le formulaire est divisé en sections pour faciliter la saisie d'informations.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation n'est ajoutée par-dessus l'écran original.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un champ de sélection "Type de News" avec le texte "ACTUALITE".
+- Un champ de texte "Titre dans le carrousel" avec le texte "Les News sortent dans 4YOU9.0".
+- Un champ de texte multiligne "Texte" contenant "Les News permettent de d'informer les collaborateurs manager gestionnaires.".
+- Deux champs de date : "Date de début de publication" et "Date de fin de publication", tous deux vides.
+- Un champ de sélection "Localisation" avec le texte "France secteur privé".
+- Un champ de sélection "Langue" avec le texte "Français".
+- Un champ de téléversement de fichier "Document d'actualité" avec le texte "Actualité.png".
+- Un champ de téléversement de fichier "Illustration dans le carrousel" avec le texte "News.png".
+- Un bloc "Confidentialité" comportant des champs de sélection pour "Société", "Etablissement", et "Acteur autorisé à voir la News".
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Une icône d'information (représentée par un "i" dans un cercle) à côté de "Publication".
+- Une icône d'information (représentée par un "i" dans un cercle) à côté de "Confidentialité".
+- Des icônes de poubelle à côté des champs de téléversement de fichiers "Document d'actualité" et "Illustration dans le carrousel".
+
+## 5. AGENCEMENT ET RELATIONS
+Le formulaire est structuré en sections verticales :
+- Une section pour les informations générales de la news (type, titre, texte).
+- Une section pour les dates de publication.
+- Une section pour la localisation et la langue.
+- Une section pour le téléversement de documents et d'illustrations.
+- Une section pour la confidentialité avec des options de sélection pour les acteurs autorisés.
+
+Les champs obligatoires sont indiqués par un astérisque (*). Les sections sont bien séparées, facilitant la lecture et la saisie des informations.

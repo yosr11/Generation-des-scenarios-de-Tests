@@ -1,0 +1,64 @@
+[Image jointe : image-2025-04-17-18-37-06-877.png]
+── Textes détectés (OCR) ──
+PE LSO HS UE AR PSS ¥ S H . . .
+Publication /
+Type de News *
+v Cette News est MRIS Z NON VALIDE
+Titre dans le carrousel “ Date de début de publication *
+]/ a
+lexte * Date de fin de publication *
+-=I- ;
+/ L ocalisation
+7 France secteur privé
+Langue
+Francais
+Illustration dans le carrousel Confidentialité /
+Veuillez sélectionner une image Société
+@, v
+Etablissement
+35
+Acteur autorisé à voir la News
+ce
+ridiie ce t stI UE es
+Cette News est MRVANIS - NON VALIDE
+Titre dans le carrousel “
+Date de début de publication
+__/__/__
+lexte *
+Date de fin de publication
+L ocalisation
+France secteur privé
+Français
+Illustration dans le carrousel
+Confidentialité /
+Veuillez sélectionner une image
+Société
+── Analyse visuelle (VLM) ──
+Voici mon analyse de l'interface :
+
+**1. CONTEXTE**
+L'écran semble être un formulaire de création de news, avec des champs pour saisir des informations relatives à la news, telles que le type de news, le titre, le texte, les dates de publication, la localisation et la confidentialité.
+
+**2. ANNOTATIONS AJOUTÉES PAR LE PO**
+Aucune annotation détectée.
+
+**3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI**
+- Un champ de sélection "Type de News" avec un menu déroulant.
+- Un champ de texte "Titre dans le carrousel" avec un champ de saisie.
+- Un champ de texte "Texte" avec un champ de saisie multiligne.
+- Un champ de date "Date de début de publication" et "Date de fin de publication" avec des champs de saisie de date.
+- Un champ de sélection "Localisation" avec une valeur par défaut "France secteur privé".
+- Un champ de sélection "Langue" avec une valeur par défaut "Français".
+- Un champ de sélection "Société", "Etablissement" et "Acteur autorisé à voir la News" avec des menus déroulants.
+- Un bouton radio "VALIDÉ" et "NON VALIDÉ" pour le statut de la news.
+
+**4. ICÔNES ET PICTOGRAMMES**
+- Une icône d'information (petit "i") à droite de "Publication" et "Confidentialité", probablement pour fournir des informations supplémentaires.
+- Une icône de calendrier pour les champs de date.
+
+**5. AGENCEMENT ET RELATIONS**
+Le formulaire est organisé en sections :
+- Une section pour les informations générales de la news (type, titre, texte).
+- Une section pour les informations de publication (dates, localisation, langue).
+- Une section pour les informations de confidentialité (société, établissement, acteur autorisé).
+Les champs obligatoires sont indiqués par une étoile *. Les sections sont séparées par des titres et des espaces pour améliorer la lisibilité.

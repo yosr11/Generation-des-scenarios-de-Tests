@@ -1,0 +1,53 @@
+[Image jointe : image-2025-01-13-18-07-51-841.png]
+── Textes détectés (OCR) ──
+Type de Document
+Confidentialité
+COLLABORATEUR MANAGER Ÿ GESTIONNAIRE RH GESTIONNAIRE PAIE
+Population
+SOCIÉTÉ 4YOU x SIÈGE SOCIAL x
+AGENCE x DURÉE DÉTERMINÉE x
+Action(s) autorisée(s)
+CRÉER x | LIRE x | MODIFIER x | SUPPRIMER x
+CRÉER
+LIRE
+MODIFIER
+SUPPRIMER
+COLLABORATEUR
+MANAGER Ÿ
+GESTIONNAIRE RH
+GESTIONNAIRE PAIE
+ÊE
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran semble être un formulaire de configuration ou de création d'un document, probablement dans un système de gestion des ressources humaines. Le titre en haut de l'écran est "Type de Document".
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+- Un cadre bleu clair entoure le texte "ACTION(S) AUTORISÉES".
+- Des coches bleues sont présentes à côté des options "CRÉER", "LIRE", "MODIFIER" et "SUPPRIMER" dans la section "Action(s) autorisée(s)".
+- Le texte "SUPPRIMER" est surligné avec un fond gris.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un onglet actif "MANAGER" avec un fond bleu clair et un texte blanc.
+- Des étiquettes (tags/chips) de couleur bleue avec texte blanc :
+  - "SOCIÉTÉ 4YOU"
+  - "SIÈGE SOCIAL"
+  - "AGENCE"
+  - "DURÉE DÉTERMINÉE"
+- Des boutons ou options de type case à cocher bleues avec texte blanc pour les actions autorisées : 
+  - "CRÉER"
+  - "LIRE"
+  - "MODIFIER"
+  - "SUPPRIMER"
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Une icône de coche (case à cocher) bleue à côté de chaque action autorisée.
+- Une croix "X" à côté de chaque étiquette (tag/chip) pour probablement les supprimer.
+
+## 5. AGENCEMENT ET RELATIONS
+- Le formulaire est divisé en sections avec des titres et des champs de saisie.
+- Les sections sont :
+  - "Confidentialité" avec des onglets.
+  - "Population" avec des champs de saisie et des étiquettes.
+  - "Action(s) autorisée(s)" avec des cases à cocher.
+- Les champs de saisie sont organisés en lignes avec des étiquettes à gauche et des champs à droite.
+- Les actions autorisées sont listées avec des cases à cocher à côté de chaque option.

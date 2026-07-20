@@ -1,0 +1,43 @@
+[Image jointe : image-2024-01-08-14-07-00-289.png]
+── Textes détectés (OCR) ──
+= @ Accessibilité : [niveau de conformité] o ? O
+Déclaration d'accessibilité
+Sopra HR Software s'engage à rendre son service internet "HR4AYOU " accessible conformément à l'article 47 de ‘a loi n® 2005-102 du 11 février 2005.
+Etat de conformité
+Le site HR4YOU est ron corforme avec (e référertie. général d'amélioration de laccessibiité, RGAA version 4.1, er raison des non-conformités énumérées dans la section « Résu:tats des
+Tests ».
+Résultats des tests
+L'audit de conformité réa“sé par :a société Access42 révèle que le site est conforme à 46,43% au RGAA version 4 1.
+Contenus inaccessibles : non-conformités relevées
+Les cortenus listés ci-dessous ne sont pas accessib:es pour les raisons suivantes.
+* [1.2] Des images de décoration ne sont pas ignorées des technologies d'assistance ;
+* [1.8] Des informations se drésentent sous forme de texte en image au lieu de texte sty:é en CSS ;
+* [3.1- 10.09 - 10.10] Des :nformations sont véhiculées ur:quement par la cou:eur ou sar la forme ;
+* [3.2][3.3] Des textes et/ou des composants d'interfaces ort des contrastes insuffisants ;
+Accessibilité : [niveau de conformité]
+O,
+État de conformité
+non-conformités énumérées dans la section « Résu.tats des
+Le site HR4YOU est ron corforme avec (e référertie. général d'amélioration de laccessibiité, RGAA version 4.1, er raison des
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran semble être une page de déclaration d'accessibilité pour le site HR4YOU, présentant des informations sur l'état de conformité du site aux normes d'accessibilité.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un logo en haut à gauche, probablement un élément graphique, mais sans texte associé.
+- Un badge ou un indicateur de niveau de conformité à l'accessibilité en haut à droite, mais sans texte clair.
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Une icône de menu (représentée par trois lignes horizontales) en haut à gauche.
+- Une icône de recherche en haut à droite.
+- Une icône d'aide ou d'information en haut à droite.
+- Une icône de paramètres ou de personnalisation en haut à droite (représentée par un engrenage ou une roue dentée).
+
+## 5. AGENCEMENT ET RELATIONS
+- La page est organisée en sections avec des titres et des sous-titres.
+- Les sections incluent "Déclaration d'accessibilité", "État de conformité", "Résultats des tests" et "Contenus inaccessibles : non-conformités relevées".
+- Les éléments de liste sont précédés de puces.
+- Il y a des liens internes dans le texte, probablement indiqués par des changements de couleur ou des soulignements, bien que cela ne soit pas explicitement mentionné dans les textes OCR fournis.

@@ -193,15 +193,27 @@ export interface TestStep {
 
 export interface Agent5ReportRequest {
   include_recommendations?: boolean
-  format?: 'json' | 'markdown'
+  output_format?: 'json' | 'markdown'
 }
 
 export interface Agent5ReportResponse {
-  storyId: string
-  summary: string
-  recommendations: string[]
-  verdict: 'APPROVED' | 'REQUIRES_REVIEW' | 'NEEDS_REWORK'
-  details?: any
+  status: string
+  report?: any
+  report_markdown?: string
+  error_message?: string
+  generation_duration_ms: number
+}
+
+export interface Agent5ReportSummaryResponse {
+  status: string
+  story_id: string
+  overall_status: string
+  key_findings: string[]
+  next_steps: string[]
+  coverage_rate: string
+  validation_status: string
+  duplicate_count: number
+  ambiguity_count: number
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -210,8 +222,12 @@ export interface Agent5ReportResponse {
 
 function handleError(error: unknown): ApiError {
   if (axios.isAxiosError(error)) {
-    const status  = error.response?.status
-    const message = error.response?.data?.detail || error.message || 'API request failed'
+    const status = error.response?.status
+    const responseData = error.response?.data
+    const message =
+      typeof responseData === 'string'
+        ? responseData
+        : responseData?.detail || responseData?.message || error.message || 'API request failed'
     return {
       message: typeof message === 'string' ? message : JSON.stringify(message),
       status,
@@ -529,18 +545,18 @@ export const apiClient = {
 
     async getReportMarkdown(storyId: string): Promise<string> {
       try {
-        const response = await axiosInstance.get(
+        const response = await axiosInstance.get<{ report_markdown: string }>(
           `/agent5/story/${encodeURIComponent(storyId)}/report/markdown`
         )
-        return response.data
+        return response.data.report_markdown
       } catch (error) {
         throw handleError(error)
       }
     },
 
-    async getReportSummary(storyId: string): Promise<Agent5ReportResponse> {
+    async getReportSummary(storyId: string): Promise<Agent5ReportSummaryResponse> {
       try {
-        const response = await axiosInstance.get<Agent5ReportResponse>(
+        const response = await axiosInstance.get<Agent5ReportSummaryResponse>(
           `/agent5/story/${encodeURIComponent(storyId)}/report/summary`
         )
         return response.data
@@ -675,7 +691,6 @@ export const apiClient = {
     },
     async createUser(data: {
       email: string
-      password: string
       role: string
       display_name?: string
       jira_username?: string
@@ -684,6 +699,7 @@ export const apiClient = {
     },
     async updateUser(id: number, data: {
       display_name?: string
+       email?: string 
       jira_username?: string
       password?: string
       role?: string

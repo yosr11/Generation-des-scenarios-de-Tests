@@ -806,6 +806,32 @@ def _resolve_test_issuetype(
     return {"name": issue_type_name}
 
 
+def _normalize_priority_for_jira(priority: Optional[str]) -> Optional[str]:
+    """Retourne un nom de priorité Jira compatible avec le projet cible.
+    Ce projet Jira n'accepte que 3 valeurs exactes : P1-High, P2-Medium, P3-Low."""
+    if not priority:
+        return None
+    normalized = priority.strip()
+    lower = normalized.lower()
+
+    if lower.startswith("p1"):
+        return "P1-High"
+    if lower.startswith("p2"):
+        return "P2-Medium"
+    if lower.startswith("p3"):
+        return "P3-Low"
+
+    if "high" in lower or "haut" in lower or "critique" in lower or "critical" in lower:
+        return "P1-High"
+    if "medium" in lower or "moyen" in lower or "moyenne" in lower:
+        return "P2-Medium"
+    if "low" in lower or "bas" in lower or "faible" in lower:
+        return "P3-Low"
+
+    # Valeur non reconnue : ne pas envoyer un champ que Jira rejettera silencieusement
+    return None
+
+
 def _filter_fields_for_create(
     fields: Dict[str, Any],
     allowed_fields: Optional[set],
@@ -1026,8 +1052,9 @@ def create_test_issue(
         create_fields["description"] = description
 
     # Ajouter la priorité si fournie et autorisée
-    if priority and (not allowed_fields or "priority" in allowed_fields):
-        create_fields["priority"] = {"name": priority}
+    normalized_priority = _normalize_priority_for_jira(priority)
+    if normalized_priority and (not allowed_fields or "priority" in allowed_fields):
+        create_fields["priority"] = {"name": normalized_priority}
 
     # Test Type = Manual : requis pour activer l'onglet "Test Details".
     if not allowed_fields or XRAY_FIELD_TEST_TYPE in allowed_fields:

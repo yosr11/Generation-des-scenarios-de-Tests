@@ -1,0 +1,50 @@
+[Image jointe : image-2025-01-06-10-36-07-606.png]
+── Textes détectés (OCR) ──
+- Par défaut, la section « Je crée une News » ne comporte que le champ « Localisation » (en non-modifiable
+avec la valeur de la localisation utilisée) et la combo-list « Type de News » en attente d’un choix utilisateur:
+= @ Gestion des News
+Vous gérez 1c1 vos News, vous pouvez créer des Annonces et des Actualités. ! i'
+=+ Créer une Actualité Enregistrer
+> Liste des News
+V Je crée une News
+Les cravcs 9 9cés 230 et SOn ot gstores.
+Localisation
+AAAAAA
+Type de News™
+28  Carte d'identité Sopra HR Software 2020
+Gestion des News
+Vous gérez IcI vos News, vous pouvez créer des Annonces et des Actualités. ! i'
+Enregistrer
+Les cr
+qasas mn
+=s
+3025237 -
+re*soniic Zatores.
+Type de Nev,s *
+28
+Carte d'identité Sopra HR Software 2020
+── Analyse visuelle (VLM) ──
+### 1. CONTEXTE
+L'écran capture une interface utilisateur pour la gestion de news, spécifiquement la section « Je crée une News ». Cette section semble faire partie d'un formulaire ou d'une page de création de contenu, probablement dans un système de gestion de contenu ou de communication interne.
+
+### 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+### 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un champ de texte non modifiable :
+  - **Localisation** : Fond blanc, texte « AAAAAA ».
+- Un champ obligatoire (indiqué par une étoile *) :
+  - **Type de News** : Liste déroulante (combo-list) avec le texte « Type de News * ».
+
+### 4. ICÔNES ET PICTOGRAMMES
+- Une icône d'information (petit « i ») probablement liée à la section « Vous gérez ici vos News, vous pouvez créer des Annonces et des Actualités. »
+
+### 5. AGENCEMENT ET RELATIONS
+- L'écran comporte une section de navigation ou d'onglets avec les options :
+  - **Liste des News** (sélectionné)
+  - **Je crée une News**
+- La section « Je crée une News » contient deux champs :
+  1. **Localisation** (non modifiable) avec la valeur « AAAAAA ».
+  2. **Type de News** (obligatoire) sous forme de liste déroulante.
+- Le champ « Localisation » est positionné au-dessus du champ « Type de News ».
+- Il existe un bouton **Enregistrer** probablement lié à la sauvegarde des informations saisies dans cette section.

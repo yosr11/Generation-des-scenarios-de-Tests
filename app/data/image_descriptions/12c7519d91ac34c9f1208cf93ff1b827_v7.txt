@@ -1,0 +1,64 @@
+[Image jointe : image (6).png]
+── Textes détectés (OCR) ──
+€ G 25 foryou-hradu-develop.apps.shr-okd.marc.fr.ssg/app/foryou/#/demarches/ticketinghrlocal/create * S _äî
+= @ Poser une question RH O ? ON
+f\/ous avez besoin d'information ou d'aide sur les données personnelles contractuelles ou tout autre besoin, complétez le formulaire de demande de support ci-dessous. Vous avez la _
+possibilité de joindre un document. Votre demande sera envoyée et traitée par votre gestionnaire.
+. e PR B= L 2c - En cours
+“ e saisis ma demande ' Historique
+Bénéficiaire *
+a Qproxi01 KK FRLFRAYP001
+Informer le bénéficiaire du suivi de la question RH, par mail
+Catégorie * Sous-catégorie
+Titre *
+Description *
+Pièce jointe e
+Les champs ;ndiqués par Lre * son: coligatoires.
+fildie su
+31ec [ . — 21 ; 08:48
+& ersoleillé 1l Q Rechercne mD>m g a9 B «> 13/11/2025
+g0
+foryou-hradu-develop.apps.shr-okd.marc.fr.ssg/app/foryou/#/demarches/ticketinghrlocal/create
+#*
+Poser une question RH
+f»/ous avez besoin d'information ou d'aide sur les données personnelles contractuelles ou tout autre besoin, complétez le formulaire de demande de support ci-dessous. Vous avez la
+En cours
+a Qproxi01 KK FRLFRAYP0O01
+Catégorie *
+Sous-catégorie
+(2]
+Les champs indiqués par Lre * son: coligatoires.
+3 16°C
+08:48
+Q Recl
+Ensoleillé
+11/2025
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran semble être un formulaire de demande de support pour poser une question RH. Il s'agit probablement d'une page web ou d'une application interne à une entreprise.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un champ de saisie pour le bénéficiaire avec une pastille/avatar (cercle avec une image) à gauche.
+- Un bouton "Quitter" de fond blanc avec un symbole de gauche.
+- Un bouton "Supprimer" de fond blanc.
+- Un bouton "Sauvegarder" de fond blanc.
+- Un bouton "Envoyer" de fond bleu (non visible en totalité).
+- Un bouton "Accepter la réponse" de fond blanc.
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Une icône de poubelle (supprimer) à côté du champ "Bénéficiaire".
+- Une icône d'information (point d'interrogation) à côté de "Pièce jointe".
+
+## 5. AGENCEMENT ET RELATIONS
+- Le formulaire est divisé en sections avec des champs de saisie pour :
+  - Bénéficiaire
+  - Catégorie et sous-catégorie
+  - Titre
+  - Description
+  - Pièce jointe
+- Les champs obligatoires sont indiqués par une étoile (*).
+- Le formulaire comporte un bouton "Envoyer" qui semble être l'action principale.
+- Il y a un onglet ou section "Historique" à côté de "En cours".

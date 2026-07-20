@@ -1,0 +1,69 @@
+[Image jointe : image-2025-04-04-17-29-57-853.png]
+── Textes détectés (OCR) ──
+lype ce News *
+ANNONCE v Cette News est MRID NON VALIDE
+Titre dans le carrousel * Date de début de publication *
+Les News sortent dans 4YOU9.0 - / - / - -
+Texte ‘ Date de fin de publication *
+] =
+Les News permettent de d'informer les collaborateurs manager gestionnaires.
+Localisation
+/4 France secteur privé
+Langue
+Français
+Illustration dans le carrousel ; L-
+Confidentialité /
+tichier illustration
+Société
+. -
+7 - - Etablissement
+— :
+36 * ’ /' Aperçu Acteur autorisé à voir la News
+5 1 _ v
+[aile)
+ce
+adia et
+Publication /
+lype ce News
+ANNONCE
+Cette News est MRIN 78 NON VALIDE
+Titre dans le carrousel °
+Date de début de publication
+Les News sortent dans 4YOU9.0
+__/__/__
+Date de fin de publication
+Texte
+France secteur privé
+Illustration dans le carrousel
+Etablissement
+-— .
+36
+Aperçu
+Acteur autorisé à voir la News
+[ [ ]
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran analysé est un formulaire de création de news, permettant aux utilisateurs de saisir des informations pour une annonce. Le formulaire est divisé en plusieurs sections, notamment la description de la news, les détails de publication, la localisation et la confidentialité.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation n'est ajoutée par-dessus l'écran original.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un champ de sélection pour le type de news avec le texte "ANNONCE".
+- Un champ de texte pour le titre dans le carrousel avec le texte "Les News sortent dans 4YOU9.0".
+- Un champ de texte pour le texte de la news avec le texte "Les News permettent de d'informer les collaborateurs manager gestionnaires.".
+- Un champ pour l'illustration dans le carrousel avec une image.
+- Deux boutons radio pour la validité de la news : "VALIDE" (actif) et "NON VALIDE".
+- Des champs de date pour la date de début et de fin de publication.
+- Des champs de texte pour la localisation ("France secteur privé"), la langue ("Français"), la société, l'établissement et l'acteur autorisé à voir la news.
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Une icône de poubelle à côté du champ d'illustration, probablement pour supprimer l'image.
+- Une icône de téléchargement ou de sélection de fichier à côté du champ d'illustration.
+
+## 5. AGENCEMENT ET RELATIONS
+Le formulaire est structuré en sections verticales :
+- La partie gauche contient les champs pour le type de news, le titre, le texte et l'illustration.
+- La partie droite contient les champs pour les détails de publication, la localisation, la langue et la confidentialité.
+- Les champs obligatoires sont indiqués par un astérisque (*).
+- Les sections sont séparées par des titres et des espaces pour une meilleure lisibilité.

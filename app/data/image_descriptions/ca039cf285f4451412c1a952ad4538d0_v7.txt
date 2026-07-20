@@ -1,0 +1,70 @@
+[Image jointe : image-2024-12-13-11-21-53-725.png]
+── Textes détectés (OCR) ──
+Nicolas QMAN12
+INGÉNIEUR NIV.1
+. Absentéisme de mon équipe Micro-absentéisme de mon
+Mes taches (0) Entité organisationnelle équipe Entité
+niveau 2 QA DEP2 organisationnelle niveau 2 Q...
+Les demandes de mon équipe (0) L L % Mes congés
+1 pers. 1 pers. C,,J) | en coues
+@g Mes questions RH
+Ç‘ÇTÈ) Le planning de mes collègues
+=i Je gère le planning de mon équipe
+XE
+O,
+INGENIEUR NIV.1
+Absentéisme de mon équipe
+Micro-absentéisme de mon
+Mes taches (0)
+Entité organisationnelle
+équipe Entité
+niveau 2 QA DEP2
+organisationnelle niveau 2 Q...
+Les demandes de mon équipe (0)
+0j
+0;
+Mes congés
+1 pers
+1encours
+-\'È\”* Mes questions RH
+âîî' Le planning de mes collègues
+i ;:0/) Je gére le planning de mon équipe
+2 TOn SIn
+cemarehe
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran semble être un tableau de bord ou un dashboard personnel pour un utilisateur, probablement dans un contexte de gestion des ressources humaines (RH) ou de gestion de projet. Il affiche diverses informations liées aux tâches, à l'absentéisme, aux congés et aux demandes de l'équipe.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un champ de recherche avec un icône de loupe.
+- Plusieurs cartes ou blocs d'information de couleur :
+  - Une carte grise avec le texte « Absentéisme de mon équipe Entité organisationnelle niveau 2 QA DEP2 0j 1 pers. ».
+  - Une carte grise avec le texte « Micro-absentéisme de mon équipe Entité organisationnelle niveau 2 Q... 0j 1 pers. ».
+  - Deux cartes turquoise : 
+    - Une avec le texte « Mon solde de congés 0j 0j ».
+    - L'autre avec le texte « Mes autres absences 0j pris ».
+- Des éléments de navigation ou liens sur le côté droit :
+  - « Mes congés 1 en cours ».
+  - « Mes questions RH » avec un icône de question.
+  - « Le planning de mes collègues ».
+  - « Je gère le planning de mon équipe ».
+  - « Accéder à toutes mes démarches ».
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Une icône de loupe dans le champ de recherche.
+- Une icône de question dans la section « Mes questions RH ».
+- Une icône représentant probablement un calendrier ou un planning dans « Le planning de mes collègues ».
+- Une icône qui semble représenter un tableau de bord ou une gestion dans « Je gère le planning de mon équipe ».
+- Une icône représentant une flèche ou un lien dans « Accéder à toutes mes démarches ».
+- Un icône de silhouette de personne dans le coin supérieur droit, probablement pour accéder au profil de l'utilisateur.
+
+## 5. AGENCEMENT ET RELATIONS
+- L'écran est divisé en sections :
+  - Une partie gauche avec des onglets ou liens vers « Mes tâches (0) », « Les demandes de mon équipe (0) ».
+  - Une partie centrale avec des cartes d'information sur l'absentéisme et les congés.
+  - Une partie droite avec des liens vers diverses fonctionnalités.
+- Les cartes d'information sont regroupées en deux catégories : Absentéisme et Congés/Absences.
+- Les liens sur le côté droit semblent être des actions ou des destinations possibles pour l'utilisateur.

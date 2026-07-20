@@ -1,0 +1,78 @@
+[Image jointe : pptx_slide_3.png]
+── Textes détectés (OCR) ──
+Widget Processus RH
+Activités par processus
+PROCESSUS RH /
+Nom du processus \ => débranchement dans un nouvel onglet de l'inbox sur la
+Poser une question RH 24 vue par échéance
+un processus est une démarche
+Cet onglet filtre et affiche les demandes issues de la
+démarche "Poser une question RH" :
+- "en retard" (date d'échéance dépassée)
+Lister l'ensemble des cas d'usage avec l'affichage selon
+les priorités des demandes en cours :
+&3 Accéder à tous les processus RH - demandes en retard
+- demandes avec échéance proche
+- demandes avec messages nons lus
+- demandes normales
+Lien "Accéder à tous les processus RH" qui affiche la
+page “Processus RH".
+Cette page est une nouvelle entrée dans le menu
+" L'icone devant ce lien est une nouvelle icone, elle sera
+“' identique à celle de la nouvelle entrée "Processus RH
+dans le menu
+PROCESSUS RH
+Nom du processus
+=> débranchement dans un nouvel onglet de l'inbox sur la
+Poser une question RH
+24
+vue par échéance
+et affiche
+les demandes issues de la
+Cet onglet filtre
+&3 Accéder à tous les processus RH
+- demandes en retard
+L'icone devant ce lien est une nouvelle icone, elle sera
+identique à celle de la nouvelle entrée "Processus RH"
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran semble être un mockup ou une maquette de l'interface utilisateur pour un widget appelé "Widget Processus RH". Celui-ci est probablement destiné à afficher des processus RH et leurs activités.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+- Type : cadre (contour), flèches, 
+- Couleur : rouge, bleu (pour l'icône).
+- Les annotations désignent ou entourent les éléments de texte OCR suivants : 
+  - "Nom du processus", "un processus est une démarche",
+  - "PROCESSUS RH", "Poser une question RH",
+  - "Activités par processus",
+  - "Accéder à tous les processus RH".
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un badge ou pastille : 
+  - Forme : rectangulaire avec un chiffre à l'intérieur,
+  - Couleur de fond : rouge,
+  - Texte OCR : "2".
+- Un bouton :
+  - Forme : rectangulaire,
+  - Couleur de fond : non visible (peut-être gris ou blanc),
+  - Texte OCR : "Accéder à tous les processus RH".
+- Une icône (devant "Accéder à tous les processus RH") :
+  - Forme : une roue dentée ou un engrenage,
+  - Pas de texte OCR.
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Une icône représentant un triangle (dans le badge) :
+  - Fonction probable : indication d'alerte ou de priorité,
+  - Position : à droite de "Poser une question RH".
+- L'icône de la roue dentée (devant "Accéder à tous les processus RH") :
+  - Fonction probable : Paramètres ou lien vers une configuration,
+  - Position : à gauche de "Accéder à tous les processus RH".
+
+## 5. AGENCEMENT ET RELATIONS
+- L'interface est divisée en sections :
+  - Une section pour le titre et la description ("Nom du processus", "un processus est une démarche"),
+  - Une section pour les processus RH avec un onglet "Poser une question RH",
+  - Une section pour les activités par processus,
+  - Un lien vers "Accéder à tous les processus RH".
+- Le badge avec le chiffre "2" est affiché à côté de "Poser une question RH",
+  - Le badge semble indiquer le nombre d'activités ou de notifications liées à ce processus.

@@ -33,7 +33,7 @@ class RefineChatRequest(BaseModel):
     story_id: str = ""
     story_summary: str = ""
     story_actors: List[str] = Field(default_factory=list)
-    model_alias: str = "llama4"
+    model_alias: str = "llama33"
 
 
 class RefineChatResponse(BaseModel):

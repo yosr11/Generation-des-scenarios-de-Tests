@@ -49,6 +49,10 @@ const FIELD_LABELS_FR: Record<string, string> = {
   constraints: 'Contraintes',
   risks: 'Risques',
   testable_points: 'Points testables',
+  user_flows: 'Parcours utilisateur',
+  acceptance_criteria_inferred: 'Critères d’acceptation inférés',
+  clarification_questions: 'Questions de clarification',
+  analysis_reason: 'Raison de l’analyse',
   user_story: 'User story',
   description: 'Description',
   summary: 'Résumé',
@@ -350,8 +354,8 @@ export const Agent1Result: React.FC<{ output: any }> = ({ output }) => {
   const isEmptyScalar = (v: any) =>
     v === null || v === undefined || (typeof v === 'string' && v.trim() === '')
 
-  const tableRows   = Object.entries(rest).filter(([, v]) => (typeof v !== 'object' || v === null) && !isEmptyScalar(v))
-  const listEntries = Object.entries(rest).filter(([, v]) => Array.isArray(v) && (v as any[]).length > 0)
+  const listEntries = Object.entries(rest)
+    .filter(([key, val]) => key !== 'clarification_questions' && Array.isArray(val) && (val as any[]).length > 0)
   const objEntries  = Object.entries(rest).filter(([, v]) => !Array.isArray(v) && typeof v === 'object' && v !== null && Object.keys(v as object).length > 0)
 
   const actorList = actors ? (Array.isArray(actors) ? actors : [actors]) : []
@@ -367,9 +371,6 @@ export const Agent1Result: React.FC<{ output: any }> = ({ output }) => {
         {story_type && (
           <AgentKPICard label="Type de story" value={<span className="text-xl capitalize">{story_type}</span>} accent="navy" />
         )}
-        {actorList.length > 0 && (
-          <AgentKPICard label="Acteurs" value={actorList.length} accent="navy" />
-        )}
       </div>
 
       {/* Story title hero */}
@@ -379,18 +380,6 @@ export const Agent1Result: React.FC<{ output: any }> = ({ output }) => {
           title={story_title}
           subtitle={story_type ? `Type : ${story_type}` : undefined}
         />
-      )}
-
-      {/* Actors tags */}
-      {actorList.length > 0 && (
-        <div>
-          <AgentSectionTitle accent="navy">Acteurs identifiés</AgentSectionTitle>
-          <div className="flex flex-wrap gap-2">
-            {actorList.map((a: string, i: number) => (
-              <AgentTag key={i} accent="muted" size="md">{a}</AgentTag>
-            ))}
-          </div>
-        </div>
       )}
 
       {/* Array sections */}
@@ -426,16 +415,6 @@ export const Agent1Result: React.FC<{ output: any }> = ({ output }) => {
           </div>
         </div>
       ))}
-
-      {/* Scalar fields table */}
-      {tableRows.length > 0 && (
-        <div>
-          <AgentSectionTitle accent="navy">Informations complémentaires</AgentSectionTitle>
-          <AgentInfoTable
-            rows={tableRows.map(([k, v]) => [formatLabel(k), String(v)])}
-          />
-        </div>
-      )}
 
       {/* Object fields */}
       {objEntries.map(([key, val]) => (
@@ -481,11 +460,7 @@ const WorkflowAccordion: React.FC<{ workflow: any; index: number }> = ({ workflo
         >
           {index}
         </div>
-        {w.id && <AgentTag accent="violet" size="sm">{w.id}</AgentTag>}
         <span className="font-semibold text-sm flex-1 min-w-0 truncate" style={{ color: T.navy }}>{w.label}</span>
-        {w.linked_goal_id && (
-          <AgentTag accent="rose" size="sm">→ {w.linked_goal_id}</AgentTag>
-        )}
         {open
           ? <ChevronUp size={16} className="flex-shrink-0" style={{ color: T.muted }} />
           : <ChevronDown size={16} className="flex-shrink-0" style={{ color: T.muted }} />
@@ -581,13 +556,9 @@ export const Agent15Result: React.FC<{ output: any }> = ({ output }) => {
               <AgentItemCard
                 key={i}
                 index={i + 1}
-                title={g.label || g.id}
+                title={g.label || ''}
                 description={g.description}
-                tags={[
-                  ...(g.id ? [{ label: g.id, accent: 'violet' as AccentColor }] : []),
-                  ...(g.priority ? [{ label: g.priority, accent: priorityAccent(g.priority) }] : []),
-                  ...(g.actors || []).map((a: string) => ({ label: a, accent: 'navy' as AccentColor })),
-                ]}
+                tags={[]}
                 accent="violet"
               />
             ))}
@@ -627,9 +598,9 @@ export const Agent3Result: React.FC<{ output: any }> = ({ output }) => {
   const report           = output?.report || output
   const coverage         = report?.coverage_rate ?? report?.coverage_percentage ?? 0
   const validationStatus = report?.validation_status
-  const ambiguities      = report?.ambiguities || []
+  const ambiguities      = report?.ambiguity_findings || report?.ambiguities || []
   const uncoveredPoints  = report?.uncovered_testable_points || []
-  const duplicates       = report?.duplicate_tests || report?.duplicates || []
+  const duplicates       = report?.duplicate_pairs || report?.duplicate_tests || report?.duplicates || []
   const covPct           = Math.round((coverage || 0) * 100)
 
   const coverageAccent: AccentColor =
@@ -730,19 +701,45 @@ export const Agent3Result: React.FC<{ output: any }> = ({ output }) => {
           <AgentSectionTitle count={ambiguities.length} accent="orange">
             Ambiguïtés détectées
           </AgentSectionTitle>
-          <div className="space-y-2">
-            {ambiguities.map((a: any, i: number) => (
-              <div
-                key={i}
-                className="flex items-start gap-3 p-3 rounded-lg"
-                style={{ background: `${T.orange}07`, border: `1px solid ${T.orange}20` }}
-              >
-                <AlertCircle size={14} className="flex-shrink-0 mt-0.5 text-orange-400" />
-                <span className="text-sm text-slate-700 leading-relaxed">
-                  {typeof a === 'string' ? a : a.description || JSON.stringify(a)}
-                </span>
-              </div>
-            ))}
+          <div className="space-y-3">
+            {ambiguities.map((a: any, i: number) => {
+              const testName = a.test_name || "Test non nommé"
+              const reason = a.reason || a.description || "Raison inconnue"
+              const originalText = a.original_text || ""
+              const field = a.field || "objectif"
+              return (
+                <div
+                  key={i}
+                  className="p-4 rounded-lg"
+                  style={{ background: `${T.orange}08`, border: `1px solid ${T.orange}22` }}
+                >
+                  <div className="flex items-start gap-3">
+                    <AlertCircle size={16} className="flex-shrink-0 mt-0.5 text-orange-500" />
+                    <div className="flex-1 min-w-0">
+                      {/* Test Name */}
+                      <p className="font-semibold text-slate-800 text-sm mb-1.5 break-words">
+                        {testName}
+                      </p>
+                      {/* Reason */}
+                      <p className="text-xs text-orange-700 mb-2 italic">
+                        {reason}
+                      </p>
+                      {/* Original Text */}
+                      {originalText && (
+                        <div className="text-xs bg-white/50 rounded px-2.5 py-1.5 border-l-2 border-orange-300 text-slate-700 break-words">
+                          <span className="text-orange-600 font-semibold">Texte : </span>
+                          {originalText}
+                        </div>
+                      )}
+                      {/* Field */}
+                      <p className="text-xs text-slate-500 mt-2">
+                        Champ : <span className="font-medium text-slate-600">{field}</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
           </div>
         </div>
       )}
@@ -753,19 +750,37 @@ export const Agent3Result: React.FC<{ output: any }> = ({ output }) => {
           <AgentSectionTitle count={duplicates.length} accent="rose">
             Tests en doublon
           </AgentSectionTitle>
-          <div className="space-y-2">
-            {duplicates.map((d: any, i: number) => (
-              <div
-                key={i}
-                className="flex items-start gap-3 p-3 rounded-lg"
-                style={{ background: `${T.rose}06`, border: `1px solid ${T.rose}18` }}
-              >
-                <AlertTriangle size={14} className="flex-shrink-0 mt-0.5 text-rose-400" />
-                <span className="text-sm text-slate-700 leading-relaxed">
-                  {typeof d === 'string' ? d : d.description || JSON.stringify(d)}
-                </span>
-              </div>
-            ))}
+          <div className="space-y-3">
+            {duplicates.map((d: any, i: number) => {
+              const nameA = d.test_name_a || d.test_a || "Test A"
+              const nameB = d.test_name_b || d.test_b || "Test B"
+              const similarity = d.similarity ? Math.round(d.similarity * 100) : "?"
+              return (
+                <div
+                  key={i}
+                  className="p-4 rounded-lg"
+                  style={{ background: `${T.rose}08`, border: `1px solid ${T.rose}22` }}
+                >
+                  <div className="flex items-start gap-3">
+                    <AlertTriangle size={16} className="flex-shrink-0 mt-0.5 text-rose-500" />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="text-sm font-semibold text-slate-800 flex-1 break-words">
+                          {nameA}
+                        </span>
+                        <span className="text-xs font-bold text-rose-600 bg-rose-100 px-2 py-0.5 rounded whitespace-nowrap">
+                          {similarity}% similaire
+                        </span>
+                      </div>
+                      <p className="text-xs text-slate-500 mb-2 text-center">↔</p>
+                      <p className="text-sm font-semibold text-slate-800 break-words">
+                        {nameB}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
           </div>
         </div>
       )}
@@ -1224,22 +1239,6 @@ export const Agent5Result: React.FC<{ output: any; storyId?: string }> = ({ outp
         </ReportSection>
       )}
 
-      {/* Pipeline notes */}
-      {(Array.isArray(pipeline) ? pipeline.length > 0 : Object.keys(pipeline).length > 0) && (
-        <ReportSection title="Notes de Traitement (Pipeline)" accent="slate">
-          <AgentBulletList
-            items={
-              Array.isArray(pipeline)
-                ? pipeline
-                : Object.entries(pipeline).map(
-                    ([k, v]) =>
-                      `${k.replace(/_/g, ' ')} : ${Array.isArray(v) ? v.join(', ') : String(v)}`
-                  )
-            }
-            accent="slate"
-          />
-        </ReportSection>
-      )}
 
       {/* Footer + download buttons */}
       <div

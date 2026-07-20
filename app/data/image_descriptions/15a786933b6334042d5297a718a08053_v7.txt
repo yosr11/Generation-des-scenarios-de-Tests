@@ -1,0 +1,75 @@
+[Image jointe : pptx_slide_1.png]
+── Textes détectés (OCR) ──
+= @ o ? 0
+Mes activités MES ACTIVITÉS (0] NON ATTRIBUEES (1] Alex QSTATO2 e x
+0 a « 4 & a « A B A « à @
+Contrôles de
+paie
+1 Par échéance v | Dans les 5 prochains jours v
+dossiers
+OPaies A = A a
+PS À ex OSTATO2 Demande n°12501 En cours
+w Dans les 5 prochains … o 9‘ Q 00000681 Test
+Espace Attestation - - - - description
+DSN À traiter avont i€ 30/07/2025 Aucun justificatif pour cette demande
+Par catégorie >
+Mes activités
+NON ATTRIBUÉES
+Alex QSTATO2
+O x
+— |
+-L
+=]
+zz
+Par
+Date de Clôture
+el
+M T e e
+Par échéance
+ldossiers
+OPaies
+ll
+I1iE27_ _ _ _—
+À ex QSTATO2
+Demande n°12501
+En cours
+w Dans les 5 prochains …
+00000681
+Test
+c@
+Attestation
+description
+Espace
+DSN
+À traiter avont ie: 30/07/2025
+Aucun justificatif pour cette demande
+── Analyse visuelle (VLM) ──
+### 1. CONTEXTE
+L'écran capturé semble être une interface de gestion des activités dans un système de gestion des ressources humaines, probablement Sopra HR. Il s'agit d'un tableau de bord ou d'une liste de tâches à traiter.
+
+### 2. ANNOTATIONS AJOUTÉES PAR LE PO
+- **Aucune annotation détectée**.
+
+### 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un onglet actif « Mes activités », de fond bleu clair.
+- Un onglet « NON ATTRIBUÉES », de fond gris clair.
+- Un onglet « Alex QSTAT02 », de fond gris clair.
+- Un bouton « + », probablement pour ajouter une nouvelle activité.
+- Un champ de recherche avec une icône de loupe.
+- Des filtres :
+  - « Par Date de Clôture ».
+  - « Choisir une action ».
+- Un bouton « M'attribuer la demande ».
+
+### 4. ICÔNES ET PICTOGRAMMES
+- Une icône de cloche (notifications) dans le menu du haut.
+- Une icône de recherche (loupe) dans le menu du haut.
+- Une icône de paramètres (engrenage) dans le menu du haut.
+- Une icône de déconnexion (power off) dans le menu du haut.
+- Des icônes de filtres et de tris dans les en-têtes de colonnes.
+
+### 5. AGENCEMENT ET RELATIONS
+- Le tableau est divisé en sections avec des onglets en haut pour « Mes activités », « NON ATTRIBUÉES », et « Alex QSTAT02 ».
+- La section « Mes activités » est active et affiche une liste de tâches.
+- Les tâches sont listées sous forme de tableau avec des colonnes pour les informations de tâche et des actions possibles.
+- Un volet latéral gauche avec des options de navigation : « Contrôles de paie », « Espace DSN », et « Attestation ».

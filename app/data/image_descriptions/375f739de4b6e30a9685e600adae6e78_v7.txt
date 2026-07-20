@@ -1,0 +1,55 @@
+[Image jointe : pptx_slide_1.png]
+── Textes détectés (OCR) ──
+€ > C 25 foryou-hradu-develop.apps.shr-okd.marc.fr.ssg/app/foryou/#/sydexpert/digitalfileexpert a % ) © :
+ce ff F2F @ EnvOKD QX Issues - search X3 4YOU 9.0X - Stream... X M4-App &3 4YOU9-QAetPO 3 Releasing9.0.0 &3 [PPBACKLOG-6896]. &} 4YOU - User Guides Æ> Documentation »
+CONSULTER X
+Salarié: CollabCDN1 Q11CDN1
+Emplacement: 1. Informations personnelles et familiales > 1.1 Informations personnelles > Assurance habitation
+Propriété 1: Unique
+DocumentCapture d'écran 2025-02-12 111056.png
+Le document concerne la période du 01/08/2025 au 31/08/2025
+Titre test
+Le document est visible et valide
+L'origine du document est Q11GESTRH1 (FRLFR4Y1010)
+€ > C
+-0
+foryou-hradu-develop.apps.shr-okd.marc.fr.ssg/app/foryou/#/sydexpert/digitalfileexpert
+ax O ©
+oo
+ff F2F
+@ Env OKD
+ct
+œ>
+Issues - search
+D 4YOU 9.0X - Stream...
+= M4 - App
+= 4YOU9-QA et PO
+$3 Releasing 9.0.0
+©3 [PPBACKLOG-6896]...
+&3 4YOU - User Guides
+@ Documentation
+CONSULTER
+── Analyse visuelle (VLM) ──
+### 1. CONTEXTE
+L'écran présenté est une fenêtre modale (popup) intitulée "CONSULTER" qui semble être utilisée pour afficher des informations détaillées sur un document numérique dans un dossier. Cette fenêtre est superposée à une interface de type dashboard ou portail, probablement utilisé pour la gestion de dossiers numériques.
+
+### 2. ANNOTATIONS AJOUTÉES PAR LE PO
+- Aucune annotation détectée.
+
+### 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un badge ou étiquette de type "SALARIE 4YOU" de couleur bleue, contenant le texte "SALARIE 4YOU".
+- Un badge ou étiquette de type "BASE DE CONNAISSANCE EN..." de couleur probablement grise ou bleue (partiellement masqué).
+- Un bouton d'annulation de couleur grise avec le texte "Annuler".
+
+### 4. ICÔNES ET PICTOGRAMMES
+- Une icône de fermeture (croix) en haut à droite de la fenêtre modale, probablement utilisée pour fermer la fenêtre.
+- Une icône représentant une loupe ou un oeil (probablement liée à la recherche ou à la visualisation de documents), mais sa position exacte n'est pas claire.
+- Des icônes d'actions (loupe, crayon, poubelle, téléchargement) dans la partie droite de la liste en arrière-plan.
+
+### 5. AGENCEMENT ET RELATIONS
+- La fenêtre modale est centrée sur l'écran et contient plusieurs sections :
+  - Une section de titre avec "CONSULTER".
+  - Une section d'informations sur le salarié et l'emplacement du document.
+  - Une section de détails sur le document, incluant une capture d'écran, des dates, un titre, et l'origine du document.
+  - Un bouton "Annuler" en bas de la fenêtre.
+- La fenêtre modale est superposée à une interface plus large qui semble inclure un volet de navigation ou de dossier sur la gauche et une zone de contenu sur la droite.

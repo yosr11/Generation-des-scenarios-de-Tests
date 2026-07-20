@@ -1,0 +1,61 @@
+[Image jointe : image-2025-05-06-18-42-19-367.png]
+── Textes détectés (OCR) ──
+ETE RR P A TS . . .
+Publication /
+Type de News *
+v Cette News est l:] VALIDE
+Titre dans le carrousel “ Date de début de publication ”
+f-J" 2
+lexte * Date de fin de publication “
+]} a
+Date de création __/__/__
+Date de modification --/—-/--
+La localisation de la News est France secteur privé.
+La langue de publication de la News est le Fran @ais.
+Illustration dans le carrousel Confidentialité /
+Veuillez sélectionner une image Société
+@, v
+Etablissement
+36
+Acteur autorisé à voir la News
+RLN
+Dl
+e e
+Cette News est l:] VALIDE
+Titre dans le carrousel “
+Date de début de publication
+__/__/__
+lexte *
+Date de fin de publication
+Date de création
+Date de modification --/--/__
+La langue de publication de la News est le Fran@ais
+Illustration dans le carrousel
+Confidentialité /
+Société
+Veuillez sélectionner une image
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran semble être un formulaire de création de news. Il comporte plusieurs champs pour saisir des informations relatives à la news, tels que le type de news, le titre, le texte, les dates de publication, et des informations de confidentialité.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un champ de sélection déroulant pour le "Type de News" avec une flèche down.
+- Un champ de texte pour le "Titre dans le carrousel".
+- Un champ de texte multiligne pour le "Texte".
+- Des champs de date avec des icônes de calendrier à droite pour "Date de début de publication" et "Date de fin de publication".
+- Un champ de sélection déroulant pour "Société", "Etablissement" et "Acteur autorisé à voir la News".
+- Un champ pour sélectionner une image avec un icône de trombone.
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Une icône d'information (petit "i") à droite de "Publication" et de "Confidentialité".
+- Une icône de calendrier à droite des champs de date.
+- Un icône de trombone à côté de "Veuillez sélectionner une image".
+
+## 5. AGENCEMENT ET RELATIONS
+Le formulaire est divisé en sections :
+- Une section à gauche pour les informations générales de la news (type, titre, texte, illustration).
+- Une section à droite pour les informations de publication (dates) et de confidentialité (société, établissement, acteur autorisé).
+Les champs obligatoires sont indiqués par une étoile *. Le formulaire semble structuré pour une création de contenu de news avec des informations de base et des paramètres de publication et de visibilité.

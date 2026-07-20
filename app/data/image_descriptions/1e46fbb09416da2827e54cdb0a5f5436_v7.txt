@@ -1,0 +1,154 @@
+[Image jointe : image-2025-01-06-10-23-31-954.png]
+── Textes détectés (OCR) ──
+Gestion des news
+= ® Gestion des News Ajout d'une colonne ? ©
+. « Publié » oui ou non,
+VOUS 20D 0205 NEWE 2 GUS POUVEZ réer des Arnences e des Actudres É —— — - avec un symbole dedans.
+— @ " Capacité à modifier le tableau, cacher les Tri par Svmbole àyre rendre pour
+L N t colonnes, réorganiser les colonnes défaut y p p
+afficher le nombre total
+V Liste des News de news publiées sur
+chaque onglet.
+Q Capacité a filtrer.
+TOLTES g ANNONCES @ — =cTuauTes [s]
+En ciélcaror 5 Enceurs depublicator 3 Encourscepuelicetcr 2
+$ - e
+TITRE CATEGORIE PROPRIETAIRE DATE CREATION $ DATE DEBUT PUBLICATION DATE FIN DE PUBLICATION LIDE ACTION
+T stL Fermation Jgen-Pierre MCNG NS 22.05-2022 10YCS/2022 25705:2022 Cut IŒI
+rn Poee é 15e Qe u T LT P R Recrutement Ccopiation Mer 2°:05/2022 9°705/22022 02705:2022 Nen l@l Çê‘) (E:ÏD
+T Pn en REs e e Fermation ean-Pierre ‘AONGINS 22.05-2022 10°05/2222 :1/95-2022 cu l@l
+R t R Recrutement vter “2:05-2022 3°-05;2022 C2/05:2022 Nen l@i 4(%') (E:ÏD
+T e e rn Fermation ean-Pierre "ACNGINS 150502022 10/08;2022 “1705:2022 Cu '(@‘
+Elements par page 5 - “.5 10 > >
+> Je crée une News Ü [l
+11
+Ajout d’une colonne
+« Publié » oui ou non
+sée
+€1
+ASNCE
+ACTLAN
+LS pou
+avec un symbole dedans
+Capacité a modifier le tableau, cacher les
+Tri par
+\)
+Symbole à reprendre pour
+colonnes, réorganiser les colonnes
+défaut
+V Liste des News
+de news publiées sur
+chaque onglet
+Capacité à filtrer.
+TOLTES
+ANNONCES
+ACTUALITÉS
+incee
+Tol:ca
+Ence
+de publcator 3
+ce
+heat s
+v° en « V récrsenn <
+TITRE
+CATEGORIE
+PROPRIETAIRE
+DATE CREATION $
+DATE DEBUT PUBLICATION
+DATE FIN DE PUBLICATION
+LIDE
+ACTION
+crmrato
+leen-Pierre MCNG NS
+05
+302022
+Cs
+S:2L22
+222
+25:05:2022
+Cut
+et
+2022
+05;2222
+02:05:2022
+Nen
+Recrutement {coplaucn
+1[251
+\/\
+3\ /ÈÈ'
+crmralo
+ean
+Prerre "ACNGINS
+2V 05
+C5;2022
+1705
+Recrutement
+23705
+02:05:22
+22
+y ? NIV
+3\ /ÈÙ'
+Ls
+Cs/22022
+1705:2
+nts var sag
+>l
+> Je crée une News
+&)
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran analysé est une page de gestion de news, présentant une liste de news publiées avec diverses informations telles que le titre, la catégorie, le propriétaire, les dates de création et de publication, etc. L'intention probable de cette page est de permettre aux utilisateurs de gérer efficacement les news, en incluissant des fonctionnalités de modification, de filtration, et de réorganisation des colonnes.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Plusieurs annotations ont été ajoutées sur l'écran pour attirer l'attention sur des fonctionnalités spécifiques :
+- Un cadre jaune avec une flèche pointant vers la zone de tri des colonnes, avec le texte : 
+  - **Type** : cadre jaune avec flèche,
+  - **Couleur** : jaune,
+  - **Texte** : « Capacité à modifier le tableau, cacher les colonnes, réorganiser les colonnes ».
+- Un autre cadre jaune avec une flèche pointant vers les onglets de catégories (ANNONCES, ACTUALITÉS), avec le texte : 
+  - **Type** : cadre jaune avec flèche,
+  - **Couleur** : jaune,
+  - **Texte** : « Tri par défaut ».
+- Un troisième cadre jaune avec une flèche pointant vers la zone où une nouvelle colonne pourrait être ajoutée, avec le texte : 
+  - **Type** : cadre jaune avec flèche,
+  - **Couleur** : jaune,
+  - **Texte** : « Ajout d'une colonne « Publié » oui ou non, avec un symbole dedans. Symbole à reprendre pour afficher le nombre total de news publiées sur chaque onglet. Capacité à filtrer ».
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- **Pastilles (pills)** : 
+  - **Forme** : petits rectangles,
+  - **Couleur de fond** : varie (peut être bleu clair pour « TOUTES », gris foncé pour « En cours de publication »),
+  - **Texte OCR** : « TOUTES », « En cours de publication », « ANNONCES », « ACTUALITÉS ».
+- **Boutons** : 
+  - **Forme** : rectangles avec des coins légèrement arrondis,
+  - **Couleur de fond** : varie (jaune pour les actions, bleu pour les onglets),
+  - **Texte OCR** : « Créer une Annonce », « Créer une Actualité », « Quitter ».
+- **Étiquettes (tags/chips)** : 
+  - **Forme** : petits rectangles,
+  - **Couleur de fond** : varie,
+  - **Texte OCR** : « Formation », « Recrutement », « Cooptation ».
+
+## 4. ICÔNES ET PICTOGRAMMES
+- **Icônes de menu** : 
+  - **Fonction probable** : navigation,
+  - **Position** : coin supérieur gauche.
+- **Icône de recherche** : 
+  - **Fonction probable** : recherche,
+  - **Position** : dans la barre de recherche.
+- **Icônes d'action** : 
+  - **Fonction probable** : édition, suppression,
+  - **Position** : dans la colonne « ACTION » de chaque ligne de news.
+
+## 5. AGENCEMENT ET RELATIONS
+- **Structure générale** : 
+  - L'écran est divisé en sections avec une barre de navigation en haut et une liste de news en dessous.
+- **Regroupements visuels** : 
+  - Les news sont regroupées par onglets (« ANNONCES », « ACTUALITÉS »).
+- **Hiérarchie** : 
+  - Les titres des colonnes (« TITRE », « CATÉGORIE », « PROPRIÉTAIRE », etc.) sont en tête de chaque colonne.
+- **Champs obligatoires** : 
+  - Aucun indiqué explicitement par une étoile (*).
+- **États** : 
+  - Les lignes de news peuvent avoir différents états (publié ou non).
+- **Relations spatiales** : 
+  - Le bouton « Je crée une News » est positionné en bas de la liste, suggérant qu'il permet de créer une nouvelle news.

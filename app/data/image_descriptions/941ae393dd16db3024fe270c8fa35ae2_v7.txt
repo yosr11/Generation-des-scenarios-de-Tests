@@ -1,0 +1,82 @@
+[Image jointe : image-2025-03-20-11-07-42-874.png]
+── Textes détectés (OCR) ──
+& Design Center - [PLCLPAD Utilisateur local-Gestion personnel]
+® Objet Edition Outils Affichage Fenêtre ?
+SHsF AEONE 98 :B5EX o+ #R O
+# HROExplorer | [@PLCLPAD |
+Défintion | Quaifiants | Références | [Sructure | Mission | Règles d'attibution | Source XML |
+Données variables du rôle | Périmétre des populations |
+La structure est non modifiable car héritée de l'objet SLCL
+Structures de données intesrogeables
+@ ® ® ® L ® L ® ® ® ®
+ZA:Postes ZB:Demande de ZC:Emplois ZD:Réglementation ZE:Unité ZG:Recherche ZL:Enfants ZS:Anêtés/Décisi.  ZT:Foimations ZU:Sessions de Z/.Demande de
+personnel Ressouices hum…. — oiganisationnelle compétence... formation formation
+Pésimêtre pour ZE %3 % c9' & X Délinissez une ou plusieurs populations de base sur ZE
+EIË Dossiesfs] : ZE
+] Identification (ZE00}
+<Nom> Défaut Taile Condition
+ORG-UNITS Oui L : \dentification. ZE 00CYOUQO = ?RoteCY 0000
+@) Objet Edition Outils Affichage Fenêtre ?
+FHSE /E56 09 Ex
+x3 C4
+#H?Q
+## HRD Explorer
+| [@yPrCLPAD |
+Définétion lQuaËiants | Références | Structure | Mission | Règles d'attibution | Source XML |
+ZA:Postes
+ZB:Demande de
+ZC:Ermplois
+ZD:Réglementation
+ZE:Unité
+ZG:Recherche
+ZL:Enfants
+ZS:Asétés/Décisi.
+ZT:Formations
+ZU:Sessions de
+ZV.Demande de
+personnel
+Ressources hum...
+Oiganisationnelle
+compétence…
+formation
+Pésimétre pour ZE
+s85ex
+Définissez une ou plusieurs populations de base sur ZE
+O-F Dossies(s) : ZE
+Identification (ZE0O]
+<Nom>
+Défaut
+Taille
+Condition
+ORG-UNITS
+Oui
+: Identification. ZE 0OCYOUCO = ?RoleCY0000
+── Analyse visuelle (VLM) ──
+Voici mon analyse de l'image :
+
+**1. CONTEXTE**
+L'écran semble être une interface de configuration ou de gestion de données pour un système de gestion des ressources humaines, probablement un écran de type "Définition" ou "Configuration" pour un module spécifique appelé "PLCLPAD". L'intention probable est de permettre à l'utilisateur de définir ou de modifier des paramètres liés aux données variables du rôle et au périmètre des populations.
+
+**2. ANNOTATIONS AJOUTÉES PAR LE PO**
+Aucune annotation n'est ajoutée par-dessus l'écran original.
+
+**3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI**
+- Un onglet actif (forme rectangulaire avec un léger soulignement) intitulé "Définition".
+- Un onglet inactif (forme rectangulaire sans soulignement) intitulé "Qualifiants".
+- Un onglet inactif (forme rectangulaire sans soulignement) intitulé "Références".
+- Un onglet inactif (forme rectangulaire sans soulignement) intitulé "Structure".
+- Un onglet inactif (forme rectangulaire sans soulignement) intitulé "Mission".
+- Un onglet inactif (forme rectangulaire sans soulignement) intitulé "Règles d'attribution".
+- Un onglet inactif (forme rectangulaire sans soulignement) intitulé "Source XML".
+- Un bouton ou un élément d'action (icône représentant une petite feuille avec un crayon) probablement pour éditer ou créer un nouvel élément, situé à côté de "Dossier(s) : ZE".
+- Des icônes de type " warning" ou "information" (petits cercles colorés) associés à chaque item sous "Structures de données interrogeables".
+
+**4. ICÔNES ET PICTOGRAMMES**
+- Une icône représentant un petit carré violet avec un "moins" blanc à l'intérieur, située à gauche de "Dossier(s) : ZE".
+- Des icônes représentant de petites boules rouges avec un dessin à l'intérieur ( Warning ou Information), associées à chaque item sous "Structures de données interrogeables".
+
+**5. AGENCEMENT ET RELATIONS**
+- L'écran est divisé en sections avec des en-têtes clairs : "Données variables du rôle" et "Périmètre des populations".
+- Un groupe d'onglets en haut, dont "Définition" est actuellement sélectionné.
+- Une section intitulée "Structures de données interrogeables" présente une liste d'éléments avec des icônes.
+- Un tableau ou une grille en bas avec des champs pour "<Nom>", "Défaut", "Taille", et "Condition".

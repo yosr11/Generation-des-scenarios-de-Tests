@@ -37,19 +37,20 @@ except ImportError:
     print("[WARN] sentence-transformers non disponible – similarité cosinus ignorée.")
 
 # ── Import du client LLM existant ───────────────────────────────────────────
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+# Ajouter la racine du projet afin que l'import "app.services.llm_client" fonctionne
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from app.services.llm_client import call_github_models
 
 # ── Chemins ─────────────────────────────────────────────────────────────────
 JSON_FILE = Path(__file__).parent / "JSON file.json"
-OUTPUT_FILE = Path(__file__).parent / "results" / "generated_tests_evaluation.json"
+OUTPUT_FILE = Path(__file__).resolve().parents[1] / "results" / "generated_tests_evaluation_gpt_4.1.json"
 
 # ── Modèle sentence-transformers (multilingue FR/EN) ────────────────────────
 ST_MODEL_NAME = "paraphrase-multilingual-MiniLM-L12-v2"
 
 # ── LLM Judge model ─────────────────────────────────────────────────────────
 JUDGE_MODEL = "gpt-4.1"       # GitHub Models — contexte 128k, pas de limite TPM stricte
-JUDGE_MAX_CHARS = 6000        # troncature par bloc (gold / generated)
+JUDGE_MAX_CHARS = None        # troncature par bloc (gold / generated). None = no truncation
 
 
 # ────────────────────────────────────────────────────────────────────────────
@@ -184,6 +185,9 @@ Description : {story_desc}
 
 def _truncate(text: str, max_chars: int) -> str:
     """Tronque un texte à max_chars caractères si nécessaire."""
+    # If max_chars is None or non-positive, do not truncate
+    if not max_chars or max_chars <= 0:
+        return text
     if len(text) <= max_chars:
         return text
     return text[:max_chars] + "\n...[tronqué pour respecter la limite de contexte]"
@@ -193,6 +197,15 @@ def call_llm_judge(user_story: dict, gold_text: str, gen_text: str) -> dict:
     gold_trunc = _truncate(gold_text, JUDGE_MAX_CHARS)
     gen_trunc  = _truncate(gen_text,  JUDGE_MAX_CHARS)
     user_prompt = build_judge_user_prompt(user_story, gold_trunc, gen_trunc)
+    # Log the size of the blocks sent to the LLM for diagnostics
+    try:
+        gold_len = len(gold_trunc) if isinstance(gold_trunc, str) else 0
+        gen_len = len(gen_trunc) if isinstance(gen_trunc, str) else 0
+        print(f"  → Taille du bloc GOLD envoyé au juge: {gold_len} caractères")
+        print(f"  → Taille du bloc GENERATED envoyé au juge: {gen_len} caractères")
+    except Exception:
+        # ne pas échouer l'évaluation pour un simple log
+        pass
     try:
         raw_str = call_github_models(
             system_prompt=JUDGE_SYSTEM_PROMPT,
@@ -382,6 +395,21 @@ def compute_summary(results: list) -> dict:
     }
 
 
+def load_previous_results() -> dict:
+    if OUTPUT_FILE.exists():
+        with open(OUTPUT_FILE, encoding="utf-8") as f:
+            return json.load(f)
+    return {"results": []}
+
+
+def get_evaluated_story_ids(previous_results: dict) -> set:
+    return {
+        r["story_id"]
+        for r in previous_results.get("results", [])
+        if r.get("story_id")
+    }
+
+
 def main():
     print("=" * 60)
     print("Évaluation des Generated Tests vs Gold Tests")
@@ -389,6 +417,10 @@ def main():
 
     data = load_data()
     print(f"Stories chargées : {len(data)}")
+
+    previous_results = load_previous_results()
+    evaluated_ids = get_evaluated_story_ids(previous_results)
+    print(f"Stories déjà évaluées : {len(evaluated_ids)}")
 
     # Charger le modèle sentence-transformers une seule fois
     st_model = None
@@ -400,8 +432,13 @@ def main():
         except Exception as e:
             print(f"  [WARN] Impossible de charger le modèle ST : {e}")
 
-    results = []
+    results = previous_results.get("results", [])
     for story in data:
+        story_id = story.get("story_id")
+        if story_id in evaluated_ids:
+            print(f"[{story_id}] déjà évaluée, skipped.")
+            continue
+
         result = evaluate_story(story, st_model)
         results.append(result)
         # Petite pause entre les appels LLM pour éviter le rate-limit

@@ -72,7 +72,7 @@ export const AdminDashboardPage: React.FC = () => {
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
         <StatCard label="Utilisateurs actifs" value={stats?.active_users ?? 0}
           icon={Users} color="#f43f5e" bg="rgba(244,63,94,0.08)" border="rgba(244,63,94,0.2)" />
-        <StatCard label="Testeurs" value={stats?.tester_count ?? 0}
+        <StatCard label="Ingénieurs QA" value={stats?.tester_count ?? 0}
           icon={Activity} color="#f97316" bg="rgba(249,115,22,0.08)" border="rgba(249,115,22,0.2)" />
         <StatCard label="Pipelines lancés" value={stats?.total_pipelines ?? 0}
           icon={GitBranch} color="#7c3aed" bg="rgba(124,58,237,0.08)" border="rgba(124,58,237,0.2)" />

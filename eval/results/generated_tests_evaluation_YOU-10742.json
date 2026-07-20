@@ -1,0 +1,60 @@
+{
+  "evaluation_model": "gpt-4.1 (GitHub Models) + paraphrase-multilingual-MiniLM-L12-v2",
+  "summary": {
+    "evaluated_stories": 1,
+    "skipped_stories": 0,
+    "averages": {
+      "cosine_similarity": 0.7,
+      "coverage_score": 60.0,
+      "missing_tests_score": 50.0,
+      "qa_quality_score": 80.0,
+      "business_similarity": 70.0,
+      "final_score": 65.0
+    },
+    "verdict_distribution": {
+      "GOOD": 0,
+      "PARTIAL": 1,
+      "BAD": 0
+    },
+    "per_story_scores": [
+      {
+        "story_id": "YOU-10742",
+        "user_story_title": "RH de proximité - HRA4U - Widget population - Sourcing back-end - collaborateurs et Activités",
+        "cosine_similarity": 0.7016,
+        "coverage_score": 60,
+        "missing_tests_score": 50,
+        "qa_quality_score": 80,
+        "business_similarity": 70,
+        "final_score": 65.0,
+        "verdict": "PARTIAL"
+      }
+    ]
+  },
+  "results": [
+    {
+      "story_id": "YOU-10742",
+      "user_story_title": "RH de proximité - HRA4U - Widget population - Sourcing back-end - collaborateurs et Activités",
+      "priority": "P1-High",
+      "gold_tests_count": 1,
+      "generated_tests_count": 4,
+      "metric_1_cosine_similarity": 0.7016,
+      "metric_2_llm_judge": {
+        "coverage_score": 60,
+        "missing_tests_score": 50,
+        "qa_quality_score": 80,
+        "business_similarity": 70,
+        "final_score": 65.0,
+        "missing_scenarios": [
+          "Affichage des vignettes individuelles avec photo, nom, prénom, matricule",
+          "Tri alphabétique des collaborateurs dans le widget",
+          "Affichage du lien 'Accéder à tous mes collaborateurs' avec icône",
+          "Navigation vers la page 'Mes collaborateurs' via le lien",
+          "Consultation de l'onglet 'Ses données individuelles' d'un collaborateur",
+          "Affichage détaillé des données individuelles en consultation uniquement"
+        ],
+        "summary": "Les tests générés couvrent partiellement les fonctionnalités métier, mais omettent plusieurs scénarios importants liés à l'affichage détaillé des collaborateurs et à la navigation. La qualité des tests est bonne, mais la couverture et la similarité métier restent limitées. Des scénarios essentiels de consultation et de navigation manquent pour une validation complète.",
+        "verdict": "PARTIAL"
+      }
+    }
+  ]
+}

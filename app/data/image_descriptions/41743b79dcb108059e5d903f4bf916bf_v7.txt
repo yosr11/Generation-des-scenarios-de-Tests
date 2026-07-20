@@ -1,0 +1,62 @@
+[Image jointe : pptx_slide_1.png]
+── Textes détectés (OCR) ──
+= @ Mes collaborateurs o ? O
+O\ Res tiers en en ER LA A R
+v DEP QA1
+Adam Q11INPAO1 ' - V _
+V FRLFR4Y1336
+AHMED AHMED - —l
+FRLFR4Y1444
+—, Ahmed Q11CNTR13 (5 ) - —Ll
+Q FRLFR4Y1346
+m Alexander QTLT20 (2] > [
+@ FRLFR4Y000060
+Alexandre QTLT42 (2] - - - -
+FRLFR4Y000091
+ALINE QTRNS03 1’ HE u. _ H
+FRLFR4Y1278
+Mes collaborateurs
+O,
+il
+E =d
+Adam Q11INPAO01
+FRLFR4Y1336
+'—_
+AHMED AHMED
+FRLFRAY1444
+P o=
+Ahmed Q11CNTR13
+FRLFR4Y1346
+—-
+Alexander QTLT20
+FRLFR4YN00060
+Alexandre QTLT42
+FRLFR4YD00091
+ALINE QTRNS03
+── Analyse visuelle (VLM) ──
+### 1. CONTEXTE
+L'écran capture une liste de collaborateurs, probablement dans un tableau de bord ou une page de gestion des ressources humaines. L'intention est de visualiser et peut-être de gérer les informations relatives aux collaborateurs.
+
+### 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+### 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- **Pastilles / Badges** : Plusieurs pastilles de couleur verte, orange et rouge sont présentes à côté des noms des collaborateurs, mais leur signification n'est pas explicitement claire sans contexte supplémentaire.
+  - **Forme** : Rondes
+  - **Couleur de fond** : Verte, orange, rouge
+  - **Texte OCR** : Aucun texte spécifique dans ces pastilles.
+
+### 4. ICÔNES ET PICTOGRAMMES
+- **Icônes de statut** : Plusieurs icônes sont présentes dans la liste, notamment :
+  - Une icône de triangle orange ( Warning / Attention )
+  - Une icône de cloche ( Notifications / Alertes )
+  - Une icône de poubelle ( Supprimer / Déleted )
+  - Une icône de crayon ou de modification ( Édition )
+  - Une icône de vue ou d'œil ( Voir / Visualiser )
+- **Position** : Ces icônes sont généralement alignées dans des colonnes spécifiques à droite de la liste des collaborateurs.
+
+### 5. AGENCEMENT ET RELATIONS
+- **Structure** : La page est organisée en sections avec un en-tête contenant des options de recherche et de navigation.
+- **Tableau** : La liste des collaborateurs est présentée dans un tableau avec plusieurs colonnes, probablement pour afficher des informations telles que le nom, le code, et des indicateurs de statut.
+- **Regroupements visuels** : Les collaborateurs sont regroupés sous une en-tête « DEP QA1 », suggérant une catégorisation par département ou équipe.
+- **Hiérarchie** : Les titres et sous-titres sont utilisés pour organiser les informations, par exemple, « Mes collaborateurs » comme titre principal et « DEP QA1 » comme sous-titre ou catégorie.

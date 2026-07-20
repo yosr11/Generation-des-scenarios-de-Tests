@@ -1,0 +1,109 @@
+[Image jointe : image-2025-01-06-10-30-42-033.png]
+── Textes détectés (OCR) ──
+= @ Gestion des News o, ?
+Vous gétezicrvos Nevs, vous pouvez crèer des Annonces et des Actuates ! î !
+> Je crée une News Û, Ël
+Supprimer la capacité à attacher un doc.
+Lot cramea e suat s Lea 0 qc ce grit es Etre capable d'ajouter plusieurs liens
+Type de New,s * Langue * Texte *rs
+Arnence - = ; Syiev BIU AV X" @y [y = = © + S
+Date de debur de publicaton * 15 Dare de ‘n de publication * iy
+Titre * R 2 .
+Ajouter une zone trombone supplémentaire pour
+le document actualité attaché UNIQUEMENT pour
+© - les actualités.
+Ajouter des titres, un par zone de trombone. Catégorie :
+G - plusieurs possibles a cocher dans une liste, avec choix multiples
+obligatoire
+Aperçu Mots-clefs :
+v a P s plusl,ieurs possibles à cocher dans une liste, avec choix multiples, ils dépendent de la
+»…, Thietry Cabannes reçoi les acteurs catégorie.
+de l'info du jour, ces experts et n FaCU|tatlf
+Gérer plusieurs catégories entraine une complexité sur la gestion des mots clefs associés.
+Ne pas présenter deux fois le même mot-clef, dans la liste des mots-clefs.
+22 Carte d'identité Sopra HR Software 2020
+Gestion des News
+O,
+18210V CS NEWS, vous pouvez crèer des Annonces et des Actuates ! î !
+It
+> Je crée une News
+0, B,
+Supprimer la capacité a attacher un doc.
+Lez tma~ss
+LA
+Etre capable d’ajouter plusieurs liens
+Type de News *
+Langue ”
+Texte
+Arneonce
+Style v
+B I L Av
+( <
+@v
++ v
+Dare de debut de publicaton * IÎ_')
+Dare de ‘n de publication * iy
+PR
+en
+__ 22 2000
+el
+Titre
+les actualités.
+ur
+Ajouter des titres, un par zone de trombone
+Catégorie :
+Æ m
+plusieurs possibles à cocher dans une liste, avec choix multiples
+Aperçu
+Mots-clefs :
+plusieurs possibles à cocher dans une liste, avec choix multiples, ils dépendent de la
+abannes reg
+catégorie.
+de l'info du jour, ces experts et n
+Facultatif
+Gérer plusieurs catégories entraine une complexité sur la gestion des mots clefs associés
+22
+Carte d'identité Sopra HR Software 2020
+rrr ——>
+── Analyse visuelle (VLM) ──
+### 1. CONTEXTE
+L'écran semble être un formulaire pour créer ou gérer des "News" (actualités) dans un système de gestion de contenu. Il s'agit probablement d'une page d'administration pour la création et la gestion d'annonces et d'actualités.
+
+### 2. ANNOTATIONS AJOUTÉES PAR LE PO
+- **Type** : Flèches textuelles (jaunes avec texte rouge)
+  - **Couleur** : Jaune avec texte rouge
+  - **Cible** :
+    - **"Supprimer la capacité à attacher un doc. Être capable d'ajouter plusieurs liens"** (entoure les champs « Texte » et potentiellement le champ « Type de News »)
+    - **"Ajouter une zone trombone supplémentaire pour le document actualité attaché UNIQUEMENT pour les actualités. Ajouter des titres, un par zone de trombone."** (dirigée vers le champ « Titre » et une zone d'image)
+    - **"Gérer plusieurs catégories entraine une complexité sur la gestion des mots clefs associés. Ne pas présenter deux fois le même mot-clef, dans la liste des mots clefs."** (aucun élément spécifique entouré, en bas de l'écran)
+
+### 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- **Badge/étiquette** :
+  - **Forme** : Rectangulaire
+  - **Couleur de fond** : Aucune couleur spécifique (fond blanc)
+  - **Texte OCR** : 
+    - « Catégorie : plusieurs possibles à cocher dans une liste, avec choix multiples obligatoire »
+    - « Mots-cléfs : plusieurs possibles à cocher dans une liste, avec choix multiples, ils dépendent de la catégorie. Facultatif »
+
+### 4. ICÔNES ET PICTOGRAMMES
+- **Icône de menu** (peut-être un hamburger menu) : En haut à gauche, probablement utilisé pour ouvrir le menu de navigation.
+- **Icônes de formatage de texte** : Dans la zone « Texte », il y a des icônes pour la mise en forme du texte, comme :
+  - **Gras** (B)
+  - **Italique** (I)
+  - **Souligné** (U)
+  - **Alignement** (alignements à gauche, centré, à droite)
+  - **Lien** (+)
+
+### 5. AGENCEMENT ET RELATIONS
+- **Structure** : Le formulaire est divisé en sections avec des champs étiquetés.
+  - **Type de News** et **Langue** sont côte à côte en haut.
+  - **Date de début de publication** et **Date de fin de publication** sont côte à côte en dessous.
+  - **Titre** est seul dans une ligne.
+  - **Zone de texte** avec des options de formatage.
+  - **Catégorie** et **Mots-cléfs** sont en bas, avec des indications sur les choix multiples.
+
+- **Champs obligatoires** : Indiqués par un astérisque (*), comme **Type de News**, **Langue**, **Date de début de publication**, **Titre**.
+
+- **Relations spatiales** : 
+  - Le champ « Titre » est proche d'une zone pour ajouter une image.
+  - Les sections « Catégorie » et « Mots-cléfs » sont en bas de l'écran, suggérant qu'elles sont importantes mais pas urgentes.

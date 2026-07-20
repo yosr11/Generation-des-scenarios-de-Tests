@@ -1,0 +1,87 @@
+[Image jointe : pptx_slide_2.png]
+── Textes détectés (OCR) ──
+= @ Espace de gestion o ? O
+ACTIVITES PROCESSUS RH \i/ MES COLLABORATEURS
+C 1 deiscom ABSONASS
+VES 20T TES 4 PILOTAGE CSP (309] Origer une adresse Q srine
+-A -E -4 -U
+1634 50 à Changer une situation familiale Ç A RAREER
+20T TES NON STTRIBLEES 13 OE e — Ajouter les contacts en cas d'urgence '{‘ :‘V‘IJHMJ
+74 -F 2019 = en
+Poser une question RH -ä drss MONTEVERI
+& FRLTET N
+PAIE - CONTROLES DE PAIE DSN INDICATEUR SPECIFIQUE
+. DOSS ERS INDIVIDJELS À CONTRE £3
+22 103
+Ê* Espace DSN
+É ;* RÉSULTATS DE PAIE & CONTRÔLER
+O,
+@ Espace de gestion
+PROCESSUS RH
+MES COLLABORATEURS
+ACTIVITÉS
+PILOTAGE CSP
+Corriger une adresse
+0O
+FSOIA*
+CTI/TÉS
+-a
+-—
+Éredés que BARDER
+Changer une situation familiale
+FROTETI CC
+DELAIS DE TRAITEMENT
+COMBARD
+<T
+TES NON STTRIBLEES
+13
+Ajouter les contacts en cas d'urgence
+K.TET
+74
+-E 24 1@
+Poser une question RH
+FRATEU C
+drss VMONTAVARD
+PAIE -
+CONTRÔLES DE PAIE
+DSN
+INDICATEUR SPÉCIFIQUE
+DCSS ERS INDIVIS JELS À CON
+NTRE.
+ITRA
+es
+103
+RÉSULTATS DE PAIE A CONTRÔLE
+Espace DSN
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran capturé est un tableau de bord ou un dashboard d'une application web, probablement utilisé pour la gestion des ressources humaines. Il est divisé en plusieurs sections qui affichent différentes informations.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un graphique linéaire (dans la section "PAIE - CONTROLES DE PAIE") avec des lignes horizontales et un axe vertical avec des étiquettes.
+- Des pastilles ou badges de couleur :
+  - Forme : Rectangulaires
+  - Couleur de fond : Gris clair
+  - Texte OCR : "Dossiers individuels à contrôler" et "103", ainsi que "Résultats de paie à contrôler" et "0".
+- Des boutons ou liens :
+  - Texte OCR : "Corriger une adresse", "Changer une situation familiale", "Ajouter les contacts en cas d'urgence", "Poser une question RH", "Tout voir" (deux occurrences).
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Une icône de nuage avec un éclair (dans la section "PILOTAGE CSP") qui indique probablement un délai de traitement.
+- Des icônes de personnes (dans la section "MES COLLABORATEURS") qui représentent les profils des collaborateurs.
+
+## 5. AGENCEMENT ET RELATIONS
+- L'écran est divisé en plusieurs sections ou blocs :
+  - "ACTIVITÉS" avec des sous-sections "MES ACTIVITÉS" et "ACTIVITÉS NON ATTRIBUÉES".
+  - "PILOTAGE CSP" avec des informations sur les délais de traitement.
+  - "PROCESSUS RH" avec une liste d'actions.
+  - "MES COLLABORATEURS" avec une liste de profils.
+  - "PAIE - CONTROLES DE PAIE" avec des statistiques.
+  - "DSN" avec un espace intitulé "Espace DSN".
+  - "INDICATEUR SPÉCIFIQUE" avec un espace vide.
+
+## RÉSUMÉ
+L'écran semble être un tableau de bord centralisé pour la gestion des activités, des processus RH, des contrôles de paie, et des collaborateurs. Les différentes sections fournissent des informations et des actions rapides pour l'utilisateur.

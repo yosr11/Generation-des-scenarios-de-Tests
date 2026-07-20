@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import StoryForm, { StoryFormValues } from './StoryForm'
 import ResultsPanel from './ResultsPanel'
+import { apiClient } from '../api/client'
 
 interface AnalysisResult {
   storyId: string
@@ -19,7 +20,25 @@ export default function MainPanel() {
 
     try {
       let response: Response
+
       if (options.mode === 'pipeline') {
+        let confirmed = true
+        try {
+          await apiClient.db.getStory(storyId)
+          confirmed = window.confirm(
+            `Cette story existe déjà dans l'historique. Voulez-vous relancer l'exécution pour ${storyId} ?`
+          )
+        } catch (error: any) {
+          if (error.status !== 404) {
+            throw error
+          }
+        }
+
+        if (!confirmed) {
+          setResults(null)
+          return
+        }
+
         response = await fetch(`/api/orchestrator/run/${encodeURIComponent(storyId)}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

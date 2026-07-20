@@ -24,9 +24,9 @@ const defaultValues: StoryFormValues = {
   mode: 'analysis',
   modelAgent1: 'llama4',
   modelAgent2: 'llama4',
-  modelAgent3: 'qwen3',
+  modelAgent3: 'nova-lite-2',
   modelAgent4: 'qwen3',
-  modelAgent5: 'qwen3',
+  modelAgent5: 'nova-lite-2',
   useRag: false,
   useLegacyRag: true,
   forceRefresh: false,
@@ -118,6 +118,7 @@ export default function StoryForm({ onAnalyze, isLoading }: StoryFormProps) {
                     onChange={(e) => setOption('modelAgent3', e.target.value)}
                     className="w-full px-4 py-3 border border-slate-300 rounded-2xl bg-white focus:ring-2 focus:ring-slate-400 transition"
                   >
+                    <option value="nova-lite-2">nova-lite-2</option>
                     <option value="llama4">llama4</option>
                     <option value="qwen3">qwen3</option>
                     <option value="gptoss">gptoss</option>
@@ -130,8 +131,9 @@ export default function StoryForm({ onAnalyze, isLoading }: StoryFormProps) {
                     onChange={(e) => setOption('modelAgent5', e.target.value)}
                     className="w-full px-4 py-3 border border-slate-300 rounded-2xl bg-white focus:ring-2 focus:ring-slate-400 transition"
                   >
-                    <option value="qwen3">qwen3</option>
+                    <option value="nova-lite-2">nova-lite-2</option>
                     <option value="llama4">llama4</option>
+                    <option value="qwen3">qwen3</option>
                     <option value="gptoss">gptoss</option>
                   </select>
                 </div>

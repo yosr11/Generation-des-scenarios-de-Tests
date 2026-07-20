@@ -173,7 +173,12 @@ export const StoryDetailPage: React.FC = () => {
     try { const bm    = await apiClient.agent15.getLatest(storyId);           setAgent15Output(bm)   } catch {}
     try { const tests = await apiClient.db.getManualTests(storyId);           setAgent2Output(tests) } catch {}
     try { const val   = await apiClient.db.getValidations(storyId);           setAgent3Output(val)   } catch {}
-    try { const rep   = await apiClient.agent5.getReportSummary(storyId);     setAgent5Output(rep)   } catch {}
+    try {
+      const reportResponse = await apiClient.agent5.generateReport(storyId, { output_format: 'json' })
+      setAgent5Output(reportResponse.report)
+    } catch (err) {
+      console.warn('Agent5 report generation failed:', err)
+    }
   }, [storyId])
 
   useEffect(() => { fetchHistoricalOutputs() }, [fetchHistoricalOutputs])
@@ -277,29 +282,14 @@ export const StoryDetailPage: React.FC = () => {
             )}
           </div>
           <h2 className="text-xl font-bold" style={{ color: NAV }}>{story.data?.summary || 'Aucune synthèse'}</h2>
-          <p className="text-sm text-slate-600 leading-relaxed max-w-4xl">
-            {story.data?.description_clean || story.data?.description_raw || 'Aucune description enregistrée.'}
-          </p>
 
-          <div className="grid gap-3 sm:grid-cols-3 mt-4">
+          <div className="grid gap-3 sm:grid-cols-1 mt-4">
             <div className="rounded-2xl bg-slate-50 p-4 border">
               <p className="text-[11px] uppercase tracking-[0.18em] text-slate-400 font-bold">Créée le</p>
               <p className="mt-1.5 text-sm font-bold text-slate-800">
                 {story.data?.created_at
                   ? new Date(story.data.created_at).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' })
                   : '—'}
-              </p>
-            </div>
-            <div className="rounded-2xl bg-slate-50 p-4 border">
-              <p className="text-[11px] uppercase tracking-[0.18em] text-slate-400 font-bold">Critères d'acceptation</p>
-              <p className="mt-1.5 text-xs text-slate-600 truncate">
-                {story.data?.acceptance_criteria_clean || 'Aucun critère enregistré'}
-              </p>
-            </div>
-            <div className="rounded-2xl bg-slate-50 p-4 border">
-              <p className="text-[11px] uppercase tracking-[0.18em] text-slate-400 font-bold">Étiquettes</p>
-              <p className="mt-1.5 text-sm text-slate-600">
-                {story.data?.labels?.length ? story.data.labels.join(', ') : 'Aucune'}
               </p>
             </div>
           </div>

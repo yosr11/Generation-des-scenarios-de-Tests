@@ -5,6 +5,7 @@ import {
   Users, BarChart3, ClipboardList, ShieldCheck, LayoutDashboard,
 } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
+import { getRoleDisplayName } from '../../utils/role'
 
 /* ── Nav configs ── */
 const TESTER_NAV = [
@@ -130,7 +131,7 @@ export const Sidebar: React.FC = () => {
                 color: isAdmin ? '#fb7185' : '#a855f7',
                 border: `1px solid ${isAdmin ? 'rgba(244,63,94,0.3)' : 'rgba(124,58,237,0.3)'}`,
               }}>
-              {user?.role}
+              {getRoleDisplayName(user?.role)}
             </span>
           </div>
         </div>

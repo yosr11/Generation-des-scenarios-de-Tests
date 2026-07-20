@@ -1,0 +1,54 @@
+[Image jointe : CSP-mini-indicateurs RRH.png]
+── Textes détectés (OCR) ──
+= |
+= @ Q ?0
+Mes activités MES ACTIVITÉS (0] NON ATTRIBUEES (0]
+0 a « 4 B A « 4 B
+I Y Non attribuée(s) |l En cours, En attente d... Par Date d'échéance v ç Croseureanci v
+collaborateurs
+A E A B
+Processus RH
+Indicateur
+spécifique
+0 élément Nombre d'éléments par page — 10 v
+Q,
+Mes activités
+MES ACTIVITES
+NON ATTRIBUEES
+Lo/
+-À
+4 B
+AN
+- |
+° cr cé
+Par
+Date d'échéance v
+Mes
+|-
+A B
+0 élément
+10
+Nombre d'éléments par page
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran semble être une page de tableau de bord ou de liste dans une application web, probablement liée à la gestion des activités ou des tâches. L'intention probable est de visualiser et de gérer les activités non attribuées.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un badge ou pastille rouge avec le chiffre "2" près de l'onglet "Non attribuée(s)".
+- Des icônes de cloche (sonnette) avec des nombres ou des symboles de notification dans la partie supérieure.
+- Un champ déroulant pour choisir le nombre d'éléments par page avec la valeur "10".
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Une icône de sonnette (cloche) près de l'onglet "MES ACTIVITÉS".
+- Une icône de sonnette (cloche) près de l'onglet "NON ATTRIBUÉES".
+- Une icône "+" dans un bouton pour probablement ajouter une nouvelle activité.
+- Des icônes de tri et de filtre au-dessus de la liste.
+
+## 5. AGENCEMENT ET RELATIONS
+- La page est divisée en sections avec un menu latéral gauche contenant des catégories telles que "Mes activités", "Mes collaborateurs", "Processus RH", et des indicateurs spécifiques.
+- La section principale contient des onglets "MES ACTIVITÉS" et "NON ATTRIBUÉES".
+- Un message "Nous n'avons trouvé aucun résultat." est affiché dans la section centrale, indiquant qu'il n'y a pas d'activités à afficher.
+- La pagination est présente en bas avec des flèches de navigation et un champ pour choisir le nombre d'éléments par page.

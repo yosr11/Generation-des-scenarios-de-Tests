@@ -1,0 +1,39 @@
+[Image jointe : image-2025-04-08-12-36-26-810.png]
+── Textes détectés (OCR) ──
+socA
+SOCA ETABAL Banking
+SOCA ETABA2 Direction
+socB
+ETABA3 Trinity
+ETABB2 Direction informatique
+SOCA ETABA1 Banking
+── Analyse visuelle (VLM) ──
+Voici mon analyse de l'image :
+
+**1. CONTEXTE**
+L'écran semble être une liste de sélection ou un formulaire avec des cases à cocher. Son intention probable est de permettre à l'utilisateur de sélectionner des options parmi une liste.
+
+**2. ANNOTATIONS AJOUTÉES PAR LE PO**
+Aucune annotation détectée.
+
+**3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI**
+Il y a cinq cases à cocher avec des textes associés :
+- Une case à cocher avec le texte "SOCA"
+- Une case à cocher avec le texte "SOCA ETABA1 Banking"
+- Une case à cocher avec le texte "SOCA ETABA2 Direction"
+- Une case à cocher avec le texte "ETABA3 Trinity"
+- Une case à cocher avec le texte "ETABB2 Direction informatique"
+
+**4. ICÔNES ET PICTOGRAMMES**
+Aucune icône ou pictogramme visible.
+
+**5. AGENCEMENT ET RELATIONS**
+La liste est organisée en deux catégories : "SOCA" et "SOCB". Chaque catégorie contient des options avec des cases à cocher. Les options sont :
+- Sous "SOCA" :
+  - SOCA ETABA1 Banking
+  - SOCA ETABA2 Direction
+- Sous "SOCB" :
+  - ETABA3 Trinity
+  - ETABB2 Direction informatique
+
+Les textes "SOCA" et "SOCB" semblent être des titres ou des catégories. Les options sont alignées verticalement avec leurs cases à cocher respectives.

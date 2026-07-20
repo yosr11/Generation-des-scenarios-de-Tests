@@ -1,0 +1,82 @@
+[Image jointe : image-2025-01-13-18-10-59-673.png]
+── Textes détectés (OCR) ──
+Type de Document
+Confidentialité
+COLLABORATEUR MANAGER M GESTIONNAIRE RH GESTIONNAIRE PAIE
+Population
+FINANCES SECTEUR PRIVE -20 SALARIÉS x | FRANCE DROIT PRIVÉ (PAIE) x | SOCIETE 4YOU x SIÈGE SOCIAL x
+CONSEIL POUR LA MAISON Ï
+FINANCES SECTEUR PRIVÉ -20 SALARIÉS
+FRANCE DROIT PRIVÉ (PAIE)
+i DUREE DETERMINEE x
+FRANCE DROIT PRIVE (SHR)
+PAIE SECTEUR PRIVE + 20 SALARIES
+SOCIETE 4YOU
+SOCIETE FRR
+COLLABORATEUR
+GESTIONNAIRE RH
+GESTIONNAIRE PAIE
+MANAGER Ÿ
+CONSEIL POUR LA MAISON
+FRANCE DROIT PRIVÉ (SHR)
+PAIE SECTEUR PRIVÉ + 20 SALARIÉS
+SOCIÉTÉ 4YOU
+SOCIÉTÉ FRR
+── Analyse visuelle (VLM) ──
+### 1. CONTEXTE
+L'écran capture un formulaire de type "Type de Document" avec une section déroulante pour la confidentialité et un menu contextuel ou popup pour la sélection de la population. L'intention probable est de configurer ou de sélectionner des paramètres spécifiques pour un document.
+
+### 2. ANNOTATIONS AJOUTÉES PAR LE PO
+- **Aucune annotation détectée**.
+
+### 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- **Onglets** : 
+  - Forme : Rectangulaires
+  - Couleur de fond : Bleu clair
+  - Texte OCR : 
+    - "COLLABORATEUR"
+    - "MANAGER" (sélectionné)
+    - "GESTIONNAIRE RH"
+    - "GESTIONNAIRE PAIE"
+- **Étiquettes (tags/chips)** :
+  - Forme : Rectangulaires avec fond bleu et texte blanc
+  - Couleur de fond : Bleu
+  - Texte OCR : 
+    - "FINANCES SECTEUR PRIVÉ -20 SALARIÉS"
+    - "FRANCE DROIT PRIVÉ (PAIE)"
+    - "SOCIÉTÉ 4YOU"
+    - "SIÈGE SOCIAL"
+    - "DURÉE DÉTERMINÉE"
+- **Boutons** :
+  - Forme : Rectangulaires
+  - Couleur de fond : 
+    - "Annuler" : Gris clair
+    - "Sauvegarder" : Noir avec texte blanc
+  - Texte OCR : 
+    - "Annuler"
+    - "Sauvegarder"
+
+### 4. ICÔNES ET PICTOGRAMMES
+- **Icônes de confidentialité** :
+  - Fonction probable : Sélection de la confidentialité
+  - Position : Au-dessus des onglets
+- **Flèches de fermeture** :
+  - Fonction probable : Fermer les étiquettes (tags)
+  - Position : À côté de chaque étiquette (tag)
+
+### 5. AGENCEMENT ET RELATIONS
+- **Structure** : 
+  - Le formulaire est divisé en sections avec des champs de saisie et des étiquettes.
+  - Un menu contextuel ou popup est affiché pour la sélection de la population.
+- **Regroupements visuels** :
+  - Les onglets sont regroupés horizontalement.
+  - Les étiquettes (tags) sont regroupées dans le menu déroulant.
+- **Hiérarchie** :
+  - Les titres des sections sont plus grands et plus gras que les champs de saisie.
+- **Champs obligatoires** :
+  - Aucun champ obligatoire n'est indiqué par une étoile (*).
+- **États** :
+  - Certains champs sont sélectionnés (par exemple, l'onglet "MANAGER" est sélectionné).
+- **Relations spatiales** :
+  - Le bouton "Sauvegarder" est placé à côté du bouton "Annuler".
+  - Les étiquettes (tags) sont liées aux champs de saisie correspondants.

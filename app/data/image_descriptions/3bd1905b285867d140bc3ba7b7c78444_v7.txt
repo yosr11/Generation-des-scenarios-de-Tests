@@ -1,0 +1,74 @@
+[Image jointe : pptx_slide_1.png]
+── Textes détectés (OCR) ──
+= ® @ <<c HO ? «
+ACTIVITÉS PROCESSUS RH MES COLLABORATEURS
+; Q Heanops ARSO C A
+VES SCTI/ TÉS 2 ECTVITÉS NCX ATTR BJÉES 4 Poser une question RH 2 À RUET 24
+14 - F -À -H 44 -E A -B C ;1; que BARE EF 2A
+Q . “k_ . u
+ACT Y TÉS ATTR ELÉZS 409 LOTRES 9 n ‘Aine à DM 3481 14
+f PRLTET 1
+g4 —E & B - At ss 'ACNTSVART
+-— 14
+\\_,) ÉRLTEU U
+ACTIVITES
+PROCESSUS RH
+MES COLLABORATEURS
+HOs
+PABTO UE
+2 4
+NES AT
+=C
+=>
+ACTVITÉS NCX ATTR BJÉES
+Poser une question RH
+fFLTET
+44 -
+JF
+redérque BARE EF
+2 A
+14 -E
+A -8
+FROTET OL
+-—
+—é- =
+ragei
+LOTRE
+“AITne 2
+DE 3480
+14
+8A Æ
+[N
+dr 5s ".K NTAVARC
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran capturé semble être un tableau de bord ou un écran d'accueil pour la gestion des activités et des collaborateurs dans un système RH (Ressources Humaines). Il est divisé en sections qui incluent "ACTIVITÉS", "PROCESSUS RH", et "MES COLLABORATEURS".
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- **Badges/Étiquettes** : Plusieurs badges avec des nombres à l'intérieur (par exemple, "2", "4", "9") sont visibles. Ils semblent indiquer le nombre d'activités dans chaque catégorie.
+- **Boutons/Action** : Des icônes représentant des actions (drapeau, cloche, poubelle) sont présentes dans les sections "MES ACTIVITÉS", "ACTIVITÉS NON ATTRIBUÉES", et "ACTIVITÉS ATTRIBUÉES AUX AUTRES".
+  - **Forme** : Rectangulaires ou circulaires.
+  - **Couleur de fond** : Varie, mais souvent sur fond gris ou blanc.
+  - **Texte OCR** : Pas de texte spécifique à l'intérieur, mais associés à des nombres.
+
+## 4. ICÔNES ET PICTOGRAMMES
+- **Icônes de notification** : Des triangles avec un point d'exclamation à l'intérieur (sur fond rouge) indiquent probablement des notifications ou alertes.
+  - **Fonction probable** : Indicateurs d'alertes ou notifications.
+  - **Position** : À côté des noms des collaborateurs et dans les sections d'activités.
+- **Icônes de menu/hamburger** : Une icône de menu (trois lignes horizontales) est visible en haut à gauche.
+  - **Fonction probable** : Ouvre le menu de navigation.
+  - **Position** : Coin supérieur gauche.
+- **Icônes de profil** : Des icônes représentant des photos de profil sont visibles à côté des noms des collaborateurs.
+  - **Fonction probable** : Identifiant les collaborateurs.
+  - **Position** : À côté des noms dans la section "MES COLLABORATEURS".
+
+## 5. AGENCEMENT ET RELATIONS
+- **Structure** : L'écran est divisé en trois sections principales : "ACTIVITÉS", "PROCESSUS RH", et "MES COLLABORATEURS".
+- **Regroupements visuels** : Les activités sont regroupées en "MES ACTIVITÉS", "ACTIVITÉS NON ATTRIBUÉES", et "ACTIVITÉS ATTRIBUÉES AUX AUTRES".
+- **Hiérarchie** : Les titres des sections ("ACTIVITÉS", "PROCESSUS RH", "MES COLLABORATEURS") sont plus grands et/ou plus gras que les textes sous-jacents.
+- **Champs obligatoires** : Aucun champ obligatoire n'est indiqué par un symbole comme une étoile (*).
+- **États** : Les sections d'activités semblent montrer des états différents (par exemple, attribuées, non attribuées).
+- **Relations spatiales** : Les badges numériques sont placés à côté de chaque section d'activité pour indiquer la quantité. Les icônes d'action sont alignées dans des colonnes.

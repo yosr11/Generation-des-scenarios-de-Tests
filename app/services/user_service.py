@@ -5,12 +5,14 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
-from sqlalchemy import select, update
+from sqlalchemy import case, select, update
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.security import hash_password, verify_password
 from app.models.pg_models import User
+import secrets
+from app.services.email_service import send_account_created_email
 
 
 # ──────────────────────────────────────────────────────────
@@ -44,10 +46,23 @@ async def get_user_by_id(db: AsyncSession, user_id: int) -> Optional[Dict[str, A
     u = result.scalar_one_or_none()
     return _user_to_dict(u) if u else None
 
+async def get_user_by_email_and_role(db: AsyncSession, email: str, role: str) -> Optional[User]:
+    result = await db.execute(
+        select(User).where(User.email == email, User.role == role)
+    )
+    return result.scalar_one_or_none()
+
+async def get_users_by_email(db: AsyncSession, email: str) -> List[User]:
+    result = await db.execute(
+        select(User)
+        .where(User.email == email)
+        .order_by(case((User.role == "admin", 0), else_=1))
+    )
+    return result.scalars().all()
 
 async def get_user_by_email(db: AsyncSession, email: str) -> Optional[User]:
-    result = await db.execute(select(User).where(User.email == email))
-    return result.scalar_one_or_none()
+    users = await get_users_by_email(db, email)
+    return users[0] if users else None
 
 
 async def get_user_by_jira_username(db: AsyncSession, jira_username: str) -> Optional[User]:
@@ -61,28 +76,35 @@ async def get_user_by_jira_username(db: AsyncSession, jira_username: str) -> Opt
 #  Create
 # ──────────────────────────────────────────────────────────
 
+
+
 async def create_user(
     db: AsyncSession,
     *,
     email: str,
-    password: str,
+    password: Optional[str] = None,
     role: str = "tester",
     display_name: Optional[str] = None,
     jira_username: Optional[str] = None,
 ) -> Dict[str, Any]:
-    """Create a new user. For testers, email is optional placeholder and jira_username is the key."""
-    existing = await get_user_by_email(db, email)
+    """Create a new user. Un même email peut être utilisé pour un compte admin
+    ET un compte tester (deux comptes distincts), mais pas deux fois pour le même rôle."""
+    existing = await get_user_by_email_and_role(db, email, role)
     if existing:
-        return {"ok": False, "error": "Un utilisateur avec cet email existe déjà."}
+        role_label = "administrateur" if role == "admin" else "testeur"
+        return {"ok": False, "error": f"Un compte {role_label} avec cet email existe déjà."}
 
     if jira_username:
         existing_jira = await get_user_by_jira_username(db, jira_username)
         if existing_jira:
             return {"ok": False, "error": f"L'identifiant Jira '{jira_username}' est déjà enregistré."}
 
+    # Placeholder aléatoire : jamais utilisé pour se connecter (auth via Jira ou admin dédié)
+    placeholder_password = password or secrets.token_urlsafe(32)
+
     user = User(
         email=email,
-        hashed_password=hash_password(password) if password else hash_password("__jira__"),
+        hashed_password=hash_password(placeholder_password),
         role=role,
         display_name=display_name,
         jira_username=jira_username,
@@ -96,7 +118,12 @@ async def create_user(
         await db.rollback()
         return {"ok": False, "error": str(exc.orig)}
 
-    return {"ok": True, "user": _user_to_dict(user)}
+    # Envoi de l'email de bienvenue (best-effort, ne bloque pas la création)
+    email_sent = False
+    if jira_username:
+        email_sent = await send_account_created_email(email, jira_username, display_name)
+
+    return {"ok": True, "user": _user_to_dict(user), "email_sent": email_sent}
 
 
 # ──────────────────────────────────────────────────────────
@@ -108,6 +135,7 @@ async def update_user(
     user_id: int,
     *,
     display_name: Optional[str] = None,
+    email: Optional[str] = None,
     jira_username: Optional[str] = None,
     password: Optional[str] = None,
     role: Optional[str] = None,
@@ -119,8 +147,13 @@ async def update_user(
 
     if display_name is not None:
         user.display_name = display_name
+    if email is not None:
+        # Unicité vérifiée par rapport au rôle ACTUEL du compte (pas email seul)
+        existing_email = await get_user_by_email_and_role(db, email, user.role)
+        if existing_email and existing_email.id != user_id:
+            return {"ok": False, "error": f"Un autre compte {user.role} utilise déjà l'email '{email}'."}
+        user.email = email
     if jira_username is not None:
-        # Check uniqueness
         existing_jira = await get_user_by_jira_username(db, jira_username)
         if existing_jira and existing_jira.id != user_id:
             return {"ok": False, "error": f"L'identifiant Jira '{jira_username}' est déjà utilisé."}

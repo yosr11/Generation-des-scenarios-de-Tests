@@ -1,0 +1,91 @@
+[Image jointe : pptx_slide_1.png]
+── Textes détectés (OCR) ──
+= @ Œ) Espace gestionnaire O‘ ? Q)
+ACTIVITÉS PROCESSUS RH MES COLLABORATEURS
+MES ACTIVITÉS 0 ACTIVITÉS NON ATTRIBUÉES 1 Alex QSTAT02
+Poser une question RH - 1
+A Æ E a - A @ 00000681
+-4 -F -& - æ  Abdou QTRANSO4
+@ 00000679
+ABF TESTUSER
+00000713
+ACTIVITÉS ATTRIBUÉES AUX AUTRES 0 _
+æ Akrem QCOMF12
+A -E A -a 00000668
+/ ALIA QCNTRK19
+@ 00000630
+\'_} Accéder à tous les processus RH &s Accéder àtous es collaborateurs
+CONTRÔLES DE PAIE DSN
+DOSSIERS À CONTRÔLER
+; ; Espace DSN
+PAIES À CONTRÔLER
+@ (%) Espace gestionnaire
+ACTIVITÉS
+PROCESSUS RH
+MES COLLABORATEURS
+MES ACTIVITÉS
+ACTIVITÉS NON ATTRIBUÉES
+Poser une question RH
+Alex QSTATO2
+00000681
+-À
+SN
+-F
+-J
+Abdou QTRANS04
+00000679
+ACTIVITES ATTRIBUEES AUX AUTRES
+Akrem QCOMF12
+00000668
+ALIA QCNTRK19
+00000630
+Accéder à tous res collaborateurs
+-t
+ccéder à tous les processus RH
+CONTROLES DE PAIE
+DSN
+DOSSIERS A CONTROLER
+Espace DSN
+PAIES A CONTROLER
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran capturé est un tableau de bord (dashboard) pour un espace gestionnaire, probablement dans un système de gestion des ressources humaines (RH). Il présente diverses sections liées aux activités, processus RH, collaborateurs, contrôles de paie et DSN (Déclaration Sociale Nominative).
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- **Pastille (badge) de notification** : 
+  - Forme : Cercle.
+  - Couleur de fond : Rouge.
+  - Texte OCR : "1" (dans la section "ACTIVITÉS NON ATTRIBUÉES").
+- **Icônes de statut** (dans les sections "MES ACTIVITÉS", "ACTIVITÉS NON ATTRIBUÉES", "ACTIVITÉS ATTRIBUÉES AUX AUTRES") :
+  - Forme : Petits symboles (triangle avec un point d'exclamation, drapeau, triangle avec un point d'exclamation inversé, bulle de discussion).
+  - Couleur de fond : Aucune (apparence variable).
+  - Texte OCR : Aucun.
+
+## 4. ICÔNES ET PICTOGRAMMES
+- **Icône de profil** : 
+  - Fonction probable : Représente un utilisateur.
+  - Position : À côté des noms des collaborateurs dans la section "MES COLLABORATEURS".
+- **Icône de question** :
+  - Fonction probable : Aide ou question.
+  - Position : En haut à droite du tableau de bord.
+- **Icône de recherche** :
+  - Fonction probable : Recherche.
+  - Position : En haut à droite du tableau de bord, à côté de l'icône de question.
+- **Icône de paramètres** :
+  - Fonction probable : Paramètres ou menu.
+  - Position : En haut à gauche du tableau de bord.
+
+## 5. AGENCEMENT ET RELATIONS
+- **Structure** : Le tableau de bord est divisé en sections :
+  - "ACTIVITÉS" (divisée en "MES ACTIVITÉS", "ACTIVITÉS NON ATTRIBUÉES", "ACTIVITÉS ATTRIBUÉES AUX AUTRES").
+  - "PROCESSUS RH".
+  - "MES COLLABORATEURS".
+  - "CONTROLES DE PAIE" (divisée en "DOSSIERS À CONTRÔLER", "PAIES À CONTRÔLER").
+  - "DSN" (Espace DSN).
+- **Regroupements visuels** : Les sections sont regroupées dans des blocs distincts.
+- **Hiérarchie** : Les titres de section sont plus grands et plus visibles que les sous-titres ou les éléments de liste.
+- **Champs obligatoires** : Aucun champ obligatoire identifié par une étoile (*).
+- **États** : Certains éléments montrent des états (par exemple, le nombre de dossiers à contrôler est indiqué).

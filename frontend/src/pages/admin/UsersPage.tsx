@@ -1,11 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { apiClient } from '../../api/client'
 import { useToast } from '../../contexts/ToastContext'
+import { useAuth } from '../../contexts/AuthContext'
 import {
   Plus, Pencil, Trash2, UserCheck, UserX, X, Save, Eye, EyeOff,
   Users, Search, RefreshCw
 } from 'lucide-react'
 import { Badge } from '../../components/ui/Badge'
+import { getRoleDisplayName } from '../../utils/role'
 
 interface User {
   id: number
@@ -25,6 +27,7 @@ const UserModal: React.FC<{
   onSaved: () => void
 }> = ({ user, onClose, onSaved }) => {
   const toast = useToast()
+  const { user: currentUser, refreshMe } = useAuth()
   const isEdit = !!user
   const [form, setForm] = useState({
     email: user?.email || '',
@@ -45,20 +48,25 @@ const UserModal: React.FC<{
       if (isEdit) {
         await apiClient.admin.updateUser(user!.id, {
           display_name: form.display_name || undefined,
+          email: form.email || undefined,
           jira_username: form.jira_username || undefined,
           password: form.password || undefined,
           role: form.role,
         })
         toast.success('Utilisateur modifié !')
+
+        // Si l'admin vient de modifier SON PROPRE compte, rafraîchit le header/sidebar
+        if (currentUser && user!.email === currentUser.email) {
+          await refreshMe()
+        }
       } else {
         await apiClient.admin.createUser({
           email: form.email,
-          password: form.password || '__jira__',
-          role: form.role,
+          role: 'tester',
           display_name: form.display_name || undefined,
           jira_username: form.jira_username || undefined,
         })
-        toast.success('Utilisateur créé !')
+        toast.success('Compte créé avec succès. Un email a été envoyé à l\'utilisateur pour se connecter avec ses identifiants Jira.')
       }
       onSaved()
     } catch (err: any) {
@@ -89,15 +97,15 @@ const UserModal: React.FC<{
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
-          {/* Email — only on create */}
-          {!isEdit && (
-            <div>
-              <label className="block text-xs font-bold text-brand-navy/60 uppercase tracking-widest mb-2">Email *</label>
-              <input type="email" required value={form.email} onChange={e => set('email', e.target.value)}
-                placeholder="user@soprahr.com"
-                className="w-full px-4 py-3 border-2 border-gray-100 rounded-xl text-sm text-brand-navy focus:border-brand-rose transition-all" />
-            </div>
-          )}
+          {/* Email — obligatoire à la création. En édition : éditable uniquement pour un compte admin */}
+{(!isEdit || form.role === 'admin') && (
+  <div>
+    <label className="block text-xs font-bold text-brand-navy/60 uppercase tracking-widest mb-2">Email *</label>
+    <input type="email" required value={form.email} onChange={e => set('email', e.target.value)}
+      placeholder="user@soprahr.com"
+      className="w-full px-4 py-3 border-2 border-gray-100 rounded-xl text-sm text-brand-navy focus:border-brand-rose transition-all" />
+  </div>
+)}
 
           {/* Display name */}
           <div>
@@ -107,55 +115,40 @@ const UserModal: React.FC<{
               className="w-full px-4 py-3 border-2 border-gray-100 rounded-xl text-sm text-brand-navy focus:border-brand-violet transition-all" />
           </div>
 
-          {/* Jira username */}
-          <div>
-            <label className="block text-xs font-bold text-brand-navy/60 uppercase tracking-widest mb-2">
-              Identifiant Jira
-              <span className="ml-2 text-[10px] text-brand-muted normal-case font-normal">(pour les testeurs)</span>
-            </label>
-            <input type="text" value={form.jira_username} onChange={e => set('jira_username', e.target.value)}
-              placeholder="prenom.nom"
-              className="w-full px-4 py-3 border-2 border-gray-100 rounded-xl text-sm font-mono text-brand-navy focus:border-brand-orange transition-all" />
-          </div>
-
+          {/* Jira username — nécessaire pour tout compte ingénieur QA (création et édition) */}
+{form.role === 'tester' && (
+<div>
+  <label className="block text-xs font-bold text-brand-navy/60 uppercase tracking-widest mb-2">
+   Username 
+  </label>
+  <input type="text" required={!isEdit} value={form.jira_username} onChange={e => set('jira_username', e.target.value)}
+    placeholder="prenom.nom"
+    className="w-full px-4 py-3 border-2 border-gray-100 rounded-xl text-sm font-mono text-brand-navy focus:border-brand-orange transition-all" />
+</div>
+)}
           {/* Role */}
-          <div>
-            <label className="block text-xs font-bold text-brand-navy/60 uppercase tracking-widest mb-2">Rôle</label>
-            <div className="flex gap-3">
-              {(['tester', 'admin'] as const).map(r => (
-                <button key={r} type="button" onClick={() => set('role', r)}
-                  className={`flex-1 py-3 rounded-xl text-sm font-semibold border-2 transition-all ${
-                    form.role === r
-                      ? 'text-white border-transparent'
-                      : 'text-brand-navy border-gray-100 hover:border-gray-200'
-                  }`}
-                  style={form.role === r ? {
-                    background: r === 'admin'
-                      ? 'linear-gradient(135deg,#ef4444,#f43f5e)'
-                      : 'linear-gradient(135deg,#7c3aed,#ec4899)',
-                  } : {}}>
-                  {r === 'admin' ? '👑 Admin' : '👤 Testeur'}
-                </button>
-              ))}
-            </div>
-          </div>
 
+          
           {/* Password */}
-          <div>
-            <label className="block text-xs font-bold text-brand-navy/60 uppercase tracking-widest mb-2">
-              {isEdit ? 'Nouveau mot de passe (laisser vide pour ne pas changer)' : 'Mot de passe'}
-            </label>
-            <div className="relative">
-              <input type={showPwd ? 'text' : 'password'} value={form.password}
-                onChange={e => set('password', e.target.value)}
-                placeholder={isEdit ? '••••••••' : 'Min. 6 caractères'}
-                className="w-full pl-4 pr-11 py-3 border-2 border-gray-100 rounded-xl text-sm text-brand-navy focus:border-brand-rose transition-all" />
-              <button type="button" onClick={() => setShowPwd(!showPwd)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-brand-muted hover:text-brand-navy transition-colors">
-                {showPwd ? <EyeOff size={16} /> : <Eye size={16} />}
-              </button>
-            </div>
-          </div>
+         {/* Password — uniquement en modification (reset admin) */}
+{/* Password — uniquement en modification ET pour un compte admin */}
+{isEdit && form.role === 'admin' && (
+  <div>
+    <label className="block text-xs font-bold text-brand-navy/60 uppercase tracking-widest mb-2">
+      Nouveau mot de passe (laisser vide pour ne pas changer)
+    </label>
+    <div className="relative">
+      <input type={showPwd ? 'text' : 'password'} value={form.password}
+        onChange={e => set('password', e.target.value)}
+        placeholder="••••••••"
+        className="w-full pl-4 pr-11 py-3 border-2 border-gray-100 rounded-xl text-sm text-brand-navy focus:border-brand-rose transition-all" />
+      <button type="button" onClick={() => setShowPwd(!showPwd)}
+        className="absolute right-3 top-1/2 -translate-y-1/2 text-brand-muted hover:text-brand-navy transition-colors">
+        {showPwd ? <EyeOff size={16} /> : <Eye size={16} />}
+      </button>
+    </div>
+  </div>
+)}
 
           {/* Actions */}
           <div className="flex gap-3 pt-2">
@@ -180,6 +173,7 @@ const UserModal: React.FC<{
 /* ── Main Page ── */
 export const UsersPage: React.FC = () => {
   const toast = useToast()
+  
   const [users, setUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
@@ -301,7 +295,7 @@ export const UsersPage: React.FC = () => {
                             background: u.role === 'admin' ? 'rgba(244,63,94,0.08)' : 'rgba(124,58,237,0.08)',
                             color: u.role === 'admin' ? '#f43f5e' : '#7c3aed',
                           }}>
-                          {u.role === 'admin' ? '👑 Admin' : '👤 Testeur'}
+                          {u.role === 'admin' ? '👑 Admin' : `👤 ${getRoleDisplayName(u.role)}`}
                         </span>
                       </td>
                       <td className="py-3.5 px-4">
@@ -322,11 +316,13 @@ export const UsersPage: React.FC = () => {
                       <td className="py-3.5 px-4">
                         <div className="flex items-center gap-1.5">
                           {/* Edit */}
-                          <button type="button" onClick={() => setModalUser(u)}
-                            className="p-2 rounded-xl text-brand-muted hover:text-brand-violet hover:bg-brand-violet/08 transition-all"
-                            title="Modifier">
-                            <Pencil size={14} />
-                          </button>
+                          {u.role === 'admin' && (
+                            <button type="button" onClick={() => setModalUser(u)}
+                              className="p-2 rounded-xl text-brand-muted hover:text-brand-violet hover:bg-brand-violet/08 transition-all"
+                              title="Modifier">
+                              <Pencil size={14} />
+                            </button>
+                          )}
                           {/* Toggle active */}
                           <button type="button" onClick={() => handleToggle(u)} disabled={togglingId === u.id}
                             className={`p-2 rounded-xl transition-all ${u.is_active ? 'text-amber-500 hover:bg-amber-50' : 'text-emerald-600 hover:bg-emerald-50'}`}

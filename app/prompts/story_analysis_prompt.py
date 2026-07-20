@@ -231,7 +231,6 @@ ANALYSIS_REASON :
 
 def build_story_analysis_user_prompt(
     story: dict,
-    rag_context: list = None,
     story_attachments: list = None,
 ) -> str:
     story_id = story.get("id", "")
@@ -286,23 +285,9 @@ def build_story_analysis_user_prompt(
                 + "\n\n---\n\n".join(att_blocks)
             )
 
-    # ── Contexte RAG (documents pertinents d'autres stories/epic — INSPIRATION SEULE) ──
+    # RAG context is not used for Agent 1. Only story text and attachments are included.
+    attachments_section = attachments_section or ""
     rag_section = ""
-    if rag_context:
-        rag_lines = []
-        for chunk in rag_context:
-            origin = chunk.get("origin_key", "")
-            filename = chunk.get("filename", "")
-            text = chunk.get("text", "")
-            rag_lines.append(f"[Source: {origin} / {filename}]\n{text}")
-        rag_section = (
-            "\n\nCONTEXTE DOCUMENTAIRE (RAG) -- LECTURE SEULE, NE PAS EXTRAIRE :\n"
-            "Les extraits ci-dessous proviennent d'AUTRES stories de l'epic, de l'epic parent ou de tickets liés.\n"
-            "Ils servent UNIQUEMENT a comprendre le vocabulaire et le contexte metier.\n"
-            "N'extrais PAS d'actions, d'acteurs, de technologies ou de regles depuis ces extraits.\n"
-            "Seuls le texte de la story (description + criteres) ET ses PIÈCES JOINTES font foi.\n"
-            + "\n---\n".join(rag_lines)
-        )
 
     # Rappel final pour forcer le modele a appliquer la classification dans le bon ordre
     checklist = (

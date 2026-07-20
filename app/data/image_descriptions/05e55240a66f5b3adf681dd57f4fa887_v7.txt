@@ -1,0 +1,62 @@
+[Image jointe : image-2025-01-13-18-09-57-127.png]
+── Textes détectés (OCR) ──
+Type de Document
+Confidentialité
+COLLABORATEUR MANAGER M GESTIONNAIRE RH GESTIONNAIRE PAIE
+Population
+SOCIÉTÉ 4YOU x SIÈGE SOCIAL x
+CONSEIL POUR LA MAISON Ï
+FINANCES SECTEUR PRIVÉ -20 SALARIÉS
+FRANCE DROIT PRIVÉ (PAIE)
+i DUREE DETERMINEE x
+FRANCE DROIT PRIVE (SHR)
+PAIE SECTEUR PRIVE + 20 SALARIES
+SOCIETE 4YOU
+SOCIETE FRR
+COLLABORATEUR
+MANAGER Ÿ
+GESTIONNAIRE RH
+GESTIONNAIRE PAIE
+CONSEIL POUR LA MAISON
+FRANCE DROIT PRIVÉ (SHR)
+PAIE SECTEUR PRIVÉ + 20 SALARIÉS
+SOCIÉTÉ 4YOU
+SOCIÉTÉ FRR
+EK X
+LIKE X
+MODIFIER X
+PRIMEK X
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran semble être un formulaire de configuration ou de création de document, probablement dans un système de gestion des ressources humaines. Il contient plusieurs champs de sélection et un menu déroulant.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un badge bleu avec texte blanc : 
+  - Forme : rectangulaire
+  - Couleur de fond : bleu
+  - Texte OCR : "SOCIÉTÉ 4YOU"
+- Un badge bleu avec texte blanc : 
+  - Forme : rectangulaire
+  - Couleur de fond : bleu
+  - Texte OCR : "SIÈGE SOCIAL"
+- Un badge bleu avec texte blanc : 
+  - Forme : rectangulaire
+  - Couleur de fond : bleu
+  - Texte OCR : "DURÉE DÉTERMINÉE"
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Une petite croix (x) :
+  - Fonction probable : Fermer ou supprimer un élément
+  - Position : À côté de "SOCIÉTÉ 4YOU", "SIÈGE SOCIAL", et "DURÉE DÉTERMINÉE"
+
+## 5. AGENCEMENT ET RELATIONS
+- Le formulaire est divisé en sections avec des libellés :
+  - "Confidentialité" avec des onglets : "COLLABORATEUR", "MANAGER" (sélectionné), "GESTIONNAIRE RH", "GESTIONNAIRE PAIE"
+  - "Population" avec un champ de saisie et un menu déroulant listant diverses options comme "SOCIÉTÉ 4YOU", "CONSEIL POUR LA MAISON", etc.
+  - Un champ pour "Établissement" avec un badge "SIÈGE SOCIAL"
+  - Un champ pour "Type de contrat" avec un badge "DURÉE DÉTERMINÉE"
+- Le menu déroulant pour la population est ouvert, montrant plusieurs options.
+- Des boutons en bas : "Annuler" et "Sauvegarder".

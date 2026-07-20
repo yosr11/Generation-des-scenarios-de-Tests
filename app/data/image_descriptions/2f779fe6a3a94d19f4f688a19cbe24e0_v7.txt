@@ -1,0 +1,58 @@
+[Image jointe : screenshot-1.png]
+── Textes détectés (OCR) ──
+Conditionner : apparait
+Collab/manager uniquement si
+Une seule page : l’utilisateur a un rôle
+développement collaborateur ou
+plus rapide que manager
+faire 2 pages
+Gestionnaire uniquement si
+l’utilisateur a un rôle
+gestionnaire
+Collab/manager
+uniquement si
+Une seule page :
+développement
+collaborateur ou
+plus rapide que
+manager
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran fourni est un mockup annoté représentant une page unique d'accessibilité. Il s'agit probablement d'un schéma utilisé pour expliquer les conditions d'affichage de certaines fonctionnalités en fonction des rôles des utilisateurs.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+- Une flèche noire partant du rectangle jaune "Collab/manager" et pointant vers le texte : 
+  - Type : flèche
+  - Couleur : noire
+  - Texte désigné : "Conditionner : apparait uniquement si l'utilisateur a un rôle collaborateur ou manager"
+- Une flèche noire partant du rectangle vert "Gestionnaire" et pointant vers le texte : 
+  - Type : flèche
+  - Couleur : noire
+  - Texte désigné : "Conditionner : apparait uniquement si l'utilisateur a un rôle gestionnaire"
+- Un rectangle bleu autour des rectangles jaune et vert avec le titre :
+  - Type : cadre
+  - Couleur : bleue
+  - Texte désigné : "Ma page unique d'accessibilité"
+- Un texte à gauche :
+  - Type : texte
+  - Contenu : "Une seule page : développement plus rapide que faire 2 pages"
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un rectangle jaune :
+  - Forme : rectangle
+  - Couleur de fond : jaune
+  - Texte : "Collab/manager"
+- Un rectangle vert :
+  - Forme : rectangle
+  - Couleur de fond : verte
+  - Texte : "Gestionnaire"
+
+## 4. ICÔNES ET PICTOGRAMMES
+Aucune icône ou pictogramme n'est visible sur l'image.
+
+## 5. AGENCEMENT ET RELATIONS
+- Le schéma est structuré avec un rectangle bleu qui contient deux rectangles, un jaune et un vert, empilés verticalement.
+- Le rectangle bleu est titré "Ma page unique d'accessibilité".
+- Le rectangle jaune est placé au-dessus du rectangle vert.
+- Les textes annotés sont positionnés à droite des rectangles respectifs qu'ils décrivent.
+- Il y a un texte à gauche du schéma qui semble décrire une condition ou une justification pour la conception de la page.

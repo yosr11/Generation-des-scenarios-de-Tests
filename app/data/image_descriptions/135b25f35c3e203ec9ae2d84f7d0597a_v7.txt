@@ -1,0 +1,63 @@
+[Image jointe : image-2025-11-13-11-15-08-497.png]
+── Textes détectés (OCR) ──
+€ G 25 foryou-hradu-develop.apps.shr-okd.marc.fr.ssg/app/foryou/#/demarches/ticketinghrlocal/create * S _äî
+= @ Poser une question RH O ? ON
+Vous avez besoin d'information ou d'aide sur les données personnelles contractuelles ou tout autre besoin, complétez le formulaire de demande de support ci-dessous. Vous avez la _
+possibilité de joindre un document. Votre demande sera envoyée et traitée par votre gestionnaire.
+En cours
+Historique
+“ e saisis ma demande '
+Bénéficiaire *
+///‘\\\
+{ | Ben Ghorbel DHIA FRLDEVEEMP
+Informer le bénéficiaire du suivi de la question RH, par mail
+Catégorie * Sous-catégorie
+0 :
+Titre *
+Description *
+Piéce jointe e
+Les champs ;ndiqués par Lre * son: coligatoires.
+fildie su
+g0
+foryou-hradu-develop.apps.shr-okd.marc.fr.ssg/app/foryou/#/demarches/ticketinghrlocal/create
+Poser une question RH
+Vous avez besoin d'information ou d'aide sur les données personnelles contractuelles ou tout autre besoin, complétez le formulaire de demande de support ci-dessous. Vous avez la
+™,
+\,
+| Ben Ghorbel DHIA FRLDEVEEMP
+Catégorie *
+Sous-catégorie
+Données administratives
+v)
+[v] ‘ Déménagement
+Pièce jointe e
+fil ce su
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+L'écran semble être un formulaire de demande de support RH, probablement dans une application interne à une entreprise. Le but est de permettre aux utilisateurs de poser des questions ou de demander de l'aide sur des sujets liés aux ressources humaines.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Un champ de saisie pour le bénéficiaire est entouré d'un cercle bleu clair, avec un bouton de fermeture (petit « x ») à droite. Le fond du champ est blanc.
+- Le texte « Bénéficiaire * » est en texte brut, avec un asterisks indiquant qu'il est obligatoire.
+- La catégorie est sélectionnée sur « Données administratives », dans une liste déroulante grise.
+- La sous-catégorie est sélectionnée sur « Déménagement », dans une liste déroulante grise.
+- Un champ de saisie pour le titre est vide.
+- Un champ de saisie pour la description est vide.
+- Un champ pour une pièce jointe avec une icône de trombone.
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Une petite icône de poubelle à gauche du champ « Bénéficiaire * ».
+- Une icône de trombone pour joindre une pièce jointe.
+
+## 5. AGENCEMENT ET RELATIONS
+Le formulaire est divisé en sections :
+- Un en-tête avec un titre « Poser une question RH ».
+- Une section pour les informations de bénéficiaire.
+- Une section pour la catégorie et sous-catégorie.
+- Un champ pour le titre de la demande.
+- Un champ pour la description de la demande.
+- Un champ pour joindre une pièce jointe.
+- Des boutons en haut à gauche : « Quitter », « Supprimer », « Sauvegarder », « Envoyer », et « Accepter la réponse ».

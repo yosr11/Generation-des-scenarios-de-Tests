@@ -92,10 +92,10 @@ class Settings:
     AGENT3_EMBEDDING_MODEL = os.getenv(
         "AGENT3_EMBEDDING_MODEL", "paraphrase-multilingual-MiniLM-L12-v2"
     )
-    AGENT3_QUALITY_MODEL = os.getenv("AGENT3_QUALITY_MODEL", "llama4")
+    AGENT3_QUALITY_MODEL = os.getenv("AGENT3_QUALITY_MODEL", "nova-lite-2")
 
-    # ── Agent 5 — Reporting ──────────────────────────────────
-    AGENT5_DEFAULT_MODEL = os.getenv("AGENT5_DEFAULT_MODEL", "llama4")
+    # ── Agent 5 — Reporting ──────────────────────────────────────────────────
+    AGENT5_DEFAULT_MODEL = os.getenv("AGENT5_DEFAULT_MODEL", "nova-lite-2")
 
     # ── Orchestrator ─────────────────────────────────────────
     ORCHESTRATOR_MAX_RETRIES = int(os.getenv("ORCHESTRATOR_MAX_RETRIES", "2"))
