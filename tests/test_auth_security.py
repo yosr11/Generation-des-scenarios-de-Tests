@@ -32,12 +32,16 @@ def test_access_token_contains_expected_claims():
 
 
 def test_decode_access_token_rejects_invalid_signature():
+    import jwt
+    import pytest
+
     token = create_access_token(
         {"sub": "1", "role": "tester"}, expires_delta=timedelta(minutes=1)
     )
-    tampered = token[:-1] + ("A" if token[-1] != "A" else "B")
 
-    import pytest
+    payload = jwt.decode(token, options={"verify_signature": False})
+    payload["role"] = "admin"
+    tampered = jwt.encode(payload, "different-secret", algorithm="HS256")
 
     with pytest.raises(Exception):
         decode_access_token(tampered)

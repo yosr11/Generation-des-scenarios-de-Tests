@@ -15,11 +15,6 @@ def test_db_story_get_and_delete(monkeypatch, tmp_path):
     SessionLocal = sessionmaker(bind=engine)
     Base.metadata.create_all(bind=engine)
 
-    async def noop_init_postgres():
-        return None
-
-    monkeypatch.setattr(app, "lifespan", app.lifespan)
-    monkeypatch.setattr("app.main.init_postgres", noop_init_postgres)
     monkeypatch.setattr(story_repository, "get_sync_session", lambda: SessionLocal())
     monkeypatch.setattr(routes_db, "get_sync_session", lambda: SessionLocal())
 
