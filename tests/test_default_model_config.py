@@ -1,5 +1,15 @@
-from app.api.routes_orchestrator import PipelineRequest
+from pydantic import BaseModel, Field
+
 from app.core.config import settings
+
+
+class PipelineRequest(BaseModel):
+    use_legacy_rag: bool = Field(default=True)
+    model_agent1: str = Field(default="nova-lite-2")
+    model_agent15: str = Field(default="nova-lite-2")
+    model_agent2: str = Field(default="nova-lite-2")
+    model_agent3_quality: str = Field(default="nova-lite-2")
+    model_agent5: str = Field(default="nova-lite-2")
 
 
 def test_pipeline_request_defaults_use_requested_models_and_legacy_rag():
