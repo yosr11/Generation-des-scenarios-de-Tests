@@ -12,6 +12,7 @@ Usage :
     python -m eval.extract_legacy_tests --no-filter     # désactive "Test Type" = Manual
     python -m eval.extract_legacy_tests --resume        # saute les test_id déjà présents
 """
+
 from __future__ import annotations
 
 import argparse
@@ -60,7 +61,9 @@ def _append_jsonl(path: Path, obj: dict) -> None:
         f.write(json.dumps(obj, ensure_ascii=False) + "\n")
 
 
-def _fetch_with_retry(test_key: str, max_retries: int = 3, backoff: float = 2.0) -> dict:
+def _fetch_with_retry(
+    test_key: str, max_retries: int = 3, backoff: float = 2.0
+) -> dict:
     """Appel `get_legacy_test_pivot` avec retry exponentiel sur erreurs serveur/réseau."""
     last: dict = {}
     for attempt in range(1, max_retries + 1):
@@ -78,7 +81,7 @@ def _fetch_with_retry(test_key: str, max_retries: int = 3, backoff: float = 2.0)
         if status and status < 500:
             return pivot
         if attempt < max_retries:
-            time.sleep(backoff ** attempt)
+            time.sleep(backoff**attempt)
     return last
 
 

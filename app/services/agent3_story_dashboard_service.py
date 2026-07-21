@@ -22,7 +22,9 @@ def build_story_dashboard(
     duplicate_similarity_threshold: float = 0.8,
     embedding_model: str = "paraphrase-multilingual-MiniLM-L12-v2",
 ) -> Agent3StoryDashboard:
-    cov = analyze_coverage(testable_points, tests, coverage_similarity_threshold, embedding_model)
+    cov = analyze_coverage(
+        testable_points, tests, coverage_similarity_threshold, embedding_model
+    )
     env = build_validation_envelope(
         tests,
         cov,
@@ -30,7 +32,9 @@ def build_story_dashboard(
         embedding_model,
         coverage_threshold,
     )
-    dup_reports = [DuplicatePairReport.model_validate(x) for x in env["duplicate_pairs"]]
+    dup_reports = [
+        DuplicatePairReport.model_validate(x) for x in env["duplicate_pairs"]
+    ]
 
     return Agent3StoryDashboard(
         story_id=story_id,

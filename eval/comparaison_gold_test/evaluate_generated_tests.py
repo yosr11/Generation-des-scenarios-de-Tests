@@ -31,6 +31,7 @@ from pathlib import Path
 try:
     from sentence_transformers import SentenceTransformer
     import numpy as np
+
     ST_AVAILABLE = True
 except ImportError:
     ST_AVAILABLE = False
@@ -43,19 +44,24 @@ from app.services.llm_client import call_github_models
 
 # ── Chemins ─────────────────────────────────────────────────────────────────
 JSON_FILE = Path(__file__).parent / "JSON file.json"
-OUTPUT_FILE = Path(__file__).resolve().parents[1] / "results" / "generated_tests_evaluation_gpt_4.1.json"
+OUTPUT_FILE = (
+    Path(__file__).resolve().parents[1]
+    / "results"
+    / "generated_tests_evaluation_gpt_4.1.json"
+)
 
 # ── Modèle sentence-transformers (multilingue FR/EN) ────────────────────────
 ST_MODEL_NAME = "paraphrase-multilingual-MiniLM-L12-v2"
 
 # ── LLM Judge model ─────────────────────────────────────────────────────────
-JUDGE_MODEL = "gpt-4.1"       # GitHub Models — contexte 128k, pas de limite TPM stricte
-JUDGE_MAX_CHARS = None        # troncature par bloc (gold / generated). None = no truncation
+JUDGE_MODEL = "gpt-4.1"  # GitHub Models — contexte 128k, pas de limite TPM stricte
+JUDGE_MAX_CHARS = None  # troncature par bloc (gold / generated). None = no truncation
 
 
 # ────────────────────────────────────────────────────────────────────────────
 # Utilitaires de sérialisation
 # ────────────────────────────────────────────────────────────────────────────
+
 
 def steps_to_text(steps: list) -> str:
     """Convertit une liste d'étapes en texte lisible — uniquement label, actions et résultat attendu.
@@ -96,6 +102,7 @@ def tests_list_to_text(tests) -> str:
 # Métrique 1 : Similarité cosinus
 # ────────────────────────────────────────────────────────────────────────────
 
+
 def cosine_similarity(vec_a: "np.ndarray", vec_b: "np.ndarray") -> float:
     norm_a = np.linalg.norm(vec_a)
     norm_b = np.linalg.norm(vec_b)
@@ -104,7 +111,9 @@ def cosine_similarity(vec_a: "np.ndarray", vec_b: "np.ndarray") -> float:
     return float(np.dot(vec_a, vec_b) / (norm_a * norm_b))
 
 
-def compute_cosine_similarity(gold_text: str, gen_text: str, model: "SentenceTransformer") -> float:
+def compute_cosine_similarity(
+    gold_text: str, gen_text: str, model: "SentenceTransformer"
+) -> float:
     vecs = model.encode([gold_text, gen_text], normalize_embeddings=False)
     return round(cosine_similarity(vecs[0], vecs[1]), 4)
 
@@ -195,7 +204,7 @@ def _truncate(text: str, max_chars: int) -> str:
 
 def call_llm_judge(user_story: dict, gold_text: str, gen_text: str) -> dict:
     gold_trunc = _truncate(gold_text, JUDGE_MAX_CHARS)
-    gen_trunc  = _truncate(gen_text,  JUDGE_MAX_CHARS)
+    gen_trunc = _truncate(gen_text, JUDGE_MAX_CHARS)
     user_prompt = build_judge_user_prompt(user_story, gold_trunc, gen_trunc)
     # Log the size of the blocks sent to the LLM for diagnostics
     try:
@@ -250,6 +259,7 @@ def get_verdict(score: float) -> str:
 # Pipeline principal
 # ────────────────────────────────────────────────────────────────────────────
 
+
 def load_data() -> list:
     encodings_to_try = ["utf-8", "utf-8-sig", "cp1252", "latin-1"]
     last_err = None
@@ -289,10 +299,12 @@ def evaluate_story(
     else:
         gen_tests = []
 
-    print(f"\n[{story_id}] gold={len(gold_tests)} tests | generated={len(gen_tests)} tests")
+    print(
+        f"\n[{story_id}] gold={len(gold_tests)} tests | generated={len(gen_tests)} tests"
+    )
 
     if not gold_tests:
-        print(f"  → Pas de gold tests, story ignorée.")
+        print("  → Pas de gold tests, story ignorée.")
         return {
             "story_id": story_id,
             "user_story_title": user_story.get("title", ""),
@@ -301,7 +313,7 @@ def evaluate_story(
         }
 
     if not gen_tests:
-        print(f"  → Pas de generated tests, story ignorée.")
+        print("  → Pas de generated tests, story ignorée.")
         return {
             "story_id": story_id,
             "user_story_title": user_story.get("title", ""),
@@ -315,14 +327,16 @@ def evaluate_story(
     # ── Métrique 1 : Cosine similarity ──────────────────────────────────────
     cosine_score = None
     if ST_AVAILABLE and st_model is not None:
-        print(f"  → Calcul similarité cosinus...")
+        print("  → Calcul similarité cosinus...")
         cosine_score = compute_cosine_similarity(gold_text, gen_text, st_model)
         print(f"     Cosine similarity = {cosine_score}")
 
     # ── Métrique 2 : LLM Judge ──────────────────────────────────────────────
     print(f"  → Appel LLM Judge ({JUDGE_MODEL} via GitHub Models)...")
     judge_result = call_llm_judge(user_story, gold_text, gen_text)
-    print(f"     Final score = {judge_result.get('final_score')} → {get_verdict(judge_result.get('final_score', 0))}")
+    print(
+        f"     Final score = {judge_result.get('final_score')} → {get_verdict(judge_result.get('final_score', 0))}"
+    )
 
     return {
         "story_id": story_id,
@@ -351,45 +365,51 @@ def compute_summary(results: list) -> dict:
         vals = [v for v in lst if v is not None]
         return round(sum(vals) / len(vals), 2) if vals else None
 
-    cosine_values       = [r.get("metric_1_cosine_similarity") for r in evaluated]
-    coverage_vals       = [safe(r, "coverage_score")      for r in evaluated]
-    missing_vals        = [safe(r, "missing_tests_score")  for r in evaluated]
-    quality_vals        = [safe(r, "qa_quality_score")     for r in evaluated]
-    similarity_vals     = [safe(r, "business_similarity")  for r in evaluated]
-    final_vals          = [safe(r, "final_score")          for r in evaluated]
-    verdicts            = [r.get("metric_2_llm_judge", {}).get("verdict") for r in evaluated if not r.get("metric_2_llm_judge", {}).get("error")]
+    cosine_values = [r.get("metric_1_cosine_similarity") for r in evaluated]
+    coverage_vals = [safe(r, "coverage_score") for r in evaluated]
+    missing_vals = [safe(r, "missing_tests_score") for r in evaluated]
+    quality_vals = [safe(r, "qa_quality_score") for r in evaluated]
+    similarity_vals = [safe(r, "business_similarity") for r in evaluated]
+    final_vals = [safe(r, "final_score") for r in evaluated]
+    verdicts = [
+        r.get("metric_2_llm_judge", {}).get("verdict")
+        for r in evaluated
+        if not r.get("metric_2_llm_judge", {}).get("error")
+    ]
 
     # Tableau détaillé par story
     per_story = []
     for r in evaluated:
         j = r.get("metric_2_llm_judge", {})
-        per_story.append({
-            "story_id":            r["story_id"],
-            "user_story_title":    r.get("user_story_title", ""),
-            "cosine_similarity":   r.get("metric_1_cosine_similarity"),
-            "coverage_score":      j.get("coverage_score"),
-            "missing_tests_score": j.get("missing_tests_score"),
-            "qa_quality_score":    j.get("qa_quality_score"),
-            "business_similarity": j.get("business_similarity"),
-            "final_score":         j.get("final_score"),
-            "verdict":             j.get("verdict"),
-        })
+        per_story.append(
+            {
+                "story_id": r["story_id"],
+                "user_story_title": r.get("user_story_title", ""),
+                "cosine_similarity": r.get("metric_1_cosine_similarity"),
+                "coverage_score": j.get("coverage_score"),
+                "missing_tests_score": j.get("missing_tests_score"),
+                "qa_quality_score": j.get("qa_quality_score"),
+                "business_similarity": j.get("business_similarity"),
+                "final_score": j.get("final_score"),
+                "verdict": j.get("verdict"),
+            }
+        )
 
     return {
         "evaluated_stories": len(evaluated),
         "skipped_stories": len(results) - len(evaluated),
         "averages": {
-            "cosine_similarity":   avg(cosine_values),
-            "coverage_score":      avg(coverage_vals),
+            "cosine_similarity": avg(cosine_values),
+            "coverage_score": avg(coverage_vals),
             "missing_tests_score": avg(missing_vals),
-            "qa_quality_score":    avg(quality_vals),
+            "qa_quality_score": avg(quality_vals),
             "business_similarity": avg(similarity_vals),
-            "final_score":         avg(final_vals),
+            "final_score": avg(final_vals),
         },
         "verdict_distribution": {
-            "GOOD":    verdicts.count("GOOD"),
+            "GOOD": verdicts.count("GOOD"),
             "PARTIAL": verdicts.count("PARTIAL"),
-            "BAD":     verdicts.count("BAD"),
+            "BAD": verdicts.count("BAD"),
         },
         "per_story_scores": per_story,
     }
@@ -404,9 +424,7 @@ def load_previous_results() -> dict:
 
 def get_evaluated_story_ids(previous_results: dict) -> set:
     return {
-        r["story_id"]
-        for r in previous_results.get("results", [])
-        if r.get("story_id")
+        r["story_id"] for r in previous_results.get("results", []) if r.get("story_id")
     }
 
 
@@ -469,15 +487,23 @@ def main():
     print("-" * 45)
     print(f"{'Cosine similarity':<35} {str(avgs.get('cosine_similarity', 'N/A')):>8}")
     print(f"{'Coverage score':<35} {str(avgs.get('coverage_score', 'N/A')):>8}")
-    print(f"{'Missing tests score':<35} {str(avgs.get('missing_tests_score', 'N/A')):>8}")
+    print(
+        f"{'Missing tests score':<35} {str(avgs.get('missing_tests_score', 'N/A')):>8}"
+    )
     print(f"{'QA quality score':<35} {str(avgs.get('qa_quality_score', 'N/A')):>8}")
-    print(f"{'Business similarity':<35} {str(avgs.get('business_similarity', 'N/A')):>8}")
+    print(
+        f"{'Business similarity':<35} {str(avgs.get('business_similarity', 'N/A')):>8}"
+    )
     print(f"{'Final score (LLM Judge)':<35} {str(avgs.get('final_score', 'N/A')):>8}")
     print("-" * 45)
-    print(f"\nVerdicts  → GOOD: {verdicts.get('GOOD', 0)} | PARTIAL: {verdicts.get('PARTIAL', 0)} | BAD: {verdicts.get('BAD', 0)}")
+    print(
+        f"\nVerdicts  → GOOD: {verdicts.get('GOOD', 0)} | PARTIAL: {verdicts.get('PARTIAL', 0)} | BAD: {verdicts.get('BAD', 0)}"
+    )
 
     print("\nDétail par story :")
-    print(f"  {'Story ID':<18} {'Coverage':>9} {'Missing':>9} {'Quality':>9} {'BizSim':>8} {'Final':>7} {'Verdict':<9}")
+    print(
+        f"  {'Story ID':<18} {'Coverage':>9} {'Missing':>9} {'Quality':>9} {'BizSim':>8} {'Final':>7} {'Verdict':<9}"
+    )
     print("  " + "-" * 75)
     for row in summary.get("per_story_scores", []):
         print(

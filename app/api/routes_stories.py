@@ -7,9 +7,12 @@ from app.services.jira_service import (
     enrich_dataset_with_test_details,
     get_stories_without_description,
 )
-from app.models.story import Story
-from typing import List, Dict, Any, Optional
-from app.utils.cleaning import clean_story_dict, enrich_story_for_llm, flatten_issuelinks
+from typing import Dict, Any, Optional
+from app.utils.cleaning import (
+    clean_story_dict,
+    enrich_story_for_llm,
+    flatten_issuelinks,
+)
 
 router = APIRouter(prefix="/projects", tags=["User_stories"])
 
@@ -19,8 +22,12 @@ router = APIRouter(prefix="/projects", tags=["User_stories"])
 def list_stories_with_linked_tests(
     project_key: str,
     min_tests: int = Query(1, ge=1, description="Nombre minimum de tests liés"),
-    max_stories: int = Query(50, ge=1, le=500, description="Nombre maximum de stories à retourner"),
-    extra_jql: str = Query("", description="Fragment JQL additionnel (ex: 'AND status = Done')"),
+    max_stories: int = Query(
+        50, ge=1, le=500, description="Nombre maximum de stories à retourner"
+    ),
+    extra_jql: str = Query(
+        "", description="Fragment JQL additionnel (ex: 'AND status = Done')"
+    ),
 ):
     """
     Retourne les User Stories d'un projet qui ont au moins `min_tests` tests Xray liés
@@ -62,8 +69,12 @@ def get_test_details(test_key: str):
 # -------- Enrichir un dataset complet avec le contenu de chaque test --------
 @router.post("/dataset/enrich")
 def enrich_dataset(
-    dataset: Dict[str, Any] = Body(..., description="Sortie de /projects/{KEY}/stories-with-tests"),
-    max_tests_per_story: Optional[int] = Query(None, ge=1, description="Limiter le nb de tests par story (debug)"),
+    dataset: Dict[str, Any] = Body(
+        ..., description="Sortie de /projects/{KEY}/stories-with-tests"
+    ),
+    max_tests_per_story: Optional[int] = Query(
+        None, ge=1, description="Limiter le nb de tests par story (debug)"
+    ),
 ):
     """
     Enrichit un dataset (sortie de /projects/{KEY}/stories-with-tests) en récupérant
@@ -73,15 +84,21 @@ def enrich_dataset(
     Le résultat peut être sauvegardé tel quel pour servir de dataset d'évaluation Agent 2.
     """
     if "stories" not in dataset:
-        raise HTTPException(status_code=400, detail="Le JSON doit contenir un champ 'stories'.")
-    return enrich_dataset_with_test_details(dataset, max_tests_per_story=max_tests_per_story)
+        raise HTTPException(
+            status_code=400, detail="Le JSON doit contenir un champ 'stories'."
+        )
+    return enrich_dataset_with_test_details(
+        dataset, max_tests_per_story=max_tests_per_story
+    )
 
 
 # -------- User Stories sans description (renvoie uniquement les IDs) --------
 @router.get("/{project_key}/stories-without-description")
 def list_stories_without_description(
     project_key: str,
-    extra_jql: str = Query("", description="Fragment JQL additionnel (ex: 'AND status != Done')"),
+    extra_jql: str = Query(
+        "", description="Fragment JQL additionnel (ex: 'AND status != Done')"
+    ),
 ):
     """
     Retourne uniquement les IDs (clés Jira) des User Stories du projet qui n'ont
@@ -132,7 +149,9 @@ def debug_story(issue_key: str):
     if result["status"] == 404:
         raise HTTPException(status_code=404, detail=f"Story {issue_key} introuvable")
     if result["status"] != 200:
-        raise HTTPException(status_code=result["status"], detail=result.get("error", "Erreur Jira"))
+        raise HTTPException(
+            status_code=result["status"], detail=result.get("error", "Erreur Jira")
+        )
 
     fields = result["data"].get("fields", {}) or {}
 
@@ -185,7 +204,9 @@ def get_cleaned_story(issue_key: str):
     if result["status"] == 404:
         raise HTTPException(status_code=404, detail=f"Story {issue_key} introuvable")
     if result["status"] != 200:
-        raise HTTPException(status_code=result["status"], detail=result.get("error", "Erreur Jira"))
+        raise HTTPException(
+            status_code=result["status"], detail=result.get("error", "Erreur Jira")
+        )
 
     fields = result["data"].get("fields", {}) or {}
 

@@ -8,4 +8,5 @@ class ExecutionResult(BaseModel):
     reason: Optional[str] = None
     evidence: List[str] = []
 
-    #Valeurs possibles :"PASS" → le test a réussi,"FAIL" → le test a échoué,"SKIP" → le test a été sauté / non exécuté"""
+    #Valeurs possibles :"PASS" → le test a réussi,"FAIL" → le test a échoué,"SKIP" → le test a été sauté / non exécuté
+"""

@@ -7,11 +7,13 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import List, Tuple
 
-import numpy as np
 
 from app.models.test_manual import ManualTestCase
 from app.services.agent3_coverage_service import manual_test_to_embedding_text
-from app.services.agent3_semantic_similarity import encode_texts, pairwise_max_similarity_matrix
+from app.services.agent3_semantic_similarity import (
+    encode_texts,
+    pairwise_max_similarity_matrix,
+)
 
 
 @dataclass

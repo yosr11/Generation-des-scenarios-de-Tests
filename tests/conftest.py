@@ -7,7 +7,9 @@ def _set_default_env(name: str, value: str) -> None:
 
 
 # Provide a stable test environment even when no local .env is present.
-_set_default_env("DATABASE_URL", "postgresql+asyncpg://postgres:postgres@localhost:5432/agent_test")
+_set_default_env(
+    "DATABASE_URL", "postgresql+asyncpg://postgres:postgres@localhost:5432/agent_test"
+)
 _set_default_env("JWT_SECRET", "test-secret-32-bytes-minimum-for-jwt")
 _set_default_env("JWT_ALGORITHM", "HS256")
 _set_default_env("ADMIN_EMAIL", "admin@example.com")

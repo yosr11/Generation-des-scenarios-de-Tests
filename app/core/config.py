@@ -94,9 +94,15 @@ class Settings:
     # ── Agent defaults ───────────────────────────────────────
     AGENT1_DEFAULT_MODEL = _get_optional_env("AGENT1_DEFAULT_MODEL", "nova-lite-2")
     AGENT2_DEFAULT_MODEL = _get_optional_env("AGENT2_DEFAULT_MODEL", "nova-lite-2")
-    AGENT3_COVERAGE_THRESHOLD = float(_get_optional_env("AGENT3_COVERAGE_THRESHOLD", "0.70"))
-    AGENT3_COVERAGE_SIMILARITY = float(_get_optional_env("AGENT3_COVERAGE_SIMILARITY", "0.7"))
-    AGENT3_DUPLICATE_THRESHOLD = float(_get_optional_env("AGENT3_DUPLICATE_THRESHOLD", "0.8"))
+    AGENT3_COVERAGE_THRESHOLD = float(
+        _get_optional_env("AGENT3_COVERAGE_THRESHOLD", "0.70")
+    )
+    AGENT3_COVERAGE_SIMILARITY = float(
+        _get_optional_env("AGENT3_COVERAGE_SIMILARITY", "0.7")
+    )
+    AGENT3_DUPLICATE_THRESHOLD = float(
+        _get_optional_env("AGENT3_DUPLICATE_THRESHOLD", "0.8")
+    )
     AGENT3_EMBEDDING_MODEL = _get_optional_env(
         "AGENT3_EMBEDDING_MODEL", "paraphrase-multilingual-MiniLM-L12-v2"
     )

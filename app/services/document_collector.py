@@ -62,6 +62,7 @@ _session.headers.update({"Accept": "application/json"})
 #  API PUBLIQUE
 # ══════════════════════════════════════════════════════════════
 
+
 def collect_story_attachments_only(
     issue_key: str,
     *,
@@ -78,7 +79,9 @@ def collect_story_attachments_only(
     for att in story_attachments:
         fname = att.get("filename", "") or ""
         name_lower = fname.lower()
-        is_image = name_lower.endswith((".png", ".jpg", ".jpeg", ".gif", ".bmp", ".webp"))
+        is_image = name_lower.endswith(
+            (".png", ".jpg", ".jpeg", ".gif", ".bmp", ".webp")
+        )
 
         text = None
         if is_image:
@@ -97,21 +100,27 @@ def collect_story_attachments_only(
             text = _download_and_extract(att, vlm_enabled=False)
 
         if text:
-            documents.append({
-                "source": "attachment",
-                "origin_key": issue_key,
-                "filename": fname,
-                "text": text,
-            })
+            documents.append(
+                {
+                    "source": "attachment",
+                    "origin_key": issue_key,
+                    "filename": fname,
+                    "text": text,
+                }
+            )
 
     logger.info(
         "Collecte PJ story %s : %d document(s) (%d PJ listées)",
-        issue_key, len(documents), len(story_attachments),
+        issue_key,
+        len(documents),
+        len(story_attachments),
     )
     return documents
 
 
-def linked_docs_from_issuelinks(issuelinks: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+def linked_docs_from_issuelinks(
+    issuelinks: List[Dict[str, Any]],
+) -> List[Dict[str, Any]]:
     """
     Construit des documents texte à partir des issuelinks déjà enrichis
     (type, direction, key, status, summary, description) — sans appel Jira.
@@ -146,12 +155,14 @@ def linked_docs_from_issuelinks(issuelinks: List[Dict[str, Any]]) -> List[Dict[s
         if len(text.strip()) <= 20:
             continue
 
-        documents.append({
-            "source": "linked_issue",
-            "origin_key": key,
-            "filename": f"{key}_description",
-            "text": text,
-        })
+        documents.append(
+            {
+                "source": "linked_issue",
+                "origin_key": key,
+                "filename": f"{key}_description",
+                "text": text,
+            }
+        )
 
     return documents
 
@@ -173,6 +184,7 @@ def collect_documents_for_story(
         links = issuelinks
         if links is None:
             from app.repositories.story_repository import get_story_by_id
+
             db_story = get_story_by_id(issue_key)
             links = (db_story or {}).get("issuelinks") or []
         documents.extend(linked_docs_from_issuelinks(links))
@@ -183,12 +195,14 @@ def collect_documents_for_story(
             for att in _get_attachments(epic_key):
                 text = _download_and_extract(att, vlm_enabled=False)
                 if text:
-                    documents.append({
-                        "source": "epic_attachment",
-                        "origin_key": epic_key,
-                        "filename": att.get("filename", ""),
-                        "text": text,
-                    })
+                    documents.append(
+                        {
+                            "source": "epic_attachment",
+                            "origin_key": epic_key,
+                            "filename": att.get("filename", ""),
+                            "text": text,
+                        }
+                    )
 
     logger.info("Collecte documents pour %s : %d documents", issue_key, len(documents))
     return documents
@@ -210,9 +224,12 @@ def collect_documents_for_epic(
     if db_stories:
         stories = [{"id": s["id"], "title": s.get("summary", "")} for s in db_stories]
         stories_by_key = {s["id"]: s for s in db_stories}
-        logger.info("Epic %s : %d stories depuis la base locale", epic_key, len(stories))
+        logger.info(
+            "Epic %s : %d stories depuis la base locale", epic_key, len(stories)
+        )
     else:
         from app.services.epic_service import get_stories_by_epic
+
         stories = get_stories_by_epic(epic_key)
         stories_by_key = {}
 
@@ -230,12 +247,14 @@ def collect_documents_for_epic(
     for att in _get_attachments(epic_key):
         text = _download_and_extract(att, vlm_enabled=False)
         if text:
-            epic_documents.append({
-                "source": "epic_attachment",
-                "origin_key": epic_key,
-                "filename": att.get("filename", ""),
-                "text": text,
-            })
+            epic_documents.append(
+                {
+                    "source": "epic_attachment",
+                    "origin_key": epic_key,
+                    "filename": att.get("filename", ""),
+                    "text": text,
+                }
+            )
 
     seen_filenames: set = {d["filename"] for d in epic_documents}
     seen_linked_keys: set = set()
@@ -244,6 +263,7 @@ def collect_documents_for_epic(
     for story in stories:
         if cancel_story_id:
             from app.utils.pipeline_cancel import check_pipeline_cancelled
+
             check_pipeline_cancelled(cancel_story_id)
 
         story_key = story.get("id", "")
@@ -265,7 +285,9 @@ def collect_documents_for_epic(
             seen_filenames.add(dedup_key)
 
             name_lower = fname.lower()
-            is_image = name_lower.endswith((".png", ".jpg", ".jpeg", ".gif", ".bmp", ".webp"))
+            is_image = name_lower.endswith(
+                (".png", ".jpg", ".jpeg", ".gif", ".bmp", ".webp")
+            )
             text = None
 
             if is_image and is_focus and vlm_count < MAX_VLM_IMAGES_PER_STORY:
@@ -283,12 +305,14 @@ def collect_documents_for_epic(
                 text = _download_and_extract(att, vlm_enabled=False)
 
             if text:
-                story_docs.append({
-                    "source": "attachment",
-                    "origin_key": story_key,
-                    "filename": fname,
-                    "text": text,
-                })
+                story_docs.append(
+                    {
+                        "source": "attachment",
+                        "origin_key": story_key,
+                        "filename": fname,
+                        "text": text,
+                    }
+                )
 
         # Tickets liés : description uniquement (issuelinks en base, pas de PJ)
         issuelinks = (db_story or {}).get("issuelinks") or []
@@ -302,11 +326,17 @@ def collect_documents_for_epic(
         if story_docs:
             documents_by_story[story_key] = story_docs
 
-    total_docs = len(epic_documents) + sum(len(docs) for docs in documents_by_story.values())
+    total_docs = len(epic_documents) + sum(
+        len(docs) for docs in documents_by_story.values()
+    )
 
     logger.info(
         "Collecte epic %s : %d stories, %d documents (epic PJ: %d, vlm_focus=%s)",
-        epic_key, len(stories), total_docs, len(epic_documents), vlm_focus_story or "aucune",
+        epic_key,
+        len(stories),
+        total_docs,
+        len(epic_documents),
+        vlm_focus_story or "aucune",
     )
 
     return {
@@ -322,6 +352,7 @@ def collect_documents_for_epic(
 #  FONCTIONS INTERNES
 # ══════════════════════════════════════════════════════════════
 
+
 def _should_skip_file(filename: str) -> bool:
     name_lower = (filename or "").lower()
     return name_lower.endswith(_SKIP_EXTENSIONS)
@@ -329,6 +360,7 @@ def _should_skip_file(filename: str) -> bool:
 
 def _get_epic_key_from_db(issue_key: str) -> Optional[str]:
     from app.repositories.story_repository import get_story_by_id
+
     db_story = get_story_by_id(issue_key)
     if db_story and db_story.get("epic_key"):
         return db_story["epic_key"]
@@ -381,7 +413,7 @@ def _download_and_extract(
     name_lower = filename.lower()
     if name_lower.endswith((".pptx", ".ppt")):
         return _extract_pptx_with_vlm(resp.content, vlm_enabled=PPTX_VLM_ENABLED)
-    
+
     is_image = name_lower.endswith((".png", ".jpg", ".jpeg", ".gif", ".bmp", ".webp"))
     if is_image:
         if not vlm_enabled:
@@ -414,20 +446,26 @@ def _extract_pptx_with_vlm(content: bytes, vlm_enabled: bool = True) -> Optional
                 if hasattr(shape, "text") and shape.text.strip():
                     slide_text.append(shape.text)
 
-                if (vlm_enabled and
-                    shape.shape_type == MSO_SHAPE_TYPE.PICTURE and
-                    slide_num <= PPTX_VLM_PRIORITY_SLIDES and
-                    image_count < PPTX_MAX_VLM_IMAGES):
+                if (
+                    vlm_enabled
+                    and shape.shape_type == MSO_SHAPE_TYPE.PICTURE
+                    and slide_num <= PPTX_VLM_PRIORITY_SLIDES
+                    and image_count < PPTX_MAX_VLM_IMAGES
+                ):
                     try:
                         image = shape.image
                         image_bytes = image.blob
                         if len(image_bytes) < PPTX_MIN_IMAGE_SIZE:
                             continue
-                        desc = describe_image(image_bytes, f"pptx_slide_{slide_num}.png")
+                        desc = describe_image(
+                            image_bytes, f"pptx_slide_{slide_num}.png"
+                        )
                         if desc:
                             slide_text.append(f"[Image slide {slide_num}: {desc}]")
                             image_count += 1
-                            logger.info(f"VLM PPTX: slide {slide_num} ({image_count}/{PPTX_MAX_VLM_IMAGES})")
+                            logger.info(
+                                f"VLM PPTX: slide {slide_num} ({image_count}/{PPTX_MAX_VLM_IMAGES})"
+                            )
                     except Exception as e:
                         logger.debug(f"Erreur VLM image slide {slide_num}: {e}")
 
@@ -443,5 +481,6 @@ def _extract_pptx_with_vlm(content: bytes, vlm_enabled: bool = True) -> Optional
 def _get_epic_key(issue_key: str) -> Optional[str]:
     """Récupère la clé de l'epic parent d'une story (Jira)."""
     from app.services.jira_service import get_epic_for_story
+
     epic = get_epic_for_story(issue_key)
     return epic["key"] if epic else None

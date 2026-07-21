@@ -4,7 +4,6 @@ Détection d'étapes ambiguës (heuristiques regex + LLM sémantique). Agent 3 n
 
 from __future__ import annotations
 
-import json
 import logging
 import re
 from dataclasses import dataclass
@@ -18,7 +17,10 @@ AMBIGUITY_REGEX = [
     # Seule ambiguïté retenue : "vérifier" utilisé comme verbe d'action / d'objectif.
     # Toute autre formulation vague provient de la user story elle-même et ne peut
     # être corrigée dans le test → ce n'est pas une ambiguïté de test.
-    (re.compile(r"(?i)\bv[eé]rifier\b"), "verbe interdit « vérifier » dans action/résultat/objectif"),
+    (
+        re.compile(r"(?i)\bv[eé]rifier\b"),
+        "verbe interdit « vérifier » dans action/résultat/objectif",
+    ),
 ]
 
 
@@ -59,7 +61,10 @@ def detect_ambiguous_steps(test: ManualTestCase) -> List[AmbiguityFinding]:
             )
 
     for step in test.steps:
-        for field, val in (("action", step.action), ("expected_result", step.expected_result)):
+        for field, val in (
+            ("action", step.action),
+            ("expected_result", step.expected_result),
+        ):
             r = _regex_reason(val or "")
             if r:
                 out.append(
@@ -128,21 +133,28 @@ def detect_testable_point_contradictions(testable_points: List[str]) -> List[dic
             words_b = set(re.findall(r"\b\w+\b", tp_b.lower()))
             for word_a, word_b in _CONTRADICTION_PAIRS:
                 if word_a in words_a and word_b in words_b:
-                    pair_key = (min(i, j), max(i, j), word_a, word_b)
-                    canonical = (min(i, j), max(i, j), min(word_a, word_b), max(word_a, word_b))
+
+                    canonical = (
+                        min(i, j),
+                        max(i, j),
+                        min(word_a, word_b),
+                        max(word_a, word_b),
+                    )
                     if canonical in seen_pairs:
                         continue
                     seen_pairs.add(canonical)
-                    findings.append({
-                        "test_name": "[STORY]",
-                        "step_index": -1,
-                        "field": "testable_points",
-                        "reason": (
-                            f"Contradiction probable : TP-{i+1} contient '«{word_a}»' "
-                            f"et TP-{j+1} contient '«{word_b}»' — "
-                            f"vérifier la cohérence avec la User Story source."
-                        ),
-                        "original_text": f"TP-{i+1}: {tp_a}\nTP-{j+1}: {tp_b}",
-                        "source": "heuristic_contradiction",
-                    })
+                    findings.append(
+                        {
+                            "test_name": "[STORY]",
+                            "step_index": -1,
+                            "field": "testable_points",
+                            "reason": (
+                                f"Contradiction probable : TP-{i+1} contient '«{word_a}»' "
+                                f"et TP-{j+1} contient '«{word_b}»' — "
+                                f"vérifier la cohérence avec la User Story source."
+                            ),
+                            "original_text": f"TP-{i+1}: {tp_a}\nTP-{j+1}: {tp_b}",
+                            "source": "heuristic_contradiction",
+                        }
+                    )
     return findings

@@ -18,8 +18,8 @@ from app.services.jira_auth_service import (
     validate_jira_credentials,
 )
 
-
 # ── Seed ──────────────────────────────────────────────────────────────────────
+
 
 async def seed_admin_user(db: AsyncSession) -> None:
     """Crée l'admin par défaut UNIQUEMENT si aucun admin n'existe déjà."""
@@ -36,6 +36,7 @@ async def seed_admin_user(db: AsyncSession) -> None:
 
 
 # ── User creation ─────────────────────────────────────────────────────────────
+
 
 async def create_user(
     db: AsyncSession,
@@ -70,7 +71,9 @@ async def create_user(
 # ── Admin auth helpers (kept for internal use) ────────────────────────────────
 
 
-async def _authenticate_admin(db: AsyncSession, email: str, password: str) -> Optional[User]:
+async def _authenticate_admin(
+    db: AsyncSession, email: str, password: str
+) -> Optional[User]:
     result = await db.execute(
         select(User).where(User.email == email, User.role == "admin")
     )
@@ -91,6 +94,7 @@ def build_admin_token(user: User) -> str:
     payload["display_name"] = user.display_name or user.email.split("@")[0]
     return create_access_token(payload)
 
+
 def build_user_token(user: User) -> str:
     payload = {
         "sub": str(user.id),
@@ -103,7 +107,9 @@ def build_user_token(user: User) -> str:
         payload["jira_username"] = user.jira_username
     return create_access_token(payload)
 
+
 # ── Tester auth helpers (kept for internal use) ───────────────────────────────
+
 
 async def _authenticate_tester(username: str, password: str) -> Dict[str, Any]:
     """Valide les credentials Jira et retourne token + projets."""
@@ -151,6 +157,7 @@ async def _authenticate_tester(username: str, password: str) -> Dict[str, Any]:
 
 # ── Unified entry-point ───────────────────────────────────────────────────────
 
+
 async def authenticate_user(
     db: AsyncSession,
     *,
@@ -193,7 +200,8 @@ async def authenticate_user(
                 "id": admin_user.id,
                 "email": admin_user.email,
                 "role": "admin",
-                "display_name": admin_user.display_name or admin_user.email.split("@")[0],
+                "display_name": admin_user.display_name
+                or admin_user.email.split("@")[0],
             },
             "projects": None,
         }
@@ -205,7 +213,10 @@ async def authenticate_user(
         return tester_result
 
     # Vérification que le testeur est bien enregistré et actif en base
-    from app.services.user_service import get_user_by_jira_username  # local import to avoid circular
+    from app.services.user_service import (
+        get_user_by_jira_username,
+    )  # local import to avoid circular
+
     db_tester = await get_user_by_jira_username(db, identifier)
     if not db_tester:
         return {
@@ -225,6 +236,7 @@ async def authenticate_user(
 
 
 # ── Logout ────────────────────────────────────────────────────────────────────
+
 
 def logout_tester(session_id: Optional[str]) -> None:
     if session_id:

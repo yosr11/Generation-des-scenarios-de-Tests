@@ -28,31 +28,52 @@ class PriorityLevel(str, Enum):
 
 class ManualTestStep(BaseModel):
     index: int = Field(..., description="Numéro de l'étape")
-    action: str = Field(..., description="Action claire, testable, formulée avec un verbe à l'infinitif")
-    data: Optional[str] = Field(default="", description="Données de l'étape ou acteur effectuant l'action")
-    actor: Optional[str] = Field(default="", description="L'acteur qui réalise cette action (ex: Collaborateur, Manager RH)")
+    action: str = Field(
+        ..., description="Action claire, testable, formulée avec un verbe à l'infinitif"
+    )
+    data: Optional[str] = Field(
+        default="", description="Données de l'étape ou acteur effectuant l'action"
+    )
+    actor: Optional[str] = Field(
+        default="",
+        description="L'acteur qui réalise cette action (ex: Collaborateur, Manager RH)",
+    )
     expected_result: str = Field(..., description="Résultat attendu clair et mesurable")
-    revision_po: Optional[str] = Field(default="", description="Commentaire du Product Owner sur la pertinence du test (vide par défaut)")
+    revision_po: Optional[str] = Field(
+        default="",
+        description="Commentaire du Product Owner sur la pertinence du test (vide par défaut)",
+    )
 
 
 class ManualTestEtape(BaseModel):
     """Une étape du test, contenant des actions groupées d'un acteur"""
-    titre: str = Field(..., description="Titre général de l'étape (ex: 'Accéder à l'application')")
-    actor: Optional[str] = Field(default="", description="L'acteur qui exécute cette étape")
-    steps: List[ManualTestStep] = Field(default_factory=list, description="Actions détaillées de cette étape")
+
+    titre: str = Field(
+        ..., description="Titre général de l'étape (ex: 'Accéder à l'application')"
+    )
+    actor: Optional[str] = Field(
+        default="", description="L'acteur qui exécute cette étape"
+    )
+    steps: List[ManualTestStep] = Field(
+        default_factory=list, description="Actions détaillées de cette étape"
+    )
 
 
 class ManualTestCase(BaseModel):
     story_id: str
     test_name: str
     objective: str
-    description: Optional[str] = Field(default="", description="Résumé des actions et du scénario du test")
+    description: Optional[str] = Field(
+        default="", description="Résumé des actions et du scénario du test"
+    )
     execution_context: Optional[str] = ""
     preconditions: List[str] = []
     scenario_type: ScenarioType = ScenarioType.NOM
     priority: PriorityLevel = PriorityLevel.MEDIUM
     labels: List[str] = []
-    étapes: List[ManualTestEtape] = Field(default_factory=list, description="Étapes groupées du test")
+    étapes: List[ManualTestEtape] = Field(
+        default_factory=list, description="Étapes groupées du test"
+    )
     steps: List[ManualTestStep] = []  # Garder pour compatibilité
 
 

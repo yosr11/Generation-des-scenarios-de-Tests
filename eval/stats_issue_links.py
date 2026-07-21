@@ -8,6 +8,7 @@ Usage :
     python -m eval.stats_issue_links --projects YOUQA
     python -m eval.stats_issue_links --top 30
 """
+
 from __future__ import annotations
 
 import argparse
@@ -80,7 +81,9 @@ def analyze(projects: Iterable[str], top: int) -> None:
                         d = lk.get("direction") or ""
                         target_key = lk.get("key") or ""
                         target_proj = _project_of(target_key)
-                        kind = "TEST" if target_proj in TEST_PROJECT_PREFIXES else "STORY"
+                        kind = (
+                            "TEST" if target_proj in TEST_PROJECT_PREFIXES else "STORY"
+                        )
                         if kind == "STORY":
                             has_story = True
 
@@ -91,7 +94,12 @@ def analyze(projects: Iterable[str], top: int) -> None:
                             samples[t] = []
                         if len(samples[t]) < 3:
                             samples[t].append(
-                                (test_id, d, target_key, (lk.get("summary") or "")[:80]),
+                                (
+                                    test_id,
+                                    d,
+                                    target_key,
+                                    (lk.get("summary") or "")[:80],
+                                ),
                             )
 
                 if has_any:
@@ -101,16 +109,22 @@ def analyze(projects: Iterable[str], top: int) -> None:
 
     print("\n========== GLOBAL ==========")
     print(f"  Tests analysés       : {total_tests}")
-    print(f"  Tests avec >=1 lien  : {tests_with_links} "
-          f"({100*tests_with_links/total_tests:.1f}%)")
-    print(f"  Tests reliés à STORY : {tests_with_story_link} "
-          f"({100*tests_with_story_link/total_tests:.1f}%)")
+    print(
+        f"  Tests avec >=1 lien  : {tests_with_links} "
+        f"({100*tests_with_links/total_tests:.1f}%)"
+    )
+    print(
+        f"  Tests reliés à STORY : {tests_with_story_link} "
+        f"({100*tests_with_story_link/total_tests:.1f}%)"
+    )
 
     print(f"\n========== TOP {top} TYPES (toutes directions) ==========")
     print(f"  {'TYPE':<25s} {'count':>7s}  {'-> STORY':>9s}  {'-> TEST':>9s}")
     for t, c in type_counter.most_common(top):
         kinds = type_target_kind.get(t, Counter())
-        print(f"  {t:<25s} {c:>7d}  {kinds.get('STORY', 0):>9d}  {kinds.get('TEST', 0):>9d}")
+        print(
+            f"  {t:<25s} {c:>7d}  {kinds.get('STORY', 0):>9d}  {kinds.get('TEST', 0):>9d}"
+        )
 
     print(f"\n========== TOP {top} (TYPE / DIRECTION) ==========")
     for td, c in direction_counter.most_common(top):
@@ -119,7 +133,7 @@ def analyze(projects: Iterable[str], top: int) -> None:
     print("\n========== EXEMPLES PAR TYPE ==========")
     for t in sorted(type_counter, key=lambda x: -type_counter[x])[:top]:
         print(f"\n  -- {t}  (total={type_counter[t]}) --")
-        for (tid, d, k, s) in samples.get(t, []):
+        for tid, d, k, s in samples.get(t, []):
             print(f"     {tid}  --[{d}]-->  {k}    {s!r}")
 
 

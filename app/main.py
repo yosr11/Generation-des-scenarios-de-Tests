@@ -37,7 +37,6 @@ async def lifespan(app: FastAPI):
     yield
 
 
-
 app = FastAPI(
     title="AI Test Agent",
     version="0.2.0",

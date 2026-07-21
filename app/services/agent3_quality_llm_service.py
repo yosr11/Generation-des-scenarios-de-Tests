@@ -3,6 +3,7 @@ Agent 3 — LLM qualitative feedback (optional).
 Generates a human-readable QA feedback from metrics + tests.
 Must NOT change tests and must NOT decide VALID/INVALID.
 """
+
 from __future__ import annotations
 
 import json
@@ -58,18 +59,20 @@ def llm_quality_feedback(
     # Compact tests to reduce tokens
     compact = []
     for t in tests:
-        compact.append({
-            "test_name": t.get("test_name", ""),
-            "objective": t.get("objective", ""),
-            "steps": [
-                {
-                    "index": s.get("index"),
-                    "action": s.get("action"),
-                    "expected_result": s.get("expected_result"),
-                }
-                for s in (t.get("steps") or [])[:5]
-            ],
-        })
+        compact.append(
+            {
+                "test_name": t.get("test_name", ""),
+                "objective": t.get("objective", ""),
+                "steps": [
+                    {
+                        "index": s.get("index"),
+                        "action": s.get("action"),
+                        "expected_result": s.get("expected_result"),
+                    }
+                    for s in (t.get("steps") or [])[:5]
+                ],
+            }
+        )
 
     user = build_quality_payload(
         story_id=story_id,

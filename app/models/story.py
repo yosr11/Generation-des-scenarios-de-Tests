@@ -1,14 +1,16 @@
-#Représente une user story.id,titre,description;critères d’acceptation
-#Un modèle pour représenter une User Story , Avec ses critères d’acceptation , Validé automatiquement 
+# Représente une user story.id,titre,description;critères d’acceptation
+# Un modèle pour représenter une User Story , Avec ses critères d’acceptation , Validé automatiquement
 
-#bibliothèque Python qui sert à :définir des modèles de données ,valider automatiquement les données,convertir les types automatiquement
+# bibliothèque Python qui sert à :définir des modèles de données ,valider automatiquement les données,convertir les types automatiquement
 from pydantic import BaseModel
 from typing import List, Optional
+
 
 class Story(BaseModel):
     """
     Modèle représentant une User Story simplifiée
     """
+
     id: str
     title: str
     description: Optional[str] = ""
@@ -19,5 +21,7 @@ class Story(BaseModel):
     tests: Optional[List[str]] = None
     requirement_status: Optional[str] = None
 
-    #acceptance_criteria: List[dict] = []
-#PrgppLBW0aKHpuLoN4tagCcQ43A1YWbxhfLT8L
+    # acceptance_criteria: List[dict] = []
+
+
+# PrgppLBW0aKHpuLoN4tagCcQ43A1YWbxhfLT8L

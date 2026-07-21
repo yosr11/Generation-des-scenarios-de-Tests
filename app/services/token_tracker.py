@@ -23,9 +23,7 @@ from typing import Any, Dict, Iterator, Optional
 _current_usage: ContextVar[Optional[Dict[str, Any]]] = ContextVar(
     "_current_usage", default=None
 )
-_current_agent: ContextVar[Optional[str]] = ContextVar(
-    "_current_agent", default=None
-)
+_current_agent: ContextVar[Optional[str]] = ContextVar("_current_agent", default=None)
 
 
 def _empty_bucket() -> Dict[str, Any]:

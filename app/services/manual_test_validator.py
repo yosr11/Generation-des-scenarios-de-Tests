@@ -3,7 +3,6 @@ from typing import Any, List, Tuple, Union
 
 from app.models.test_manual import ManualTestGenerationResult
 
-
 FORBIDDEN_ACTION_STARTS = ["vérifier", "verifier"]
 FORBIDDEN_OBJECTIVE_STARTS = ["vérifier", "verifier"]
 
@@ -67,7 +66,9 @@ def collect_step_golden_rule_warnings(
     return warnings
 
 
-def collect_test_golden_rule_warnings(test: Union[dict, Any]) -> List[Tuple[str, List[str]]]:
+def collect_test_golden_rule_warnings(
+    test: Union[dict, Any],
+) -> List[Tuple[str, List[str]]]:
     """
     Retourne les avertissements par step sous forme (label, messages).
     Accepte un dict (UI/API) ou un ManualTestCase Pydantic.
@@ -89,13 +90,15 @@ def collect_test_golden_rule_warnings(test: Union[dict, Any]) -> List[Tuple[str,
         lowered_objective = objective.lower()
         for forbidden in FORBIDDEN_OBJECTIVE_STARTS:
             if lowered_objective.startswith(forbidden):
-                per_step.append((
-                    "objective",
-                    [
-                        f"[{story_id}] objective commence par « {forbidden} » "
-                        "(préférer un verbe d'action à l'infinitif)."
-                    ],
-                ))
+                per_step.append(
+                    (
+                        "objective",
+                        [
+                            f"[{story_id}] objective commence par « {forbidden} » "
+                            "(préférer un verbe d'action à l'infinitif)."
+                        ],
+                    )
+                )
 
     if etapes:
         for etape_idx, etape in enumerate(etapes, 1):
@@ -161,7 +164,9 @@ def validate_manual_generation_result(result: ManualTestGenerationResult) -> Lis
                 for etape_idx, etape in enumerate(etapes, 1):
                     titre = _extract_etape_field(etape, "titre")
                     if not titre:
-                        errors.append(f"[{test.story_id}] ÉTAPE {etape_idx}: titre vide.")
+                        errors.append(
+                            f"[{test.story_id}] ÉTAPE {etape_idx}: titre vide."
+                        )
 
                     if isinstance(etape, dict):
                         etape_steps = etape.get("steps", [])
@@ -169,7 +174,9 @@ def validate_manual_generation_result(result: ManualTestGenerationResult) -> Lis
                         etape_steps = getattr(etape, "steps", [])
 
                     if not etape_steps:
-                        errors.append(f"[{test.story_id}] ÉTAPE {etape_idx}: aucun step.")
+                        errors.append(
+                            f"[{test.story_id}] ÉTAPE {etape_idx}: aucun step."
+                        )
 
                     for step in etape_steps:
                         _validate_step_structure(test.story_id, etape_idx, step, errors)

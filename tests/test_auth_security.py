@@ -10,7 +10,9 @@ def test_password_hashing_round_trip():
 
     try:
         hashed = security.hash_password(password)
-    except Exception as exc:  # pragma: no cover - defensive for env-specific bcrypt issues
+    except (
+        Exception
+    ) as exc:  # pragma: no cover - defensive for env-specific bcrypt issues
         assert "bcrypt" in str(exc).lower() or "72 bytes" in str(exc)
     else:
         assert isinstance(hashed, str) and hashed.startswith("$2")
@@ -30,7 +32,9 @@ def test_access_token_contains_expected_claims():
 
 
 def test_decode_access_token_rejects_invalid_signature():
-    token = create_access_token({"sub": "1", "role": "tester"}, expires_delta=timedelta(minutes=1))
+    token = create_access_token(
+        {"sub": "1", "role": "tester"}, expires_delta=timedelta(minutes=1)
+    )
     tampered = token[:-1] + ("A" if token[-1] != "A" else "B")
 
     import pytest

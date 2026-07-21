@@ -10,7 +10,7 @@ from typing import List
 import numpy as np
 
 from app.models.test_manual import ManualTestCase
-from app.services.agent3_semantic_similarity import encode_texts, max_cosine_similarity
+from app.services.agent3_semantic_similarity import encode_texts
 
 
 def _iter_test_steps(test: ManualTestCase):

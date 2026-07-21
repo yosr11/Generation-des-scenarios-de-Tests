@@ -19,7 +19,7 @@ Historique des changements :
 """
 
 from deepeval.metrics import GEval
-from deepeval.test_case import LLMTestCase, LLMTestCaseParams
+from deepeval.test_case import LLMTestCaseParams
 
 from eval.DeepEval.github_models_llm import GitHubModelsLLM
 

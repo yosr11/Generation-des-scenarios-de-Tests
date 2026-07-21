@@ -19,6 +19,7 @@ router = APIRouter(prefix="/orchestrator", tags=["Orchestrator — Full Pipeline
 
 # ── PipelineRun logging helper ─────────────────────────────
 
+
 async def _log_pipeline_run(
     story_id: str,
     launched_by: str,
@@ -33,6 +34,7 @@ async def _log_pipeline_run(
     try:
         from app.db.postgres import AsyncSessionLocal
         from app.models.pg_models import PipelineRun
+
         async with AsyncSessionLocal() as db:
             run = PipelineRun(
                 story_id=story_id,
@@ -55,20 +57,40 @@ async def _log_pipeline_run(
 #  Modèles de requête / réponse
 # ═══════════════════════════════════════════════════════════════
 
+
 class PipelineRequest(BaseModel):
     """Paramètres optionnels pour le pipeline."""
 
     model_config = {"protected_namespaces": ()}
 
     use_rag: bool = Field(default=False, description="Activer le RAG ChromaDB")
-    use_legacy_rag: bool = Field(default=True, description="Activer le RAG des tests Xray legacy Sopra HR (few-shot Agent 2)")
-    model_agent1: str = Field(default="nova-lite-2", description="Modèle LLM pour Agent 1 (analyse). Options: qwen3, llama4, gptoss, gptoss120b, qwen3.6, nova-lite-2")
-    model_agent15: str = Field(default="nova-lite-2", description="Modèle LLM pour Agent 1.5 (business modeling)")
-    model_agent2: str = Field(default="nova-lite-2", description="Modèle LLM pour Agent 2 (génération)")
-    model_agent3_quality: str = Field(default="nova-lite-2", description="Modèle LLM pour Agent 3 (qualité)")
-    model_agent5: str = Field(default="nova-lite-2", description="Modèle LLM pour Agent 5 (rapport)")
-    coverage_threshold: float = Field(default=0.70, ge=0.0, le=1.0, description="Seuil de couverture")
-    max_correction_iterations: int = Field(default=2, ge=0, le=5, description="Max itérations gap-fill")
+    use_legacy_rag: bool = Field(
+        default=True,
+        description="Activer le RAG des tests Xray legacy Sopra HR (few-shot Agent 2)",
+    )
+    model_agent1: str = Field(
+        default="nova-lite-2",
+        description="Modèle LLM pour Agent 1 (analyse). Options: qwen3, llama4, gptoss, gptoss120b, qwen3.6, nova-lite-2",
+    )
+    model_agent15: str = Field(
+        default="nova-lite-2",
+        description="Modèle LLM pour Agent 1.5 (business modeling)",
+    )
+    model_agent2: str = Field(
+        default="nova-lite-2", description="Modèle LLM pour Agent 2 (génération)"
+    )
+    model_agent3_quality: str = Field(
+        default="nova-lite-2", description="Modèle LLM pour Agent 3 (qualité)"
+    )
+    model_agent5: str = Field(
+        default="nova-lite-2", description="Modèle LLM pour Agent 5 (rapport)"
+    )
+    coverage_threshold: float = Field(
+        default=0.70, ge=0.0, le=1.0, description="Seuil de couverture"
+    )
+    max_correction_iterations: int = Field(
+        default=2, ge=0, le=5, description="Max itérations gap-fill"
+    )
     force_refresh: bool = Field(
         default=False,
         description=(
@@ -100,9 +122,9 @@ class PipelineStoryResult(BaseModel):
 
     story_id: str
     story: Optional[dict] = None
-    status: str                  # completed | skipped | failed
+    status: str  # completed | skipped | failed
     story_type: Optional[str] = None
-   
+
     # ── Traçabilité RAG tests legacy (few-shot Agent 2) ──
     legacy_examples: Optional[List[dict]] = Field(
         default=None,
@@ -129,22 +151,31 @@ class PipelineStoryResult(BaseModel):
     errors: List[str] = []
     report_markdown: Optional[str] = None
     # ── Sorties détaillées par agent ──
-    agent1_analysis: Optional[dict] = Field(default=None, description="Sortie Agent 1 (analyse)")
-    agent2_tests: Optional[List[dict]] = Field(default=None, description="Sortie Agent 2 (tests générés)")
+    agent1_analysis: Optional[dict] = Field(
+        default=None, description="Sortie Agent 1 (analyse)"
+    )
+    agent2_tests: Optional[List[dict]] = Field(
+        default=None, description="Sortie Agent 2 (tests générés)"
+    )
     agent2_golden_rule_warnings: Optional[List[str]] = Field(
         default=None,
         description="Avertissements golden rules non bloquants (Agent 2)",
     )
     agent2_message: Optional[str] = Field(default=None, description="Message Agent 2")
-    agent15_business_model: Optional[dict] = Field(default=None, description="Sortie Agent 1.5 (business goals + workflows)")
-    agent3_validation: Optional[dict] = Field(default=None, description="Sortie Agent 3 (validation/couverture)")
-    agent5_report: Optional[dict] = Field(default=None, description="Sortie Agent 5 (rapport final)")
+    agent15_business_model: Optional[dict] = Field(
+        default=None, description="Sortie Agent 1.5 (business goals + workflows)"
+    )
+    agent3_validation: Optional[dict] = Field(
+        default=None, description="Sortie Agent 3 (validation/couverture)"
+    )
+    agent5_report: Optional[dict] = Field(
+        default=None, description="Sortie Agent 5 (rapport final)"
+    )
 
     # ── Métriques de consommation LLM ──
-    token_usage: Optional[dict] = Field(default=None, description="Tokens consommés par agent et par modèle")
-
-    
-   
+    token_usage: Optional[dict] = Field(
+        default=None, description="Tokens consommés par agent et par modèle"
+    )
 
 
 class EpicPipelineResult(BaseModel):
@@ -162,6 +193,7 @@ class EpicPipelineResult(BaseModel):
 # ═══════════════════════════════════════════════════════════════
 #  Helpers
 # ═══════════════════════════════════════════════════════════════
+
 
 def _dump(obj: Any) -> Optional[Any]:
     """Convertit un objet Pydantic / dataclass / dict en dict sérialisable."""
@@ -185,11 +217,12 @@ def _dump(obj: Any) -> Optional[Any]:
     return None
 
 
-def _state_to_result(state: PipelineState, include_markdown: bool = False) -> PipelineStoryResult:
+def _state_to_result(
+    state: PipelineState, include_markdown: bool = False
+) -> PipelineStoryResult:
     """Convertit le PipelineState final en réponse API."""
     from app.services.pipeline_export_service import (
         build_agent2_input,
-        build_evaluation_export,
         collect_story_images,
     )
 
@@ -202,7 +235,9 @@ def _state_to_result(state: PipelineState, include_markdown: bool = False) -> Pi
     rag_context = state.get("rag_context") or None
 
     images = collect_story_images(story_id) or None
-    agent2_input = build_agent2_input(legacy_examples=legacy_examples, rag_context=rag_context)
+    agent2_input = build_agent2_input(
+        legacy_examples=legacy_examples, rag_context=rag_context
+    )
 
     result = PipelineStoryResult(
         story_id=story_id,
@@ -230,11 +265,11 @@ def _state_to_result(state: PipelineState, include_markdown: bool = False) -> Pi
         token_usage=state.get("token_usage"),
     )
 
-    
-
     if include_markdown and report:
         try:
-            service = Agent5ReportGeneratorService(model_name=state.get("model_agent5", "qwen3"))
+            service = Agent5ReportGeneratorService(
+                model_name=state.get("model_agent5", "qwen3")
+            )
             result.report_markdown = service.export_to_markdown(report)
         except Exception:
             pass
@@ -249,6 +284,7 @@ running_tasks: Dict[str, asyncio.Task] = {}
 # ═══════════════════════════════════════════════════════════════
 #  Routes
 # ═══════════════════════════════════════════════════════════════
+
 
 @router.post(
     "/run/{story_id}",
@@ -274,22 +310,26 @@ async def run_story_pipeline(
     if sid in running_tasks:
         try:
             from app.utils.pipeline_cancel import mark_pipeline_cancelled
+
             mark_pipeline_cancelled(sid)
             running_tasks[sid].cancel()
         except Exception:
             pass
 
     from app.utils.job_manager import create_job
+
     job = create_job(sid)
 
     async def run_task():
         from app.utils.job_manager import jobs_db
+
         status = "failed"
         tests_count = 0
         error_msg = None
-        
+
         try:
             import anyio
+
             final_state = await anyio.to_thread.run_sync(
                 lambda: run_pipeline(
                     story_id=sid,
@@ -308,9 +348,11 @@ async def run_story_pipeline(
             result = _state_to_result(final_state, include_markdown=False)
             status = result.status
             tests_count = result.tests_count
-            
+
             if sid in jobs_db:
-                jobs_db[sid]["status"] = "completed" if status == "completed" else "failed"
+                jobs_db[sid]["status"] = (
+                    "completed" if status == "completed" else "failed"
+                )
                 jobs_db[sid]["progress"] = 100
                 jobs_db[sid]["result"] = result.model_dump()
         except asyncio.CancelledError:
@@ -321,6 +363,7 @@ async def run_story_pipeline(
             raise
         except Exception as exc:
             from app.utils.pipeline_cancel import PipelineCancelled
+
             if isinstance(exc, PipelineCancelled):
                 logger.info(f"Pipeline run for {sid} was cancelled (cooperative).")
                 if sid in jobs_db:
@@ -361,6 +404,7 @@ def get_pipeline_status(
     current_user: CurrentUser = Depends(get_current_user),
 ):
     from app.utils.job_manager import jobs_db
+
     sid = story_id.strip().upper()
     if sid not in jobs_db:
         return {
@@ -368,7 +412,7 @@ def get_pipeline_status(
             "status": "failed",
             "progress": 0,
             "steps": [],
-            "error": "Aucune exécution enregistrée pour cette story."
+            "error": "Aucune exécution enregistrée pour cette story.",
         }
     return jobs_db[sid]
 
@@ -384,9 +428,11 @@ def cancel_pipeline(
     sid = story_id.strip().upper()
     if sid in running_tasks:
         from app.utils.pipeline_cancel import mark_pipeline_cancelled
+
         mark_pipeline_cancelled(sid)
         running_tasks[sid].cancel()
         from app.utils.job_manager import jobs_db
+
         if sid in jobs_db:
             jobs_db[sid]["status"] = "failed"
             jobs_db[sid]["error"] = "Annulé par l'utilisateur."
@@ -460,10 +506,12 @@ def run_story_pipeline_report_md(story_id: str, body: PipelineRequest = None):
         md = service.export_to_markdown(report)
         try:
             import markdown as md_lib  # type: ignore
+
             body_html = md_lib.markdown(md, extensions=["tables", "fenced_code"])
         except ImportError:
             # Fallback minimal si la lib markdown n'est pas installée
             from html import escape
+
             body_html = f"<pre>{escape(md)}</pre>"
 
         html = f"""<!doctype html>
@@ -525,10 +573,12 @@ def run_story_pipeline_report_html(story_id: str, body: PipelineRequest = None):
 
         try:
             import markdown as md_lib  # type: ignore
+
             body_html = md_lib.markdown(md, extensions=["tables", "fenced_code"])
         except ImportError:
             # Fallback minimal si la lib markdown n'est pas installée
             from html import escape
+
             body_html = f"<pre>{escape(md)}</pre>"
 
         html = f"""<!doctype html>
@@ -560,8 +610,6 @@ def run_story_pipeline_report_html(story_id: str, body: PipelineRequest = None):
         raise HTTPException(status_code=500, detail=f"Pipeline error: {e}")
 
 
-
-
 @router.post(
     "/run/epic/{epic_key}",
     response_model=EpicPipelineResult,
@@ -579,7 +627,9 @@ def run_epic_pipeline(epic_key: str, body: PipelineRequest = None):
 
     stories = get_stories_by_epic(epic_key)
     if not stories:
-        raise HTTPException(status_code=404, detail=f"Aucune story trouvée pour l'epic {epic_key}")
+        raise HTTPException(
+            status_code=404, detail=f"Aucune story trouvée pour l'epic {epic_key}"
+        )
 
     results: List[PipelineStoryResult] = []
     completed = 0
@@ -591,7 +641,9 @@ def run_epic_pipeline(epic_key: str, body: PipelineRequest = None):
         if not sid:
             continue
 
-        logger.info(f"[Route] Epic pipeline: processing {sid} ({len(results) + 1}/{len(stories)})")
+        logger.info(
+            f"[Route] Epic pipeline: processing {sid} ({len(results) + 1}/{len(stories)})"
+        )
 
         try:
             final_state = run_pipeline(
@@ -620,11 +672,13 @@ def run_epic_pipeline(epic_key: str, body: PipelineRequest = None):
 
         except Exception as e:
             logger.error(f"[Route] Epic pipeline error for {sid}: {e}")
-            results.append(PipelineStoryResult(
-                story_id=sid,
-                status="failed",
-                errors=[str(e)],
-            ))
+            results.append(
+                PipelineStoryResult(
+                    story_id=sid,
+                    status="failed",
+                    errors=[str(e)],
+                )
+            )
             failed += 1
 
     total_duration = int((time.time() - start_time) * 1000)

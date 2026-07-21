@@ -83,6 +83,7 @@ _session = _session_prod
 # Fonctions de recherche Jira
 # ============================================================
 
+
 def search_issues_with_session(
     jql: str,
     session: requests.Session,
@@ -215,11 +216,7 @@ def get_stories_without_description(
     if result.get("error"):
         return []
 
-    return [
-        issue.get("key")
-        for issue in result.get("issues", [])
-        if issue.get("key")
-    ]
+    return [issue.get("key") for issue in result.get("issues", []) if issue.get("key")]
 
 
 def get_story_byID(issue_key: str) -> Dict[str, Any]:
@@ -306,9 +303,11 @@ def get_epic_for_story(issue_key: str) -> Optional[Dict[str, Any]]:
         "description": epic_fields.get("description") or "",
     }
 
+
 # ============================================================
 # Enrichissement des issuelinks avec leur description
 # ============================================================
+
 
 def enrich_issuelinks_with_description(
     issuelinks: List[Dict[str, Any]],
@@ -367,8 +366,7 @@ def enrich_issuelinks_with_description(
 
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         future_to_index = {
-            executor.submit(_fetch_description, key): idx
-            for idx, key in keys_to_fetch
+            executor.submit(_fetch_description, key): idx for idx, key in keys_to_fetch
         }
         for future in as_completed(future_to_index):
             idx = future_to_index[future]
@@ -378,7 +376,6 @@ def enrich_issuelinks_with_description(
                 enriched_links[idx]["description"] = ""
 
     return enriched_links
-
 
 
 # ============================================================
@@ -514,7 +511,10 @@ def find_stories_with_linked_tests(
 # Extraction steps Xray
 # ============================================================
 
-def _extract_xray_steps_from_customfields(fields: Dict[str, Any]) -> List[Dict[str, Any]]:
+
+def _extract_xray_steps_from_customfields(
+    fields: Dict[str, Any],
+) -> List[Dict[str, Any]]:
     """
     Extrait les steps depuis les custom fields Jira/Xray si présents.
     """
@@ -532,14 +532,10 @@ def _extract_xray_steps_from_customfields(fields: Dict[str, Any]) -> List[Dict[s
                     {
                         "index": step.get("index", len(steps) + 1),
                         "action": (
-                            step_fields.get("action")
-                            or step_fields.get("Action")
-                            or ""
+                            step_fields.get("action") or step_fields.get("Action") or ""
                         ),
                         "data": (
-                            step_fields.get("data")
-                            or step_fields.get("Data")
-                            or ""
+                            step_fields.get("data") or step_fields.get("Data") or ""
                         ),
                         "expected_result": (
                             step_fields.get("expected result")
@@ -620,9 +616,7 @@ def _fetch_xray_steps_api(
                 )
 
                 data_value = (
-                    data_raw.get("value")
-                    if isinstance(data_raw, dict)
-                    else data_raw
+                    data_raw.get("value") if isinstance(data_raw, dict) else data_raw
                 )
 
                 expected_result = (
@@ -708,6 +702,7 @@ def get_test_byID(test_key: str, use_test_jira: bool = False) -> Dict[str, Any]:
 # ============================================================
 # Création issue Jira/Xray
 # ============================================================
+
 
 def _collect_rejected_fields(body: Any) -> set:
     """Collect field names rejected by Jira create/update APIs."""
@@ -988,8 +983,8 @@ def _build_xray_step_payload(steps: List[Dict[str, str]]) -> List[Dict[str, Any]
             {
                 "index": index,
                 "fields": {
-                    "action":          {"value": step.get("action", "") or ""},
-                    "data":            {"value": step.get("data", "") or ""},
+                    "action": {"value": step.get("action", "") or ""},
+                    "data": {"value": step.get("data", "") or ""},
                     "expected result": {"value": expected_result},
                 },
             }
@@ -1038,14 +1033,14 @@ def create_test_issue(
             "[create_test_issue] createmeta unavailable for %s/%s: %s",
             project_key,
             issue_type,
-            create_meta.get("message") or create_meta.get("body") or create_meta.get("error"),
+            create_meta.get("message")
+            or create_meta.get("body")
+            or create_meta.get("error"),
         )
 
     issuetype_ref = _resolve_test_issuetype(issue_type, create_meta)
     allowed_fields = (
-        create_meta.get("allowed_fields")
-        if not create_meta.get("error")
-        else None
+        create_meta.get("allowed_fields") if not create_meta.get("error") else None
     )
 
     create_fields: Dict[str, Any] = {
@@ -1053,7 +1048,7 @@ def create_test_issue(
         "issuetype": issuetype_ref,
         "summary": safe_summary,
     }
-    
+
     # Ajouter la description dès la création si Jira l'autorise
     if description and (not allowed_fields or "description" in allowed_fields):
         create_fields["description"] = description
@@ -1080,7 +1075,6 @@ def create_test_issue(
         project_key,
         list(create_fields.keys()),
     )
-
 
     result = _post_jira_issue(
         session=jira_session,
@@ -1148,7 +1142,8 @@ def create_test_issue(
         # La seule voie fiable est l'API Raven /step.
         logger.info(
             "[create_test_issue] Ajout de %d step(s) sur %s via Raven API",
-            len(steps), issue_key,
+            len(steps),
+            issue_key,
         )
         add_steps_result = add_xray_test_steps(
             test_key=issue_key,
@@ -1158,12 +1153,13 @@ def create_test_issue(
         )
         logger.info(
             "[create_test_issue] Raven step result for %s: %s",
-            issue_key, add_steps_result,
+            issue_key,
+            add_steps_result,
         )
         if add_steps_result.get("error"):
-            post_create_errors.append(json.dumps(add_steps_result, ensure_ascii=False, indent=2))
-
-
+            post_create_errors.append(
+                json.dumps(add_steps_result, ensure_ascii=False, indent=2)
+            )
 
     if post_create_errors:
         logger.warning(
@@ -1214,11 +1210,7 @@ def add_xray_test_steps(
     for index, step in enumerate(steps, start=1):
         payload: Dict[str, Any] = {
             "step": step.get("action", "") or "",
-            "result": (
-                step.get("result")
-                or step.get("expected_result")
-                or ""
-            ),
+            "result": (step.get("result") or step.get("expected_result") or ""),
             "data": str(step.get("data", "") or "none").strip() or "none",
         }
 
@@ -1230,7 +1222,9 @@ def add_xray_test_steps(
 
         logger.info(
             "[add_xray_test_steps] PUT step %d → HTTP %d : %s",
-            index, resp.status_code, resp.text[:300],
+            index,
+            resp.status_code,
+            resp.text[:300],
         )
 
         if resp.status_code in (200, 201, 204):
@@ -1272,6 +1266,7 @@ def add_xray_test_steps(
         ),
         "api_errors": api_errors,
     }
+
 
 def _fetch_xray_step_ids(
     test_key: str,
@@ -1374,6 +1369,8 @@ def replace_xray_test_steps(
         }
 
     return add_xray_test_steps(test_key, steps, use_test_jira, jira_session)
+
+
 def search_test_issue_by_summary(
     project_key: str,
     summary: str,
@@ -1387,7 +1384,7 @@ def search_test_issue_by_summary(
 
     jql = (
         f'project = "{project_key}" '
-        f'AND issuetype = Test '
+        f"AND issuetype = Test "
         f'AND summary ~ "{safe_summary}"'
     )
 
@@ -1420,6 +1417,7 @@ def search_test_issue_by_summary(
 # ============================================================
 # Enrichissement tests existants
 # ============================================================
+
 
 def enrich_dataset_with_test_details(
     dataset: Dict[str, Any],
@@ -1769,9 +1767,8 @@ def get_legacy_test_pivot(test_key: str) -> Dict[str, Any]:
 
     key = issue.get("key") or test_key
 
-    project_key = (
-        (fields.get("project") or {}).get("key")
-        or (key.split("-", 1)[0] if "-" in key else "")
+    project_key = (fields.get("project") or {}).get("key") or (
+        key.split("-", 1)[0] if "-" in key else ""
     )
 
     links = _parse_issue_links(fields.get("issuelinks"))
@@ -1782,9 +1779,7 @@ def get_legacy_test_pivot(test_key: str) -> Dict[str, Any]:
         "project": project_key,
         "title": clean_text(fields.get("summary") or ""),
         "description": clean_text(fields.get("description") or ""),
-        "preconditions": _parse_precondition_keys(
-            fields.get(XRAY_FIELD_PRECONDITIONS)
-        ),
+        "preconditions": _parse_precondition_keys(fields.get(XRAY_FIELD_PRECONDITIONS)),
         "covered_stories": covered,
         "steps": steps_clean,
         "metadata": {
@@ -1929,9 +1924,12 @@ def extract_legacy_tests_pivot(
         results["total"] += len(tests_pivot)
 
     return results
+
+
 # ============================================================
 # Liens Jira : Story <-> Test, Test <-> Test (Relates)
 # ============================================================
+
 
 def create_issue_link(
     from_key: str,
@@ -1967,6 +1965,7 @@ def create_issue_link(
         }
 
     return {"ok": True}
+
 
 def _story_remote_link_exists(
     test_key: str,
@@ -2037,6 +2036,7 @@ def create_remote_link_to_story(
 
     return {"ok": True}
 
+
 def get_tests_linked_to_story(
     story_key: str,
     use_test_jira: bool = False,
@@ -2066,7 +2066,11 @@ def link_test_to_story_and_related_tests(
     use_test_jira: bool = False,
     session: Optional[requests.Session] = None,
 ) -> Dict[str, Any]:
-    results: Dict[str, Any] = {"story_link": None, "label_result": None, "related_test_links": []}
+    results: Dict[str, Any] = {
+        "story_link": None,
+        "label_result": None,
+        "related_test_links": [],
+    }
 
     if not story_key:
         return results
@@ -2105,6 +2109,7 @@ def link_test_to_story_and_related_tests(
         results["related_test_links"].append({"test": other_key, "result": link_result})
 
     return results
+
 
 def _story_label(story_key: str) -> str:
     """
@@ -2146,9 +2151,7 @@ def get_tests_with_story_label(
         return []
 
     return [
-        issue.get("key")
-        for issue in resp.json().get("issues", [])
-        if issue.get("key")
+        issue.get("key") for issue in resp.json().get("issues", []) if issue.get("key")
     ]
 
 
@@ -2167,11 +2170,7 @@ def add_story_label_to_test(
 
     label = _story_label(story_key)
     url = f"{jira_url}/rest/api/2/issue/{test_key}"
-    payload = {
-        "update": {
-            "labels": [{"add": label}]
-        }
-    }
+    payload = {"update": {"labels": [{"add": label}]}}
 
     try:
         resp = jira_session.put(url, json=payload, timeout=30)

@@ -18,7 +18,12 @@ def upgrade() -> None:
         sa.Column("email", sa.String(length=255), nullable=False),
         sa.Column("hashed_password", sa.String(length=255), nullable=False),
         sa.Column("role", sa.String(length=50), nullable=False),
-        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.text("now()"), nullable=True),
+        sa.Column(
+            "created_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.text("now()"),
+            nullable=True,
+        ),
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_index(op.f("ix_users_email"), "users", ["email"], unique=True)
@@ -32,10 +37,20 @@ def upgrade() -> None:
         sa.Column("resource", sa.String(length=255), nullable=True),
         sa.Column("details", sa.Text(), nullable=True),
         sa.Column("ip_address", sa.String(length=64), nullable=True),
-        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.text("now()"), nullable=True),
+        sa.Column(
+            "created_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.text("now()"),
+            nullable=True,
+        ),
         sa.PrimaryKeyConstraint("id"),
     )
-    op.create_index(op.f("ix_audit_logs_user_identifier"), "audit_logs", ["user_identifier"], unique=False)
+    op.create_index(
+        op.f("ix_audit_logs_user_identifier"),
+        "audit_logs",
+        ["user_identifier"],
+        unique=False,
+    )
 
 
 def downgrade() -> None:

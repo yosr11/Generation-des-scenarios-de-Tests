@@ -2,7 +2,6 @@
 from typing import List, Literal
 from pydantic import BaseModel, Field, field_validator
 
-
 StoryType = Literal[
     "functional",
     "technical",
@@ -30,8 +29,6 @@ class StoryAnalysisResult(BaseModel):
         ...,
         description="Main type of the story",
     )
-
-   
 
     actors: List[str] = Field(default_factory=list)
     actions: List[str] = Field(default_factory=list)
@@ -82,9 +79,14 @@ class StoryAnalysisResult(BaseModel):
     )
 
     @field_validator(
-        "analysis_reason", "actors", "actions", "business_rules",
-        "technical_scope", "testable_points",
-        "acceptance_criteria_explicit", "acceptance_criteria_inferred",
+        "analysis_reason",
+        "actors",
+        "actions",
+        "business_rules",
+        "technical_scope",
+        "testable_points",
+        "acceptance_criteria_explicit",
+        "acceptance_criteria_inferred",
         "clarification_questions",
         mode="before",
     )

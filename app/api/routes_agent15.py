@@ -8,6 +8,7 @@ Endpoints :
   POST /agent15/{story_id}/run      — Forcer une nouvelle modélisation (ignore le cache)
   GET  /agent15/{story_id}/latest   — Lire le dernier business model en base
 """
+
 from __future__ import annotations
 
 import logging
@@ -32,11 +33,16 @@ router = APIRouter(prefix="/agent15", tags=["Agent 1.5 — Business Modeling"])
 
 # ─── GET /agent15/{story_id} ────────────────────────────────────────────────
 
+
 @router.get("/{story_id}")
 def run_business_modeling(
     story_id: str,
-    model_alias: str = Query("llama4", description=f"Modèle LLM. Valeurs : {list(GROQ_MODELS.keys())}"),
-    force: bool = Query(False, description="Forcer la modélisation même si un résultat existe en base"),
+    model_alias: str = Query(
+        "llama4", description=f"Modèle LLM. Valeurs : {list(GROQ_MODELS.keys())}"
+    ),
+    force: bool = Query(
+        False, description="Forcer la modélisation même si un résultat existe en base"
+    ),
 ) -> Dict[str, Any]:
     """
     Lance Agent 1.5 pour une story déjà analysée par Agent 1.
@@ -56,7 +62,9 @@ def run_business_modeling(
     if not force:
         cached = get_latest_business_model(story_id, model=model_alias)
         if cached:
-            logger.info(f"[Agent 1.5 API] Cache hit pour {story_id} (modèle={model_alias})")
+            logger.info(
+                f"[Agent 1.5 API] Cache hit pour {story_id} (modèle={model_alias})"
+            )
             return _build_response(story_id, cached)
 
     # Charger l'analyse Agent 1 depuis la base
@@ -81,7 +89,9 @@ def run_business_modeling(
         )
 
     # Lancer la modélisation
-    logger.info(f"[Agent 1.5 API] Modélisation de {story_id} (modèle={model_alias}, force={force})")
+    logger.info(
+        f"[Agent 1.5 API] Modélisation de {story_id} (modèle={model_alias}, force={force})"
+    )
     result = build_business_model(analysis=analysis, model_alias=model_alias)
 
     # Persister
@@ -93,6 +103,7 @@ def run_business_modeling(
 
 
 # ─── GET /agent15/{story_id}/latest ─────────────────────────────────────────
+
 
 @router.get("/{story_id}/latest")
 def get_latest(
@@ -111,6 +122,7 @@ def get_latest(
 
 # ─── GET /agent15/{story_id}/history ─────────────────────────────────────────
 
+
 @router.get("/{story_id}/history")
 def get_history(story_id: str) -> Dict[str, Any]:
     """Retourne l'historique complet des business models générés pour une story."""
@@ -123,6 +135,7 @@ def get_history(story_id: str) -> Dict[str, Any]:
 
 
 # ─── Helper ──────────────────────────────────────────────────────────────────
+
 
 def _build_response(
     story_id: str,
@@ -148,11 +161,15 @@ def _build_response(
             "business_workflows": workflows,
             "modeling_notes": bm_dict.get("modeling_notes", ""),
         },
-        "source_analysis": {
-            "story_type": (analysis or {}).get("story_type", ""),
-            "actors_count": len((analysis or {}).get("actors") or []),
-            "actions_count": len((analysis or {}).get("actions") or []),
-            "user_flows_count": len((analysis or {}).get("user_flows") or []),
-        } if analysis else None,
+        "source_analysis": (
+            {
+                "story_type": (analysis or {}).get("story_type", ""),
+                "actors_count": len((analysis or {}).get("actors") or []),
+                "actions_count": len((analysis or {}).get("actions") or []),
+                "user_flows_count": len((analysis or {}).get("user_flows") or []),
+            }
+            if analysis
+            else None
+        ),
         "created_at": bm_dict.get("created_at", ""),
     }

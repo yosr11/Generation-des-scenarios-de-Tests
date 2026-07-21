@@ -7,7 +7,10 @@ Permet de visualiser ce que le RAG aura comme contexte.
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import Response
 
-from app.services.document_collector import collect_documents_for_story, collect_documents_for_epic
+from app.services.document_collector import (
+    collect_documents_for_story,
+    collect_documents_for_epic,
+)
 from app.services.rag_service import index_documents, is_epic_indexed
 
 router = APIRouter(prefix="/documents", tags=["Document_Collection"])
@@ -29,10 +32,15 @@ def get_story_attachment(issue_key: str, attachment_id: str):
     try:
         resp = _session.get(att["content"], timeout=30)
     except Exception as exc:
-        raise HTTPException(status_code=502, detail=f"Erreur téléchargement Jira: {exc}") from exc
+        raise HTTPException(
+            status_code=502, detail=f"Erreur téléchargement Jira: {exc}"
+        ) from exc
 
     if resp.status_code != 200:
-        raise HTTPException(status_code=resp.status_code, detail="Impossible de récupérer la pièce jointe")
+        raise HTTPException(
+            status_code=resp.status_code,
+            detail="Impossible de récupérer la pièce jointe",
+        )
 
     media_type = att.get("mimeType") or "application/octet-stream"
     return Response(content=resp.content, media_type=media_type)
@@ -68,14 +76,16 @@ def get_documents_for_story(issue_key: str):
     docs_preview = []
     for doc in documents:
         text = doc["text"]
-        docs_preview.append({
-            "source": doc["source"],
-            "origin_key": doc["origin_key"],
-            "filename": doc["filename"],
-            "text_length": len(text),
-            "text_preview": text[:500] + "..." if len(text) > 500 else text,
-            "text_full": text,
-        })
+        docs_preview.append(
+            {
+                "source": doc["source"],
+                "origin_key": doc["origin_key"],
+                "filename": doc["filename"],
+                "text_length": len(text),
+                "text_preview": text[:500] + "..." if len(text) > 500 else text,
+                "text_full": text,
+            }
+        )
 
     return {
         "issue_key": issue_key,
@@ -119,13 +129,15 @@ def get_documents_for_epic(epic_key: str):
     docs_preview = []
     for doc in all_docs:
         text = doc["text"]
-        docs_preview.append({
-            "source": doc["source"],
-            "origin_key": doc["origin_key"],
-            "filename": doc["filename"],
-            "text_length": len(text),
-            "text_preview": text[:500] + "..." if len(text) > 500 else text,
-        })
+        docs_preview.append(
+            {
+                "source": doc["source"],
+                "origin_key": doc["origin_key"],
+                "filename": doc["filename"],
+                "text_length": len(text),
+                "text_preview": text[:500] + "..." if len(text) > 500 else text,
+            }
+        )
 
     return {
         "epic_key": epic_key,
@@ -149,7 +161,6 @@ def index_epic_documents(epic_key: str):
     Si l'epic est déjà indexé, retourne l'info sans ré-indexer.
     Ajouter ?force=true pour forcer la ré-indexation.
     """
-    from fastapi import Query
 
     return _do_index(epic_key, force=False)
 

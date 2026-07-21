@@ -26,11 +26,15 @@ def save_classifications(result: StoryAutomationClassificationResult) -> None:
     session = get_sync_session()
     try:
         # Supprimer les anciennes classifications
-        existing = session.execute(
-            select(AutomationClassification).where(
-                AutomationClassification.story_id == result.story_id
+        existing = (
+            session.execute(
+                select(AutomationClassification).where(
+                    AutomationClassification.story_id == result.story_id
+                )
             )
-        ).scalars().all()
+            .scalars()
+            .all()
+        )
         for row in existing:
             session.delete(row)
 
@@ -55,11 +59,15 @@ def save_classifications(result: StoryAutomationClassificationResult) -> None:
 def get_classifications(story_id: str) -> Optional[StoryAutomationClassificationResult]:
     session = get_sync_session()
     try:
-        rows = session.execute(
-            select(AutomationClassification)
-            .where(AutomationClassification.story_id == story_id)
-            .order_by(AutomationClassification.id.asc())
-        ).scalars().all()
+        rows = (
+            session.execute(
+                select(AutomationClassification)
+                .where(AutomationClassification.story_id == story_id)
+                .order_by(AutomationClassification.id.asc())
+            )
+            .scalars()
+            .all()
+        )
 
         if not rows:
             return None

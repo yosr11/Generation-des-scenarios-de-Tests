@@ -6,6 +6,7 @@ Service Agent 1.5 — QA Business Modeling.
 Transforme l'output structuré d'Agent 1 (acteurs, actions, règles, user_flows)
 en business_goals et business_workflows exploitables par Agent 2.
 """
+
 from __future__ import annotations
 
 import json
@@ -20,7 +21,7 @@ from app.prompts.business_modeling_prompt import (
     build_business_modeling_system_prompt,
     build_business_modeling_user_prompt_from_dict,
 )
-from app.services.llm_client import call_llm, GROQ_MODELS, BEDROCK_MODELS
+from app.services.llm_client import call_llm, BEDROCK_MODELS
 
 logger = logging.getLogger(__name__)
 
@@ -30,6 +31,7 @@ class BusinessModelingError(Exception):
 
 
 # ─── Extraction JSON robuste ────────────────────────────────────────────────
+
 
 def _extract_json(text: str) -> Dict[str, Any]:
     """Extrait le premier objet JSON d'une réponse LLM brute."""
@@ -54,10 +56,13 @@ def _extract_json(text: str) -> Dict[str, Any]:
     try:
         return json.loads(match.group(0))
     except json.JSONDecodeError as exc:
-        raise BusinessModelingError(f"JSON invalide retourné par le LLM : {exc}") from exc
+        raise BusinessModelingError(
+            f"JSON invalide retourné par le LLM : {exc}"
+        ) from exc
 
 
 # ─── Résultat vide sécurisé ─────────────────────────────────────────────────
+
 
 def _empty_result(story_id: str, note: str = "") -> BusinessModelingResult:
     return BusinessModelingResult(
@@ -69,6 +74,7 @@ def _empty_result(story_id: str, note: str = "") -> BusinessModelingResult:
 
 
 # ─── Service principal ───────────────────────────────────────────────────────
+
 
 def build_business_model(
     analysis: Dict[str, Any],
@@ -102,7 +108,9 @@ def build_business_model(
     # Court-circuit si pas d'actions (rien à modéliser)
     actions = analysis.get("actions") or []
     if not actions:
-        logger.info(f"[Agent 1.5] Story {story_id} — aucune action extraite, modélisation vide")
+        logger.info(
+            f"[Agent 1.5] Story {story_id} — aucune action extraite, modélisation vide"
+        )
         return _empty_result(story_id, note="Aucune action extraite par Agent 1.")
 
     system_prompt = build_business_modeling_system_prompt()

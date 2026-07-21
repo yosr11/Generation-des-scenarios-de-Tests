@@ -28,7 +28,7 @@ def _extract_vlm_description(full_text: str) -> str:
         return full_text.split(marker, 1)[1].strip()
     header = re.match(r"^\[Image jointe[^\]]*\]\s*", full_text)
     if header:
-        return full_text[header.end():].strip()
+        return full_text[header.end() :].strip()
     return full_text.strip()
 
 
@@ -36,7 +36,10 @@ def collect_story_images(story_id: str) -> List[Dict[str, Any]]:
     """
     Retourne les images directement attachées à la story avec leur description texte.
     """
-    from app.services.document_collector import _get_attachments, collect_story_attachments_only
+    from app.services.document_collector import (
+        _get_attachments,
+        collect_story_attachments_only,
+    )
 
     sid = (story_id or "").strip().upper()
     if not sid:
@@ -67,15 +70,17 @@ def collect_story_images(story_id: str) -> List[Dict[str, Any]]:
         att = att_by_name.get(filename) or {}
         att_id = att.get("id")
 
-        images.append({
-            "filename": filename,
-            "caption": filename,
-            "description": _extract_vlm_description(full_text),
-            "description_full": full_text,
-            "attachment_id": att_id,
-            "url": f"/documents/attachment/{sid}/{att_id}" if att_id else None,
-            "source": sid,
-        })
+        images.append(
+            {
+                "filename": filename,
+                "caption": filename,
+                "description": _extract_vlm_description(full_text),
+                "description_full": full_text,
+                "attachment_id": att_id,
+                "url": f"/documents/attachment/{sid}/{att_id}" if att_id else None,
+                "source": sid,
+            }
+        )
 
     return images
 

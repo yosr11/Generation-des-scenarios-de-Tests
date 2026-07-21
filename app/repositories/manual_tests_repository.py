@@ -10,16 +10,22 @@ from app.db.postgres import get_sync_session
 from app.models.pg_models import StoryManualTests
 
 
-def save_manual_tests_snapshot(story_id: str, tests: List[Dict[str, Any]], generation_model: str = "") -> int:
+def save_manual_tests_snapshot(
+    story_id: str, tests: List[Dict[str, Any]], generation_model: str = ""
+) -> int:
     """Sauvegarde un snapshot de tests en remplaçant l'ancien (idempotent)."""
     if not story_id:
         return -1
     session = get_sync_session()
     try:
         # Supprimer l'ancien snapshot (idempotence)
-        existing = session.execute(
-            select(StoryManualTests).where(StoryManualTests.story_id == story_id)
-        ).scalars().all()
+        existing = (
+            session.execute(
+                select(StoryManualTests).where(StoryManualTests.story_id == story_id)
+            )
+            .scalars()
+            .all()
+        )
         for row in existing:
             session.delete(row)
 

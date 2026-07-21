@@ -1,4 +1,5 @@
 """Prompts pour l'assistant IA de refinement des tests manuels."""
+
 from __future__ import annotations
 
 import json
@@ -37,7 +38,9 @@ def build_test_refinement_user_prompt(
             if content:
                 lines.append(f"{role.upper()}: {content}")
         if lines:
-            history_block = "Historique récent de la conversation :\n" + "\n".join(lines) + "\n\n"
+            history_block = (
+                "Historique récent de la conversation :\n" + "\n".join(lines) + "\n\n"
+            )
 
     context_block = ""
     if story_context:

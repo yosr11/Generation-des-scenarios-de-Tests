@@ -11,7 +11,9 @@ from app.models.agent3_validation import Agent3ValidationReport, Agent3Validatio
 from app.models.pg_models import Agent3Validation
 
 
-def save_validation_result(story_id: str, validation_result: Agent3ValidationResult) -> bool:
+def save_validation_result(
+    story_id: str, validation_result: Agent3ValidationResult
+) -> bool:
     """
     Sauvegarde les résultats de validation Agent 3 en base (idempotent par story_id).
     """
@@ -20,21 +22,32 @@ def save_validation_result(story_id: str, validation_result: Agent3ValidationRes
         report = validation_result.report
 
         # Supprimer l'ancien enregistrement pour cette story
-        existing = session.execute(
-            select(Agent3Validation).where(Agent3Validation.story_id == story_id)
-        ).scalars().all()
+        existing = (
+            session.execute(
+                select(Agent3Validation).where(Agent3Validation.story_id == story_id)
+            )
+            .scalars()
+            .all()
+        )
         for row in existing:
             session.delete(row)
 
         # Sérialiser les objets Pydantic en dicts pour JSONB
         duplicate_pairs = (
-            [p.model_dump() for p in report.duplicate_pairs] if report.duplicate_pairs else []
+            [p.model_dump() for p in report.duplicate_pairs]
+            if report.duplicate_pairs
+            else []
         )
         llm_quality_feedback = (
-            report.llm_quality_feedback.model_dump() if report.llm_quality_feedback else None
+            report.llm_quality_feedback.model_dump()
+            if report.llm_quality_feedback
+            else None
         )
         correction_instructions = (
-            [ci.model_dump() if hasattr(ci, "model_dump") else ci for ci in report.correction_instructions]
+            [
+                ci.model_dump() if hasattr(ci, "model_dump") else ci
+                for ci in report.correction_instructions
+            ]
             if report.correction_instructions
             else []
         )
@@ -78,7 +91,7 @@ def fetch_validation_by_story_id(story_id: str) -> Optional[Agent3ValidationResu
         from app.models.agent3_validation import DuplicatePairReport, LLMQualityFeedback
 
         duplicate_pairs = []
-        for dup in (obj.duplicate_pairs or []):
+        for dup in obj.duplicate_pairs or []:
             try:
                 duplicate_pairs.append(DuplicatePairReport(**dup))
             except Exception:
@@ -128,9 +141,13 @@ def delete_validation_by_story_id(story_id: str) -> bool:
     """Supprime les résultats de validation pour une story."""
     try:
         session = get_sync_session()
-        rows = session.execute(
-            select(Agent3Validation).where(Agent3Validation.story_id == story_id)
-        ).scalars().all()
+        rows = (
+            session.execute(
+                select(Agent3Validation).where(Agent3Validation.story_id == story_id)
+            )
+            .scalars()
+            .all()
+        )
         for row in rows:
             session.delete(row)
         session.commit()

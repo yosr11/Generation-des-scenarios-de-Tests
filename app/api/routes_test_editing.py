@@ -1,8 +1,9 @@
 """API pour l'édition et le refinement IA des tests manuels."""
+
 from __future__ import annotations
 
 import logging
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel, Field
@@ -114,4 +115,9 @@ async def save_edited_tests(
         details=f"count={len(finalized)}",
         ip_address=get_client_ip(request),
     )
-    return {"status": "ok", "story_id": story_id, "tests_count": len(finalized), "snapshot_id": row_id}
+    return {
+        "status": "ok",
+        "story_id": story_id,
+        "tests_count": len(finalized),
+        "snapshot_id": row_id,
+    }

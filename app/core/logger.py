@@ -1,12 +1,14 @@
-#Configure le logging structuré avec correlation ID.
-#Utile pour le debug + traçabilité pipeline multi-agents.
+# Configure le logging structuré avec correlation ID.
+# Utile pour le debug + traçabilité pipeline multi-agents.
 
 import logging
 import uuid
 import contextvars
 
 # Correlation ID pour tracer un pipeline complet (Agent 1 → 2 → 3 → 4)
-correlation_id_var: contextvars.ContextVar[str] = contextvars.ContextVar("correlation_id", default="")
+correlation_id_var: contextvars.ContextVar[str] = contextvars.ContextVar(
+    "correlation_id", default=""
+)
 
 
 def new_correlation_id() -> str:
@@ -23,6 +25,7 @@ def get_correlation_id() -> str:
 
 class CorrelationFilter(logging.Filter):
     """Injecte le correlation_id dans chaque log record."""
+
     def filter(self, record):
         record.correlation_id = get_correlation_id() or "-"
         return True

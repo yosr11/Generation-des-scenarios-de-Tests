@@ -1,6 +1,6 @@
 # app/models/scenario.py
 from pydantic import BaseModel, Field
-from typing import List, Literal, Optional
+from typing import List, Literal
 
 
 class ScenarioStep(BaseModel):

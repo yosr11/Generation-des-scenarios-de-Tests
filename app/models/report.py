@@ -10,4 +10,4 @@ class Report(BaseModel):
     generated_tests: List[TestCase] = []
     executed: List[ExecutionResult] = []
     summary: str = ""
-    """
+"""

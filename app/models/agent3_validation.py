@@ -67,10 +67,14 @@ CorrectionInstruction = Annotated[
 
 class LLMQualityFeedback(BaseModel):
     score: int = Field(..., ge=0, le=10, description="Score qualitatif global (0-10)")
-    summary: str = Field(..., description="Résumé court et lisible pour QA (1-3 phrases)")
+    summary: str = Field(
+        ..., description="Résumé court et lisible pour QA (1-3 phrases)"
+    )
     strengths: List[str] = Field(default_factory=list, description="Points forts")
     weaknesses: List[str] = Field(default_factory=list, description="Points faibles")
-    recommendations: List[str] = Field(default_factory=list, description="Recommandations concrètes")
+    recommendations: List[str] = Field(
+        default_factory=list, description="Recommandations concrètes"
+    )
 
 
 class Agent3ValidationReport(BaseModel):

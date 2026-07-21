@@ -1,12 +1,13 @@
 """Petit script de test interactif pour la collection legacy_tests."""
+
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-import chromadb
-from sentence_transformers import SentenceTransformer
+import chromadb  # noqa: E402
+from sentence_transformers import SentenceTransformer  # noqa: E402
 
 CHROMA_DIR = ROOT / "app" / "data" / "vector_store"
 MODEL = "paraphrase-multilingual-MiniLM-L12-v2"

@@ -3,6 +3,7 @@ app/repositories/business_model_repository.py
 ───────────────────────────────────────────────
 CRUD pour la table story_business_models (résultats Agent 1.5) — PostgreSQL (SQLAlchemy ORM).
 """
+
 from __future__ import annotations
 
 import logging
@@ -17,6 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 # ─── SAVE ────────────────────────────────────────────────────────────────────
+
 
 def save_business_model(result_dict: Dict[str, Any]) -> int:
     """
@@ -38,7 +40,9 @@ def save_business_model(result_dict: Dict[str, Any]) -> int:
         session.add(obj)
         session.commit()
         session.refresh(obj)
-        logger.info("[BM Repo] Business model sauvegardé pour %s (id=%s)", story_id, obj.id)
+        logger.info(
+            "[BM Repo] Business model sauvegardé pour %s (id=%s)", story_id, obj.id
+        )
         return obj.id
     except Exception as exc:
         logger.error("[BM Repo] Erreur lors de la sauvegarde : %s", exc, exc_info=True)
@@ -50,7 +54,10 @@ def save_business_model(result_dict: Dict[str, Any]) -> int:
 
 # ─── GET LATEST ──────────────────────────────────────────────────────────────
 
-def get_latest_business_model(story_id: str, model: Optional[str] = None) -> Optional[Dict[str, Any]]:
+
+def get_latest_business_model(
+    story_id: str, model: Optional[str] = None
+) -> Optional[Dict[str, Any]]:
     """
     Retourne le dernier business model persisté pour une story.
 
@@ -70,7 +77,12 @@ def get_latest_business_model(story_id: str, model: Optional[str] = None) -> Opt
         obj = session.execute(stmt).scalar_one_or_none()
         return _row_to_dict(obj) if obj else None
     except Exception as exc:
-        logger.error("[BM Repo] Erreur lors de la lecture pour %s: %s", story_id, exc, exc_info=True)
+        logger.error(
+            "[BM Repo] Erreur lors de la lecture pour %s: %s",
+            story_id,
+            exc,
+            exc_info=True,
+        )
         return None
     finally:
         session.close()
@@ -78,18 +90,25 @@ def get_latest_business_model(story_id: str, model: Optional[str] = None) -> Opt
 
 # ─── LIST ────────────────────────────────────────────────────────────────────
 
+
 def list_business_models(story_id: str) -> List[Dict[str, Any]]:
     """Retourne l'historique complet des business models pour une story."""
     session = get_sync_session()
     try:
-        rows = session.execute(
-            select(StoryBusinessModel)
-            .where(StoryBusinessModel.story_id == story_id)
-            .order_by(StoryBusinessModel.created_at.desc())
-        ).scalars().all()
+        rows = (
+            session.execute(
+                select(StoryBusinessModel)
+                .where(StoryBusinessModel.story_id == story_id)
+                .order_by(StoryBusinessModel.created_at.desc())
+            )
+            .scalars()
+            .all()
+        )
         return [_row_to_dict(r) for r in rows]
     except Exception as exc:
-        logger.error("[BM Repo] Erreur listing pour %s: %s", story_id, exc, exc_info=True)
+        logger.error(
+            "[BM Repo] Erreur listing pour %s: %s", story_id, exc, exc_info=True
+        )
         return []
     finally:
         session.close()
@@ -97,13 +116,14 @@ def list_business_models(story_id: str) -> List[Dict[str, Any]]:
 
 # ─── Helper ──────────────────────────────────────────────────────────────────
 
+
 def _row_to_dict(obj: StoryBusinessModel) -> Dict[str, Any]:
     return {
-        "id":                 obj.id,
-        "story_id":           obj.story_id,
-        "model":              obj.model or "",
-        "business_goals":     obj.business_goals or [],
+        "id": obj.id,
+        "story_id": obj.story_id,
+        "model": obj.model or "",
+        "business_goals": obj.business_goals or [],
         "business_workflows": obj.business_workflows or [],
-        "modeling_notes":     obj.modeling_notes or "",
-        "created_at":         str(obj.created_at) if obj.created_at else "",
+        "modeling_notes": obj.modeling_notes or "",
+        "created_at": str(obj.created_at) if obj.created_at else "",
     }

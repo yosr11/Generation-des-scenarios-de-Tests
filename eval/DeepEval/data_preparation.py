@@ -14,7 +14,9 @@ def load_eval_stories(input_path: str | Path) -> List[Dict[str, Any]]:
         elif "stories" in data:
             data = data["stories"]
         else:
-            raise ValueError("Le JSON doit contenir une liste de stories ou une clé 'results'/'stories'.")
+            raise ValueError(
+                "Le JSON doit contenir une liste de stories ou une clé 'results'/'stories'."
+            )
 
     stories: List[Dict[str, Any]] = []
     for item in data:
@@ -51,6 +53,10 @@ def collect_agent_payloads(story: Dict[str, Any]) -> Dict[str, str]:
         else:
             output[key] = serialize_payload(agent)
 
-    input_payload = story.get("agent1", {}).get("input", {}) if isinstance(story.get("agent1"), dict) else {}
+    input_payload = (
+        story.get("agent1", {}).get("input", {})
+        if isinstance(story.get("agent1"), dict)
+        else {}
+    )
     output["agent1_input"] = serialize_payload(input_payload)
     return output

@@ -1,17 +1,26 @@
-
 # app/api/routes_analysis.py
 
 from fastapi import APIRouter, HTTPException, Query
-from typing import List, Dict, Any
+from typing import Dict, Any
 
 from app.services.jira_service import get_story_byID, get_epic_for_story
-from app.utils.cleaning import clean_story_dict, enrich_story_for_llm, flatten_issuelinks
-from app.services.story_analysis_service import analyze_story_with_groq, StoryAnalysisError
+from app.utils.cleaning import (
+    clean_story_dict,
+    enrich_story_for_llm,
+    flatten_issuelinks,
+)
+from app.services.story_analysis_service import (
+    analyze_story_with_groq,
+    StoryAnalysisError,
+)
 from app.services.llm_client import GROQ_MODELS
 from app.repositories.story_repository import get_story_by_id, save_story
 from app.repositories.analysis_repository import save_analysis
 from app.services.epic_service import JIRA_AC_FIELD, get_stories_by_epic_detailed
-from app.services.document_collector import collect_documents_for_epic, collect_story_attachments_only
+from app.services.document_collector import (
+    collect_documents_for_epic,
+    collect_story_attachments_only,
+)
 from app.services.rag_service import index_documents
 import logging
 
@@ -29,12 +38,16 @@ def _get_enriched_story(issue_key: str, force_refresh: bool = False) -> Dict[str
         try:
             jira_data = get_story_byID(issue_key)
             if jira_data.get("status") == 200:
-                jira_updated = (jira_data["data"].get("fields") or {}).get("updated", "")
+                jira_updated = (jira_data["data"].get("fields") or {}).get(
+                    "updated", ""
+                )
                 cached_updated = db_story.get("jira_updated", "")
                 if jira_updated and jira_updated != cached_updated:
                     logger.info(
                         "Story %s modifiée dans Jira (cached=%s, jira=%s) → re-fetch",
-                        issue_key, cached_updated, jira_updated,
+                        issue_key,
+                        cached_updated,
+                        jira_updated,
                     )
                     need_refresh = True
                 else:
@@ -44,7 +57,9 @@ def _get_enriched_story(issue_key: str, force_refresh: bool = False) -> Dict[str
                         if epic_info:
                             db_story["epic_key"] = epic_info["key"]
                             db_story["epic_summary"] = epic_info["summary"]
-                            db_story["epic_description"] = epic_info.get("description") or ""
+                            db_story["epic_description"] = (
+                                epic_info.get("description") or ""
+                            )
                             save_story(db_story)
                     return db_story
         except Exception:
@@ -66,7 +81,9 @@ def _get_enriched_story(issue_key: str, force_refresh: bool = False) -> Dict[str
     if result["status"] == 404:
         raise HTTPException(status_code=404, detail=f"Story {issue_key} introuvable")
     if result["status"] != 200:
-        raise HTTPException(status_code=result["status"], detail=result.get("error", "Erreur Jira"))
+        raise HTTPException(
+            status_code=result["status"], detail=result.get("error", "Erreur Jira")
+        )
 
     fields = result["data"].get("fields", {}) or {}
 
@@ -103,36 +120,49 @@ def _build_response(enriched, model_alias, model_name, provider, analysis):
     try:
         analysis_dict = analysis.model_dump()
         analysis_dict["model"] = model_alias
-        
-        logger.info(f"[SAVE] Attempting to save analysis for {analysis_dict.get('story_id')}")
+
+        logger.info(
+            f"[SAVE] Attempting to save analysis for {analysis_dict.get('story_id')}"
+        )
         logger.info(f"[SAVE] Analysis dict keys: {list(analysis_dict.keys())}")
-        
+
         rowid = save_analysis(analysis_dict)
-        
+
         if rowid > 0:
-            logger.info(f"✅ Analyse sauvegardée pour {analysis_dict.get('story_id')} (modèle: {model_alias}, rowid: {rowid})")
+            logger.info(
+                f"✅ Analyse sauvegardée pour {analysis_dict.get('story_id')} (modèle: {model_alias}, rowid: {rowid})"
+            )
         else:
-            logger.error(f"❌ Echec sauvegarde analyse pour {analysis_dict.get('story_id')} (rowid: {rowid})")
-            
+            logger.error(
+                f"❌ Echec sauvegarde analyse pour {analysis_dict.get('story_id')} (rowid: {rowid})"
+            )
+
     except Exception as e:
-        logger.error(f"❌ EXCEPTION lors sauvegarde analyse pour {enriched.get('id', '')}: {e}", exc_info=True)
+        logger.error(
+            f"❌ EXCEPTION lors sauvegarde analyse pour {enriched.get('id', '')}: {e}",
+            exc_info=True,
+        )
 
     return {
         "model_alias": model_alias,
         "provider": provider,
         "model_name": model_name,
-        "epic": {
-            "key":     enriched.get("epic_key", ""),
-            "summary": enriched.get("epic_summary", ""),
-        } if enriched.get("epic_key") else None,
+        "epic": (
+            {
+                "key": enriched.get("epic_key", ""),
+                "summary": enriched.get("epic_summary", ""),
+            }
+            if enriched.get("epic_key")
+            else None
+        ),
         "story": {
-            "id":                        enriched.get("id", ""),
-            "summary":                   enriched.get("summary", ""),
-            "description_clean":         enriched.get("description_clean", ""),
-            "acceptance_criteria_clean":  enriched.get("acceptance_criteria_clean", ""),
-            "labels":                    enriched.get("labels", []),
-            "priority":                  enriched.get("priority", ""),
-            "status":                    enriched.get("status", ""),
+            "id": enriched.get("id", ""),
+            "summary": enriched.get("summary", ""),
+            "description_clean": enriched.get("description_clean", ""),
+            "acceptance_criteria_clean": enriched.get("acceptance_criteria_clean", ""),
+            "labels": enriched.get("labels", []),
+            "priority": enriched.get("priority", ""),
+            "status": enriched.get("status", ""),
         },
         "analysis": analysis.model_dump(),
     }
@@ -155,20 +185,30 @@ def _get_story_attachments(story_id: str) -> list:
     try:
         docs = collect_story_attachments_only(story_id)
     except Exception as exc:
-        print(f"[ATTACH] Erreur lors de la collecte des PJ de {story_id}: {exc}", flush=True)
+        print(
+            f"[ATTACH] Erreur lors de la collecte des PJ de {story_id}: {exc}",
+            flush=True,
+        )
         return []
 
     # Filtrer : on ne garde que les PJ directement attachées à la story
     # (pas l'epic, pas les linked, pas les autres stories)
     story_only = [
-        d for d in docs
+        d
+        for d in docs
         if d.get("source") == "attachment" and d.get("origin_key") == story_id
     ]
-    print(f"[ATTACH] {story_id} : {len(story_only)} pièce(s) jointe(s) directe(s)", flush=True)
+    print(
+        f"[ATTACH] {story_id} : {len(story_only)} pièce(s) jointe(s) directe(s)",
+        flush=True,
+    )
     for d in story_only:
         is_image = "[Image jointe :" in d.get("text", "")
         kind = "image (OCR+VLM)" if is_image else "doc"
-        print(f"[ATTACH]   - {d.get('filename')} [{kind}, {len(d.get('text',''))} chars]", flush=True)
+        print(
+            f"[ATTACH]   - {d.get('filename')} [{kind}, {len(d.get('text',''))} chars]",
+            flush=True,
+        )
     return story_only
 
 
@@ -176,21 +216,22 @@ def _get_story_attachments(story_id: str) -> list:
 #  ROUTE EPIC : analyser toutes les stories d'une fonctionnalité
 # ══════════════════════════════════════════════════════════════
 
+
 @router.get("/epic/{epic_key}")
 def analyze_epic_stories(
     epic_key: str,
     model_alias: str = Query(
         "nova-lite-2",
-        description="Model alias. Allowed: qwen3, gptoss, llama4, nova-lite-2"
+        description="Model alias. Allowed: qwen3, gptoss, llama4, nova-lite-2",
     ),
     use_rag: bool = Query(
         False,
         description="Activer le RAG : collecte les documents de l'epic, "
-                    "les indexe dans ChromaDB, et injecte le contexte pertinent "
-                    "dans chaque analyse. Inclut : PJ de l'epic + PJ de chaque story "
-                    "de l'epic + descriptions et PJ des tickets liés. Les images de "
-                    "chaque story passent par OCR+VLM (uniquement pour la story en cours "
-                    "d'analyse afin de maîtriser le coût)."
+        "les indexe dans ChromaDB, et injecte le contexte pertinent "
+        "dans chaque analyse. Inclut : PJ de l'epic + PJ de chaque story "
+        "de l'epic + descriptions et PJ des tickets liés. Les images de "
+        "chaque story passent par OCR+VLM (uniquement pour la story en cours "
+        "d'analyse afin de maîtriser le coût).",
     ),
 ):
     """
@@ -207,15 +248,19 @@ def analyze_epic_stories(
     if model_alias not in ALLOWED_MODELS:
         raise HTTPException(
             status_code=400,
-            detail=f"Invalid model_alias '{model_alias}'. Allowed values: {ALLOWED_MODELS}"
+            detail=f"Invalid model_alias '{model_alias}'. Allowed values: {ALLOWED_MODELS}",
         )
 
     # 1) Récupérer les stories brutes de l'epic
     raw_stories = get_stories_by_epic_detailed(epic_key)
     if raw_stories is None:
-        raise HTTPException(status_code=502, detail="Erreur lors de la communication avec Jira")
+        raise HTTPException(
+            status_code=502, detail="Erreur lors de la communication avec Jira"
+        )
     if not raw_stories:
-        raise HTTPException(status_code=404, detail=f"Aucune story trouvée pour l'epic {epic_key}")
+        raise HTTPException(
+            status_code=404, detail=f"Aucune story trouvée pour l'epic {epic_key}"
+        )
 
     # 2) RAG : collecte + indexation (si activé)
     rag_info = None
@@ -254,7 +299,9 @@ def analyze_epic_stories(
         )
         return {
             "story_id": story_id,
-            "result": _build_response(enriched, model_alias, model_name, "groq", analysis),
+            "result": _build_response(
+                enriched, model_alias, model_name, "groq", analysis
+            ),
             "rag_chunks_used": 0,
         }
 
@@ -263,7 +310,9 @@ def analyze_epic_stories(
         try:
             outcome = _analyze_raw_story(raw)
             if outcome.get("skipped"):
-                logger.info("Story %s ignorée : pas de description après nettoyage", story_id)
+                logger.info(
+                    "Story %s ignorée : pas de description après nettoyage", story_id
+                )
                 skipped.append({"story_id": story_id, "reason": "Pas de description"})
             else:
                 results.append(outcome["result"])
@@ -295,23 +344,24 @@ def analyze_epic_stories(
 #  ROUTE GÉNÉRIQUE (paramètre model_alias)
 # ══════════════════════════════════════════════════════════════
 
+
 @router.get("/{issue_key}")
 def analyze_story(
     issue_key: str,
     model_alias: str = Query(
         "nova-lite-2",
-        description="Model alias. Allowed: qwen3, gptoss, llama4, nova-lite-2"
+        description="Model alias. Allowed: qwen3, gptoss, llama4, nova-lite-2",
     ),
     force_refresh: bool = Query(
         False,
         description="Forcer le rafraîchissement : re-fetch Jira (ignore le cache story) "
-                    "+ met à jour le cache de la story avant analyse."
+        "+ met à jour le cache de la story avant analyse.",
     ),
 ):
     if model_alias not in ALLOWED_MODELS:
         raise HTTPException(
             status_code=400,
-            detail=f"Invalid model_alias '{model_alias}'. Allowed values: {ALLOWED_MODELS}"
+            detail=f"Invalid model_alias '{model_alias}'. Allowed values: {ALLOWED_MODELS}",
         )
     enriched = _get_enriched_story(issue_key, force_refresh=force_refresh)
 
@@ -320,14 +370,17 @@ def analyze_story(
 
     try:
         analysis = analyze_story_with_groq(
-            story=enriched, model_alias=model_alias,
+            story=enriched,
+            model_alias=model_alias,
             story_attachments=story_attachments,
         )
         model_name = GROQ_MODELS[model_alias]
     except (StoryAnalysisError, ConnectionError, TimeoutError) as e:
         raise HTTPException(status_code=500, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Unexpected analysis error: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Unexpected analysis error: {str(e)}"
+        )
     return _build_response(enriched, model_alias, model_name, "groq", analysis)
 
 
@@ -335,19 +388,23 @@ def analyze_story(
 #  ROUTES DÉDIÉES GROQ
 # ══════════════════════════════════════════════════════════════
 
+
 @router.get("/qwen3/{issue_key}")
 def analyze_story_qwen3(issue_key: str, force_refresh: bool = Query(False)):
     enriched = _get_enriched_story(issue_key, force_refresh=force_refresh)
     story_attachments = _get_story_attachments(issue_key)
     try:
         analysis = analyze_story_with_groq(
-            story=enriched, model_alias="qwen3",
+            story=enriched,
+            model_alias="qwen3",
             story_attachments=story_attachments,
         )
     except (StoryAnalysisError, ConnectionError, TimeoutError) as e:
         raise HTTPException(status_code=500, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Unexpected analysis error: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Unexpected analysis error: {str(e)}"
+        )
     return _build_response(enriched, "qwen3", GROQ_MODELS["qwen3"], "groq", analysis)
 
 
@@ -357,13 +414,16 @@ def analyze_story_gptoss(issue_key: str, force_refresh: bool = Query(False)):
     story_attachments = _get_story_attachments(issue_key)
     try:
         analysis = analyze_story_with_groq(
-            story=enriched, model_alias="gptoss",
+            story=enriched,
+            model_alias="gptoss",
             story_attachments=story_attachments,
         )
     except (StoryAnalysisError, ConnectionError, TimeoutError) as e:
         raise HTTPException(status_code=500, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Unexpected analysis error: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Unexpected analysis error: {str(e)}"
+        )
     return _build_response(enriched, "gptoss", GROQ_MODELS["gptoss"], "groq", analysis)
 
 
@@ -382,14 +442,7 @@ def analyze_story_llama4(issue_key: str, force_refresh: bool = Query(False)):
         raise HTTPException(status_code=500, detail=str(e))
     except Exception as e:
         raise HTTPException(
-            status_code=500,
-            detail=f"Unexpected analysis error: {str(e)}"
+            status_code=500, detail=f"Unexpected analysis error: {str(e)}"
         )
 
-    return _build_response(
-        enriched,
-        "llama4",
-        GROQ_MODELS["llama4"],
-        "groq",
-        analysis
-    )
+    return _build_response(enriched, "llama4", GROQ_MODELS["llama4"], "groq", analysis)

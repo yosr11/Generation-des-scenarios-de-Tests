@@ -51,9 +51,9 @@ _TESSERACT_CMD_ENV = os.getenv("TESSERACT_CMD")
 _OCR_LANGS = os.getenv("OCR_LANGS", "fra+eng")
 
 # Limites Groq vision : ~4 Mo en base64. On redimensionne au-dessous.
-MAX_IMAGE_DIM = 1568            # px sur le plus grand côté
+MAX_IMAGE_DIM = 1568  # px sur le plus grand côté
 JPEG_QUALITY = 85
-MIN_IMAGE_BYTES = 4 * 1024      # < 4 Ko = icône, on skip
+MIN_IMAGE_BYTES = 4 * 1024  # < 4 Ko = icône, on skip
 
 _SUPPORTED_EXTS = (".png", ".jpg", ".jpeg", ".gif", ".bmp", ".webp")
 
@@ -144,12 +144,14 @@ def _preprocess_for_ocr(img):
     # du texte noir sur fond blanc.
     try:
         import numpy as np
+
         arr = np.asarray(gray)
         if arr.mean() < 128:
             gray = ImageOps.invert(gray)
             arr = 255 - arr
         # Binarisation Otsu (seuil global optimal)
         from numpy import histogram
+
         hist, _ = histogram(arr.ravel(), bins=256, range=(0, 256))
         total = arr.size
         sum_total = (np.arange(256) * hist).sum()
@@ -172,6 +174,7 @@ def _preprocess_for_ocr(img):
         # Pas de numpy → on s'arrête à l'upscale + grayscale.
         # On tente quand même l'auto-inversion basique via PIL.
         from PIL import ImageStat
+
         if ImageStat.Stat(gray).mean[0] < 128:
             gray = ImageOps.invert(gray)
 
@@ -223,7 +226,9 @@ def _run_ocr(content: bytes, filename: str) -> Optional[str]:
             return None
         except Exception as exc:
             # Souvent : langue manquante. On retombe sur l'anglais seul.
-            logger.debug("OCR psm=%d lang=%s a échoué (%s), retry en eng", psm, _OCR_LANGS, exc)
+            logger.debug(
+                "OCR psm=%d lang=%s a échoué (%s), retry en eng", psm, _OCR_LANGS, exc
+            )
             try:
                 raw = pytesseract.image_to_string(
                     pre, lang="eng", config=f"--oem 3 --psm {psm}"
@@ -292,7 +297,9 @@ def _prepare_image_data_url(content: bytes, filename: str) -> Optional[str]:
             background = Image.new("RGB", img.size, (255, 255, 255))
             if img.mode == "P":
                 img = img.convert("RGBA")
-            background.paste(img, mask=img.split()[-1] if img.mode in ("RGBA", "LA") else None)
+            background.paste(
+                img, mask=img.split()[-1] if img.mode in ("RGBA", "LA") else None
+            )
             img = background
         elif img.mode != "RGB":
             img = img.convert("RGB")
@@ -371,11 +378,7 @@ def describe_image(
             f"{context.strip()}\n"
         )
     user_text_parts.append(_VISION_PROMPT)
-    user_text_parts.append(
-        "\n\n<OCR_TEXTS>\n"
-        f"{ocr_block}\n"
-        "</OCR_TEXTS>"
-    )
+    user_text_parts.append("\n\n<OCR_TEXTS>\n" f"{ocr_block}\n" "</OCR_TEXTS>")
     user_text = "\n".join(user_text_parts)
 
     client = _build_client()
@@ -425,7 +428,10 @@ def describe_image(
             sleep_for = 2.0 * (attempt + 1)
             logger.warning(
                 "Vision rate-limited sur %s (tentative %d/%d), pause %.1fs",
-                filename, attempt + 1, max_retries, sleep_for,
+                filename,
+                attempt + 1,
+                max_retries,
+                sleep_for,
             )
             time.sleep(sleep_for)
         except APIStatusError as exc:
@@ -433,7 +439,12 @@ def describe_image(
             status = getattr(exc, "status_code", None)
             if status in (502, 503, 504):
                 sleep_for = 2.0 * (attempt + 1)
-                logger.warning("Vision %s indispo pour %s, retry dans %.1fs", status, filename, sleep_for)
+                logger.warning(
+                    "Vision %s indispo pour %s, retry dans %.1fs",
+                    status,
+                    filename,
+                    sleep_for,
+                )
                 time.sleep(sleep_for)
                 continue
             logger.error("Vision erreur API %s sur %s : %s", status, filename, exc)
@@ -442,7 +453,12 @@ def describe_image(
             logger.error("Vision erreur inattendue sur %s : %s", filename, exc)
             return None
 
-    logger.error("Vision a échoué pour %s après %d tentatives : %s", filename, max_retries, last_error)
+    logger.error(
+        "Vision a échoué pour %s après %d tentatives : %s",
+        filename,
+        max_retries,
+        last_error,
+    )
     return None
 
 

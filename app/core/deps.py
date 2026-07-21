@@ -6,11 +6,9 @@ from typing import Annotated, Callable, Optional
 
 from fastapi import Cookie, Depends, HTTPException, Request, status
 from jwt import PyJWTError
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
 from app.core.security import decode_access_token
-from app.db.postgres import get_db
 from app.services.credential_store import JiraCredentials, get_credentials
 
 
@@ -73,7 +71,9 @@ async def get_current_user(
 
     role = payload.get("role")
     if role not in ("admin", "tester"):
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid role")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid role"
+        )
 
     return CurrentUser(
         user_id=str(payload.get("sub", "")),
@@ -97,7 +97,9 @@ async def get_optional_user(
 
 
 def require_role(*roles: str) -> Callable:
-    async def _checker(user: Annotated[CurrentUser, Depends(get_current_user)]) -> CurrentUser:
+    async def _checker(
+        user: Annotated[CurrentUser, Depends(get_current_user)],
+    ) -> CurrentUser:
         if user.role not in roles:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
@@ -118,7 +120,9 @@ def get_tester_jira_credentials(user: CurrentUser) -> JiraCredentials:
         raise HTTPException(status_code=403, detail="Tester session required")
     creds = get_credentials(user.session_id)
     if not creds:
-        raise HTTPException(status_code=401, detail="Jira session expired. Please log in again.")
+        raise HTTPException(
+            status_code=401, detail="Jira session expired. Please log in again."
+        )
     return creds
 
 

@@ -31,6 +31,7 @@ def run_one(image_path: Path, model: str) -> tuple[str, float]:
     os.environ["VISION_MODEL"] = model
     # Forcer la relecture du module pour prendre la nouvelle env var
     import importlib
+
     importlib.reload(vision_client)
     vision_client._read_cache = lambda h: None  # re-patch après reload
 
@@ -66,7 +67,9 @@ def main() -> None:
             "meta-llama/llama-4-maverick-17b-128e-instruct",
         ]
     else:
-        models = [os.environ.get("VISION_MODEL", "meta-llama/llama-4-scout-17b-16e-instruct")]
+        models = [
+            os.environ.get("VISION_MODEL", "meta-llama/llama-4-scout-17b-16e-instruct")
+        ]
 
     for model in models:
         desc, elapsed = run_one(args.image, model)

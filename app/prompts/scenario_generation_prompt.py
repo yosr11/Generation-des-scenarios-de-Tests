@@ -2,7 +2,6 @@ import json
 import re
 from typing import Dict, Any, List, Optional, Tuple
 
-
 # ── Pré-traitement des étapes legacy Xray ──────────────────────────
 _RE_ACTOR_PREFIX = re.compile(r"^\s*ETAPE\s*\d*\s*:?\s*", re.IGNORECASE)
 _RE_ACTION_MARKER = re.compile(r"\bACTION\s*\(?S?\)?\s*:\s*", re.IGNORECASE)
@@ -17,7 +16,7 @@ def _split_into_atoms(raw: str, max_atoms: int = 6) -> List[str]:
     text = _RE_ACTOR_PREFIX.sub("", text)
     m = _RE_ACTION_MARKER.search(text)
     if m:
-        text = text[m.end():]
+        text = text[m.end() :]
 
     raw_lines = re.split(r"\n+|(?<=[a-zé])(?=[A-Z][a-zé])", text)
     atoms: List[str] = []
@@ -71,7 +70,9 @@ def _explode_legacy_step(
     return pairs
 
 
-def _format_legacy_examples_block(legacy_examples: Optional[List[Dict[str, Any]]]) -> str:
+def _format_legacy_examples_block(
+    legacy_examples: Optional[List[Dict[str, Any]]],
+) -> str:
     """Formate les exemples de tests legacy Sopra HR en bloc few-shot."""
     if not legacy_examples:
         return ""
@@ -82,7 +83,11 @@ def _format_legacy_examples_block(legacy_examples: Optional[List[Dict[str, Any]]
         test_id = ex.get("test_id") or pivot.get("test_id") or ""
         title = (pivot.get("title") or ex.get("title") or "").strip()
         score = ex.get("score")
-        module_root = ex.get("module_root") or (pivot.get("metadata") or {}).get("module_root") or ""
+        module_root = (
+            ex.get("module_root")
+            or (pivot.get("metadata") or {}).get("module_root")
+            or ""
+        )
         preconditions = pivot.get("preconditions") or []
         steps = pivot.get("steps") or []
 
@@ -103,7 +108,9 @@ def _format_legacy_examples_block(legacy_examples: Optional[List[Dict[str, Any]]
                 lines.append(f"Préconditions : {preconds_str}")
 
         if steps:
-            lines.append("Étapes (format attendu : 1 action atomique = 1 interaction) :")
+            lines.append(
+                "Étapes (format attendu : 1 action atomique = 1 interaction) :"
+            )
             step_counter = 0
             for s in steps:
                 if not isinstance(s, dict):
@@ -137,7 +144,7 @@ def _format_legacy_examples_block(legacy_examples: Optional[List[Dict[str, Any]]
         "   ne servent QUE de référence de style/granularité. Ne génère JAMAIS d'étapes qui ne\n"
         "   correspondent à rien dans la story.\n"
         "2. Si la story décrit un comportement UI (clics, saisies, écrans), inspire-toi des exemples\n"
-        "   pour formuler des actions concrètes (\"Cliquer sur le bouton X\", \"Saisir Y dans le champ Z\")\n"
+        '   pour formuler des actions concrètes ("Cliquer sur le bouton X", "Saisir Y dans le champ Z")\n'
         "   et réutilise le vocabulaire métier (noms de boutons, libellés, intitulés) UNIQUEMENT s'ils\n"
         "   apparaissent dans la story analysée.\n"
         "3. Si la story décrit du backend / config / règles métier sans UI, NE FORCE PAS de l'UI.\n"
@@ -514,7 +521,15 @@ def build_manual_test_generation_user_prompt(
         "description_clean": story.get("description_clean", ""),
         "priority": story.get("priority", ""),
     }
-    for key in ["acceptance_criteria_clean", "epic_key", "epic_summary", "epic_description", "labels", "components", "issuelinks"]:
+    for key in [
+        "acceptance_criteria_clean",
+        "epic_key",
+        "epic_summary",
+        "epic_description",
+        "labels",
+        "components",
+        "issuelinks",
+    ]:
         val = story.get(key, "")
         if val and val != []:
             story_data[key] = val
@@ -524,7 +539,21 @@ def build_manual_test_generation_user_prompt(
     business_rules = analysis.get("business_rules", [])
     actors = analysis.get("actors", [])
 
-    restrictions = [r for r in business_rules if any(neg in r.lower() for neg in ["n'est pas", "ne peut pas", "n'accede pas", "pas un acteur", "interdit", "ne doit pas"])]
+    restrictions = [
+        r
+        for r in business_rules
+        if any(
+            neg in r.lower()
+            for neg in [
+                "n'est pas",
+                "ne peut pas",
+                "n'accede pas",
+                "pas un acteur",
+                "interdit",
+                "ne doit pas",
+            ]
+        )
+    ]
 
     # ── détection multi-acteurs pour rappel de séparation ──
     actor_reminder = ""
@@ -547,8 +576,10 @@ def build_manual_test_generation_user_prompt(
     if restrictions:
         coverage_reminder += f"- {len(restrictions)} restriction(s) detected in business rules → generate 1 EXC test per restriction:\n"
         for r in restrictions:
-            coverage_reminder += f"  * \"{r}\"\n"
-    coverage_reminder += "- If any action or testable_point is not covered by a test, it is an error.\n"
+            coverage_reminder += f'  * "{r}"\n'
+    coverage_reminder += (
+        "- If any action or testable_point is not covered by a test, it is an error.\n"
+    )
 
     expected_result_reminder = (
         "\n\nEXPECTED_RESULT FORMAT REMINDER (RÈGLE 4 — PRIORITÉ MAXIMALE) :\n"
@@ -569,7 +600,7 @@ def build_manual_test_generation_user_prompt(
         return text if len(text) <= n else text[:n].rstrip() + "..."
 
     # Business model (Agent 1.5) — injecté si disponible
-    business_goals     = analysis.get("business_goals", []) or []
+    business_goals = analysis.get("business_goals", []) or []
     business_workflows = analysis.get("business_workflows", []) or []
 
     compact_payload = {
@@ -584,22 +615,30 @@ def build_manual_test_generation_user_prompt(
             "actions_count": len(actions),
             "testable_points": testable_points[:20],
             "business_rules": business_rules[:20],
-            **({
-                "business_goals": [
-                    {"id": g.get("id"), "label": g.get("label"), "actors": g.get("actors", [])}
-                    for g in business_goals[:8]
-                ],
-                "business_workflows": [
-                    {
-                        "id": w.get("id"),
-                        "label": w.get("label"),
-                        "linked_goal_id": w.get("linked_goal_id"),
-                        "steps": w.get("steps", [])[:6],
-                        "success_criteria": w.get("success_criteria", [])[:4],
-                    }
-                    for w in business_workflows[:6]
-                ],
-            } if business_goals or business_workflows else {}),
+            **(
+                {
+                    "business_goals": [
+                        {
+                            "id": g.get("id"),
+                            "label": g.get("label"),
+                            "actors": g.get("actors", []),
+                        }
+                        for g in business_goals[:8]
+                    ],
+                    "business_workflows": [
+                        {
+                            "id": w.get("id"),
+                            "label": w.get("label"),
+                            "linked_goal_id": w.get("linked_goal_id"),
+                            "steps": w.get("steps", [])[:6],
+                            "success_criteria": w.get("success_criteria", [])[:4],
+                        }
+                        for w in business_workflows[:6]
+                    ],
+                }
+                if business_goals or business_workflows
+                else {}
+            ),
         },
     }
 
@@ -677,8 +716,7 @@ def build_manual_test_gap_coverage_user_prompt(
         story, analysis, rag_context, legacy_examples=legacy_examples
     )
     summaries = [
-        f"- {t.get('test_name', '')}: {t.get('objective', '')}"
-        for t in existing_tests
+        f"- {t.get('test_name', '')}: {t.get('objective', '')}" for t in existing_tests
     ]
     summaries_text = "\n".join(summaries) if summaries else "(aucun test existant)"
     missing_text = "\n".join(f"- {p}" for p in missing_testable_points)
@@ -692,7 +730,7 @@ def build_manual_test_gap_coverage_user_prompt(
             na = dp.get("test_name_a", "")
             nb = dp.get("test_name_b", "")
             sim = dp.get("similarity", 0)
-            dup_lines.append(f"  - \"{na}\" ≈ \"{nb}\" (similarité {sim:.2f})")
+            dup_lines.append(f'  - "{na}" ≈ "{nb}" (similarité {sim:.2f})')
         feedback_sections.append(
             "DOUBLONS DÉTECTÉS par Agent 3 (tests trop similaires — NE PAS les reproduire) :\n"
             + "\n".join(dup_lines)
@@ -714,7 +752,11 @@ def build_manual_test_gap_coverage_user_prompt(
     if correction_instructions:
         instr_lines = []
         for ci in correction_instructions:
-            itype = ci.get("instruction_type", "") if isinstance(ci, dict) else getattr(ci, "instruction_type", "")
+            itype = (
+                ci.get("instruction_type", "")
+                if isinstance(ci, dict)
+                else getattr(ci, "instruction_type", "")
+            )
             if isinstance(ci, dict):
                 rationale = ci.get("rationale", "")
                 tp = ci.get("testable_point", "")
@@ -723,24 +765,38 @@ def build_manual_test_gap_coverage_user_prompt(
                 tp = getattr(ci, "testable_point", "")
 
             if itype == "add_test":
-                instr_lines.append(f"  - AJOUTER un test couvrant : \"{tp}\"")
+                instr_lines.append(f'  - AJOUTER un test couvrant : "{tp}"')
             elif itype == "fix_step":
-                name = ci.get("test_name", "") if isinstance(ci, dict) else getattr(ci, "test_name", "")
+                name = (
+                    ci.get("test_name", "")
+                    if isinstance(ci, dict)
+                    else getattr(ci, "test_name", "")
+                )
                 instr_lines.append(f"  - CORRIGER [{name}]: {rationale}")
             elif itype == "merge_duplicates":
-                na = ci.get("test_name_a", "") if isinstance(ci, dict) else getattr(ci, "test_name_a", "")
-                nb = ci.get("test_name_b", "") if isinstance(ci, dict) else getattr(ci, "test_name_b", "")
-                instr_lines.append(f"  - NE PAS dupliquer \"{na}\" et \"{nb}\"")
+                na = (
+                    ci.get("test_name_a", "")
+                    if isinstance(ci, dict)
+                    else getattr(ci, "test_name_a", "")
+                )
+                nb = (
+                    ci.get("test_name_b", "")
+                    if isinstance(ci, dict)
+                    else getattr(ci, "test_name_b", "")
+                )
+                instr_lines.append(f'  - NE PAS dupliquer "{na}" et "{nb}"')
 
         if instr_lines:
             feedback_sections.append(
-                "INSTRUCTIONS DE CORRECTION Agent 3 :\n"
-                + "\n".join(instr_lines)
+                "INSTRUCTIONS DE CORRECTION Agent 3 :\n" + "\n".join(instr_lines)
             )
 
     feedback_block = ""
     if feedback_sections:
-        feedback_block = "\n\n=== FEEDBACK AGENT 3 (à respecter impérativement) ===\n" + "\n\n".join(feedback_sections)
+        feedback_block = (
+            "\n\n=== FEEDBACK AGENT 3 (à respecter impérativement) ===\n"
+            + "\n\n".join(feedback_sections)
+        )
 
     return f"""{base}
 
@@ -783,8 +839,8 @@ Return ONLY the corrected JSON.
 
 
 def build_manual_test_repair_user_prompt(
-  generated_payload: Dict[str, Any],
-  validation_errors: list[str],
+    generated_payload: Dict[str, Any],
+    validation_errors: list[str],
 ) -> str:
     return f"""
 The JSON below contains manual tests with structural issues that prevent saving.
@@ -816,7 +872,7 @@ Return ONLY the corrected JSON.
 
 
 def build_manual_test_json_reformat_prompt(raw_response: str, parse_error: str) -> str:
-  return f"""
+    return f"""
 The following response was supposed to be strict JSON for manual test generation, but it is invalid.
 
 Your task:

@@ -29,15 +29,17 @@ def run_evaluation(
         agent3_out = story.get("agent3", {}).get("output", {})
         agent5_out = story.get("agent5", {}).get("output", {})
 
-        results.append({
-            "story_id": story_id,
-            "agent1": metrics["agent1"].score(agent1_out),
-            "agent1_5": metrics["agent1_5"].score(agent1_out, agent15_out),
-            "agent2_qa_quality": metrics["agent2"].qa_quality(agent2_out),
-            "agent2_coverage": metrics["agent2"].coverage_from_agent3(agent3_out),
-            "agent3": metrics["agent3"].score(agent3_input, agent3_out),
-            "agent5": metrics["agent5"].score(agent3_out, agent5_out),
-        })
+        results.append(
+            {
+                "story_id": story_id,
+                "agent1": metrics["agent1"].score(agent1_out),
+                "agent1_5": metrics["agent1_5"].score(agent1_out, agent15_out),
+                "agent2_qa_quality": metrics["agent2"].qa_quality(agent2_out),
+                "agent2_coverage": metrics["agent2"].coverage_from_agent3(agent3_out),
+                "agent3": metrics["agent3"].score(agent3_input, agent3_out),
+                "agent5": metrics["agent5"].score(agent3_out, agent5_out),
+            }
+        )
 
     summary = build_global_summary(results)
 
@@ -72,12 +74,18 @@ def build_global_summary(results: List[Dict[str, Any]]) -> Dict[str, Any]:
             "score_moyen": round(mean(scores), 3) if scores else None,
             "score_min": round(min(scores), 3) if scores else None,
             "score_max": round(max(scores), 3) if scores else None,
-            "taux_sous_0_7": round(sum(1 for s in scores if s < 0.7) / len(scores), 2) if scores else None,
+            "taux_sous_0_7": (
+                round(sum(1 for s in scores if s < 0.7) / len(scores), 2)
+                if scores
+                else None
+            ),
             "pires_stories": worst,
         }
 
     coverages = [r["agent2_coverage"]["coverage_rate"] for r in results]
-    summary["couverture_moyenne_tests"] = round(mean(coverages), 3) if coverages else None
+    summary["couverture_moyenne_tests"] = (
+        round(mean(coverages), 3) if coverages else None
+    )
 
     return summary
 
@@ -100,7 +108,13 @@ def print_summary(results: List[Dict[str, Any]], summary: Dict[str, Any]) -> Non
     print(f"{'='*70}")
     for r in results:
         print(f"\n[{r['story_id']}]")
-        for agent_key in ["agent1", "agent1_5", "agent2_qa_quality", "agent3", "agent5"]:
+        for agent_key in [
+            "agent1",
+            "agent1_5",
+            "agent2_qa_quality",
+            "agent3",
+            "agent5",
+        ]:
             data = r.get(agent_key, {})
             score = data.get("score")
             if score is not None:

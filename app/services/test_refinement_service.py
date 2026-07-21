@@ -1,4 +1,5 @@
 """Service IA pour affiner un cas de test via chat en langage naturel."""
+
 from __future__ import annotations
 
 import logging

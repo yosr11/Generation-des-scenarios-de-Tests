@@ -15,32 +15,33 @@ from app.models.pg_models import Story
 
 def _row_to_dict(obj: Story) -> Dict[str, Any]:
     return {
-        "id":                        obj.id,
-        "summary":                   obj.summary or "",
-        "description_raw":           obj.description_raw or "",
-        "description_clean":         obj.description_clean or "",
-        "description_llm":           obj.description_llm or "",
-        "acceptance_criteria_raw":   obj.acceptance_criteria_raw or "",
+        "id": obj.id,
+        "summary": obj.summary or "",
+        "description_raw": obj.description_raw or "",
+        "description_clean": obj.description_clean or "",
+        "description_llm": obj.description_llm or "",
+        "acceptance_criteria_raw": obj.acceptance_criteria_raw or "",
         "acceptance_criteria_clean": obj.acceptance_criteria_clean or "",
-        "labels":                    obj.labels or [],
-        "components":                obj.components or [],
-        "issuelinks":                obj.issuelinks or [],
-        "priority":                  obj.priority or "",
-        "status":                    obj.status or "",
-        "fixVersions":               obj.fix_versions or [],
-        "requirement_status":        obj.requirement_status or {},
-        "references":                obj.references_json or {},
-        "flags":                     obj.flags or {},
-        "story_context_llm":         obj.story_context_llm or "",
-        "epic_key":                  obj.epic_key or "",
-        "epic_summary":              obj.epic_summary or "",
-        "epic_description":          obj.epic_description or "",
-        "jira_updated":              obj.jira_updated or "",
-        "created_at":                str(obj.created_at) if obj.created_at else "",
+        "labels": obj.labels or [],
+        "components": obj.components or [],
+        "issuelinks": obj.issuelinks or [],
+        "priority": obj.priority or "",
+        "status": obj.status or "",
+        "fixVersions": obj.fix_versions or [],
+        "requirement_status": obj.requirement_status or {},
+        "references": obj.references_json or {},
+        "flags": obj.flags or {},
+        "story_context_llm": obj.story_context_llm or "",
+        "epic_key": obj.epic_key or "",
+        "epic_summary": obj.epic_summary or "",
+        "epic_description": obj.epic_description or "",
+        "jira_updated": obj.jira_updated or "",
+        "created_at": str(obj.created_at) if obj.created_at else "",
     }
 
 
 # ── SAVE (insert or replace) ────────────────────────────────────────────────
+
 
 def save_story(story: Dict[str, Any]) -> str:
     session = get_sync_session()
@@ -111,6 +112,7 @@ def save_stories_bulk(stories: List[Dict[str, Any]]) -> int:
 
 # ── GET ─────────────────────────────────────────────────────────────────────
 
+
 def get_story_by_id(story_id: str) -> Optional[Dict[str, Any]]:
     session = get_sync_session()
     try:
@@ -123,9 +125,11 @@ def get_story_by_id(story_id: str) -> Optional[Dict[str, Any]]:
 def get_all_stories() -> List[Dict[str, Any]]:
     session = get_sync_session()
     try:
-        rows = session.execute(
-            select(Story).order_by(Story.created_at.desc())
-        ).scalars().all()
+        rows = (
+            session.execute(select(Story).order_by(Story.created_at.desc()))
+            .scalars()
+            .all()
+        )
         return [_row_to_dict(r) for r in rows]
     finally:
         session.close()
@@ -136,9 +140,11 @@ def get_stories_by_ids(story_ids: List[str]) -> List[Dict[str, Any]]:
         return []
     session = get_sync_session()
     try:
-        rows = session.execute(
-            select(Story).where(Story.id.in_(story_ids))
-        ).scalars().all()
+        rows = (
+            session.execute(select(Story).where(Story.id.in_(story_ids)))
+            .scalars()
+            .all()
+        )
         return [_row_to_dict(r) for r in rows]
     finally:
         session.close()
@@ -150,11 +156,15 @@ def get_stories_by_epic_key(epic_key: str) -> List[Dict[str, Any]]:
         return []
     session = get_sync_session()
     try:
-        rows = session.execute(
-            select(Story)
-            .where(Story.epic_key == epic_key.strip().upper())
-            .order_by(Story.created_at.desc())
-        ).scalars().all()
+        rows = (
+            session.execute(
+                select(Story)
+                .where(Story.epic_key == epic_key.strip().upper())
+                .order_by(Story.created_at.desc())
+            )
+            .scalars()
+            .all()
+        )
         return [_row_to_dict(r) for r in rows]
     finally:
         session.close()

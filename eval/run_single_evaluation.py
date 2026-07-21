@@ -10,7 +10,11 @@ if len(sys.argv) < 2:
     sys.exit(1)
 
 story_id = sys.argv[1]
-out_path = Path(sys.argv[2]) if len(sys.argv) >= 3 else Path("eval/results/generated_tests_evaluation_YOU-9098.json")
+out_path = (
+    Path(sys.argv[2])
+    if len(sys.argv) >= 3
+    else Path("eval/results/generated_tests_evaluation_YOU-9098.json")
+)
 
 # locate module file
 mod_path = Path("eval/comparaison_gold_test/evaluate_generated_tests.py").resolve()
@@ -35,6 +39,7 @@ st_model = None
 try:
     if eval_mod.ST_AVAILABLE:
         from sentence_transformers import SentenceTransformer
+
         st_model = SentenceTransformer(eval_mod.ST_MODEL_NAME)
 except Exception as e:
     print(f"[WARN] ST model not loaded: {e}")

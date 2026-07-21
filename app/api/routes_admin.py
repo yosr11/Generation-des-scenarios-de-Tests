@@ -11,7 +11,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.deps import CurrentUser, get_current_user
 from app.db.postgres import get_db
-from app.models.pg_models import AuditLog, PipelineRun ,User
+from app.models.pg_models import AuditLog, PipelineRun, User
 from app.services.user_service import (
     create_user,
     delete_user,
@@ -23,12 +23,14 @@ from app.services.user_service import (
 )
 from app.core.cookies import set_auth_cookie
 from app.services.auth_service import build_admin_token, build_user_token
+
 router = APIRouter(prefix="/admin", tags=["Admin"])
 
 
 # ──────────────────────────────────────────────────────────
 #  Guard helper
 # ──────────────────────────────────────────────────────────
+
 
 def _require_admin(user: CurrentUser) -> None:
     if not user or user.role != "admin":
@@ -38,6 +40,7 @@ def _require_admin(user: CurrentUser) -> None:
 # ──────────────────────────────────────────────────────────
 #  Schemas
 # ──────────────────────────────────────────────────────────
+
 
 class CreateUserRequest(BaseModel):
     email: EmailStr
@@ -70,6 +73,7 @@ class UserOut(BaseModel):
 #  Stats
 # ──────────────────────────────────────────────────────────
 
+
 @router.get("/stats")
 async def admin_stats(
     current_user: CurrentUser = Depends(get_current_user),
@@ -82,6 +86,7 @@ async def admin_stats(
 # ──────────────────────────────────────────────────────────
 #  Users CRUD
 # ──────────────────────────────────────────────────────────
+
 
 @router.get("/users", response_model=List[UserOut])
 async def admin_list_users(
@@ -157,7 +162,11 @@ async def admin_update_user(
         fresh_result = await db.execute(select(User).where(User.id == user_id))
         fresh_user = fresh_result.scalar_one_or_none()
         if fresh_user:
-            new_token = build_admin_token(fresh_user) if fresh_user.role == "admin" else build_user_token(fresh_user)
+            new_token = (
+                build_admin_token(fresh_user)
+                if fresh_user.role == "admin"
+                else build_user_token(fresh_user)
+            )
             set_auth_cookie(response, new_token)
 
     return result["user"]
@@ -205,6 +214,7 @@ async def admin_deactivate_user(
 #  Pipeline runs history
 # ──────────────────────────────────────────────────────────
 
+
 @router.get("/pipelines")
 async def admin_pipeline_history(
     limit: int = 100,
@@ -214,7 +224,12 @@ async def admin_pipeline_history(
     db: AsyncSession = Depends(get_db),
 ):
     _require_admin(current_user)
-    stmt = select(PipelineRun).order_by(desc(PipelineRun.started_at)).limit(limit).offset(offset)
+    stmt = (
+        select(PipelineRun)
+        .order_by(desc(PipelineRun.started_at))
+        .limit(limit)
+        .offset(offset)
+    )
     if launched_by:
         stmt = stmt.where(PipelineRun.launched_by == launched_by)
     result = await db.execute(stmt)
@@ -244,6 +259,7 @@ async def admin_pipeline_history(
 #  Audit log
 # ──────────────────────────────────────────────────────────
 
+
 @router.get("/audit")
 async def admin_audit_log(
     limit: int = 100,
@@ -252,7 +268,9 @@ async def admin_audit_log(
     db: AsyncSession = Depends(get_db),
 ):
     _require_admin(current_user)
-    stmt = select(AuditLog).order_by(desc(AuditLog.created_at)).limit(limit).offset(offset)
+    stmt = (
+        select(AuditLog).order_by(desc(AuditLog.created_at)).limit(limit).offset(offset)
+    )
     result = await db.execute(stmt)
     logs = result.scalars().all()
     return {

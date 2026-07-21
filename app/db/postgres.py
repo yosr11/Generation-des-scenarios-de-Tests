@@ -54,7 +54,7 @@ SyncSessionLocal = sessionmaker(
 
 def get_sync_session() -> Session:
     """Retourne une session SQLAlchemy synchrone.
-    
+
     À utiliser dans les repositories qui ne sont pas encore convertis en async.
     Pensez à appeler session.close() dans un bloc finally.
     """

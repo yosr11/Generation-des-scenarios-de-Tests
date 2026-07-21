@@ -1,4 +1,5 @@
 """Utilitaires partagés pour la structure étapes / steps des tests manuels."""
+
 from __future__ import annotations
 
 import copy
@@ -103,21 +104,27 @@ def ensure_etapes_structure(test: Dict[str, Any]) -> Dict[str, Any]:
     etapes: List[Dict[str, Any]] = []
     for idx, step in enumerate(steps, 1):
         sd = _as_dict(step)
-        actor = (sd.get("actor") or "").strip() or _extract_actor_from_data(sd.get("data") or "")
+        actor = (sd.get("actor") or "").strip() or _extract_actor_from_data(
+            sd.get("data") or ""
+        )
         action = strip_actor_prefix(sd.get("action") or "")
         titre = action[:80] if action else f"Étape {idx}"
-        etapes.append({
-            "titre": titre,
-            "actor": actor,
-            "steps": [{
-                "index": 1,
-                "action": action,
-                "data": sd.get("data") or "",
-                "actor": "",
-                "expected_result": sd.get("expected_result") or "",
-                "revision_po": sd.get("revision_po") or "",
-            }],
-        })
+        etapes.append(
+            {
+                "titre": titre,
+                "actor": actor,
+                "steps": [
+                    {
+                        "index": 1,
+                        "action": action,
+                        "data": sd.get("data") or "",
+                        "actor": "",
+                        "expected_result": sd.get("expected_result") or "",
+                        "revision_po": sd.get("revision_po") or "",
+                    }
+                ],
+            }
+        )
     test["étapes"] = etapes
     return test
 
@@ -132,7 +139,9 @@ def finalize_edited_test(test: Dict[str, Any]) -> Dict[str, Any]:
     return test
 
 
-def normalize_step_fields(step: Dict[str, Any], *, index: int, default_actor: str = "") -> Dict[str, Any]:
+def normalize_step_fields(
+    step: Dict[str, Any], *, index: int, default_actor: str = ""
+) -> Dict[str, Any]:
     """Normalise les champs d'une action atomique."""
     import json
 
@@ -166,11 +175,23 @@ def flatten_test_steps(test: Dict[str, Any]) -> List[Dict[str, Any]]:
             etape_actor = (ed.get("actor") or "").strip()
             for step in ed.get("steps") or []:
                 if isinstance(step, str):
-                    step = {"action": step, "data": "", "actor": "", "expected_result": ""}
-                flat.append(normalize_step_fields(_as_dict(step), index=idx, default_actor=etape_actor))
+                    step = {
+                        "action": step,
+                        "data": "",
+                        "actor": "",
+                        "expected_result": "",
+                    }
+                flat.append(
+                    normalize_step_fields(
+                        _as_dict(step), index=idx, default_actor=etape_actor
+                    )
+                )
                 idx += 1
         return flat
-    return [normalize_step_fields(_as_dict(s), index=i, default_actor="") for i, s in enumerate(test.get("steps") or [], 1)]
+    return [
+        normalize_step_fields(_as_dict(s), index=i, default_actor="")
+        for i, s in enumerate(test.get("steps") or [], 1)
+    ]
 
 
 def normalize_test_etapes_and_steps(test: Dict[str, Any]) -> Dict[str, Any]:
@@ -184,8 +205,17 @@ def normalize_test_etapes_and_steps(test: Dict[str, Any]) -> Dict[str, Any]:
             etape_steps: List[Dict[str, Any]] = []
             for s_idx, step in enumerate(ed.get("steps") or [], 1):
                 if isinstance(step, str):
-                    step = {"action": step, "data": "", "actor": "", "expected_result": ""}
-                etape_steps.append(normalize_step_fields(_as_dict(step), index=s_idx, default_actor=etape_actor))
+                    step = {
+                        "action": step,
+                        "data": "",
+                        "actor": "",
+                        "expected_result": "",
+                    }
+                etape_steps.append(
+                    normalize_step_fields(
+                        _as_dict(step), index=s_idx, default_actor=etape_actor
+                    )
+                )
             ed["titre"] = (ed.get("titre") or "").strip()
             ed["actor"] = etape_actor
             ed["steps"] = etape_steps
@@ -214,6 +244,7 @@ def bold_first_word(text: str) -> str:
         return f"**{parts[0]}** {parts[1]}"
     return f"**{text}**"
 
+
 _ACTOR_COLOR_PALETTE = [
     "0052CC",  # bleu
     "DE350B",  # rouge
@@ -241,11 +272,14 @@ def color_actor_bracket(actor: str) -> str:
     color = get_actor_color(actor)
     return f"{{color:#{color}}}[{actor}]{{color}}"
 
+
 def _is_precondition_title(titre: str) -> bool:
     titre = (titre or "").strip().lower()
     if not titre:
         return False
-    return "précondition" in titre and not titre.startswith("exécuter la précondition suivante")
+    return "précondition" in titre and not titre.startswith(
+        "exécuter la précondition suivante"
+    )
 
 
 def _normalize_precondition_title(titre: str) -> str:
@@ -318,13 +352,19 @@ def _extract_actor_from_data(data: str) -> str:
     text = (data or "").strip()
     if not text:
         return ""
-    m = re.search(r"en tant que\s+([^,;\.]+?)(?:\s+des?\b|\s+du\b|\s+de\b|\s+pour\b|$)", text, re.IGNORECASE)
+    m = re.search(
+        r"en tant que\s+([^,;\.]+?)(?:\s+des?\b|\s+du\b|\s+de\b|\s+pour\b|$)",
+        text,
+        re.IGNORECASE,
+    )
     if m:
         return m.group(1).strip()
     return text
 
 
-def format_action_with_actor(action: str, actor: str = "", data: str = "", *, include_actor: bool = True) -> str:
+def format_action_with_actor(
+    action: str, actor: str = "", data: str = "", *, include_actor: bool = True
+) -> str:
     """Formate une action ; par défaut avec acteur, sauf pour les sous-étapes (include_actor=False)."""
     action = strip_actor_prefix((action or "").strip())
     if not include_actor:

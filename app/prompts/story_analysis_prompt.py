@@ -1,5 +1,6 @@
 ﻿# app/prompts/story_analysis_prompt.py
 
+
 def build_story_analysis_system_prompt() -> str:
     return """
 Tu es un expert QA senior. Tu analyses des User Stories Jira (applications RH Sopra HR / Pleiades / 4YOU) pour evaluer leur testabilite.
@@ -229,6 +230,7 @@ ANALYSIS_REASON :
 }
 """.strip()
 
+
 def build_story_analysis_user_prompt(
     story: dict,
     story_attachments: list = None,
@@ -277,10 +279,10 @@ def build_story_analysis_user_prompt(
                 "  - Extraire des acteurs, actions, règles métier, points testables, critères d'acceptation qu'ils contiennent.\n"
                 "  - Tenir compte des annotations visuelles (flèches, cadres, soulignements) qui pointent souvent les éléments critiques.\n"
                 "  - Tenir compte des mots-clés, libellés, badges visibles dans les captures d'écran.\n"
-                "  - IMPORTANT : si une description d'image mentionne des badges/pills/étiquettes contenant du TEXTE CONCRET (entre guillemets, ex: \"Politique RH\", \"Formation\", \"Absences\"), ces textes sont des EXEMPLES DE VALEURS RÉELLES à intégrer dans l'analyse :\n"
+                '  - IMPORTANT : si une description d\'image mentionne des badges/pills/étiquettes contenant du TEXTE CONCRET (entre guillemets, ex: "Politique RH", "Formation", "Absences"), ces textes sont des EXEMPLES DE VALEURS RÉELLES à intégrer dans l\'analyse :\n'
                 "      * Cite ces valeurs textuellement dans les `testable_points` (ex: \"Vérifier l'affichage du mot-clé 'Politique RH' sur la News\").\n"
                 "      * Cite-les aussi dans les `user_flows` (ex: \"L'utilisateur consulte une News portant le mot-clé 'Formation'\").\n"
-                "      * Si PLUSIEURS badges/pills sont visibles sur un même élément (ex: \"Politique RH\" + \"Formation\" sur la même carte), ajoute un `testable_point` spécifique sur l'affichage MULTIPLE.\n"
+                '      * Si PLUSIEURS badges/pills sont visibles sur un même élément (ex: "Politique RH" + "Formation" sur la même carte), ajoute un `testable_point` spécifique sur l\'affichage MULTIPLE.\n'
                 "      * Si une annotation PO (flèche, cadre) désigne un badge particulier, considère que c'est le cas d'usage le plus critique → testable_point obligatoire dessus.\n\n"
                 + "\n\n---\n\n".join(att_blocks)
             )

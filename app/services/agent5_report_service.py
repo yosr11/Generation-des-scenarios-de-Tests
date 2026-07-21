@@ -6,16 +6,13 @@ Utilise le LLM pour les sections narratives (findings, recommandations, next ste
 Les métriques factuelles (couverture, comptages) restent calculées de manière déterministe.
 """
 
-import json
 import logging
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from pydantic import ValidationError
 
 from app.models.agent5_report import (
     Agent5Report,
-    Agent5ReportResponse,
     ReportCoverageMetrics,
     ReportExecutiveSummary,
     ReportQualityAssurance,
@@ -45,7 +42,9 @@ class Agent5ReportGeneratorService:
         self.llm_client = llm_client
         self.model_alias = model_name
 
-    def _infer_coverage_status(self, coverage_rate: float, total_testable_points: int = -1) -> str:
+    def _infer_coverage_status(
+        self, coverage_rate: float, total_testable_points: int = -1
+    ) -> str:
         """Détermine le statut textuel basé sur le taux de couverture.
 
         Si total_testable_points == 0 → INCOMPLETE_STORY (la story est trop pauvre
@@ -72,7 +71,7 @@ class Agent5ReportGeneratorService:
     ) -> str:
         """
         Détermine le statut global (APPROVED, REQUIRES_REVIEW, NEEDS_REWORK).
-        
+
         Règles :
         - APPROVED : couverture ≥85% ET VALID ET duplicates ≤2 ET ambiguities ≤2
         - NEEDS_REWORK : couverture <70% OU INVALID OU duplicates >5 OU ambiguities >5
@@ -127,9 +126,7 @@ class Agent5ReportGeneratorService:
                 "⚠️ Story incomplète : aucun point testable n'a pu être extrait → retour PO requis pour clarifier les exigences"
             )
         else:
-            findings.append(
-                f"Couverture : {coverage_rate:.1%} ({coverage_status})"
-            )
+            findings.append(f"Couverture : {coverage_rate:.1%} ({coverage_status})")
 
         # Finding 2 : Validation status
         if validation_status == "INVALID":
@@ -314,7 +311,7 @@ class Agent5ReportGeneratorService:
     ) -> Optional[Dict[str, Any]]:
         """
         Appelle le LLM pour générer les sections narratives du rapport.
-        
+
         Returns:
             Dict avec key_findings, next_steps, recommendations ou None si échec.
         """
@@ -370,7 +367,9 @@ class Agent5ReportGeneratorService:
             return parsed
 
         except Exception as e:
-            logger.warning(f"[Agent5] LLM narrative failed for {story_id}, using fallback: {e}")
+            logger.warning(
+                f"[Agent5] LLM narrative failed for {story_id}, using fallback: {e}"
+            )
             return None
 
     def generate_report(
@@ -384,13 +383,13 @@ class Agent5ReportGeneratorService:
     ) -> Agent5Report:
         """
         Génère un rapport complet à partir des résultats des 3 agents.
-        
+
         Args:
             story_analysis: Résultat Agent 1
             test_generation: Résultat Agent 2
             validation_result: Résultat Agent 3
             story_description: Description complète de la story (pour contexte)
-        
+
         Returns:
             Agent5Report structuré
         """
@@ -412,15 +411,15 @@ class Agent5ReportGeneratorService:
         exc_tests = sum(1 for t in tests if t.scenario_type.value == "EXC")
 
         high_priority = sum(1 for t in tests if t.priority.value == "High")
-        medium_priority = sum(1 for t in tests if t.priority.value == "Medium")
-        low_priority = sum(1 for t in tests if t.priority.value == "Low")
 
         # Compter points testables couverts
         total_testable_points = len(story_analysis.testable_points)
         covered_points = total_testable_points - len(uncovered_points)
 
         # Déterminer statuts
-        coverage_status = self._infer_coverage_status(coverage_rate, total_testable_points)
+        coverage_status = self._infer_coverage_status(
+            coverage_rate, total_testable_points
+        )
         overall_status = self._infer_overall_status(
             coverage_rate,
             validation_status,
@@ -465,7 +464,9 @@ class Agent5ReportGeneratorService:
 
         # 3. COVERAGE METRICS
         coverage_section = ReportCoverageMetrics(
-            coverage_rate=round(coverage_rate * 100, 1),  # Convert ratio → percentage for display
+            coverage_rate=round(
+                coverage_rate * 100, 1
+            ),  # Convert ratio → percentage for display
             total_testable_points=total_testable_points,
             covered_points=covered_points,
             uncovered_points=uncovered_points,
@@ -486,9 +487,21 @@ class Agent5ReportGeneratorService:
             )
 
         for ambiguity in ambiguity_findings:
-            amb_step = ambiguity.get("step_index", "?") if isinstance(ambiguity, dict) else getattr(ambiguity, "step_index", "?")
-            amb_test = ambiguity.get("test_name", "?") if isinstance(ambiguity, dict) else getattr(ambiguity, "test_name", "?")
-            amb_reason = ambiguity.get("reason", "") if isinstance(ambiguity, dict) else getattr(ambiguity, "reason", "")
+            amb_step = (
+                ambiguity.get("step_index", "?")
+                if isinstance(ambiguity, dict)
+                else getattr(ambiguity, "step_index", "?")
+            )
+            amb_test = (
+                ambiguity.get("test_name", "?")
+                if isinstance(ambiguity, dict)
+                else getattr(ambiguity, "test_name", "?")
+            )
+            amb_reason = (
+                ambiguity.get("reason", "")
+                if isinstance(ambiguity, dict)
+                else getattr(ambiguity, "reason", "")
+            )
             qa_issues.append(
                 ReportQualityIssue(
                     issue_type="ambiguity",
@@ -546,15 +559,19 @@ class Agent5ReportGeneratorService:
             for r in raw_recs:
                 if isinstance(r, dict):
                     try:
-                        recommendations.append(ReportRecommendation(
-                            priority=r.get("priority", "medium"),
-                            action=r.get("action", ""),
-                            rationale=r.get("rationale", ""),
-                        ))
+                        recommendations.append(
+                            ReportRecommendation(
+                                priority=r.get("priority", "medium"),
+                                action=r.get("action", ""),
+                                rationale=r.get("rationale", ""),
+                            )
+                        )
                     except Exception:
                         pass
 
-            processing_notes_llm = f"Sections narratives générées par LLM ({self.model_alias})"
+            processing_notes_llm = (
+                f"Sections narratives générées par LLM ({self.model_alias})"
+            )
         else:
             # Fallback : rule-based
             key_findings = self._extract_key_findings(
@@ -602,7 +619,9 @@ class Agent5ReportGeneratorService:
                 total_testable_points,
             )
 
-            processing_notes_llm = "Sections narratives générées en mode rule-based (fallback)"
+            processing_notes_llm = (
+                "Sections narratives générées en mode rule-based (fallback)"
+            )
 
         executive_summary = ReportExecutiveSummary(
             overall_status=overall_status,
@@ -630,7 +649,11 @@ class Agent5ReportGeneratorService:
         if correction_iterations > 0 or max_correction_iterations > 0:
             processing_notes.append(
                 f"Itérations de gap-fill (Agent 3 → Agent 2): {correction_iterations}"
-                + (f" / {max_correction_iterations} max" if max_correction_iterations else "")
+                + (
+                    f" / {max_correction_iterations} max"
+                    if max_correction_iterations
+                    else ""
+                )
             )
 
         final_report = Agent5Report(
@@ -656,7 +679,7 @@ class Agent5ReportGeneratorService:
 
     def export_to_markdown(self, report: Agent5Report) -> str:
         """Exporte le rapport en format Markdown lisible."""
-        
+
         findings_list = "\n".join(
             f"- {f}" for f in report.executive_summary.key_findings
         )
@@ -664,9 +687,21 @@ class Agent5ReportGeneratorService:
             f"- {s}" for s in report.executive_summary.next_steps
         )
 
-        actors_str = ", ".join(report.story_summary.actors) if report.story_summary.actors else "N/A"
-        rules_str = ", ".join(report.story_summary.business_rules) if report.story_summary.business_rules else "N/A"
-        tech_str = ", ".join(report.story_summary.technical_scope) if report.story_summary.technical_scope else "N/A"
+        actors_str = (
+            ", ".join(report.story_summary.actors)
+            if report.story_summary.actors
+            else "N/A"
+        )
+        rules_str = (
+            ", ".join(report.story_summary.business_rules)
+            if report.story_summary.business_rules
+            else "N/A"
+        )
+        tech_str = (
+            ", ".join(report.story_summary.technical_scope)
+            if report.story_summary.technical_scope
+            else "N/A"
+        )
 
         tests_rows = []
         for test in report.test_suite.tests_summary[:10]:
@@ -674,11 +709,19 @@ class Agent5ReportGeneratorService:
                 f"| {test.scenario_type} | {test.test_name} | {test.priority} | {test.step_count} étapes |"
             )
         if len(report.test_suite.tests_summary) > 10:
-            tests_rows.append(f"| ... | ... et {len(report.test_suite.tests_summary) - 10} autres | | |")
+            tests_rows.append(
+                f"| ... | ... et {len(report.test_suite.tests_summary) - 10} autres | | |"
+            )
 
-        tests_table = "\n".join(tests_rows) if tests_rows else "| - | Aucun test | - | - |"
+        tests_table = (
+            "\n".join(tests_rows) if tests_rows else "| - | Aucun test | - | - |"
+        )
 
-        uncovered_str = ", ".join(report.coverage_metrics.uncovered_points) if report.coverage_metrics.uncovered_points else "Aucun"
+        uncovered_str = (
+            ", ".join(report.coverage_metrics.uncovered_points)
+            if report.coverage_metrics.uncovered_points
+            else "Aucun"
+        )
 
         if report.coverage_metrics.total_testable_points == 0:
             coverage_line = (
@@ -705,9 +748,10 @@ class Agent5ReportGeneratorService:
             recommendations_list += f"\n**[{rec.priority.upper()}]** {rec.action}\n"
             recommendations_list += f"- {rec.rationale}\n"
 
-        processing_notes_list = "\n".join(
-            f"- {note}" for note in (report.processing_notes or [])
-        ) or "- Aucune note"
+        processing_notes_list = (
+            "\n".join(f"- {note}" for note in (report.processing_notes or []))
+            or "- Aucune note"
+        )
 
         markdown = f"""
 # Rapport QA Complet — {report.story_id}

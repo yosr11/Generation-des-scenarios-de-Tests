@@ -33,7 +33,6 @@ import re
 from html.parser import HTMLParser
 from typing import Any, Dict, List, Optional
 
-
 # ══════════════════════════════════════════════════════════════
 #  1. STRIP HTML (avec préservation des sauts de ligne)
 # ══════════════════════════════════════════════════════════════
@@ -93,52 +92,39 @@ def strip_html(text: str) -> str:
 _WIKI_RULES: List[tuple[re.Pattern, str]] = [
     # !image.png|width=x,height=y!  →  [capture d'écran]
     (
-        re.compile(r"![^\s!]+\.(png|jpg|jpeg|gif|svg|PNG|JPG|JPEG)[^!]*!", re.IGNORECASE),
-        "[capture d'écran]"
+        re.compile(
+            r"![^\s!]+\.(png|jpg|jpeg|gif|svg|PNG|JPG|JPEG)[^!]*!", re.IGNORECASE
+        ),
+        "[capture d'écran]",
     ),
-
     # {color:#xxx}texte{color}  →  texte
     (re.compile(r"\{color[^}]*\}(.*?)\{color\}", re.DOTALL), r"\1"),
-
     # {test-param}xxx{test-param}  →  [xxx]
     (re.compile(r"\{test-param\}(.*?)\{test-param\}", re.DOTALL), r"[\1]"),
-
     # {{code}}  →  code
     (re.compile(r"\{\{(.*?)\}\}", re.DOTALL), r"\1"),
-
     # {balises génériques} → rien
     (re.compile(r"\{[^}]+\}"), ""),
-
     # +texte+ → texte
     (re.compile(r"\+(.*?)\+", re.DOTALL), r"\1"),
-
     # *texte* → texte (gras inline, pas les bullets)
     (re.compile(r"(?<!\n)\*([^*\n]+)\*"), r"\1"),
-
     # _texte_ → texte
     (re.compile(r"_([^_\n]+)_"), r"\1"),
-
     # [texte|url] → texte (url)
     (re.compile(r"\[([^\]|]+)\|(https?://[^\]]+)\]"), r"\1 (\2)"),
-
     # [url seule] → url
     (re.compile(r"\[(https?://[^\]]+)\]"), r"\1"),
-
     # h1. / h2. / ...
     (re.compile(r"(?im)^\s*h[1-6]\.\s*"), ""),
-
     # séparateurs ----
     (re.compile(r"(?m)^\s*-{4,}\s*$"), ""),
-
     # * bullet début de ligne
     (re.compile(r"(?m)^\s*\*+\s*"), ""),
-
     # # numérotation wiki
     (re.compile(r"(?m)^\s*#+\s*"), ""),
-
     # étoiles résiduelles isolées
     (re.compile(r"\*+"), ""),
-
     # espaces multiples
     (re.compile(r"[ \t]{2,}"), " "),
 ]
@@ -155,6 +141,7 @@ def strip_jira_wiki(text: str) -> str:
 # ══════════════════════════════════════════════════════════════
 #  3. NETTOYAGE TEXTE DE BASE
 # ══════════════════════════════════════════════════════════════
+
 
 def clean_text(raw: Optional[str]) -> str:
     """
@@ -192,6 +179,7 @@ def clean_text(raw: Optional[str]) -> str:
 # ══════════════════════════════════════════════════════════════
 #  4. HELPERS GÉNÉRAUX
 # ══════════════════════════════════════════════════════════════
+
 
 def _unique_keep_order(items: List[str]) -> List[str]:
     seen = set()
@@ -321,10 +309,33 @@ def extract_references(text: str) -> Dict[str, List[str]]:
 # ══════════════════════════════════════════════════════════════
 
 TECH_KEYWORDS = [
-    "api", "backend", "patch", "script", "sql", "migration", "assembly",
-    "déploiement", "deployment", "config", "configuration", "rf80", "rg0",
-    "dao", "batch", "job", "logs", "mapping", "endpoint", "legacy hra",
-    "karaf", "pom", "maven", "release", "releasing", "devops", "cleaning"
+    "api",
+    "backend",
+    "patch",
+    "script",
+    "sql",
+    "migration",
+    "assembly",
+    "déploiement",
+    "deployment",
+    "config",
+    "configuration",
+    "rf80",
+    "rg0",
+    "dao",
+    "batch",
+    "job",
+    "logs",
+    "mapping",
+    "endpoint",
+    "legacy hra",
+    "karaf",
+    "pom",
+    "maven",
+    "release",
+    "releasing",
+    "devops",
+    "cleaning",
 ]
 
 # volontairement strict pour éviter de marquer à tort comme JDD
@@ -372,8 +383,7 @@ def build_flags(text: str, labels: Optional[List[str]] = None) -> Dict[str, Any]
     labels_lower = [label.lower() for label in labels]
 
     contains_jdd_signal = (
-        any(keyword in lowered for keyword in JDD_KEYWORDS)
-        or "jdd" in labels_lower
+        any(keyword in lowered for keyword in JDD_KEYWORDS) or "jdd" in labels_lower
     )
 
     contains_technical_signal = any(keyword in lowered for keyword in TECH_KEYWORDS)
@@ -395,7 +405,10 @@ def build_flags(text: str, labels: Optional[List[str]] = None) -> Dict[str, Any]
 #  7. DESCRIPTION OPTIMISÉE POUR LE LLM
 # ══════════════════════════════════════════════════════════════
 
-def build_description_llm(description_clean: str, references: Dict[str, List[str]]) -> str:
+
+def build_description_llm(
+    description_clean: str, references: Dict[str, List[str]]
+) -> str:
     """
     Construit une version plus propre pour le LLM :
       - remplace les URLs longues par [URL]
@@ -415,38 +428,28 @@ def build_description_llm(description_clean: str, references: Dict[str, List[str
     text = re.sub(
         r"(?im)^\s*environnement\s*\[URL\]\s*$",
         "Environnement de test disponible : [URL]",
-        text
+        text,
     )
     text = re.sub(
         r"(?im)^\s*link\s*:\s*\[URL\]\s*$",
         "Lien vers ressource disponible : [URL]",
-        text
+        text,
     )
     text = re.sub(
         r"(?im)^\s*ticket\s*:\s*([A-Z][A-Z0-9]+-\d+)\s*$",
         r"Référence ticket liée : \1",
-        text
+        text,
     )
     text = re.sub(
         r"(?im)^\s*story\s*:\s*([A-Z][A-Z0-9]+-\d+)\s*$",
         r"Référence story liée : \1",
-        text
+        text,
     )
     text = re.sub(
-        r"(?im)^\s*jdd\s*:\s*([A-Z][A-Z0-9]+-\d+)\s*$",
-        r"Référence JDD liée : \1",
-        text
+        r"(?im)^\s*jdd\s*:\s*([A-Z][A-Z0-9]+-\d+)\s*$", r"Référence JDD liée : \1", text
     )
-    text = re.sub(
-        r"(?im)^\s*rq\s*:\s*",
-        "Remarque : ",
-        text
-    )
-    text = re.sub(
-        r"(?im)^\s*user\s*:\s*",
-        "Compte utilisateur de test : ",
-        text
-    )
+    text = re.sub(r"(?im)^\s*rq\s*:\s*", "Remarque : ", text)
+    text = re.sub(r"(?im)^\s*user\s*:\s*", "Compte utilisateur de test : ", text)
 
     # Normalisation ponctuation / espaces
     text = re.sub(r"[ \t]{2,}", " ", text)
@@ -472,7 +475,10 @@ def build_description_llm(description_clean: str, references: Dict[str, List[str
 #  8. NETTOYAGE DES STRUCTURES COMPLEXES
 # ══════════════════════════════════════════════════════════════
 
-def clean_issuelinks(issuelinks: Optional[List[Dict[str, Any]]]) -> List[Dict[str, Any]]:
+
+def clean_issuelinks(
+    issuelinks: Optional[List[Dict[str, Any]]],
+) -> List[Dict[str, Any]]:
     """
     Nettoie les issue links aplatis.
     On suppose une structure du type :
@@ -482,7 +488,7 @@ def clean_issuelinks(issuelinks: Optional[List[Dict[str, Any]]]) -> List[Dict[st
         "key": "...",
         "summary": "...",
         "status": "...",
-        "description": "..." 
+        "description": "..."
       }
     """
     if not issuelinks:
@@ -494,19 +500,23 @@ def clean_issuelinks(issuelinks: Optional[List[Dict[str, Any]]]) -> List[Dict[st
         if not isinstance(link, dict):
             continue
 
-        cleaned_links.append({
-            "type": clean_scalar_text(link.get("type")),
-            "direction": clean_scalar_text(link.get("direction")),
-            "key": clean_scalar_text(link.get("key")),
-            "summary": clean_scalar_text(link.get("summary")),
-            "status": clean_scalar_text(link.get("status")),
-            "description": clean_text(link.get("description") or ""),
-        })
+        cleaned_links.append(
+            {
+                "type": clean_scalar_text(link.get("type")),
+                "direction": clean_scalar_text(link.get("direction")),
+                "key": clean_scalar_text(link.get("key")),
+                "summary": clean_scalar_text(link.get("summary")),
+                "status": clean_scalar_text(link.get("status")),
+                "description": clean_text(link.get("description") or ""),
+            }
+        )
 
     return cleaned_links
 
 
-def clean_requirement_status(requirement_status: Optional[List[Dict[str, Any]]]) -> List[Dict[str, Any]]:
+def clean_requirement_status(
+    requirement_status: Optional[List[Dict[str, Any]]],
+) -> List[Dict[str, Any]]:
     """
     Nettoie légèrement les champs utiles du requirement_status.
     """
@@ -519,20 +529,22 @@ def clean_requirement_status(requirement_status: Optional[List[Dict[str, Any]]])
         if not isinstance(item, dict):
             continue
 
-        cleaned_items.append({
-            "issueKey": clean_scalar_text(item.get("issueKey")),
-            "version": clean_scalar_text(item.get("version")),
-            "status": clean_scalar_text(item.get("status")),
-            "statusStyle": clean_scalar_text(item.get("statusStyle")),
-            "ok": item.get("ok", 0),
-            "okPercent": item.get("okPercent", 0),
-            "nok": item.get("nok", 0),
-            "nokPercent": item.get("nokPercent", 0),
-            "notrun": item.get("notrun", 0),
-            "notrunPercent": item.get("notrunPercent", 0),
-            "unknown": item.get("unknown", 0),
-            "unknownPercent": item.get("unknownPercent", 0),
-        })
+        cleaned_items.append(
+            {
+                "issueKey": clean_scalar_text(item.get("issueKey")),
+                "version": clean_scalar_text(item.get("version")),
+                "status": clean_scalar_text(item.get("status")),
+                "statusStyle": clean_scalar_text(item.get("statusStyle")),
+                "ok": item.get("ok", 0),
+                "okPercent": item.get("okPercent", 0),
+                "nok": item.get("nok", 0),
+                "nokPercent": item.get("nokPercent", 0),
+                "notrun": item.get("notrun", 0),
+                "notrunPercent": item.get("notrunPercent", 0),
+                "unknown": item.get("unknown", 0),
+                "unknownPercent": item.get("unknownPercent", 0),
+            }
+        )
 
     return cleaned_items
 
@@ -540,6 +552,7 @@ def clean_requirement_status(requirement_status: Optional[List[Dict[str, Any]]])
 # ══════════════════════════════════════════════════════════════
 #  9. NETTOYAGE D'UNE STORY
 # ══════════════════════════════════════════════════════════════
+
 
 def clean_story_dict(story: Dict[str, Any]) -> Dict[str, Any]:
     """
@@ -570,26 +583,23 @@ def clean_story_dict(story: Dict[str, Any]) -> Dict[str, Any]:
     fix_versions_clean = clean_string_list(story.get("fixVersions") or [])
 
     issuelinks_clean = clean_issuelinks(story.get("issuelinks") or [])
-    requirement_status_clean = clean_requirement_status(story.get("requirement_status") or [])
+    requirement_status_clean = clean_requirement_status(
+        story.get("requirement_status") or []
+    )
 
     return {
         "id": clean_scalar_text(story.get("id", "")),
-
         # on garde brut + nettoyé
         "summary_raw": summary_raw,
         "summary": summary_clean,
         "title": summary_clean,  # alias pratique si le reste du pipeline utilise title
-
         "description_raw": desc_raw,
         "description_clean": desc_clean,
-
         "acceptance_criteria_raw": ac_raw,
         "acceptance_criteria_clean": ac_clean,
-
         "labels": labels_clean,
         "components": components_clean,
         "issuelinks": issuelinks_clean,
-
         "priority": clean_scalar_text(story.get("priority") or ""),
         "status": clean_scalar_text(story.get("status") or ""),
         "fixVersions": fix_versions_clean,
@@ -600,6 +610,7 @@ def clean_story_dict(story: Dict[str, Any]) -> Dict[str, Any]:
 # ══════════════════════════════════════════════════════════════
 #  10. CONTEXTE LIENS / STORY POUR LE LLM
 # ══════════════════════════════════════════════════════════════
+
 
 def build_story_context_for_llm(story: Dict[str, Any]) -> str:
     """
@@ -635,6 +646,7 @@ def build_story_context_for_llm(story: Dict[str, Any]) -> str:
 #  11. UTILITAIRES JIRA
 # ══════════════════════════════════════════════════════════════
 
+
 def flatten_issuelinks(raw_links: list) -> List[Dict[str, str]]:
     """Transforme les issuelinks Jira (très imbriqués) en liste plate."""
     out: List[Dict[str, str]] = []
@@ -643,19 +655,24 @@ def flatten_issuelinks(raw_links: list) -> List[Dict[str, str]]:
         for direction in ("inwardIssue", "outwardIssue"):
             target = link.get(direction)
             if target:
-                out.append({
-                    "type": link_type,
-                    "direction": direction.replace("Issue", ""),
-                    "key": target.get("key", ""),
-                    "summary": (target.get("fields") or {}).get("summary", ""),
-                    "status": ((target.get("fields") or {}).get("status") or {}).get("name", ""),
-                })
+                out.append(
+                    {
+                        "type": link_type,
+                        "direction": direction.replace("Issue", ""),
+                        "key": target.get("key", ""),
+                        "summary": (target.get("fields") or {}).get("summary", ""),
+                        "status": (
+                            (target.get("fields") or {}).get("status") or {}
+                        ).get("name", ""),
+                    }
+                )
     return out
 
 
 # ══════════════════════════════════════════════════════════════
 #  12. ENRICHISSEMENT POUR LE LLM
 # ══════════════════════════════════════════════════════════════
+
 
 def enrich_story_for_llm(story: Dict[str, Any]) -> Dict[str, Any]:
     """
@@ -671,16 +688,12 @@ def enrich_story_for_llm(story: Dict[str, Any]) -> Dict[str, Any]:
 
     # 1) Nettoyage / normalisation du résumé
     summary_clean = clean_text(
-        story.get("summary")
-        or story.get("title")
-        or story.get("summary_raw")
-        or ""
+        story.get("summary") or story.get("title") or story.get("summary_raw") or ""
     )
 
     # 2) Nettoyage / normalisation de la description
-    description_clean = (
-        story.get("description_clean")
-        or clean_text(story.get("description_raw") or story.get("description") or "")
+    description_clean = story.get("description_clean") or clean_text(
+        story.get("description_raw") or story.get("description") or ""
     )
 
     labels = story.get("labels") or []
@@ -708,9 +721,7 @@ def enrich_story_for_llm(story: Dict[str, Any]) -> Dict[str, Any]:
         + linked_summaries_clean
         + linked_keys_clean
     )
-    reference_text = "\n".join(
-        [part for part in reference_text_parts if part]
-    ).strip()
+    reference_text = "\n".join([part for part in reference_text_parts if part]).strip()
 
     # 6) Extraction des références + flags
     references = extract_references(reference_text)
@@ -723,7 +734,7 @@ def enrich_story_for_llm(story: Dict[str, Any]) -> Dict[str, Any]:
     enriched = {
         **story,
         "summary": summary_clean,
-        "title": summary_clean,   # alias pratique
+        "title": summary_clean,  # alias pratique
         "description_clean": description_clean,
         "description_llm": description_llm,
         "linked_summaries_clean": linked_summaries_clean,

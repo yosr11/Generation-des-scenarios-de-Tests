@@ -7,10 +7,10 @@ from fastapi import APIRouter, HTTPException
 
 from app.models.agent5_report import Agent5ReportResponse, Agent5ReportRequest
 from app.repositories.analysis_repository import (
-     get_latest_analysis_as_pydantic as fetch_analysis_by_story_id,
+    get_latest_analysis_as_pydantic as fetch_analysis_by_story_id,
 )
 from app.repositories.manual_tests_repository import (
-     get_latest_manual_tests_as_pydantic as fetch_generation_by_story_id,
+    get_latest_manual_tests_as_pydantic as fetch_generation_by_story_id,
 )
 from app.repositories.validation_repository import (
     fetch_validation_by_story_id,
@@ -36,15 +36,21 @@ def _fetch_all_agent_data(story_id: str):
     """Charge les résultats des 3 agents depuis la base. Lève HTTPException si manquant."""
     analysis = fetch_analysis_by_story_id(story_id)
     if not analysis:
-        raise HTTPException(status_code=404, detail=f"Analyse (Agent 1) non trouvée pour {story_id}")
+        raise HTTPException(
+            status_code=404, detail=f"Analyse (Agent 1) non trouvée pour {story_id}"
+        )
 
     generation = fetch_generation_by_story_id(story_id)
     if not generation:
-        raise HTTPException(status_code=404, detail=f"Tests (Agent 2) non trouvés pour {story_id}")
+        raise HTTPException(
+            status_code=404, detail=f"Tests (Agent 2) non trouvés pour {story_id}"
+        )
 
     validation = fetch_validation_by_story_id(story_id)
     if not validation:
-        raise HTTPException(status_code=404, detail=f"Validation (Agent 3) non trouvée pour {story_id}")
+        raise HTTPException(
+            status_code=404, detail=f"Validation (Agent 3) non trouvée pour {story_id}"
+        )
 
     return analysis, generation, validation
 
@@ -59,10 +65,12 @@ def generate_story_report(story_id: str, body: Agent5ReportRequest = None):
     start_time = time.time()
 
     # Defaults si pas de body
-    output_format = (body.output_format if body else "json")
+    output_format = body.output_format if body else "json"
 
     try:
-        logger.info(f"[Agent5] Generating report for {story_id} (format={output_format})")
+        logger.info(
+            f"[Agent5] Generating report for {story_id} (format={output_format})"
+        )
 
         analysis, generation, validation = _fetch_all_agent_data(story_id)
 
@@ -185,7 +193,9 @@ def generate_batch_reports(story_ids: list[str]):
             validation = fetch_validation_by_story_id(story_id)
 
             if not all([analysis, generation, validation]):
-                results["errors"][story_id] = "Data missing (analysis/generation/validation)"
+                results["errors"][
+                    story_id
+                ] = "Data missing (analysis/generation/validation)"
                 results["failed"] += 1
                 continue
 
@@ -195,12 +205,14 @@ def generate_batch_reports(story_ids: list[str]):
                 validation_result=validation,
             )
 
-            results["reports"].append({
-                "story_id": story_id,
-                "status": report.executive_summary.overall_status,
-                "coverage": f"{report.coverage_metrics.coverage_rate:.1f}%",
-                "validation": report.quality_assurance.validation_status,
-            })
+            results["reports"].append(
+                {
+                    "story_id": story_id,
+                    "status": report.executive_summary.overall_status,
+                    "coverage": f"{report.coverage_metrics.coverage_rate:.1f}%",
+                    "validation": report.quality_assurance.validation_status,
+                }
+            )
             results["succeeded"] += 1
 
         except Exception as e:

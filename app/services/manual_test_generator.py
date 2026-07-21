@@ -1,9 +1,7 @@
 import json
 import logging
 from typing import Dict, Any, List, Optional
-from urllib import response
 
-logger = logging.getLogger(__name__)
 
 from app.prompts.scenario_generation_prompt import (
     build_manual_test_generation_system_prompt,
@@ -29,10 +27,17 @@ from app.services.manual_test_validator import (
 )
 from app.services.token_tracker import record_from_response
 from app.utils.json_utils import extract_json_from_llm_response
-from app.utils.test_steps_utils import normalize_test_etapes_and_steps, normalize_test_display_name
+from app.utils.test_steps_utils import (
+    normalize_test_etapes_and_steps,
+    normalize_test_display_name,
+)
+
+logger = logging.getLogger(__name__)
 
 
-def _attach_golden_rule_warnings(result: ManualTestGenerationResult) -> ManualTestGenerationResult:
+def _attach_golden_rule_warnings(
+    result: ManualTestGenerationResult,
+) -> ManualTestGenerationResult:
     """Ajoute les avertissements QA sans bloquer la génération."""
     warnings = collect_golden_rule_warnings(result)
     if not warnings:
@@ -47,11 +52,13 @@ def _attach_golden_rule_warnings(result: ManualTestGenerationResult) -> ManualTe
     if strategy != RecommendedTestStrategy.NEEDS_REFINEMENT:
         strategy = RecommendedTestStrategy.NEEDS_REFINEMENT
 
-    return result.model_copy(update={
-        "golden_rule_warnings": warnings,
-        "message": message,
-        "recommended_test_strategy": strategy,
-    })
+    return result.model_copy(
+        update={
+            "golden_rule_warnings": warnings,
+            "message": message,
+            "recommended_test_strategy": strategy,
+        }
+    )
 
 
 class ManualTestGeneratorService:
@@ -69,7 +76,13 @@ class ManualTestGeneratorService:
         "qwen/qwen3-32b": 6000,
     }
 
-    def _request_content(self, system_prompt: str, user_prompt: str, max_tokens: int = 4096, _retry: bool = False) -> str:
+    def _request_content(
+        self,
+        system_prompt: str,
+        user_prompt: str,
+        max_tokens: int = 4096,
+        _retry: bool = False,
+    ) -> str:
         # Nova models can produce very verbose outputs (tests lists). Allow larger outputs.
         try:
             if "nova" in (self.model_name or "").lower():
@@ -117,19 +130,33 @@ class ManualTestGeneratorService:
             content = ""
             try:
                 if hasattr(response, "choices"):
-                    content = response.choices[0].message.content if response.choices else ""
+                    content = (
+                        response.choices[0].message.content if response.choices else ""
+                    )
                 elif isinstance(response, dict):
                     # compat dict-style
-                    content = response.get("output", {}).get("message", {}).get("content", "")
+                    content = (
+                        response.get("output", {}).get("message", {}).get("content", "")
+                    )
                     if isinstance(content, list) and len(content) > 0:
                         # Bedrock-like: content is a list of dicts with 'text'
                         first = content[0]
-                        content = first.get("text", "") if isinstance(first, dict) else str(first)
+                        content = (
+                            first.get("text", "")
+                            if isinstance(first, dict)
+                            else str(first)
+                        )
                 else:
                     # Fallback generic stringification
-                    content = getattr(response, "text", None) or getattr(response, "content", None) or ""
+                    content = (
+                        getattr(response, "text", None)
+                        or getattr(response, "content", None)
+                        or ""
+                    )
             except Exception as e:
-                logger.exception("Error while extracting content from LLM response: %s", e)
+                logger.exception(
+                    "Error while extracting content from LLM response: %s", e
+                )
                 content = ""
 
             return content or ""
@@ -151,19 +178,25 @@ class ManualTestGeneratorService:
             logger.warning(
                 f"[Agent2] json_validate_failed, retrying with max_tokens={retry_max} (was {max_tokens})"
             )
-            return self._request_content(system_prompt, user_prompt, max_tokens=retry_max, _retry=True)
+            return self._request_content(
+                system_prompt, user_prompt, max_tokens=retry_max, _retry=True
+            )
 
-    
-    def _create_completion(self, system_prompt: str, user_prompt: str) -> Dict[str, Any]:
+    def _create_completion(
+        self, system_prompt: str, user_prompt: str
+    ) -> Dict[str, Any]:
         content = self._request_content(system_prompt, user_prompt)
-        logger.warning("[Agent2-DEBUG] content brut (500 chars): %r", content[:500] if content else "<VIDE>")
+        logger.warning(
+            "[Agent2-DEBUG] content brut (500 chars): %r",
+            content[:500] if content else "<VIDE>",
+        )
 
         # Extraction robuste : trouver le premier { et le dernier }
         content_clean = content.strip()
         start = content_clean.find("{")
         end = content_clean.rfind("}")
         if start != -1 and end != -1 and end > start:
-            content_clean = content_clean[start:end + 1]
+            content_clean = content_clean[start : end + 1]
 
         logger.warning("[Agent2-DEBUG] content après strip: %r", content_clean[:200])
 
@@ -172,19 +205,25 @@ class ManualTestGeneratorService:
         except ValueError as exc:
             logger.warning("[Agent2-DEBUG] extract_json failed: %s", exc)
             light_system = build_manual_test_repair_system_prompt()
-            reformat_prompt = build_manual_test_json_reformat_prompt(content_clean, str(exc))
+            reformat_prompt = build_manual_test_json_reformat_prompt(
+                content_clean, str(exc)
+            )
             repaired_content = self._request_content(light_system, reformat_prompt)
             repaired_clean = repaired_content.strip()
             start2 = repaired_clean.find("{")
             end2 = repaired_clean.rfind("}")
             if start2 != -1 and end2 != -1 and end2 > start2:
-                repaired_clean = repaired_clean[start2:end2 + 1]
+                repaired_clean = repaired_clean[start2 : end2 + 1]
             return extract_json_from_llm_response(repaired_clean)
 
     @staticmethod
     def _ensure_story_ids(data, story_id: str) -> Dict[str, Any]:
         if isinstance(data, list):
-            data = {"story_id": story_id, "tests": data, "message": "Tests générés automatiquement"}
+            data = {
+                "story_id": story_id,
+                "tests": data,
+                "message": "Tests générés automatiquement",
+            }
         if not data.get("story_id"):
             data["story_id"] = story_id
         for test in data.get("tests", []):
@@ -196,16 +235,30 @@ class ManualTestGeneratorService:
     def _normalize_enums(data: Dict[str, Any]) -> Dict[str, Any]:
         """Normalise les valeurs d'enum que le LLM peut renvoyer en français."""
         strategy_map = {
-            "manuel": "manual", "manuelle": "manual",
-            "automatisé": "automated", "automatisée": "automated", "automatise": "automated",
-            "à affiner": "needs_refinement", "a affiner": "needs_refinement",
-            "functional testing": "manual", "functional": "manual", "test manuel": "manual",
+            "manuel": "manual",
+            "manuelle": "manual",
+            "automatisé": "automated",
+            "automatisée": "automated",
+            "automatise": "automated",
+            "à affiner": "needs_refinement",
+            "a affiner": "needs_refinement",
+            "functional testing": "manual",
+            "functional": "manual",
+            "test manuel": "manual",
         }
         status_map = {
-            "généré": "generated", "genere": "generated", "complété": "generated", "complete": "generated",
-            "completed": "generated", "done": "generated", "success": "generated",
-            "non généré": "not_generated", "non genere": "not_generated", "non_genere": "not_generated",
-            "failed": "not_generated", "error": "not_generated",
+            "généré": "generated",
+            "genere": "generated",
+            "complété": "generated",
+            "complete": "generated",
+            "completed": "generated",
+            "done": "generated",
+            "success": "generated",
+            "non généré": "not_generated",
+            "non genere": "not_generated",
+            "non_genere": "not_generated",
+            "failed": "not_generated",
+            "error": "not_generated",
         }
 
         if "message" not in data or not data["message"]:
@@ -221,13 +274,22 @@ class ManualTestGeneratorService:
         if raw_status in status_map:
             data["generation_status"] = status_map[raw_status]
         elif raw_status not in ("generated", "not_generated"):
-            data["generation_status"] = "generated" if data.get("tests") else "not_generated"
+            data["generation_status"] = (
+                "generated" if data.get("tests") else "not_generated"
+            )
 
         scenario_type_map = {
-            "validation": "NOM", "nominal": "NOM", "nom": "NOM",
-            "technique": "NOM", "technical": "NOM",
-            "alternatif": "ALT", "alternative": "ALT", "alt": "ALT",
-            "exception": "EXC", "erreur": "EXC", "exc": "EXC",
+            "validation": "NOM",
+            "nominal": "NOM",
+            "nom": "NOM",
+            "technique": "NOM",
+            "technical": "NOM",
+            "alternatif": "ALT",
+            "alternative": "ALT",
+            "alt": "ALT",
+            "exception": "EXC",
+            "erreur": "EXC",
+            "exc": "EXC",
         }
         for test in data.get("tests", []):
             raw_name = test.get("test_name") or ""
@@ -237,7 +299,9 @@ class ManualTestGeneratorService:
             # Normalize execution_context: dict → string
             ec = test.get("execution_context", "")
             if isinstance(ec, dict):
-                test["execution_context"] = ", ".join(f"{k}: {v}" for k, v in ec.items() if v)
+                test["execution_context"] = ", ".join(
+                    f"{k}: {v}" for k, v in ec.items() if v
+                )
             elif not isinstance(ec, str):
                 test["execution_context"] = str(ec) if ec else ""
 
@@ -250,7 +314,16 @@ class ManualTestGeneratorService:
             normalized_steps = []
             for step_idx, step in enumerate(test.get("steps", []), start=1):
                 if isinstance(step, str):
-                    normalized_steps.append({"action": step, "data": "", "actor": "", "expected_result": "", "index": step_idx, "revision_po": ""})
+                    normalized_steps.append(
+                        {
+                            "action": step,
+                            "data": "",
+                            "actor": "",
+                            "expected_result": "",
+                            "index": step_idx,
+                            "revision_po": "",
+                        }
+                    )
                 elif isinstance(step, dict):
                     normalized_steps.append(step)
             test["steps"] = normalized_steps
@@ -263,15 +336,29 @@ class ManualTestGeneratorService:
                 data_value = step.get("data", "")
                 actor_value = step.get("actor", "")
                 if not isinstance(data_value, str):
-                    data_value = json.dumps(data_value, ensure_ascii=False) if data_value else ""
+                    data_value = (
+                        json.dumps(data_value, ensure_ascii=False) if data_value else ""
+                    )
                 if not isinstance(actor_value, str):
-                    actor_value = json.dumps(actor_value, ensure_ascii=False) if actor_value else ""
+                    actor_value = (
+                        json.dumps(actor_value, ensure_ascii=False)
+                        if actor_value
+                        else ""
+                    )
                 step["data"] = data_value
                 step["actor"] = actor_value
                 if not isinstance(step.get("expected_result"), str):
-                    step["expected_result"] = json.dumps(step.get("expected_result", ""), ensure_ascii=False) if step.get("expected_result") else ""
+                    step["expected_result"] = (
+                        json.dumps(step.get("expected_result", ""), ensure_ascii=False)
+                        if step.get("expected_result")
+                        else ""
+                    )
                 if not isinstance(step.get("action"), str):
-                    step["action"] = json.dumps(step.get("action", ""), ensure_ascii=False) if step.get("action") else ""
+                    step["action"] = (
+                        json.dumps(step.get("action", ""), ensure_ascii=False)
+                        if step.get("action")
+                        else ""
+                    )
                 if "revision_po" not in step:
                     step["revision_po"] = ""
 
@@ -321,23 +408,42 @@ class ManualTestGeneratorService:
         story_id = story.get("id", "")
 
         story_type = (analysis.get("story_type") or "").strip().lower()
-        prompt_builder = self.STORY_TYPE_PROMPTS.get(story_type, build_manual_test_generation_system_prompt)
+        prompt_builder = self.STORY_TYPE_PROMPTS.get(
+            story_type, build_manual_test_generation_system_prompt
+        )
         system_prompt = prompt_builder()
 
         user_prompt = build_manual_test_generation_user_prompt(
-            story=story, analysis=analysis, rag_context=rag_context,
+            story=story,
+            analysis=analysis,
+            rag_context=rag_context,
             legacy_examples=legacy_examples,
         )
 
         try:
-            data = self._normalize_enums(self._ensure_story_ids(self._create_completion(system_prompt, user_prompt), story_id))
+            data = self._normalize_enums(
+                self._ensure_story_ids(
+                    self._create_completion(system_prompt, user_prompt), story_id
+                )
+            )
         except Exception as e:
-            if "413" in str(e) or "too large" in str(e).lower() or "rate_limit" in str(e).lower() or "json_validate_failed" in str(e):
+            if (
+                "413" in str(e)
+                or "too large" in str(e).lower()
+                or "rate_limit" in str(e).lower()
+                or "json_validate_failed" in str(e)
+            ):
                 user_prompt = build_manual_test_generation_user_prompt(
-                    story=story, analysis=analysis, rag_context=None,
+                    story=story,
+                    analysis=analysis,
+                    rag_context=None,
                     legacy_examples=None,
                 )
-                data = self._normalize_enums(self._ensure_story_ids(self._create_completion(system_prompt, user_prompt), story_id))
+                data = self._normalize_enums(
+                    self._ensure_story_ids(
+                        self._create_completion(system_prompt, user_prompt), story_id
+                    )
+                )
             else:
                 raise
 
@@ -348,19 +454,25 @@ class ManualTestGeneratorService:
             reformat_prompt = build_manual_test_json_reformat_prompt(
                 json.dumps(data, ensure_ascii=False), str(exc)
             )
-            repaired_data = self._normalize_enums(self._ensure_story_ids(
-                self._create_completion(repair_system, reformat_prompt), story_id
-            ))
+            repaired_data = self._normalize_enums(
+                self._ensure_story_ids(
+                    self._create_completion(repair_system, reformat_prompt), story_id
+                )
+            )
             result = ManualTestGenerationResult(**repaired_data)
 
         validation_errors = validate_manual_generation_result(result)
         if validation_errors:
             repair_system = build_manual_test_repair_system_prompt()
-            repair_prompt = build_manual_test_repair_user_prompt(data, validation_errors)
-            repaired_data = self._normalize_enums(self._ensure_story_ids(
-                self._create_completion(repair_system, repair_prompt),
-                story_id,
-            ))
+            repair_prompt = build_manual_test_repair_user_prompt(
+                data, validation_errors
+            )
+            repaired_data = self._normalize_enums(
+                self._ensure_story_ids(
+                    self._create_completion(repair_system, repair_prompt),
+                    story_id,
+                )
+            )
             try:
                 repaired_result = ManualTestGenerationResult(**repaired_data)
             except ValidationError:
@@ -374,11 +486,16 @@ class ManualTestGeneratorService:
                 elif repaired_result.tests:
                     result = repaired_result
 
-        if result.tests and result.generation_status == ManualGenerationStatus.NOT_GENERATED:
-            result = result.model_copy(update={
-                "generation_status": ManualGenerationStatus.GENERATED,
-                "message": result.message or "Tests générés automatiquement",
-            })
+        if (
+            result.tests
+            and result.generation_status == ManualGenerationStatus.NOT_GENERATED
+        ):
+            result = result.model_copy(
+                update={
+                    "generation_status": ManualGenerationStatus.GENERATED,
+                    "message": result.message or "Tests générés automatiquement",
+                }
+            )
 
         if result.tests:
             return _attach_golden_rule_warnings(result)
@@ -410,7 +527,9 @@ class ManualTestGeneratorService:
         """
         story_id = story.get("id", "")
         story_type = (analysis.get("story_type") or "").strip().lower()
-        prompt_builder = self.STORY_TYPE_PROMPTS.get(story_type, build_manual_test_generation_system_prompt)
+        prompt_builder = self.STORY_TYPE_PROMPTS.get(
+            story_type, build_manual_test_generation_system_prompt
+        )
         system_prompt = prompt_builder()
 
         user_prompt = build_manual_test_gap_coverage_user_prompt(
@@ -427,10 +546,16 @@ class ManualTestGeneratorService:
 
         try:
             data = self._normalize_enums(
-                self._ensure_story_ids(self._create_completion(system_prompt, user_prompt), story_id)
+                self._ensure_story_ids(
+                    self._create_completion(system_prompt, user_prompt), story_id
+                )
             )
         except Exception as e:
-            if "413" in str(e) or "too large" in str(e).lower() or "rate_limit" in str(e).lower():
+            if (
+                "413" in str(e)
+                or "too large" in str(e).lower()
+                or "rate_limit" in str(e).lower()
+            ):
                 user_prompt = build_manual_test_gap_coverage_user_prompt(
                     story=story,
                     analysis=analysis,
@@ -440,7 +565,9 @@ class ManualTestGeneratorService:
                     legacy_examples=None,
                 )
                 data = self._normalize_enums(
-                    self._ensure_story_ids(self._create_completion(system_prompt, user_prompt), story_id)
+                    self._ensure_story_ids(
+                        self._create_completion(system_prompt, user_prompt), story_id
+                    )
                 )
             else:
                 raise
@@ -453,16 +580,22 @@ class ManualTestGeneratorService:
                 json.dumps(data, ensure_ascii=False), str(exc)
             )
             repaired_data = self._normalize_enums(
-                self._ensure_story_ids(self._create_completion(repair_system, reformat_prompt), story_id)
+                self._ensure_story_ids(
+                    self._create_completion(repair_system, reformat_prompt), story_id
+                )
             )
             result = ManualTestGenerationResult(**repaired_data)
 
         validation_errors = validate_manual_generation_result(result)
         if validation_errors:
             repair_system = build_manual_test_repair_system_prompt()
-            repair_prompt = build_manual_test_repair_user_prompt(data, validation_errors)
+            repair_prompt = build_manual_test_repair_user_prompt(
+                data, validation_errors
+            )
             repaired_data = self._normalize_enums(
-                self._ensure_story_ids(self._create_completion(repair_system, repair_prompt), story_id)
+                self._ensure_story_ids(
+                    self._create_completion(repair_system, repair_prompt), story_id
+                )
             )
             try:
                 repaired_result = ManualTestGenerationResult(**repaired_data)
@@ -477,11 +610,16 @@ class ManualTestGeneratorService:
                 elif repaired_result.tests:
                     result = repaired_result
 
-        if result.tests and result.generation_status == ManualGenerationStatus.NOT_GENERATED:
-            result = result.model_copy(update={
-                "generation_status": ManualGenerationStatus.GENERATED,
-                "message": result.message or "Tests générés automatiquement",
-            })
+        if (
+            result.tests
+            and result.generation_status == ManualGenerationStatus.NOT_GENERATED
+        ):
+            result = result.model_copy(
+                update={
+                    "generation_status": ManualGenerationStatus.GENERATED,
+                    "message": result.message or "Tests générés automatiquement",
+                }
+            )
 
         if result.tests:
             return _attach_golden_rule_warnings(result)

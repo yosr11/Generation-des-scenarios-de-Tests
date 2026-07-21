@@ -42,7 +42,12 @@ def upgrade() -> None:
         sa.Column("epic_summary", sa.Text(), nullable=True),
         sa.Column("epic_description", sa.Text(), nullable=True),
         sa.Column("jira_updated", sa.String(50), nullable=True),
-        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.text("now()"), nullable=True),
+        sa.Column(
+            "created_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.text("now()"),
+            nullable=True,
+        ),
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_index("ix_stories_epic_key", "stories", ["epic_key"], unique=False)
@@ -67,10 +72,17 @@ def upgrade() -> None:
         sa.Column("analysis_reason", JSONB(), nullable=True),
         sa.Column("user_flows", JSONB(), nullable=True),
         sa.Column("resolved_from_references", JSONB(), nullable=True),
-        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.text("now()"), nullable=True),
+        sa.Column(
+            "created_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.text("now()"),
+            nullable=True,
+        ),
         sa.PrimaryKeyConstraint("id"),
     )
-    op.create_index("ix_story_analysis_story_id", "story_analysis", ["story_id"], unique=False)
+    op.create_index(
+        "ix_story_analysis_story_id", "story_analysis", ["story_id"], unique=False
+    )
 
     # ── story_manual_tests ───────────────────────────────────────────────────
     op.create_table(
@@ -79,10 +91,20 @@ def upgrade() -> None:
         sa.Column("story_id", sa.String(100), nullable=False),
         sa.Column("tests_json", JSONB(), nullable=False),
         sa.Column("generation_model", sa.String(100), nullable=True),
-        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.text("now()"), nullable=True),
+        sa.Column(
+            "created_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.text("now()"),
+            nullable=True,
+        ),
         sa.PrimaryKeyConstraint("id"),
     )
-    op.create_index("ix_story_manual_tests_story_id", "story_manual_tests", ["story_id"], unique=False)
+    op.create_index(
+        "ix_story_manual_tests_story_id",
+        "story_manual_tests",
+        ["story_id"],
+        unique=False,
+    )
 
     # ── agent3_validations ───────────────────────────────────────────────────
     op.create_table(
@@ -97,10 +119,20 @@ def upgrade() -> None:
         sa.Column("llm_quality_feedback", JSONB(), nullable=True),
         sa.Column("llm_quality_model_alias", sa.String(100), nullable=True),
         sa.Column("correction_instructions", JSONB(), nullable=True),
-        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.text("now()"), nullable=True),
+        sa.Column(
+            "created_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.text("now()"),
+            nullable=True,
+        ),
         sa.PrimaryKeyConstraint("id"),
     )
-    op.create_index("ix_agent3_validations_story_id", "agent3_validations", ["story_id"], unique=False)
+    op.create_index(
+        "ix_agent3_validations_story_id",
+        "agent3_validations",
+        ["story_id"],
+        unique=False,
+    )
 
     # ── automation_classifications ───────────────────────────────────────────
     op.create_table(
@@ -111,13 +143,25 @@ def upgrade() -> None:
         sa.Column("classification", sa.String(50), nullable=False),
         sa.Column("confidence", sa.String(50), nullable=False),
         sa.Column("raison", sa.Text(), nullable=True),
-        sa.Column("po_feedback", sa.String(50), nullable=False, server_default="pending"),
+        sa.Column(
+            "po_feedback", sa.String(50), nullable=False, server_default="pending"
+        ),
         sa.Column("model", sa.String(100), nullable=True),
         sa.Column("error", sa.Text(), nullable=True),
-        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.text("now()"), nullable=True),
+        sa.Column(
+            "created_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.text("now()"),
+            nullable=True,
+        ),
         sa.PrimaryKeyConstraint("id"),
     )
-    op.create_index("ix_automation_classifications_story_id", "automation_classifications", ["story_id"], unique=False)
+    op.create_index(
+        "ix_automation_classifications_story_id",
+        "automation_classifications",
+        ["story_id"],
+        unique=False,
+    )
 
     # ── story_business_models ────────────────────────────────────────────────
     op.create_table(
@@ -128,10 +172,20 @@ def upgrade() -> None:
         sa.Column("business_goals", JSONB(), nullable=True),
         sa.Column("business_workflows", JSONB(), nullable=True),
         sa.Column("modeling_notes", sa.Text(), nullable=True),
-        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.text("now()"), nullable=True),
+        sa.Column(
+            "created_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.text("now()"),
+            nullable=True,
+        ),
         sa.PrimaryKeyConstraint("id"),
     )
-    op.create_index("ix_story_business_models_story_id", "story_business_models", ["story_id"], unique=False)
+    op.create_index(
+        "ix_story_business_models_story_id",
+        "story_business_models",
+        ["story_id"],
+        unique=False,
+    )
 
     # ── generated_scenarios ──────────────────────────────────────────────────
     op.create_table(
@@ -146,21 +200,35 @@ def upgrade() -> None:
         sa.Column("expected_result", sa.Text(), nullable=True),
         sa.Column("source_ustype", sa.String(100), nullable=True),
         sa.Column("model", sa.String(100), nullable=True),
-        sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.text("now()"), nullable=True),
+        sa.Column(
+            "created_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.text("now()"),
+            nullable=True,
+        ),
         sa.PrimaryKeyConstraint("id"),
     )
-    op.create_index("ix_generated_scenarios_story_id", "generated_scenarios", ["story_id"], unique=False)
+    op.create_index(
+        "ix_generated_scenarios_story_id",
+        "generated_scenarios",
+        ["story_id"],
+        unique=False,
+    )
 
 
 def downgrade() -> None:
     op.drop_index("ix_generated_scenarios_story_id", table_name="generated_scenarios")
     op.drop_table("generated_scenarios")
 
-    op.drop_index("ix_story_business_models_story_id", table_name="story_business_models")
+    op.drop_index(
+        "ix_story_business_models_story_id", table_name="story_business_models"
+    )
     op.drop_table("story_business_models")
 
-
-    op.drop_index("ix_automation_classifications_story_id", table_name="automation_classifications")
+    op.drop_index(
+        "ix_automation_classifications_story_id",
+        table_name="automation_classifications",
+    )
     op.drop_table("automation_classifications")
 
     op.drop_index("ix_agent3_validations_story_id", table_name="agent3_validations")

@@ -3,9 +3,11 @@ import argparse
 import json
 from sklearn.metrics import confusion_matrix, classification_report, f1_score
 
+
 def load_json(path):
     with open(path, encoding="utf-8-sig") as f:
         return json.load(f)
+
 
 def print_confusion_and_report(y_true, y_pred, labels, title):
     print(f"\n==== {title} ====")
@@ -14,11 +16,21 @@ def print_confusion_and_report(y_true, y_pred, labels, title):
     print("\nClassification report :")
     print(classification_report(y_true, y_pred, labels=labels, zero_division=0))
 
+
 def main():
-    parser = argparse.ArgumentParser(description="Évaluation Agent 1 (classification story_type)")
-    parser.add_argument("--gold", default="annotations.json", help="Chemin du fichier d'annotations (gold)")
-    parser.add_argument("--pred", default="results/agent1_classification_output.json",
-                        help="Chemin du fichier de prédictions de l'agent 1")
+    parser = argparse.ArgumentParser(
+        description="Évaluation Agent 1 (classification story_type)"
+    )
+    parser.add_argument(
+        "--gold",
+        default="annotations.json",
+        help="Chemin du fichier d'annotations (gold)",
+    )
+    parser.add_argument(
+        "--pred",
+        default="results/agent1_classification_output.json",
+        help="Chemin du fichier de prédictions de l'agent 1",
+    )
     args = parser.parse_args()
 
     # --- Charger gold ---
@@ -43,8 +55,8 @@ def main():
 
     # --- Intersection ---
     common_ids = sorted(set(gold) & set(pred))
-    only_gold  = set(gold) - set(pred)
-    only_pred  = set(pred) - set(gold)
+    only_gold = set(gold) - set(pred)
+    only_pred = set(pred) - set(gold)
 
     print(f"Stories dans gold           : {len(gold)}")
     print(f"Stories dans pred           : {len(pred)}")
@@ -66,9 +78,7 @@ def main():
 
     # --- Détail des erreurs ---
     errors = [
-        (sid, gold[sid], pred[sid])
-        for sid in common_ids
-        if gold[sid] != pred[sid]
+        (sid, gold[sid], pred[sid]) for sid in common_ids if gold[sid] != pred[sid]
     ]
     if errors:
         print(f"\n==== Erreurs de classification ({len(errors)}) ====")
@@ -79,14 +89,17 @@ def main():
 
     # --- Macro F1 & Weighted F1 ---
     macro_f1 = f1_score(y_true, y_pred, labels=labels, average="macro", zero_division=0)
-    weighted_f1 = f1_score(y_true, y_pred, labels=labels, average="weighted", zero_division=0)
-    print(f"\n==== Métriques globales ====")
+    weighted_f1 = f1_score(
+        y_true, y_pred, labels=labels, average="weighted", zero_division=0
+    )
+    print("\n==== Métriques globales ====")
     print(f"Macro F1    : {macro_f1:.4f}")
     print(f"Weighted F1 : {weighted_f1:.4f}")
 
     # --- Accuracy simple ---
     correct = sum(1 for sid in common_ids if gold[sid] == pred[sid])
     print(f"Accuracy    : {correct}/{len(common_ids)} = {correct/len(common_ids):.2%}")
+
 
 if __name__ == "__main__":
     main()

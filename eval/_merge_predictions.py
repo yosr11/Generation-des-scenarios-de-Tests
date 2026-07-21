@@ -1,4 +1,5 @@
 """Merge des entrées d'analyse complétées manuellement dans agent1 prediction.json."""
+
 import json
 from pathlib import Path
 
@@ -17,26 +18,31 @@ UPDATES = [
             "acceptance_criteria_clean": "",
             "labels": ["STREAM_COMMUN"],
             "priority": "P1-High",
-            "status": "To Be Detailed"
+            "status": "To Be Detailed",
         },
         "analysis": {
             "story_id": "NUXEPM-2340",
             "story_title": "4YOU 5415 - NB JRS DEBUT 2026 Encore Associé à 2025 au RRH",
             "story_type": "invalid_or_too_weak",
-            "actors": [], "actions": [], "business_rules": [], "technical_scope": [],
-            "testable_points": [], "user_flows": [],
-            "acceptance_criteria_explicit": [], "acceptance_criteria_inferred": [],
+            "actors": [],
+            "actions": [],
+            "business_rules": [],
+            "technical_scope": [],
+            "testable_points": [],
+            "user_flows": [],
+            "acceptance_criteria_explicit": [],
+            "acceptance_criteria_inferred": [],
             "clarification_questions": [
                 "Pouvez-vous compléter la description de la story ?",
-                "Pouvez-vous ajouter des critères d’acceptation clairs ?"
+                "Pouvez-vous ajouter des critères d’acceptation clairs ?",
             ],
             "analysis_reason": [
                 "La story ne contient pas de description exploitable.",
                 "Aucun comportement testable ne peut être identifié.",
-                "Action requise : contacter le Product Owner pour enrichir la story."
+                "Action requise : contacter le Product Owner pour enrichir la story.",
             ],
-            "resolved_from_references": []
-        }
+            "resolved_from_references": [],
+        },
     },
     {
         "model_alias": "llama4",
@@ -50,23 +56,27 @@ UPDATES = [
             "acceptance_criteria_clean": "",
             "labels": ["STANDBY_2024", "STREAM_APPLICATIF"],
             "priority": "P2-Medium",
-            "status": "To Be Detailed"
+            "status": "To Be Detailed",
         },
         "analysis": {
             "story_id": "NUXEPM-2319",
             "story_title": "RH de proximité - Tester unitairement les développements sur l'environnement QA80 de perf",
             "story_type": "technical",
-            "actors": [], "actions": [], "business_rules": [],
+            "actors": [],
+            "actions": [],
+            "business_rules": [],
             "technical_scope": ["environnement QA80", "perf"],
-            "testable_points": [], "user_flows": [],
-            "acceptance_criteria_explicit": [], "acceptance_criteria_inferred": [],
+            "testable_points": [],
+            "user_flows": [],
+            "acceptance_criteria_explicit": [],
+            "acceptance_criteria_inferred": [],
             "clarification_questions": [],
             "analysis_reason": [
                 "La story concerne des tests unitaires sur un environnement spécifique.",
-                "Pas de changement fonctionnel décrit."
+                "Pas de changement fonctionnel décrit.",
             ],
-            "resolved_from_references": []
-        }
+            "resolved_from_references": [],
+        },
     },
     {
         "model_alias": "llama4",
@@ -80,26 +90,31 @@ UPDATES = [
             "acceptance_criteria_clean": "",
             "labels": ["STREAM_CORE"],
             "priority": "P2-Medium",
-            "status": "To Be Detailed"
+            "status": "To Be Detailed",
         },
         "analysis": {
             "story_id": "NUXEPM-2313",
             "story_title": "Traitement des retours de bench 9.0 (2026)",
             "story_type": "invalid_or_too_weak",
-            "actors": [], "actions": [], "business_rules": [], "technical_scope": [],
-            "testable_points": [], "user_flows": [],
-            "acceptance_criteria_explicit": [], "acceptance_criteria_inferred": [],
+            "actors": [],
+            "actions": [],
+            "business_rules": [],
+            "technical_scope": [],
+            "testable_points": [],
+            "user_flows": [],
+            "acceptance_criteria_explicit": [],
+            "acceptance_criteria_inferred": [],
             "clarification_questions": [
                 "Pouvez-vous compléter la description de la story ?",
-                "Pouvez-vous ajouter des critères d’acceptation clairs ?"
+                "Pouvez-vous ajouter des critères d’acceptation clairs ?",
             ],
             "analysis_reason": [
                 "La story ne contient pas de description exploitable.",
                 "Aucun comportement testable ne peut être identifié.",
-                "Action requise : contacter le Product Owner pour enrichir la story."
+                "Action requise : contacter le Product Owner pour enrichir la story.",
             ],
-            "resolved_from_references": []
-        }
+            "resolved_from_references": [],
+        },
     },
     {
         "model_alias": "llama4",
@@ -108,12 +123,12 @@ UPDATES = [
         "epic": {"key": "NUXEPM-637", "summary": "Espace RRH de proximité"},
         "story": {
             "id": "NUXEPM-2305",
-            "summary": "ST18_RH de proximité : Fonction de recherche sur la nouvelle vue \"Par collaborateur \" de l'inbox CSP",
+            "summary": 'ST18_RH de proximité : Fonction de recherche sur la nouvelle vue "Par collaborateur " de l\'inbox CSP',
             "description_clean": "[En tant que] RRH de proximité\n[Je souhaite] pouvoir rechercher un collaborateur dans une vue Par collaborateur de mon inbox CSP\n[afin] d’accéder rapidement à l'information du collaborateur.\nCette capacité de recherche dans la Vue par collaborateur sera aussi affichée pour tout type de gestionnaire (Gestionnaire RH, Gestionnaire Paie, etc)\n[+ infos]\najouter une Fonction de recherche d’un collaborateur en particulier parmi ceux ayant des demandes à traiter dans la vue Par collaborateur\nreprésentation par un champ recherche avec loupe\nCette évolution avait été demandée dans le https://hra-jira.ptx.fr.sopra/browse/NUXEPM-1871 du RRH de proximité Lot2 (voir Illustration)",
             "acceptance_criteria_clean": "",
             "labels": ["PP2026", "STREAM_APPLICATIF"],
             "priority": "P1-High",
-            "status": "To Be Detailed"
+            "status": "To Be Detailed",
         },
         "analysis": {
             "story_id": "NUXEPM-2305",
@@ -122,7 +137,7 @@ UPDATES = [
             "actors": ["RRH de proximité", "Gestionnaire RH", "Gestionnaire Paie"],
             "actions": [
                 "rechercher un collaborateur dans la vue Par collaborateur",
-                "accéder rapidement à l'information du collaborateur"
+                "accéder rapidement à l'information du collaborateur",
             ],
             "business_rules": [],
             "technical_scope": [],
@@ -130,30 +145,30 @@ UPDATES = [
                 "Verifier que le champ de recherche avec loupe est affiché au-dessus de la liste des collaborateurs",
                 "Verifier que la recherche d'un collaborateur en particulier est possible parmi ceux ayant des demandes à traiter dans la vue Par collaborateur",
                 "Verifier que les résultats de la recherche sont affichés correctement pour les collaborateurs",
-                "Verifier que la fonctionnalité de recherche est également disponible pour les autres types de gestionnaires (Gestionnaire RH, Gestionnaire Paie, etc.)"
+                "Verifier que la fonctionnalité de recherche est également disponible pour les autres types de gestionnaires (Gestionnaire RH, Gestionnaire Paie, etc.)",
             ],
             "user_flows": [
                 "Le RRH de proximité se connecte à son inbox CSP",
                 "Il sélectionne la vue Par collaborateur",
                 "Il utilise le champ de recherche avec loupe pour rechercher un collaborateur",
-                "Il accède rapidement à l'information du collaborateur"
+                "Il accède rapidement à l'information du collaborateur",
             ],
             "acceptance_criteria_explicit": [
                 "La fonctionnalité de recherche est disponible pour les RRH de proximité",
                 "La fonctionnalité de recherche est également disponible pour les autres types de gestionnaires",
-                "Les résultats de la recherche sont classés correctement"
+                "Les résultats de la recherche sont classés correctement",
             ],
             "acceptance_criteria_inferred": [],
             "clarification_questions": [
                 "Quelles sont les critères de recherche possibles pour les collaborateurs ?",
-                "Comment les résultats de la recherche sont-ils classés et affichés ?"
+                "Comment les résultats de la recherche sont-ils classés et affichés ?",
             ],
             "analysis_reason": [
                 "La story décrit une fonctionnalité de recherche pour les RRH de proximité et les autres gestionnaires",
-                "La story mentionne des critères d'acceptation explicites pour la fonctionnalité"
+                "La story mentionne des critères d'acceptation explicites pour la fonctionnalité",
             ],
-            "resolved_from_references": []
-        }
+            "resolved_from_references": [],
+        },
     },
     {
         "model_alias": "llama4",
@@ -167,26 +182,31 @@ UPDATES = [
             "acceptance_criteria_clean": "",
             "labels": ["4YOU_9.1"],
             "priority": "P1-High",
-            "status": "To Be Detailed"
+            "status": "To Be Detailed",
         },
         "analysis": {
             "story_id": "NUXEPM-2298",
             "story_title": "PPBACKLOG-663 - 4YOU - nouvelle démarche - demander une position administrative - Assistance 5414 auprès des équipes Public",
             "story_type": "invalid_or_too_weak",
-            "actors": [], "actions": [], "business_rules": [], "technical_scope": [],
-            "testable_points": [], "user_flows": [],
-            "acceptance_criteria_explicit": [], "acceptance_criteria_inferred": [],
+            "actors": [],
+            "actions": [],
+            "business_rules": [],
+            "technical_scope": [],
+            "testable_points": [],
+            "user_flows": [],
+            "acceptance_criteria_explicit": [],
+            "acceptance_criteria_inferred": [],
             "clarification_questions": [
                 "Pouvez-vous compléter la description de la story ?",
-                "Pouvez-vous ajouter des critères d’acceptation clairs ?"
+                "Pouvez-vous ajouter des critères d’acceptation clairs ?",
             ],
             "analysis_reason": [
                 "La story ne contient pas de description exploitable.",
                 "Aucun comportement testable ne peut être identifié.",
-                "Action requise : contacter le Product Owner pour enrichir la story."
+                "Action requise : contacter le Product Owner pour enrichir la story.",
             ],
-            "resolved_from_references": []
-        }
+            "resolved_from_references": [],
+        },
     },
     {
         "model_alias": "llama4",
@@ -200,26 +220,31 @@ UPDATES = [
             "acceptance_criteria_clean": "",
             "labels": [],
             "priority": "P1-High",
-            "status": "To Be Detailed"
+            "status": "To Be Detailed",
         },
         "analysis": {
             "story_id": "NUXEPM-2297",
             "story_title": "PPBACKLOG-664 - 4YOU - nouvelle démarche - demander un changement de modalités de service - Assistance 5414 auprès des équipes Public",
             "story_type": "invalid_or_too_weak",
-            "actors": [], "actions": [], "business_rules": [], "technical_scope": [],
-            "testable_points": [], "user_flows": [],
-            "acceptance_criteria_explicit": [], "acceptance_criteria_inferred": [],
+            "actors": [],
+            "actions": [],
+            "business_rules": [],
+            "technical_scope": [],
+            "testable_points": [],
+            "user_flows": [],
+            "acceptance_criteria_explicit": [],
+            "acceptance_criteria_inferred": [],
             "clarification_questions": [
                 "Pouvez-vous compléter la description de la story ?",
-                "Pouvez-vous ajouter des critères d’acceptation clairs ?"
+                "Pouvez-vous ajouter des critères d’acceptation clairs ?",
             ],
             "analysis_reason": [
                 "La story ne contient pas de description exploitable.",
                 "Aucun comportement testable ne peut être identifié.",
-                "Action requise : contacter le Product Owner pour enrichir la story."
+                "Action requise : contacter le Product Owner pour enrichir la story.",
             ],
-            "resolved_from_references": []
-        }
+            "resolved_from_references": [],
+        },
     },
     {
         "model_alias": "llama4",
@@ -233,92 +258,127 @@ UPDATES = [
             "acceptance_criteria_clean": "",
             "labels": ["4YOU_9.1"],
             "priority": "P1-High",
-            "status": "To Be Detailed"
+            "status": "To Be Detailed",
         },
         "analysis": {
             "story_id": "NUXEPM-2296",
             "story_title": "PPBACKLOG-3139 - Intégration du dispositif CET : nouvelles démarches (Support et Assistance 5414)",
             "story_type": "invalid_or_too_weak",
-            "actors": [], "actions": [], "business_rules": [], "technical_scope": [],
-            "testable_points": [], "user_flows": [],
-            "acceptance_criteria_explicit": [], "acceptance_criteria_inferred": [],
+            "actors": [],
+            "actions": [],
+            "business_rules": [],
+            "technical_scope": [],
+            "testable_points": [],
+            "user_flows": [],
+            "acceptance_criteria_explicit": [],
+            "acceptance_criteria_inferred": [],
             "clarification_questions": [
                 "Pouvez-vous compléter la description de la story ?",
-                "Pouvez-vous ajouter des critères d’acceptation clairs ?"
+                "Pouvez-vous ajouter des critères d’acceptation clairs ?",
             ],
             "analysis_reason": [
                 "La story ne contient pas de description exploitable.",
                 "Aucun comportement testable ne peut être identifié.",
-                "Action requise : contacter le Product Owner pour enrichir la story."
+                "Action requise : contacter le Product Owner pour enrichir la story.",
             ],
-            "resolved_from_references": []
-        }
+            "resolved_from_references": [],
+        },
     },
     {
         "model_alias": "llama4",
         "provider": "groq",
         "model_name": "meta-llama/llama-4-scout-17b-16e-instruct",
-        "epic": {"key": "NUXEPM-1840", "summary": "K-NEWS - Gestion des news dans 4YOU (lot2) - Annonces - Actualités "},
+        "epic": {
+            "key": "NUXEPM-1840",
+            "summary": "K-NEWS - Gestion des news dans 4YOU (lot2) - Annonces - Actualités ",
+        },
         "story": {
             "id": "NUXEPM-2293",
             "summary": "News - MACRO ENVELOP SUR CAPACITE RESTANTE",
             "description_clean": "",
             "acceptance_criteria_clean": "",
-            "labels": ["Candidat_V10", "Chiffrage-9.0.X-Done", "Grooming-1510", "K-DATA", "STREAM_CORE", "STREAM_HUB"],
+            "labels": [
+                "Candidat_V10",
+                "Chiffrage-9.0.X-Done",
+                "Grooming-1510",
+                "K-DATA",
+                "STREAM_CORE",
+                "STREAM_HUB",
+            ],
             "priority": "P1-High",
-            "status": "Ready"
+            "status": "Ready",
         },
         "analysis": {
             "story_id": "NUXEPM-2293",
             "story_title": "News - MACRO ENVELOP SUR CAPACITE RESTANTE",
             "story_type": "invalid_or_too_weak",
-            "actors": [], "actions": [], "business_rules": [], "technical_scope": [],
-            "testable_points": [], "user_flows": [],
-            "acceptance_criteria_explicit": [], "acceptance_criteria_inferred": [],
+            "actors": [],
+            "actions": [],
+            "business_rules": [],
+            "technical_scope": [],
+            "testable_points": [],
+            "user_flows": [],
+            "acceptance_criteria_explicit": [],
+            "acceptance_criteria_inferred": [],
             "clarification_questions": [
                 "Pouvez-vous compléter la description de la story ?",
-                "Pouvez-vous ajouter des critères d’acceptation clairs ?"
+                "Pouvez-vous ajouter des critères d’acceptation clairs ?",
             ],
             "analysis_reason": [
                 "La story ne contient pas de description exploitable.",
                 "Aucun comportement testable ne peut être identifié.",
-                "Action requise : contacter le Product Owner pour enrichir la story."
+                "Action requise : contacter le Product Owner pour enrichir la story.",
             ],
-            "resolved_from_references": []
-        }
+            "resolved_from_references": [],
+        },
     },
     {
         "model_alias": "llama4",
         "provider": "groq",
         "model_name": "meta-llama/llama-4-scout-17b-16e-instruct",
-        "epic": {"key": "NUXEPM-1840", "summary": "K-NEWS - Gestion des news dans 4YOU (lot2) - Annonces - Actualités "},
+        "epic": {
+            "key": "NUXEPM-1840",
+            "summary": "K-NEWS - Gestion des news dans 4YOU (lot2) - Annonces - Actualités ",
+        },
         "story": {
             "id": "NUXEPM-2270",
             "summary": "News - Enveloppe Fixing",
             "description_clean": "",
             "acceptance_criteria_clean": "",
-            "labels": ["Candidat_V10", "Chiffrage-9.0.X-Done", "Grooming-1510", "K-DATA", "STREAM_CORE", "STREAM_HUB"],
+            "labels": [
+                "Candidat_V10",
+                "Chiffrage-9.0.X-Done",
+                "Grooming-1510",
+                "K-DATA",
+                "STREAM_CORE",
+                "STREAM_HUB",
+            ],
             "priority": "P1-High",
-            "status": "Ready"
+            "status": "Ready",
         },
         "analysis": {
             "story_id": "NUXEPM-2270",
             "story_title": "News - Enveloppe Fixing",
             "story_type": "invalid_or_too_weak",
-            "actors": [], "actions": [], "business_rules": [], "technical_scope": [],
-            "testable_points": [], "user_flows": [],
-            "acceptance_criteria_explicit": [], "acceptance_criteria_inferred": [],
+            "actors": [],
+            "actions": [],
+            "business_rules": [],
+            "technical_scope": [],
+            "testable_points": [],
+            "user_flows": [],
+            "acceptance_criteria_explicit": [],
+            "acceptance_criteria_inferred": [],
             "clarification_questions": [
                 "Pouvez-vous compléter la description de la story ?",
-                "Pouvez-vous ajouter des critères d’acceptation clairs ?"
+                "Pouvez-vous ajouter des critères d’acceptation clairs ?",
             ],
             "analysis_reason": [
                 "La story ne contient pas de description exploitable.",
                 "Aucun comportement testable ne peut être identifié.",
-                "Action requise : contacter le Product Owner pour enrichir la story."
+                "Action requise : contacter le Product Owner pour enrichir la story.",
             ],
-            "resolved_from_references": []
-        }
+            "resolved_from_references": [],
+        },
     },
     {
         "model_alias": "llama4",
@@ -327,29 +387,34 @@ UPDATES = [
         "epic": {"key": "NUXEPM-637", "summary": "Espace RRH de proximité"},
         "story": {
             "id": "NUXEPM-2233",
-            "summary": "ST17_RH de proximité - Prise en compte de l'acteur \"Superviseur\" dans SYD et Sidebarre",
-            "description_clean": "Prise en compte de l'acteur \"Superviseur\" pour les combinaisons d'acteurs suivantes :\nRRH de proximité \"Superviseur\" (Global et local (établissement)\nRRH de proximité \"Superviseur\" (Global et local (établissement)+ Gestionnaire Paie et/ou Gestionnaire RH\ndans la page d'accueil (SYD)  et la sidebarre qui apparaît à gauche de l'inbox CSP, de l'indicateur Contrôles de paie, des pages Mes collaborateurs et Processus RH et de la page Pilotage CSP d'un \"Superviseur\"",
+            "summary": 'ST17_RH de proximité - Prise en compte de l\'acteur "Superviseur" dans SYD et Sidebarre',
+            "description_clean": 'Prise en compte de l\'acteur "Superviseur" pour les combinaisons d\'acteurs suivantes :\nRRH de proximité "Superviseur" (Global et local (établissement)\nRRH de proximité "Superviseur" (Global et local (établissement)+ Gestionnaire Paie et/ou Gestionnaire RH\ndans la page d\'accueil (SYD)  et la sidebarre qui apparaît à gauche de l\'inbox CSP, de l\'indicateur Contrôles de paie, des pages Mes collaborateurs et Processus RH et de la page Pilotage CSP d\'un "Superviseur"',
             "acceptance_criteria_clean": "",
             "labels": ["PP2025", "QA", "STREAM_APPLICATIF"],
             "priority": "P1-High",
-            "status": "Done-Done"
+            "status": "Done-Done",
         },
         "analysis": {
             "story_id": "NUXEPM-2233",
-            "story_title": "ST17_RH de proximité - Prise en compte de l'acteur \"Superviseur\" dans SYD et Sidebarre",
+            "story_title": 'ST17_RH de proximité - Prise en compte de l\'acteur "Superviseur" dans SYD et Sidebarre',
             "story_type": "functional",
-            "actors": ["RRH de proximité", "Superviseur", "Gestionnaire Paie", "Gestionnaire RH"],
+            "actors": [
+                "RRH de proximité",
+                "Superviseur",
+                "Gestionnaire Paie",
+                "Gestionnaire RH",
+            ],
             "actions": [
                 "afficher les SYD correspondants aux combinaisons d'acteurs",
                 "afficher et gérer la sidebarre sur toutes les pages la présentant",
                 "sélectionner l'indicateur Contrôles de paie",
                 "accéder à la page Pilotage CSP",
                 "accéder à la page Mes collaborateurs",
-                "accéder à la page Processus RH"
+                "accéder à la page Processus RH",
             ],
             "business_rules": [
                 "prise en compte de l'acteur 'Superviseur' pour les combinaisons d'acteurs suivantes : RRH de proximité 'Superviseur' (Global et local (établissement))",
-                "prise en compte de l'acteur 'Superviseur' pour les combinaisons d'acteurs suivantes : RRH de proximité 'Superviseur' (Global et local (établissement) + Gestionnaire Paie et/ou Gestionnaire RH"
+                "prise en compte de l'acteur 'Superviseur' pour les combinaisons d'acteurs suivantes : RRH de proximité 'Superviseur' (Global et local (établissement) + Gestionnaire Paie et/ou Gestionnaire RH",
             ],
             "technical_scope": [],
             "testable_points": [
@@ -357,7 +422,7 @@ UPDATES = [
                 "Vérifier que l'acteur 'Superviseur' est pris en compte dans la sidebarre qui apparaît à gauche de l'inbox CSP",
                 "Vérifier que l'acteur 'Superviseur' est pris en compte dans l'indicateur Contrôles de paie",
                 "Vérifier que l'acteur 'Superviseur' est pris en compte dans les pages Mes collaborateurs et Processus RH",
-                "Vérifier que l'acteur 'Superviseur' est pris en compte dans la page Pilotage CSP"
+                "Vérifier que l'acteur 'Superviseur' est pris en compte dans la page Pilotage CSP",
             ],
             "user_flows": [
                 "Accéder à la page d'accueil (SYD) en tant que RRH de proximité 'Superviseur'",
@@ -365,24 +430,24 @@ UPDATES = [
                 "Sélectionner l'indicateur Contrôles de paie en tant que RRH de proximité 'Superviseur'",
                 "Accéder à la page Mes collaborateurs en tant que RRH de proximité 'Superviseur'",
                 "Accéder à la page Processus RH en tant que RRH de proximité 'Superviseur'",
-                "Accéder à la page Pilotage CSP en tant que RRH de proximité 'Superviseur'"
+                "Accéder à la page Pilotage CSP en tant que RRH de proximité 'Superviseur'",
             ],
             "acceptance_criteria_explicit": [
                 "Prise en compte de l'acteur 'Superviseur' pour les combinaisons d'acteurs suivantes : RRH de proximité 'Superviseur' (Global et local (établissement))",
-                "Prise en compte de l'acteur 'Superviseur' pour les combinaisons d'acteurs suivantes : RRH de proximité 'Superviseur' (Global et local (établissement) + Gestionnaire Paie et/ou Gestionnaire RH"
+                "Prise en compte de l'acteur 'Superviseur' pour les combinaisons d'acteurs suivantes : RRH de proximité 'Superviseur' (Global et local (établissement) + Gestionnaire Paie et/ou Gestionnaire RH",
             ],
             "acceptance_criteria_inferred": [],
             "clarification_questions": [
                 "Quelles sont les combinaisons d'acteurs prises en compte pour l'acteur 'Superviseur' ?",
-                "Quels sont les écrans et les fonctionnalités affectés par la prise en compte de l'acteur 'Superviseur' ?"
+                "Quels sont les écrans et les fonctionnalités affectés par la prise en compte de l'acteur 'Superviseur' ?",
             ],
             "analysis_reason": [
                 "La story décrit une fonctionnalité qui affecte les utilisateurs finaux.",
                 "La story mentionne des acteurs et des actions spécifiques.",
-                "La story nécessite des vérifications QA concrètes et observables."
+                "La story nécessite des vérifications QA concrètes et observables.",
             ],
-            "resolved_from_references": []
-        }
+            "resolved_from_references": [],
+        },
     },
     {
         "model_alias": "llama4",
@@ -390,16 +455,16 @@ UPDATES = [
         "model_name": "meta-llama/llama-4-scout-17b-16e-instruct",
         "epic": {
             "key": "NUXEPM-1840",
-            "summary": "K-NEWS - Gestion des news dans 4YOU (lot2) - Annonces - Actualités "
+            "summary": "K-NEWS - Gestion des news dans 4YOU (lot2) - Annonces - Actualités ",
         },
         "story": {
             "id": "NUXEPM-2416",
             "summary": "News - Filtre sur les métadonnées dans la Recherche",
-            "description_clean": "L'ajout du composant \"rich-editor\" a provoqué un effet de bord au niveau de la recherche. On peut désormais avoir des faux positifs avec les métadonnées suivantes : type, doc, heading, paragraph, text, table, content, attrs, align, null, indent, level, table, tablerow, tableheader, colspan, rowspan, colwidth, background, tablecell, marks, strong, em, u, textcolor, color, textbackgroundcolor, backgroundColor, s, sub, sup, orderedlist, order, listitem, bullet_list.",
+            "description_clean": 'L\'ajout du composant "rich-editor" a provoqué un effet de bord au niveau de la recherche. On peut désormais avoir des faux positifs avec les métadonnées suivantes : type, doc, heading, paragraph, text, table, content, attrs, align, null, indent, level, table, tablerow, tableheader, colspan, rowspan, colwidth, background, tablecell, marks, strong, em, u, textcolor, color, textbackgroundcolor, backgroundColor, s, sub, sup, orderedlist, order, listitem, bullet_list.',
             "acceptance_criteria_clean": "",
             "labels": ["STREAM_APPLICATIF"],
             "priority": "P1-High",
-            "status": "Done"
+            "status": "Done",
         },
         "analysis": {
             "story_id": "NUXEPM-2416",
@@ -411,21 +476,21 @@ UPDATES = [
             "technical_scope": [],
             "testable_points": [
                 "Verifier que les métadonnées suivantes ne provoquent plus de faux positifs : type, doc, heading, paragraph, text, table, content, attrs, align, null, indent, level, table, tablerow, tableheader, colspan, rowspan, colwidth, background, tablecell, marks, strong, em, u, textcolor, color, textbackgroundcolor, backgroundColor, s, sub, sup, orderedlist, order, listitem, bullet_list",
-                "Verifier que la recherche fonctionne correctement après l'ajout du composant 'rich-editor'"
+                "Verifier que la recherche fonctionne correctement après l'ajout du composant 'rich-editor'",
             ],
             "user_flows": [],
             "acceptance_criteria_explicit": [],
             "acceptance_criteria_inferred": [],
             "clarification_questions": [
                 "Quelles sont les métadonnées exactes qui provoquent des faux positifs ?",
-                "Comment le filtre sur les métadonnées est-il configuré ?"
+                "Comment le filtre sur les métadonnées est-il configuré ?",
             ],
             "analysis_reason": [
                 "La story décrit une problématique fonctionnelle avec la recherche après l'ajout d'un composant.",
-                "La story mentionne des métadonnées spécifiques qui provoquent des faux positifs."
+                "La story mentionne des métadonnées spécifiques qui provoquent des faux positifs.",
             ],
-            "resolved_from_references": []
-        }
+            "resolved_from_references": [],
+        },
     },
     {
         "model_alias": "llama4",
@@ -439,7 +504,7 @@ UPDATES = [
             "acceptance_criteria_clean": "",
             "labels": ["4YOU_9.1", "STREAM_CORE"],
             "priority": "P1-High",
-            "status": "To Be Detailed"
+            "status": "To Be Detailed",
         },
         "analysis": {
             "story_id": "NUXEPM-2415",
@@ -455,21 +520,24 @@ UPDATES = [
             "acceptance_criteria_inferred": [],
             "clarification_questions": [
                 "Pouvez-vous compléter la description de la story ?",
-                "Pouvez-vous ajouter des critères d’acceptation clairs ?"
+                "Pouvez-vous ajouter des critères d’acceptation clairs ?",
             ],
             "analysis_reason": [
                 "La story ne contient pas de description exploitable.",
                 "Aucun comportement testable ne peut être identifié.",
-                "Action requise : contacter le Product Owner pour enrichir la story."
+                "Action requise : contacter le Product Owner pour enrichir la story.",
             ],
-            "resolved_from_references": []
-        }
+            "resolved_from_references": [],
+        },
     },
     {
         "model_alias": "llama4",
         "provider": "groq",
         "model_name": "meta-llama/llama-4-scout-17b-16e-instruct",
-        "epic": {"key": "PPBACKLOG-477", "summary": "Plateforme 4YOU - Dette technique"},
+        "epic": {
+            "key": "PPBACKLOG-477",
+            "summary": "Plateforme 4YOU - Dette technique",
+        },
         "story": {
             "id": "NUXEPM-2398",
             "summary": "Bench - Création automatique de demandes de congés",
@@ -477,7 +545,7 @@ UPDATES = [
             "acceptance_criteria_clean": "",
             "labels": ["STREAM_CORE"],
             "priority": "P1-High",
-            "status": "To Be Detailed"
+            "status": "To Be Detailed",
         },
         "analysis": {
             "story_id": "NUXEPM-2398",
@@ -493,21 +561,24 @@ UPDATES = [
             "acceptance_criteria_inferred": [],
             "clarification_questions": [
                 "Pouvez-vous compléter la description de la story ?",
-                "Pouvez-vous ajouter des critères d’acceptation clairs ?"
+                "Pouvez-vous ajouter des critères d’acceptation clairs ?",
             ],
             "analysis_reason": [
                 "La story ne contient pas de description exploitable.",
                 "Aucun comportement testable ne peut être identifié.",
-                "Action requise : contacter le Product Owner pour enrichir la story."
+                "Action requise : contacter le Product Owner pour enrichir la story.",
             ],
-            "resolved_from_references": []
-        }
+            "resolved_from_references": [],
+        },
     },
     {
         "model_alias": "llama4",
         "provider": "groq",
         "model_name": "meta-llama/llama-4-scout-17b-16e-instruct",
-        "epic": {"key": "PPBACKLOG-477", "summary": "Plateforme 4YOU - Dette technique"},
+        "epic": {
+            "key": "PPBACKLOG-477",
+            "summary": "Plateforme 4YOU - Dette technique",
+        },
         "story": {
             "id": "NUXEPM-2397",
             "summary": "4YOU ASSIST - Résolution des libraires externes",
@@ -515,7 +586,7 @@ UPDATES = [
             "acceptance_criteria_clean": "",
             "labels": ["STREAM_CORE"],
             "priority": "P1-High",
-            "status": "To Be Detailed"
+            "status": "To Be Detailed",
         },
         "analysis": {
             "story_id": "NUXEPM-2397",
@@ -524,7 +595,12 @@ UPDATES = [
             "actors": [],
             "actions": [],
             "business_rules": [],
-            "technical_scope": ["librairies externes", "Leaflet", "WMTS", "Géoservices"],
+            "technical_scope": [
+                "librairies externes",
+                "Leaflet",
+                "WMTS",
+                "Géoservices",
+            ],
             "testable_points": [],
             "user_flows": [],
             "acceptance_criteria_explicit": [],
@@ -533,8 +609,8 @@ UPDATES = [
             "analysis_reason": [
                 "La story concerne la résolution des librairies externes pour 4YOU ASSIST, sans modification de comportement visible pour l'utilisateur."
             ],
-            "resolved_from_references": []
-        }
+            "resolved_from_references": [],
+        },
     },
     {
         "model_alias": "llama4",
@@ -548,7 +624,7 @@ UPDATES = [
             "acceptance_criteria_clean": "",
             "labels": ["STREAM_APPLICATIF"],
             "priority": "P1-High",
-            "status": "Done-Done"
+            "status": "Done-Done",
         },
         "analysis": {
             "story_id": "NUXEPM-2358",
@@ -564,15 +640,15 @@ UPDATES = [
             "acceptance_criteria_inferred": [],
             "clarification_questions": [
                 "Pouvez-vous compléter la description de la story ?",
-                "Pouvez-vous ajouter des critères d’acceptation clairs ?"
+                "Pouvez-vous ajouter des critères d’acceptation clairs ?",
             ],
             "analysis_reason": [
                 "La story ne contient pas de description exploitable.",
                 "Aucun comportement testable ne peut être identifié.",
-                "Action requise : contacter le Product Owner pour enrichir la story."
+                "Action requise : contacter le Product Owner pour enrichir la story.",
             ],
-            "resolved_from_references": []
-        }
+            "resolved_from_references": [],
+        },
     },
     {
         "model_alias": "llama4",
@@ -586,7 +662,7 @@ UPDATES = [
             "acceptance_criteria_clean": "",
             "labels": ["PP2025", "QA", "STREAM_APPLICATIF"],
             "priority": "P1-High",
-            "status": "Done-Done"
+            "status": "Done-Done",
         },
         "analysis": {
             "story_id": "NUXEPM-2341",
@@ -602,15 +678,15 @@ UPDATES = [
             "acceptance_criteria_inferred": [],
             "clarification_questions": [
                 "Pouvez-vous compléter la description de la story ?",
-                "Pouvez-vous ajouter des critères d’acceptation clairs ?"
+                "Pouvez-vous ajouter des critères d’acceptation clairs ?",
             ],
             "analysis_reason": [
                 "La story ne contient pas de description exploitable.",
                 "Aucun comportement testable ne peut être identifié.",
-                "Action requise : contacter le Product Owner pour enrichir la story."
+                "Action requise : contacter le Product Owner pour enrichir la story.",
             ],
-            "resolved_from_references": []
-        }
+            "resolved_from_references": [],
+        },
     },
 ]
 
@@ -630,7 +706,9 @@ def main() -> None:
         else:
             missing.append(sid)
 
-    PRED_FILE.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+    PRED_FILE.write_text(
+        json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8"
+    )
     print(f"Updated: {len(updated)} -> {updated}")
     if missing:
         print(f"MISSING (not found in file): {missing}")

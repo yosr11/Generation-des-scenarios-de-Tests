@@ -40,9 +40,9 @@ def get_epics(project_key: str):
     jql = f'project = "{project_key}" AND issuetype = Epic ORDER BY created DESC'
 
     params = {
-        "jql":        jql,
+        "jql": jql,
         "maxResults": 100,
-        "fields":     "summary,description,status,priority,labels,issuetype"
+        "fields": "summary,description,status,priority,labels,issuetype",
     }
 
     try:
@@ -55,21 +55,23 @@ def get_epics(project_key: str):
         print(f"❌ Erreur {response.status_code} : {response.text[:500]}")
         return []
 
-    data   = response.json()
+    data = response.json()
     issues = data.get("issues", [])
 
     Epic = []
     for issue in issues:
         f = issue.get("fields", {})
-        Epic.append({
-            "id":          issue.get("key"),
-            "title":       f.get("summary", ""),
-            "description": f.get("description", ""),
-            "status":      (f.get("status") or {}).get("name", ""),
-            "priority":    (f.get("priority") or {}).get("name", ""),
-            "labels":      f.get("labels", []),
-            "issuetype":   (f.get("issuetype") or {}).get("name", ""),
-        })
+        Epic.append(
+            {
+                "id": issue.get("key"),
+                "title": f.get("summary", ""),
+                "description": f.get("description", ""),
+                "status": (f.get("status") or {}).get("name", ""),
+                "priority": (f.get("priority") or {}).get("name", ""),
+                "labels": f.get("labels", []),
+                "issuetype": (f.get("issuetype") or {}).get("name", ""),
+            }
+        )
 
     print(f"✅ {len(Epic)} Epic récupérés pour le projet {project_key}")
     return Epic
@@ -84,16 +86,16 @@ def count_epics(project_key: str) -> dict:
     project_key : clé du projet fournie par l'utilisateur (ex: "YOUQA")
     """
     if not project_key or not project_key.strip():
-        return {"project_key": project_key, "total_epics": 0, "error": "project_key est requis"}
+        return {
+            "project_key": project_key,
+            "total_epics": 0,
+            "error": "project_key est requis",
+        }
 
     url = f"{JIRA_BASE_URL}/rest/api/2/search"
     jql = f'project = "{project_key}" AND issuetype = Epic'
 
-    params = {
-        "jql":        jql,
-        "maxResults": 0,
-        "fields":     "key"
-    }
+    params = {"jql": jql, "maxResults": 0, "fields": "key"}
 
     try:
         response = _session.get(url, params=params, timeout=60)
@@ -101,7 +103,11 @@ def count_epics(project_key: str) -> dict:
         return {"project_key": project_key, "total_epics": 0, "error": str(e)}
 
     if response.status_code != 200:
-        return {"project_key": project_key, "total_epics": 0, "error": f"Jira {response.status_code}"}
+        return {
+            "project_key": project_key,
+            "total_epics": 0,
+            "error": f"Jira {response.status_code}",
+        }
 
     total = response.json().get("total", 0)
     return {"project_key": project_key, "total_epics": total}
@@ -125,9 +131,9 @@ def get_stories_by_epic(epic_key: str):
     jql = f'"Epic Link" = {epic_key} ORDER BY created DESC'
 
     params = {
-        "jql":        jql,
+        "jql": jql,
         "maxResults": 100,
-        "fields":     "summary,description,status,priority,labels,issuetype"
+        "fields": "summary,description,status,priority,labels,issuetype",
     }
 
     try:
@@ -138,7 +144,7 @@ def get_stories_by_epic(epic_key: str):
 
     if response.status_code != 200:
         # Méthode 2 — via "parent" (Jira Next-gen)
-        jql = f'parent = {epic_key} ORDER BY created DESC'
+        jql = f"parent = {epic_key} ORDER BY created DESC"
         params["jql"] = jql
         try:
             response = _session.get(url, params=params, timeout=60)
@@ -150,18 +156,20 @@ def get_stories_by_epic(epic_key: str):
         print(f"❌ Erreur {response.status_code} : {response.text[:500]}")
         return []
 
-    data   = response.json()
+    data = response.json()
     issues = data.get("issues", [])
 
     stories = []
     for issue in issues:
         f = issue.get("fields", {})
-        stories.append({
-            "id":        issue.get("key"),
-            "title":     f.get("summary", ""),
-            "status":    (f.get("status") or {}).get("name", ""),
-            "issuetype": (f.get("issuetype") or {}).get("name", ""),
-        })
+        stories.append(
+            {
+                "id": issue.get("key"),
+                "title": f.get("summary", ""),
+                "status": (f.get("status") or {}).get("name", ""),
+                "issuetype": (f.get("issuetype") or {}).get("name", ""),
+            }
+        )
 
     print(f"✅ {len(stories)} stories liées à {epic_key}")
     return stories
@@ -185,7 +193,7 @@ def get_stories_by_epic_detailed(epic_key: str) -> list:
 
     for jql in [
         f'"Epic Link" = {epic_key} ORDER BY created DESC',
-        f'parent = {epic_key} ORDER BY created DESC',
+        f"parent = {epic_key} ORDER BY created DESC",
     ]:
         try:
             resp = _session.get(
@@ -207,21 +215,25 @@ def _parse_issues_detailed(issues: list) -> list:
     stories = []
     for issue in issues:
         f = issue.get("fields", {}) or {}
-        stories.append({
-            "id":                 issue.get("key", ""),
-            "summary":            f.get("summary", ""),
-            "description":        f.get("description", ""),
-            "labels":             f.get("labels", []),
-            "components":         [c.get("name") for c in (f.get("components") or [])],
-            "issuelinks":         flatten_issuelinks(f.get("issuelinks") or []),
-            "priority":           (f.get("priority") or {}).get("name", ""),
-            "status":             (f.get("status") or {}).get("name", ""),
-            "fixVersions":        [v.get("name") for v in (f.get("fixVersions") or [])],
-            "requirement_status":      f.get("customfield_14422"),
-            "acceptance_criteria_raw": f.get(JIRA_AC_FIELD) or "",
-            "issuetype":              (f.get("issuetype") or {}).get("name", ""),
-        })
+        stories.append(
+            {
+                "id": issue.get("key", ""),
+                "summary": f.get("summary", ""),
+                "description": f.get("description", ""),
+                "labels": f.get("labels", []),
+                "components": [c.get("name") for c in (f.get("components") or [])],
+                "issuelinks": flatten_issuelinks(f.get("issuelinks") or []),
+                "priority": (f.get("priority") or {}).get("name", ""),
+                "status": (f.get("status") or {}).get("name", ""),
+                "fixVersions": [v.get("name") for v in (f.get("fixVersions") or [])],
+                "requirement_status": f.get("customfield_14422"),
+                "acceptance_criteria_raw": f.get(JIRA_AC_FIELD) or "",
+                "issuetype": (f.get("issuetype") or {}).get("name", ""),
+            }
+        )
     return stories
+
+
 # ══════════════════════════════════════════════════════════════
 #  Compte le nombre de User Stories liées à un Epic
 # ══════════════════════════════════════════════════════════════
@@ -237,7 +249,7 @@ def count_stories_by_epic(epic_key: str) -> int:
 
     for jql in [
         f'"Epic Link" = {epic_key}',
-        f'parent = {epic_key}',
+        f"parent = {epic_key}",
     ]:
         try:
             resp = _session.get(

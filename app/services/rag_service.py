@@ -14,20 +14,21 @@ import os
 from typing import Any, Dict, List, Optional
 
 import chromadb
-from chromadb.config import Settings
 from sentence_transformers import SentenceTransformer
 
 logger = logging.getLogger(__name__)
 
 # ── Configuration ───────────────────────────────────────────
-CHUNK_SIZE = 500        # caractères par morceau
-CHUNK_OVERLAP = 100     # chevauchement entre morceaux
-TOP_K = 5               # nombre de résultats à retourner
+CHUNK_SIZE = 500  # caractères par morceau
+CHUNK_OVERLAP = 100  # chevauchement entre morceaux
+TOP_K = 5  # nombre de résultats à retourner
 
 # Dossier persistant pour ChromaDB
 CHROMA_DIR = os.path.join(
     os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
-    "app", "data", "vector_store",
+    "app",
+    "data",
+    "vector_store",
 )
 
 # Modèle d'embeddings (léger, ~80Mo, multilingue)
@@ -58,6 +59,7 @@ def _get_chroma_client() -> chromadb.ClientAPI:
 # ══════════════════════════════════════════════════════════════
 #  1. CHUNKING — Découpage en morceaux
 # ══════════════════════════════════════════════════════════════
+
 
 def chunk_text(
     text: str,
@@ -90,6 +92,7 @@ def chunk_text(
 # ══════════════════════════════════════════════════════════════
 #  2. INDEXATION — Embeddings + stockage ChromaDB
 # ══════════════════════════════════════════════════════════════
+
 
 def index_documents(
     epic_key: str,
@@ -140,12 +143,14 @@ def index_documents(
             chunk_id = f"{doc['origin_key']}_{doc['filename']}_{i}"
             all_ids.append(chunk_id)
             all_texts.append(chunk)
-            all_metadatas.append({
-                "source": doc.get("source", ""),
-                "origin_key": doc.get("origin_key", ""),
-                "filename": doc.get("filename", ""),
-                "chunk_index": str(i),
-            })
+            all_metadatas.append(
+                {
+                    "source": doc.get("source", ""),
+                    "origin_key": doc.get("origin_key", ""),
+                    "filename": doc.get("filename", ""),
+                    "chunk_index": str(i),
+                }
+            )
 
     if not all_texts:
         logger.warning("Aucun chunk à indexer pour %s", epic_key)
@@ -168,7 +173,9 @@ def index_documents(
 
     logger.info(
         "Indexation terminée : %s → %d chunks depuis %d documents",
-        collection_name, len(all_ids), len(documents),
+        collection_name,
+        len(all_ids),
+        len(documents),
     )
 
     return {
@@ -181,6 +188,7 @@ def index_documents(
 # ══════════════════════════════════════════════════════════════
 #  3. RETRIEVAL — Recherche sémantique
 # ══════════════════════════════════════════════════════════════
+
 
 def retrieve_context(
     epic_key: str,
@@ -232,14 +240,16 @@ def retrieve_context(
                     pinned_res.get("metadatas") or [{}] * len(pinned_res["documents"]),
                 ):
                     pinned_ids.add(doc_id)
-                    pinned_chunks.append({
-                        "text": doc,
-                        "source": meta.get("source", ""),
-                        "origin_key": meta.get("origin_key", ""),
-                        "filename": meta.get("filename", ""),
-                        "distance": 0.0,
-                        "pinned": True,
-                    })
+                    pinned_chunks.append(
+                        {
+                            "text": doc,
+                            "source": meta.get("source", ""),
+                            "origin_key": meta.get("origin_key", ""),
+                            "filename": meta.get("filename", ""),
+                            "distance": 0.0,
+                            "pinned": True,
+                        }
+                    )
         except Exception as e:
             logger.warning("Pin chunks lookup failed for %s: %s", collection_name, e)
 
@@ -257,11 +267,18 @@ def retrieve_context(
             include=["documents", "metadatas", "distances"],
         )
     except Exception as e:
-        logger.warning("Erreur lors de la requête ChromaDB pour %s: %s. "
-                       "Tentative de réindexation...", collection_name, str(e))
+        logger.warning(
+            "Erreur lors de la requête ChromaDB pour %s: %s. "
+            "Tentative de réindexation...",
+            collection_name,
+            str(e),
+        )
         try:
             client.delete_collection(collection_name)
-            logger.info("Collection %s supprimée, elle sera réindexée au prochain appel.", collection_name)
+            logger.info(
+                "Collection %s supprimée, elle sera réindexée au prochain appel.",
+                collection_name,
+            )
         except Exception:
             pass
         # On garde au moins les pinned si on en avait
@@ -269,8 +286,12 @@ def retrieve_context(
 
     if results and results.get("documents"):
         docs = results["documents"][0]
-        metas = results["metadatas"][0] if results.get("metadatas") else [{}] * len(docs)
-        distances = results["distances"][0] if results.get("distances") else [0.0] * len(docs)
+        metas = (
+            results["metadatas"][0] if results.get("metadatas") else [{}] * len(docs)
+        )
+        distances = (
+            results["distances"][0] if results.get("distances") else [0.0] * len(docs)
+        )
         ids = results.get("ids", [[]])[0] if results.get("ids") else [None] * len(docs)
 
         for doc_id, doc, meta, dist in zip(ids, docs, metas, distances):
@@ -278,14 +299,16 @@ def retrieve_context(
                 continue  # déjà dans pinned
             if meta.get("origin_key", "") in excluded_set:
                 continue  # PJ de la story analysée → injectée en direct, pas via RAG
-            semantic_chunks.append({
-                "text": doc,
-                "source": meta.get("source", ""),
-                "origin_key": meta.get("origin_key", ""),
-                "filename": meta.get("filename", ""),
-                "distance": round(dist, 4),
-                "pinned": False,
-            })
+            semantic_chunks.append(
+                {
+                    "text": doc,
+                    "source": meta.get("source", ""),
+                    "origin_key": meta.get("origin_key", ""),
+                    "filename": meta.get("filename", ""),
+                    "distance": round(dist, 4),
+                    "pinned": False,
+                }
+            )
 
     return pinned_chunks + semantic_chunks
 
@@ -293,6 +316,7 @@ def retrieve_context(
 # ══════════════════════════════════════════════════════════════
 #  UTILITAIRE — Vérifie si un epic est déjà indexé
 # ══════════════════════════════════════════════════════════════
+
 
 def is_epic_indexed(epic_key: str) -> bool:
     """Vérifie si une collection existe pour cet epic."""

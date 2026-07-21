@@ -5,7 +5,12 @@ from pydantic import BaseModel, Field
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
-from app.core.deps import CurrentUser, get_client_ip, get_current_user, get_tester_jira_credentials
+from app.core.deps import (
+    CurrentUser,
+    get_client_ip,
+    get_current_user,
+    get_tester_jira_credentials,
+)
 from app.db.postgres import get_db
 from app.services.audit_service import log_action
 from app.services.jira_service import (
@@ -20,6 +25,7 @@ from app.services.jira_service import (
 )
 from app.utils.test_steps_utils import bold_first_word, color_actor_bracket
 
+
 class IntegrationTestStep(BaseModel):
     action: str = Field(..., description="Action claire à exécuter")
     expected_result: str = Field(..., description="Résultat attendu")
@@ -32,23 +38,33 @@ class IntegrationTestCase(BaseModel):
     story_key: Optional[str] = Field(None, description="Clé Jira de la User Story liée")
     objective: str = Field(..., description="Objectif du test")
     scenario_type: Optional[str] = Field(None, description="Type de scénario")
-    priority: Optional[str] = Field(None, description="Priorité du test (ex: HIGH, MEDIUM, LOW)")
-    preconditions: List[str] = Field(default_factory=list, description="Préconditions du test")
+    priority: Optional[str] = Field(
+        None, description="Priorité du test (ex: HIGH, MEDIUM, LOW)"
+    )
+    preconditions: List[str] = Field(
+        default_factory=list, description="Préconditions du test"
+    )
     steps: List[IntegrationTestStep] = Field(default_factory=list)
-    etapes: Optional[List[Dict[str, Any]]] = Field(default=None, alias='étapes')
+    etapes: Optional[List[Dict[str, Any]]] = Field(default=None, alias="étapes")
 
     class Config:
         allow_population_by_field_name = True
 
-   
-
 
 class IntegrateTestsRequest(BaseModel):
     project_key: str = Field("YOUQA", description="Clé du projet Jira")
-    tests: List[IntegrationTestCase] = Field(..., description="Liste des tests à intégrer")
-    coverage_rate: Optional[float] = Field(None, ge=0, le=1, description="Taux de couverture validé")
-    duplicate_count: Optional[int] = Field(0, ge=0, description="Nombre de doublons détectés")
-    ambiguity_count: Optional[int] = Field(0, ge=0, description="Nombre d'ambiguïtés détectées")
+    tests: List[IntegrationTestCase] = Field(
+        ..., description="Liste des tests à intégrer"
+    )
+    coverage_rate: Optional[float] = Field(
+        None, ge=0, le=1, description="Taux de couverture validé"
+    )
+    duplicate_count: Optional[int] = Field(
+        0, ge=0, description="Nombre de doublons détectés"
+    )
+    ambiguity_count: Optional[int] = Field(
+        0, ge=0, description="Nombre d'ambiguïtés détectées"
+    )
 
 
 class IntegrateTestSingleRequest(BaseModel):
@@ -59,9 +75,15 @@ class IntegrateTestSingleRequest(BaseModel):
 class IntegrateTestsResponse(BaseModel):
     status: str = Field(..., description="success, partial or error")
     created_count: int = Field(0, description="Nombre de tests créés avec succès")
-    created_keys: List[str] = Field(default_factory=list, description="Clés Jira des tests créés")
-    jira_browse_base_url: Optional[str] = Field(None, description="Base URL Jira pour consulter les tests")
-    errors: List[str] = Field(default_factory=list, description="Liste des erreurs rencontrées")
+    created_keys: List[str] = Field(
+        default_factory=list, description="Clés Jira des tests créés"
+    )
+    jira_browse_base_url: Optional[str] = Field(
+        None, description="Base URL Jira pour consulter les tests"
+    )
+    errors: List[str] = Field(
+        default_factory=list, description="Liste des erreurs rencontrées"
+    )
 
 
 router = APIRouter(tags=["Xray Integration"])
@@ -80,8 +102,14 @@ def _resolve_jira_session(user: CurrentUser):
             creds = get_tester_jira_credentials(user)
             return create_user_jira_session(creds.username, creds.password)
         except HTTPException as exc:
-            if exc.status_code == 401 and settings.JIRA_USERNAME and settings.JIRA_PASSWORD:
-                return create_user_jira_session(settings.JIRA_USERNAME, settings.JIRA_PASSWORD)
+            if (
+                exc.status_code == 401
+                and settings.JIRA_USERNAME
+                and settings.JIRA_PASSWORD
+            ):
+                return create_user_jira_session(
+                    settings.JIRA_USERNAME, settings.JIRA_PASSWORD
+                )
             raise
 
     if settings.JIRA_USERNAME and settings.JIRA_PASSWORD:
@@ -108,15 +136,19 @@ def _build_description(test_case: IntegrationTestCase) -> str:
     try:
         from app.utils.test_steps_utils import build_xray_description
 
-        sd = [
-            {
-                "action": step.action,
-                "data": step.data or "",
-                "actor": step.actor or "",
-                "expected_result": step.expected_result,
-            }
-            for step in test_case.steps
-        ] if test_case.steps else []
+        sd = (
+            [
+                {
+                    "action": step.action,
+                    "data": step.data or "",
+                    "actor": step.actor or "",
+                    "expected_result": step.expected_result,
+                }
+                for step in test_case.steps
+            ]
+            if test_case.steps
+            else []
+        )
 
         desc_steps = build_xray_description(
             {
@@ -167,11 +199,13 @@ def _build_step_payload(test_case: IntegrationTestCase) -> List[dict]:
         if not pre:
             continue
         action_text = normalize_precondition(pre)
-        payload.append({
-            "action": f"*ÉTAPE* : {bold_first_word(action_text)}",
-            "data": None,
-            "result": "none",
-        })
+        payload.append(
+            {
+                "action": f"*ÉTAPE* : {bold_first_word(action_text)}",
+                "data": None,
+                "result": "none",
+            }
+        )
 
     if getattr(test_case, "etapes", None):
         for etape in test_case.etapes:
@@ -180,7 +214,14 @@ def _build_step_payload(test_case: IntegrationTestCase) -> List[dict]:
             actor = sanitize(etape_dict.get("actor") or "")
             substeps = etape_dict.get("steps") or []
             actions = [sanitize((step or {}).get("action") or "") for step in substeps]
-            expecteds = [sanitize((step or {}).get("expected_result") or (step or {}).get("result") or "") for step in substeps]
+            expecteds = [
+                sanitize(
+                    (step or {}).get("expected_result")
+                    or (step or {}).get("result")
+                    or ""
+                )
+                for step in substeps
+            ]
 
             action_lines = []
             step_actor = f"{color_actor_bracket(actor)} " if actor else ""
@@ -195,11 +236,13 @@ def _build_step_payload(test_case: IntegrationTestCase) -> List[dict]:
             action_text = "\n".join(line for line in action_lines if line).strip()
             result_text = "\n".join([r for r in expecteds if r]) or "none"
 
-            payload.append({
-                "action": action_text,
-                "data": "none",
-                "result": result_text,
-            })
+            payload.append(
+                {
+                    "action": action_text,
+                    "data": "none",
+                    "result": result_text,
+                }
+            )
         return payload
 
     if test_case.steps:
@@ -215,7 +258,6 @@ def _build_step_payload(test_case: IntegrationTestCase) -> List[dict]:
 
     return payload
 
-  
 
 @router.post("/integrate-tests", response_model=IntegrateTestsResponse)
 async def integrate_tests(
@@ -287,6 +329,7 @@ async def integrate_tests(
                     )
                     if replace_result.get("error"):
                         import json as _json
+
                         raise ValueError(
                             f"Update test failed for '{safe_summary}': "
                             f"{replace_result.get('message') or replace_result.get('detail') or replace_result.get('body') or replace_result.get('error')}\n"
@@ -353,7 +396,6 @@ async def integrate_tests(
 
             logger.info(f"[integrate_tests] Test created with steps: {issue_key}")
 
-           
             if test_case.story_key:
                 link_result = link_test_to_story_and_related_tests(
                     test_key=issue_key,
@@ -467,6 +509,7 @@ async def integrate_test_single(
                 )
                 if replace_result.get("error"):
                     import json as _json
+
                     raise ValueError(
                         f"Update test failed for '{safe_summary}': "
                         f"{replace_result.get('message') or replace_result.get('detail') or replace_result.get('body') or replace_result.get('error')}\n"
@@ -531,7 +574,9 @@ async def integrate_test_single(
                 errors.append(f"{safe_summary} (warning): {warning}")
 
             logger.info(f"[integrate_test_single] Test created with steps: {issue_key}")
-            logger.info(f"[integrate_test_single] story_key reçu: {test_case.story_key!r}")
+            logger.info(
+                f"[integrate_test_single] story_key reçu: {test_case.story_key!r}"
+            )
             if test_case.story_key:
                 link_result = link_test_to_story_and_related_tests(
                     test_key=issue_key,
@@ -620,9 +665,7 @@ def add_step_to_test(
         if res.get("error"):
             return {
                 "error": True,
-                "detail": res.get("message")
-                or res.get("fallback_error")
-                or str(res),
+                "detail": res.get("message") or res.get("fallback_error") or str(res),
             }
 
         return {"ok": True, "result": res}

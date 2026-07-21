@@ -2,10 +2,10 @@ import smtplib
 import logging
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from typing import Optional
 from app.core.config import settings
 
 logger = logging.getLogger(__name__)
+
 
 async def send_reset_email(to_email: str, reset_url: str) -> bool:
     """
@@ -23,7 +23,7 @@ async def send_reset_email(to_email: str, reset_url: str) -> bool:
         logger.warning(
             "[EmailService] SMTP non configuré. Lien de réinitialisation pour %s :\n%s",
             to_email,
-            reset_url
+            reset_url,
         )
         # Retourne False pour indiquer que l'email réel n'a pas pu être envoyé
         return False
@@ -75,23 +75,27 @@ async def send_reset_email(to_email: str, reset_url: str) -> bool:
     msg.attach(MIMEText(html_content, "html"))
 
     try:
-      server = smtplib.SMTP(smtp_host, smtp_port)
-      # STARTTLS uniquement si le serveur le supporte (MailHog en local ne le supporte pas)
-      if server.has_extn("STARTTLS"):
-          server.starttls()
-      # Login uniquement si des identifiants sont fournis (MailHog n'en a pas besoin)
-      if smtp_user and smtp_password and smtp_user.lower() != "test":
-          server.login(smtp_user, smtp_password)
-      server.sendmail(smtp_from, to_email, msg.as_string())
-      server.quit()
-      logger.info("[EmailService] Email envoyé avec succès à %s", to_email)
-      return True
+        server = smtplib.SMTP(smtp_host, smtp_port)
+        # STARTTLS uniquement si le serveur le supporte (MailHog en local ne le supporte pas)
+        if server.has_extn("STARTTLS"):
+            server.starttls()
+        # Login uniquement si des identifiants sont fournis (MailHog n'en a pas besoin)
+        if smtp_user and smtp_password and smtp_user.lower() != "test":
+            server.login(smtp_user, smtp_password)
+        server.sendmail(smtp_from, to_email, msg.as_string())
+        server.quit()
+        logger.info("[EmailService] Email envoyé avec succès à %s", to_email)
+        return True
     except Exception as exc:
-      logger.error("[EmailService] Échec de l'envoi de l'email à %s: %s", to_email, str(exc))
-      return False
-    
+        logger.error(
+            "[EmailService] Échec de l'envoi de l'email à %s: %s", to_email, str(exc)
+        )
+        return False
 
-async def send_account_created_email(to_email: str, jira_username: str, display_name: str | None = None) -> bool:
+
+async def send_account_created_email(
+    to_email: str, jira_username: str, display_name: str | None = None
+) -> bool:
     """
     Envoie un email de bienvenue lors de la création d'un compte testeur.
     Informe l'utilisateur qu'il peut se connecter avec ses identifiants Jira.
@@ -105,7 +109,8 @@ async def send_account_created_email(to_email: str, jira_username: str, display_
     if not smtp_host or not smtp_user or not smtp_password:
         logger.warning(
             "[EmailService] SMTP non configuré. Email de bienvenue non envoyé à %s (jira_username=%s)",
-            to_email, jira_username,
+            to_email,
+            jira_username,
         )
         return False
 
@@ -150,18 +155,19 @@ async def send_account_created_email(to_email: str, jira_username: str, display_
     msg.attach(MIMEText(html_content, "html"))
 
     try:
-      server = smtplib.SMTP(smtp_host, smtp_port)
-      # STARTTLS uniquement si le serveur le supporte (MailHog en local ne le supporte pas)
-      if server.has_extn("STARTTLS"):
-          server.starttls()
-      # Login uniquement si des identifiants sont fournis (MailHog n'en a pas besoin)
-      if smtp_user and smtp_password and smtp_user.lower() != "test":
-          server.login(smtp_user, smtp_password)
-      server.sendmail(smtp_from, to_email, msg.as_string())
-      server.quit()
-      logger.info("[EmailService] Email envoyé avec succès à %s", to_email)
-      return True
+        server = smtplib.SMTP(smtp_host, smtp_port)
+        # STARTTLS uniquement si le serveur le supporte (MailHog en local ne le supporte pas)
+        if server.has_extn("STARTTLS"):
+            server.starttls()
+        # Login uniquement si des identifiants sont fournis (MailHog n'en a pas besoin)
+        if smtp_user and smtp_password and smtp_user.lower() != "test":
+            server.login(smtp_user, smtp_password)
+        server.sendmail(smtp_from, to_email, msg.as_string())
+        server.quit()
+        logger.info("[EmailService] Email envoyé avec succès à %s", to_email)
+        return True
     except Exception as exc:
-      logger.error("[EmailService] Échec de l'envoi de l'email à %s: %s", to_email, str(exc))
-      return False
-    
+        logger.error(
+            "[EmailService] Échec de l'envoi de l'email à %s: %s", to_email, str(exc)
+        )
+        return False

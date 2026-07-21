@@ -27,7 +27,12 @@ def _map_ambiguity_to_preset_reason(field: str, detector_reason: str) -> str:
         return "vague objective"
     if "résultat attendu vague" in d or "adverbe" in d or "peu observable" in d:
         return "unclear expected result"
-    if "non actionnable" in d or "étape trop courte" in d or "champs non nommés" in d or "formulaire" in d:
+    if (
+        "non actionnable" in d
+        or "étape trop courte" in d
+        or "champs non nommés" in d
+        or "formulaire" in d
+    ):
         return "non-actionable step"
     if "vague" in d or "correctement" in d:
         return "weak measurable criteria"
@@ -141,7 +146,9 @@ def build_validation_envelope(
     embedding_model: str,
     coverage_threshold: float,
 ) -> Dict[str, Any]:
-    dup = find_semantic_duplicate_removal(tests, duplicate_similarity_threshold, embedding_model)
+    dup = find_semantic_duplicate_removal(
+        tests, duplicate_similarity_threshold, embedding_model
+    )
     dup_pairs = dup.pairs_reported
 
     dup_reports, _ = _duplicate_pair_reports(tests, dup_pairs)
@@ -163,7 +170,9 @@ def build_validation_envelope(
     duplicate_pairs_count = len(dup_reports)
     coverage_rate = float(cov.coverage_rate)
 
-    corr = build_correction_instructions(tests, list(cov.uncovered_points), dup_pairs, amb_flat)
+    corr = build_correction_instructions(
+        tests, list(cov.uncovered_points), dup_pairs, amb_flat
+    )
 
     validation_status = compute_validation_status(
         coverage_rate, coverage_threshold, duplicate_pairs_count, ambiguity_count

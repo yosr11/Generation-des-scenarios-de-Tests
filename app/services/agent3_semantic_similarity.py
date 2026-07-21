@@ -6,7 +6,7 @@ Utilise sentence-transformers (même famille que semantic_vague_detector).
 from __future__ import annotations
 
 from functools import lru_cache
-from typing import List, Sequence
+from typing import Sequence
 
 import numpy as np
 from sentence_transformers import SentenceTransformer
@@ -15,7 +15,9 @@ DEFAULT_EMBEDDING_MODEL = "paraphrase-multilingual-MiniLM-L12-v2"
 
 
 @lru_cache(maxsize=4)
-def get_sentence_transformer(model_name: str = DEFAULT_EMBEDDING_MODEL) -> SentenceTransformer:
+def get_sentence_transformer(
+    model_name: str = DEFAULT_EMBEDDING_MODEL,
+) -> SentenceTransformer:
     return SentenceTransformer(model_name)
 
 

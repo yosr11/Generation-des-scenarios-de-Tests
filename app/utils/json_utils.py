@@ -43,7 +43,7 @@ def _extract_balanced_json_object(text: str) -> str:
         elif char == "}":
             depth -= 1
             if depth == 0:
-                return text[start:index + 1]
+                return text[start : index + 1]
 
     return text[start:]
 

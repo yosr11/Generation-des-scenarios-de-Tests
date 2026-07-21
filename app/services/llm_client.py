@@ -13,10 +13,10 @@ from openai import APIStatusError as OpenAIAPIStatusError
 from openai import APIError as OpenAIAPIError
 import boto3
 from botocore.exceptions import ClientError
+from app.services.token_tracker import record_from_response
 
 logger = logging.getLogger(__name__)
 
-from app.services.token_tracker import record_from_response
 
 load_dotenv(override=True)
 
@@ -26,13 +26,12 @@ GROQ_MODELS = {
     "gptoss120b": "openai/gpt-oss-120b",
     "llama4": "meta-llama/llama-4-scout-17b-16e-instruct",
     "qwen3.6": "qwen/qwen3.6-27b",
-    "llama33": "llama-3.3-70b-versatile"
+    "llama33": "llama-3.3-70b-versatile",
 }
 
 # Bedrock Models — Amazon Nova
 BEDROCK_MODELS = {
     "nova-lite-2": "eu.amazon.nova-2-lite-v1:0",
-    
 }
 
 # GitHub Models — usage évaluation / prototypage uniquement (rate limits stricts)
@@ -74,7 +73,9 @@ def _is_overloaded_error(err: Exception) -> bool:
     if status in (502, 503, 504):
         return True
     msg = str(err).lower()
-    return ("over capacity" in msg) or ("503" in msg) or ("internal_server_error" in msg)
+    return (
+        ("over capacity" in msg) or ("503" in msg) or ("internal_server_error" in msg)
+    )
 
 
 def _is_json_validate_failed(err: Exception) -> bool:
@@ -132,7 +133,9 @@ def call_groq(
             last_error = e
             if attempt < max_retries - 1:
                 sleep_time = retry_sleep * (attempt + 1)
-                print(f"[RateLimit] tentative {attempt + 1}/{max_retries} -> pause {sleep_time:.1f}s")
+                print(
+                    f"[RateLimit] tentative {attempt + 1}/{max_retries} -> pause {sleep_time:.1f}s"
+                )
                 time.sleep(sleep_time)
             else:
                 break
@@ -141,7 +144,9 @@ def call_groq(
             last_error = e
             if _is_json_validate_failed(e) and attempt < max_retries - 1:
                 sleep_time = retry_sleep * (attempt + 1)
-                print(f"[JSONValidateFailed] {model_alias} tentative {attempt + 1}/{max_retries} -> pause {sleep_time:.1f}s")
+                print(
+                    f"[JSONValidateFailed] {model_alias} tentative {attempt + 1}/{max_retries} -> pause {sleep_time:.1f}s"
+                )
                 time.sleep(sleep_time)
             else:
                 break
@@ -150,7 +155,9 @@ def call_groq(
             last_error = e
             if _is_overloaded_error(e) and attempt < max_retries - 1:
                 sleep_time = retry_sleep * (attempt + 1)
-                print(f"[GroqOverloaded] {model_alias} tentative {attempt + 1}/{max_retries} -> pause {sleep_time:.1f}s")
+                print(
+                    f"[GroqOverloaded] {model_alias} tentative {attempt + 1}/{max_retries} -> pause {sleep_time:.1f}s"
+                )
                 time.sleep(sleep_time)
             else:
                 break
@@ -202,7 +209,9 @@ def call_groq_json_schema(
             last_error = e
             if attempt < max_retries - 1:
                 sleep_time = retry_sleep * (attempt + 1)
-                print(f"[RateLimit] tentative {attempt + 1}/{max_retries} -> pause {sleep_time:.1f}s")
+                print(
+                    f"[RateLimit] tentative {attempt + 1}/{max_retries} -> pause {sleep_time:.1f}s"
+                )
                 time.sleep(sleep_time)
             else:
                 raise
@@ -211,7 +220,9 @@ def call_groq_json_schema(
                 last_error = e
                 if attempt < max_retries - 1:
                     sleep_time = retry_sleep * (attempt + 1)
-                    print(f"[JSONValidateFailed] tentative {attempt + 1}/{max_retries} -> pause {sleep_time:.1f}s")
+                    print(
+                        f"[JSONValidateFailed] tentative {attempt + 1}/{max_retries} -> pause {sleep_time:.1f}s"
+                    )
                     time.sleep(sleep_time)
                 else:
                     raise
@@ -238,18 +249,19 @@ def _resolve_any_model(model_alias: str) -> tuple:
 #  Amazon Bedrock — Nova Lite 2
 # ═══════════════════════════════════════════════════════════════
 
+
 def _build_bedrock_client():
     """Initialise client Bedrock avec AWS credentials."""
     access_key = os.getenv("AWS_ACCESS_KEY_ID")
     secret_key = os.getenv("AWS_SECRET_ACCESS_KEY")
     region = os.getenv("AWS_REGION", "eu-west-3")
-    
+
     if not access_key or not secret_key:
         raise RuntimeError(
             "AWS_ACCESS_KEY_ID ou AWS_SECRET_ACCESS_KEY manquants dans .env. "
             "Demande les credentials à ton manager."
         )
-    
+
     return boto3.client(
         "bedrock-runtime",
         region_name=region,
@@ -263,13 +275,13 @@ def _build_bedrock_management_client():
     access_key = os.getenv("AWS_ACCESS_KEY_ID")
     secret_key = os.getenv("AWS_SECRET_ACCESS_KEY")
     region = os.getenv("AWS_REGION", "eu-west-3")
-    
+
     if not access_key or not secret_key:
         raise RuntimeError(
             "AWS_ACCESS_KEY_ID ou AWS_SECRET_ACCESS_KEY manquants dans .env. "
             "Demande les credentials à ton manager."
         )
-    
+
     return boto3.client(
         "bedrock",
         region_name=region,
@@ -329,74 +341,71 @@ def call_bedrock(
 ) -> str:
     """
     Appel Bedrock/Nova Lite 2 via l'API Converse (nouvelle API Bedrock).
-    
+
     Robuste face à :
     - ThrottlingException (rate limit) → retry exponentiel
     - ValidationException (format error) → pas de retry
     - AccessDeniedException (credentials invalides) → erreur immédiate
-    
+
     Note: Bedrock n'a PAS de mode JSON natif. On ajoute une instruction
     au prompt pour demander du JSON valide en sortie.
     """
     client = _build_bedrock_client()
     model_id = _resolve_bedrock_model(model_alias)
-    
+
     # Ajouter une instruction JSON au prompt utilisateur
     user_prompt_with_json = (
         f"{user_prompt}\n\n"
         "Réponds UNIQUEMENT avec un objet JSON valide. Aucun autre texte avant ou après."
     )
-    
+
     last_error = None
-    
+
     for attempt in range(max_retries):
         try:
             # Format Bedrock Converse API (nouvelle API pour Nova)
             # Note: system doit être un array, pas une string!
             response = client.converse(
                 modelId=model_id,
-                system=[
-                    {
-                        "text": system_prompt
-                    }
-                ],
+                system=[{"text": system_prompt}],
                 messages=[
-                    {
-                        "role": "user",
-                        "content": [
-                            {
-                                "text": user_prompt_with_json
-                            }
-                        ]
-                    }
+                    {"role": "user", "content": [{"text": user_prompt_with_json}]}
                 ],
                 inferenceConfig={
                     "temperature": temperature,
                     "maxTokens": min(max_tokens, 5120),
-                }
+                },
             )
-            
+
             # Récupérer le contenu de la réponse (format Converse API)
             content = ""
             if "output" in response and "message" in response["output"]:
                 message = response["output"]["message"]
                 if "content" in message and len(message["content"]) > 0:
                     content = message["content"][0].get("text", "").strip()
-            
+
             # Enregistrer les tokens (Bedrock retourne usage dans la réponse)
             usage = response.get("usage", {})
             # Créer un objet compatible avec record_from_response
-            mock_response = type('obj', (object,), {
-                'usage': type('obj', (object,), {
-                    'prompt_tokens': usage.get("inputTokens", 0),
-                    'completion_tokens': usage.get("outputTokens", 0),
-                })(),
-                'model': model_id,
-            })()
+            mock_response = type(
+                "obj",
+                (object,),
+                {
+                    "usage": type(
+                        "obj",
+                        (object,),
+                        {
+                            "prompt_tokens": usage.get("inputTokens", 0),
+                            "completion_tokens": usage.get("outputTokens", 0),
+                        },
+                    )(),
+                    "model": model_id,
+                },
+            )()
             record_from_response(mock_response, model_id)
-            
+
             return content
-        
+
         except ClientError as e:
             error_code = e.response.get("Error", {}).get("Code", "")
             error_message = e.response.get("Error", {}).get("Message", "")
@@ -404,8 +413,10 @@ def call_bedrock(
 
             # Throttling → retry avec pause
             if error_code == "ThrottlingException" and attempt < max_retries - 1:
-                sleep_time = retry_sleep * (2 ** attempt)
-                print(f"[Bedrock Throttled] tentative {attempt + 1}/{max_retries} -> pause {sleep_time:.1f}s")
+                sleep_time = retry_sleep * (2**attempt)
+                print(
+                    f"[Bedrock Throttled] tentative {attempt + 1}/{max_retries} -> pause {sleep_time:.1f}s"
+                )
                 time.sleep(sleep_time)
             # Accès refusé → erreur immédiate
             elif error_code == "AccessDeniedException":
@@ -417,7 +428,11 @@ def call_bedrock(
             elif error_code == "ValidationException":
                 if "model identifier is invalid" in error_message.lower():
                     available = _list_available_bedrock_models()
-                    available_sample = ", ".join(available[:8]) if available else "<liste indisponible>"
+                    available_sample = (
+                        ", ".join(available[:8])
+                        if available
+                        else "<liste indisponible>"
+                    )
                     raise RuntimeError(
                         f"Model invalide pour Bedrock : {model_id}. "
                         "Vérifie la valeur BEDROCK_MODEL_ID dans .env et la disponibilité du modèle "
@@ -430,23 +445,28 @@ def call_bedrock(
                 ) from e
             else:
                 break
-        
+
         except Exception as e:
             last_error = e
             # Erreurs réseau/transitoires
-            if attempt < max_retries - 1 and not isinstance(e, (ValueError, RuntimeError)):
+            if attempt < max_retries - 1 and not isinstance(
+                e, (ValueError, RuntimeError)
+            ):
                 sleep_time = retry_sleep * (attempt + 1)
-                print(f"[Bedrock Error] {type(e).__name__} tentative {attempt + 1}/{max_retries} -> pause {sleep_time:.1f}s")
+                print(
+                    f"[Bedrock Error] {type(e).__name__} tentative {attempt + 1}/{max_retries} -> pause {sleep_time:.1f}s"
+                )
                 time.sleep(sleep_time)
             else:
                 break
-    
+
     raise last_error
 
 
 # ═══════════════════════════════════════════════════════════════
 #  Wrapper Générique — Route vers Groq ou Bedrock
 # ═══════════════════════════════════════════════════════════════
+
 
 def call_llm(
     system_prompt: str,
@@ -460,13 +480,13 @@ def call_llm(
 ) -> str:
     """
     Wrapper générique pour appeler Groq ou Bedrock selon la config.
-    
+
     Si provider=None, utilise LLM_PROVIDER de .env (défaut: "groq")
     Si model_alias=None, utilise le modèle par défaut du provider
     """
     if provider is None:
         provider = os.getenv("LLM_PROVIDER", "groq")
-    
+
     if provider == "groq":
         if model_alias is None:
             model_alias = os.getenv("LLM_DEFAULT_MODEL", "qwen3")
@@ -493,14 +513,14 @@ def call_llm(
         )
     else:
         raise ValueError(
-            f"Unknown LLM provider '{provider}'. "
-            f"Allowed: ['groq', 'bedrock']"
+            f"Unknown LLM provider '{provider}'. " f"Allowed: ['groq', 'bedrock']"
         )
 
 
 # ═══════════════════════════════════════════════════════════════
 #  GitHub Models — pour LLM-as-Judge (évaluation uniquement)
 # ═══════════════════════════════════════════════════════════════
+
 
 def _build_github_client() -> OpenAI:
     token = os.getenv("GITHUB_TOKEN")
@@ -567,8 +587,10 @@ def call_github_models(
             last_error = e
             if attempt < max_retries - 1:
                 # Backoff long car GitHub Models a un quota par minute
-                sleep_time = retry_sleep * (2 ** attempt)
-                print(f"[GitHub RateLimit] tentative {attempt + 1}/{max_retries} -> pause {sleep_time:.1f}s")
+                sleep_time = retry_sleep * (2**attempt)
+                print(
+                    f"[GitHub RateLimit] tentative {attempt + 1}/{max_retries} -> pause {sleep_time:.1f}s"
+                )
                 time.sleep(sleep_time)
             else:
                 break
@@ -578,7 +600,9 @@ def call_github_models(
             status = getattr(e, "status_code", None)
             if status in (500, 502, 503, 504) and attempt < max_retries - 1:
                 sleep_time = retry_sleep * (attempt + 1)
-                print(f"[GitHub Overloaded {status}] tentative {attempt + 1}/{max_retries} -> pause {sleep_time:.1f}s")
+                print(
+                    f"[GitHub Overloaded {status}] tentative {attempt + 1}/{max_retries} -> pause {sleep_time:.1f}s"
+                )
                 time.sleep(sleep_time)
             else:
                 break
@@ -590,7 +614,9 @@ class BedrockChatCompletions:
     def __init__(self, client):
         self.client = client
 
-    def create(self, model, messages, temperature, response_format, max_tokens, **kwargs):
+    def create(
+        self, model, messages, temperature, response_format, max_tokens, **kwargs
+    ):
         # Séparer system prompt et messages user/assistant
         system_content = ""
         converse_messages = []
@@ -608,10 +634,12 @@ class BedrockChatCompletions:
             else:
                 # Bedrock Converse accepte "user" et "assistant" uniquement
                 converse_role = "assistant" if role == "assistant" else "user"
-                converse_messages.append({
-                    "role": converse_role,
-                    "content": [{"text": content}],
-                })
+                converse_messages.append(
+                    {
+                        "role": converse_role,
+                        "content": [{"text": content}],
+                    }
+                )
 
         # Bedrock Converse exige au moins un message et que le premier soit "user"
         if not converse_messages:
@@ -649,11 +677,18 @@ class BedrockChatCompletions:
             error_code = e.response.get("Error", {}).get("Code", "")
             error_message = e.response.get("Error", {}).get("Message", "")
             region = getattr(self.client, "meta", None)
-            region_name = getattr(region, "region_name", os.getenv("AWS_REGION", "unknown"))
+            region_name = getattr(
+                region, "region_name", os.getenv("AWS_REGION", "unknown")
+            )
 
-            if error_code == "ValidationException" and "model identifier is invalid" in error_message.lower():
+            if (
+                error_code == "ValidationException"
+                and "model identifier is invalid" in error_message.lower()
+            ):
                 available = _list_available_bedrock_models()
-                available_sample = ", ".join(available[:8]) if available else "<liste indisponible>"
+                available_sample = (
+                    ", ".join(available[:8]) if available else "<liste indisponible>"
+                )
                 raise RuntimeError(
                     f"Bedrock model invalide pour '{model}' dans la région '{region_name}'. "
                     "Vérifie BEDROCK_MODEL_ID dans .env et la disponibilité du modèle. "
@@ -686,10 +721,14 @@ class BedrockChatCompletions:
             content = response_body.get("outputText", "").strip()
 
         usage = response_body.get("usage", {})
-        usage_obj = type("usage", (), {
-            "prompt_tokens": usage.get("inputTokens", 0),
-            "completion_tokens": usage.get("outputTokens", 0),
-        })()
+        usage_obj = type(
+            "usage",
+            (),
+            {
+                "prompt_tokens": usage.get("inputTokens", 0),
+                "completion_tokens": usage.get("outputTokens", 0),
+            },
+        )()
         message_obj = type("message", (), {"content": content})()
         choice_obj = type("choice", (), {"message": message_obj})()
 

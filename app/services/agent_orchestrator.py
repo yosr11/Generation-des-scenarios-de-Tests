@@ -15,21 +15,30 @@ from langgraph.graph import END, StateGraph
 from app.services.jira_service import enrich_issuelinks_with_description
 
 from app.services.token_tracker import track_agent, track_pipeline
-from app.services.pipeline_export_service import (
-    collect_story_images,
-    build_agent2_input,
-    build_evaluation_export,
+from app.utils.pipeline_cancel import (
+    check_pipeline_cancelled,
+    PipelineCancelled,
+    clear_pipeline_cancelled,
 )
-from app.utils.pipeline_cancel import check_pipeline_cancelled, PipelineCancelled, clear_pipeline_cancelled
 
 logger = logging.getLogger(__name__)
 
-def _safe_update_step(story_id: str, agent_name: str, status: str, output: Any = None, error: str = None, progress: int = None):
+
+def _safe_update_step(
+    story_id: str,
+    agent_name: str,
+    status: str,
+    output: Any = None,
+    error: str = None,
+    progress: int = None,
+):
     try:
         from app.utils.job_manager import update_job_step
+
         update_job_step(story_id, agent_name, status, output, error, progress)
     except Exception as exc:
         logger.warning(f"Could not update step {agent_name}: {exc}")
+
 
 # ── Cache RAG legacy tests (session-level) ──
 # Évite les appels RAG répétés pour la même story
@@ -40,11 +49,12 @@ _legacy_rag_cache: Dict[str, List[Dict[str, Any]]] = {}
 #  1. STATE — objet partagé qui circule entre tous les nœuds
 # ═══════════════════════════════════════════════════════════════
 
+
 class PipelineState(TypedDict, total=False):
     # ── Entrées ──
     story_id: str
     use_rag: bool
-    use_legacy_rag: bool                 # RAG des tests Xray legacy Sopra HR (Agent 2 few-shot)
+    use_legacy_rag: bool  # RAG des tests Xray legacy Sopra HR (Agent 2 few-shot)
     model_agent1: str
     model_agent2: str
     model_agent3_quality: str
@@ -52,57 +62,68 @@ class PipelineState(TypedDict, total=False):
     coverage_threshold: float
     max_correction_iterations: int
     force_reanalyze: bool
-    force_refresh: bool                  # bypass des caches story + RAG epic (refetch Jira + ré-indexation)
+    force_refresh: (
+        bool  # bypass des caches story + RAG epic (refetch Jira + ré-indexation)
+    )
 
     # ── Données accumulées ──
-    story: Dict[str, Any]               # Story Jira enrichie
-    rag_context: Optional[list]          # Contexte RAG (optionnel)
-    legacy_examples: Optional[list]      # Tests legacy similaires (few-shot Agent 2)
-    analysis: Optional[Any]              # StoryAnalysisResult (merged final output)
-    analysis_dict: Optional[Dict]        # Version dict pour Agent 2
-    classification: Optional[Any]        # StoryClassificationResult (classification-only output)
-    business_model: Optional[Any]        # BusinessModelingResult (Agent 1.5)
-    tests: List[Any]                     # List[ManualTestCase]
-    generation_result: Optional[Any]     # ManualTestGenerationResult
+    story: Dict[str, Any]  # Story Jira enrichie
+    rag_context: Optional[list]  # Contexte RAG (optionnel)
+    legacy_examples: Optional[list]  # Tests legacy similaires (few-shot Agent 2)
+    analysis: Optional[Any]  # StoryAnalysisResult (merged final output)
+    analysis_dict: Optional[Dict]  # Version dict pour Agent 2
+    classification: Optional[
+        Any
+    ]  # StoryClassificationResult (classification-only output)
+    business_model: Optional[Any]  # BusinessModelingResult (Agent 1.5)
+    tests: List[Any]  # List[ManualTestCase]
+    generation_result: Optional[Any]  # ManualTestGenerationResult
     agent2_golden_rule_warnings: List[str]
     agent2_message: Optional[str]
-    validation: Optional[Any]            # Agent3ValidationResult
-    report: Optional[Any]               # Agent5Report
-    classification_result: Optional[Any] # Agent4 — StoryAutomationClassificationResult
+    validation: Optional[Any]  # Agent3ValidationResult
+    report: Optional[Any]  # Agent5Report
+    classification_result: Optional[Any]  # Agent4 — StoryAutomationClassificationResult
 
     # ── Modèles par agent ──
-    model_agent15: str                   # Modèle LLM pour Agent 1.5
+    model_agent15: str  # Modèle LLM pour Agent 1.5
 
     # ── Contrôle ──
     correction_iteration: int
-    status: str                          # running | completed | skipped | failed
+    status: str  # running | completed | skipped | failed
     errors: List[str]
     duration_ms: int
-    token_usage: Optional[Dict[str, Any]]   # consommation tokens par agent
+    token_usage: Optional[Dict[str, Any]]  # consommation tokens par agent
 
 
 # ═══════════════════════════════════════════════════════════════
 #  2. NŒUDS — chaque nœud lit l'état, appelle un service, écrit
 # ═══════════════════════════════════════════════════════════════
 
+
 def node_enrich_story(state: PipelineState) -> dict:
     """Récupère et enrichit la story depuis Jira (avec cache + versioning)."""
     from app.services.jira_service import get_story_byID, get_epic_for_story
-    from app.utils.cleaning import clean_story_dict, enrich_story_for_llm, flatten_issuelinks
+    from app.utils.cleaning import (
+        clean_story_dict,
+        enrich_story_for_llm,
+        flatten_issuelinks,
+    )
     from app.repositories.story_repository import get_story_by_id, save_story
     from app.services.epic_service import JIRA_AC_FIELD
 
     story_id = state["story_id"]
     check_pipeline_cancelled(story_id)
     force_refresh = bool(state.get("force_refresh"))
-    
+
     # "Renforcer l'enrichissement" est activé si la user story n'a pas été traitée avant
     if not get_story_by_id(story_id):
         force_refresh = True
         state["force_refresh"] = True
 
     _safe_update_step(story_id, "Agent 1", "running", progress=10)
-    logger.info(f"[Orchestrator] Enriching story {story_id} (force_refresh={force_refresh})")
+    logger.info(
+        f"[Orchestrator] Enriching story {story_id} (force_refresh={force_refresh})"
+    )
 
     # Vérifier le cache (sauf si force_refresh demande un re-fetch Jira complet)
     db_story = None if force_refresh else get_story_by_id(story_id)
@@ -123,7 +144,9 @@ def node_enrich_story(state: PipelineState) -> dict:
     if result.get("status") != 200:
         return {
             "status": "failed",
-            "errors": [f"Story {story_id} introuvable dans Jira (status={result.get('status')})"],
+            "errors": [
+                f"Story {story_id} introuvable dans Jira (status={result.get('status')})"
+            ],
         }
 
     fields = result["data"].get("fields", {}) or {}
@@ -178,7 +201,12 @@ def node_build_rag_context(state: PipelineState) -> dict:
 
     from app.services.jira_service import get_epic_for_story
     from app.services.document_collector import collect_documents_for_epic
-    from app.services.rag_service import is_epic_indexed, index_documents, retrieve_context, _get_chroma_client
+    from app.services.rag_service import (
+        is_epic_indexed,
+        index_documents,
+        retrieve_context,
+        _get_chroma_client,
+    )
 
     enriched = state["story"]
     story_id = state["story_id"]
@@ -193,7 +221,9 @@ def node_build_rag_context(state: PipelineState) -> dict:
             enriched["epic_summary"] = epic_info["summary"]
             enriched["epic_description"] = epic_info.get("description") or ""
         else:
-            logger.warning(f"[Orchestrator] No parent epic for {story_id} → RAG skipped")
+            logger.warning(
+                f"[Orchestrator] No parent epic for {story_id} → RAG skipped"
+            )
             return {"rag_context": None, "story": enriched}
     elif not enriched.get("epic_summary"):
         epic_info = get_epic_for_story(story_id)
@@ -201,21 +231,31 @@ def node_build_rag_context(state: PipelineState) -> dict:
             enriched["epic_summary"] = epic_info["summary"]
             enriched["epic_description"] = epic_info.get("description") or ""
 
-    logger.info(f"[Orchestrator] Building RAG context for {story_id} (epic={epic_key}, force_refresh={force_refresh})")
+    logger.info(
+        f"[Orchestrator] Building RAG context for {story_id} (epic={epic_key}, force_refresh={force_refresh})"
+    )
 
     if force_refresh and is_epic_indexed(epic_key):
         collection_name = epic_key.replace("-", "_").lower()
         try:
             _get_chroma_client().delete_collection(collection_name)
-            logger.info(f"[Orchestrator] Force refresh: collection RAG {collection_name} supprimée")
+            logger.info(
+                f"[Orchestrator] Force refresh: collection RAG {collection_name} supprimée"
+            )
         except Exception as exc:
-            logger.warning(f"[Orchestrator] Impossible de supprimer la collection {collection_name}: {exc}")
+            logger.warning(
+                f"[Orchestrator] Impossible de supprimer la collection {collection_name}: {exc}"
+            )
 
     if not is_epic_indexed(epic_key):
-        logger.info(f"[Orchestrator] Indexing epic {epic_key} for RAG (VLM focus={story_id})")
+        logger.info(
+            f"[Orchestrator] Indexing epic {epic_key} for RAG (VLM focus={story_id})"
+        )
         check_pipeline_cancelled(story_id)
         epic_docs = collect_documents_for_epic(
-            epic_key, vlm_focus_story=story_id, cancel_story_id=story_id,
+            epic_key,
+            vlm_focus_story=story_id,
+            cancel_story_id=story_id,
         )
         all_docs = list(epic_docs.get("epic_documents", []))
         for docs in epic_docs.get("documents_by_story", {}).values():
@@ -257,7 +297,9 @@ def node_classify_story(state: PipelineState) -> dict:
 
     story_attachments = collect_story_attachments_only(story_id)
     if story_attachments:
-        logger.info(f"[Orchestrator] Classification Agent: {story_id} has {len(story_attachments)} attachment(s)")
+        logger.info(
+            f"[Orchestrator] Classification Agent: {story_id} has {len(story_attachments)} attachment(s)"
+        )
 
     logger.info(f"[Orchestrator] Classifying {story_id} (model={model})")
 
@@ -269,12 +311,16 @@ def node_classify_story(state: PipelineState) -> dict:
                 story_attachments=story_attachments,
             )
 
-        analysis = merge_story_analysis(classification=classification, analysis=None, story=story)
+        analysis = merge_story_analysis(
+            classification=classification, analysis=None, story=story
+        )
         analysis_dict = analysis.model_dump()
         analysis_dict["model"] = model
         save_analysis(analysis_dict)
 
-        _safe_update_step(story_id, "Agent 1", "completed", output=analysis_dict, progress=25)
+        _safe_update_step(
+            story_id, "Agent 1", "completed", output=analysis_dict, progress=25
+        )
 
         return {
             "classification": classification,
@@ -331,7 +377,9 @@ def node_extract_analysis(state: PipelineState) -> dict:
         analysis_dict["model"] = model
         save_analysis(analysis_dict)
 
-        _safe_update_step(story_id, "Agent 1", "completed", output=analysis_dict, progress=25)
+        _safe_update_step(
+            story_id, "Agent 1", "completed", output=analysis_dict, progress=25
+        )
         _safe_update_step(story_id, "Agent 1.5", "running", progress=26)
 
         return {
@@ -370,7 +418,9 @@ def node_agent15_business_model(state: PipelineState) -> dict:
         save_business_model(result_dict)
 
         bm_out = result_dict
-        _safe_update_step(story_id, "Agent 1.5", "completed", output=bm_out, progress=30)
+        _safe_update_step(
+            story_id, "Agent 1.5", "completed", output=bm_out, progress=30
+        )
 
         return {"business_model": result}
 
@@ -394,7 +444,11 @@ def node_agent2_generate(state: PipelineState) -> dict:
     # Enrichir analysis_dict avec le business model si disponible
     business_model = state.get("business_model")
     if business_model is not None:
-        bm_dict = business_model.model_dump() if hasattr(business_model, "model_dump") else dict(business_model)
+        bm_dict = (
+            business_model.model_dump()
+            if hasattr(business_model, "model_dump")
+            else dict(business_model)
+        )
         analysis_dict["business_goals"] = bm_dict.get("business_goals", [])
         analysis_dict["business_workflows"] = bm_dict.get("business_workflows", [])
     model = state.get("model_agent2", "nova-lite-2")
@@ -406,12 +460,16 @@ def node_agent2_generate(state: PipelineState) -> dict:
     if state.get("use_legacy_rag") and legacy_examples is None:
         try:
             from app.services.legacy_test_rag_service import retrieve_similar
-            
+
             # OPTIMISATION: Caching session-level des résultats RAG
-            cache_key = f"{story.get('summary', '')}|||{story.get('description_clean', '')}"
+            cache_key = (
+                f"{story.get('summary', '')}|||{story.get('description_clean', '')}"
+            )
             if cache_key in _legacy_rag_cache:
                 legacy_examples = _legacy_rag_cache[cache_key]
-                logger.info(f"[Orchestrator] Legacy RAG (CACHED): {len(legacy_examples)} examples for {story_id}")
+                logger.info(
+                    f"[Orchestrator] Legacy RAG (CACHED): {len(legacy_examples)} examples for {story_id}"
+                )
             else:
                 legacy_examples = retrieve_similar(
                     title=story.get("summary", ""),
@@ -419,19 +477,23 @@ def node_agent2_generate(state: PipelineState) -> dict:
                     k=5,  # ← Réduit de 5 à 3 exemples (économise ~30% tokens)
                 )
                 _legacy_rag_cache[cache_key] = legacy_examples
-                
+
                 if legacy_examples:
                     logger.info(
                         f"[Orchestrator] Legacy RAG: {len(legacy_examples)} examples for {story_id} "
                         f"[{', '.join(e.get('test_id', '?') for e in legacy_examples)}]"
                     )
                 else:
-                    logger.info(f"[Orchestrator] Legacy RAG: no example >= min_score for {story_id}")
+                    logger.info(
+                        f"[Orchestrator] Legacy RAG: no example >= min_score for {story_id}"
+                    )
         except Exception as e:
             logger.warning(f"[Orchestrator] Legacy RAG failed for {story_id}: {e}")
             legacy_examples = []
 
-    logger.info(f"[Orchestrator] Agent 2 generating tests for {story_id} (model={model})")
+    logger.info(
+        f"[Orchestrator] Agent 2 generating tests for {story_id} (model={model})"
+    )
 
     try:
         check_pipeline_cancelled(story_id)
@@ -454,15 +516,26 @@ def node_agent2_generate(state: PipelineState) -> dict:
                 generation_model=model,
             )
 
-        tests_out = [t.model_dump() if hasattr(t, "model_dump") else dict(t) for t in result.tests] if result.tests else []
-        _safe_update_step(story_id, "Agent 2", "completed", output=tests_out, progress=50)
+        tests_out = (
+            [
+                t.model_dump() if hasattr(t, "model_dump") else dict(t)
+                for t in result.tests
+            ]
+            if result.tests
+            else []
+        )
+        _safe_update_step(
+            story_id, "Agent 2", "completed", output=tests_out, progress=50
+        )
         _safe_update_step(story_id, "Agent 3", "running", progress=55)
 
         return {
             "generation_result": result,
             "tests": list(result.tests),
             "legacy_examples": legacy_examples or [],
-            "agent2_golden_rule_warnings": list(getattr(result, "golden_rule_warnings", None) or []),
+            "agent2_golden_rule_warnings": list(
+                getattr(result, "golden_rule_warnings", None) or []
+            ),
             "agent2_message": getattr(result, "message", None),
         }
 
@@ -516,7 +589,7 @@ def node_agent3_validate(state: PipelineState) -> dict:
 
         val_out = result.model_dump() if hasattr(result, "model_dump") else dict(result)
         _safe_update_step(story_id, "Agent 3", "completed", output=val_out, progress=75)
-        
+
         _safe_update_step(story_id, "Agent 5", "running", progress=85)
 
         return {"validation": result}
@@ -558,7 +631,9 @@ def node_agent2_gap_fill(state: PipelineState) -> dict:
         if report.ambiguity_findings:
             amb_findings = report.ambiguity_findings
         if report.correction_instructions:
-            corr_instructions = [ci.model_dump() for ci in report.correction_instructions]
+            corr_instructions = [
+                ci.model_dump() for ci in report.correction_instructions
+            ]
 
     logger.info(
         f"[Orchestrator] Gap-fill iteration {iteration + 1} for {story_id}: "
@@ -586,7 +661,9 @@ def node_agent2_gap_fill(state: PipelineState) -> dict:
 
         # ── Dédoublonner sémantiquement les tests fusionnés ──
         if len(merged_tests) > 1:
-            deduped_tests, dup_result = remove_duplicate_tests(merged_tests, duplicate_threshold=0.80)
+            deduped_tests, dup_result = remove_duplicate_tests(
+                merged_tests, duplicate_threshold=0.80
+            )
             if dup_result.removed_indices:
                 logger.info(
                     f"[Orchestrator] Dedup removed {len(dup_result.removed_indices)} duplicate tests "
@@ -647,7 +724,9 @@ def node_agent5_report(state: PipelineState) -> dict:
                 max_correction_iterations=state.get("max_correction_iterations", 0),
             )
         rep_out = report.model_dump() if hasattr(report, "model_dump") else dict(report)
-        _safe_update_step(story_id, "Agent 5", "completed", output=rep_out, progress=100)
+        _safe_update_step(
+            story_id, "Agent 5", "completed", output=rep_out, progress=100
+        )
 
         return {
             "report": report,
@@ -667,6 +746,7 @@ def node_agent5_report(state: PipelineState) -> dict:
 #  3. ARÊTES CONDITIONNELLES — décisions de routage
 # ═══════════════════════════════════════════════════════════════
 
+
 def route_after_enrich(state: PipelineState) -> str:
     if state.get("status") == "failed":
         return END
@@ -684,7 +764,9 @@ def route_after_agent1(state: PipelineState) -> str:
 
     story_type = getattr(classification, "story_type", None) or ""
     if story_type == "invalid_or_too_weak":
-        logger.info(f"[Orchestrator] Story {state['story_id']} is invalid_or_too_weak → skipping")
+        logger.info(
+            f"[Orchestrator] Story {state['story_id']} is invalid_or_too_weak → skipping"
+        )
         return "skip"
 
     if story_type != "functional":
@@ -702,8 +784,14 @@ def route_after_agent2(state: PipelineState) -> str:
         return END
 
     gen = state.get("generation_result")
-    if not gen or gen.generation_status.value == "not_generated" or not state.get("tests"):
-        logger.info(f"[Orchestrator] No tests generated for {state['story_id']} → stopping")
+    if (
+        not gen
+        or gen.generation_status.value == "not_generated"
+        or not state.get("tests")
+    ):
+        logger.info(
+            f"[Orchestrator] No tests generated for {state['story_id']} → stopping"
+        )
         return "no_tests"
     return "agent3_validate"
 
@@ -730,7 +818,9 @@ def route_after_agent3(state: PipelineState) -> str:
     ambiguities = report.ambiguity_findings or []
 
     # Déclencher le gap-fill si couverture < seuil OU doublons OU ambiguïtés
-    has_issues = bool((coverage < coverage_threshold and uncovered) or duplicates or ambiguities)
+    has_issues = bool(
+        (coverage < coverage_threshold and uncovered) or duplicates or ambiguities
+    )
     if iteration < max_iter and has_issues:
         logger.info(
             f"[Orchestrator] Issues détectées (coverage={coverage:.1%}, uncovered={len(uncovered)}, "
@@ -750,10 +840,13 @@ def route_after_agent3(state: PipelineState) -> str:
 #  4. NŒUDS TERMINAUX
 # ═══════════════════════════════════════════════════════════════
 
+
 def node_skip(state: PipelineState) -> dict:
     """Story non exploitable → fin avec statut skipped."""
     story_id = state["story_id"]
-    _safe_update_step(story_id, "Agent 2", "failed", error="Story non exploitable", progress=100)
+    _safe_update_step(
+        story_id, "Agent 2", "failed", error="Story non exploitable", progress=100
+    )
     _safe_update_step(story_id, "Agent 3", "failed", error="Story non exploitable")
     _safe_update_step(story_id, "Agent 5", "failed", error="Story non exploitable")
     return {"status": "skipped"}
@@ -766,15 +859,17 @@ def node_not_functional(state: PipelineState) -> dict:
     story_type = analysis.story_type if analysis else "unknown"
     msg = (
         f"Cette story est de type '{story_type}' et sort du périmètre du pipeline. "
-        f"Seules les User Stories fonctionnelles (forme \"En tant que… je veux…\") sont traitées. "
+        f'Seules les User Stories fonctionnelles (forme "En tant que… je veux…") sont traitées. '
         f"Recommandation : pour une story technique, prévoir des tests d'intégration / unitaires côté développement."
     )
     logger.info(f"[Orchestrator] {story_id} → not_functional ({story_type})")
-    
-    _safe_update_step(story_id, "Agent 2", "failed", error="Story non fonctionnelle", progress=100)
+
+    _safe_update_step(
+        story_id, "Agent 2", "failed", error="Story non fonctionnelle", progress=100
+    )
     _safe_update_step(story_id, "Agent 3", "failed", error="Story non fonctionnelle")
     _safe_update_step(story_id, "Agent 5", "failed", error="Story non fonctionnelle")
-    
+
     return {"status": "skipped", "errors": [msg]}
 
 
@@ -792,17 +887,20 @@ def node_no_tests(state: PipelineState) -> dict:
             note_text = (note or "").strip()
             if note_text and note_text not in errors:
                 errors.append(note_text)
-                
-    _safe_update_step(story_id, "Agent 2", "failed", error="\n".join(errors), progress=100)
+
+    _safe_update_step(
+        story_id, "Agent 2", "failed", error="\n".join(errors), progress=100
+    )
     _safe_update_step(story_id, "Agent 3", "failed", error="Pas de tests generes")
     _safe_update_step(story_id, "Agent 5", "failed", error="Pas de tests generes")
-    
+
     return {"status": "failed", "errors": errors}
 
 
 # ═══════════════════════════════════════════════════════════════
 #  5. CONSTRUCTION DU GRAPHE
 # ═══════════════════════════════════════════════════════════════
+
 
 def build_pipeline_graph() -> StateGraph:
     """Construit et compile le graphe LangGraph."""
@@ -826,35 +924,49 @@ def build_pipeline_graph() -> StateGraph:
     # Point d'entrée
     graph.set_entry_point("enrich_story")
 
-     # Arêtes conditionnelles
-    graph.add_conditional_edges("enrich_story", route_after_enrich, {
-        "classify_story": "classify_story",   # ← REMPLACER "build_rag_context" par "classify_story"
-        END: END,
-    })
+    # Arêtes conditionnelles
+    graph.add_conditional_edges(
+        "enrich_story",
+        route_after_enrich,
+        {
+            "classify_story": "classify_story",  # ← REMPLACER "build_rag_context" par "classify_story"
+            END: END,
+        },
+    )
 
-    
-
-    graph.add_conditional_edges("classify_story", route_after_agent1, {
-        "analysis_agent": "analysis_agent",
-        "skip": "skip",
-        "not_functional": "not_functional",
-        END: END,
-    })
+    graph.add_conditional_edges(
+        "classify_story",
+        route_after_agent1,
+        {
+            "analysis_agent": "analysis_agent",
+            "skip": "skip",
+            "not_functional": "not_functional",
+            END: END,
+        },
+    )
 
     graph.add_edge("analysis_agent", "agent15_business_model")
     graph.add_edge("agent15_business_model", "agent2_generate")
 
-    graph.add_conditional_edges("agent2_generate", route_after_agent2, {
-        "agent3_validate": "agent3_validate",
-        "no_tests": "no_tests",
-        END: END,
-    })
+    graph.add_conditional_edges(
+        "agent2_generate",
+        route_after_agent2,
+        {
+            "agent3_validate": "agent3_validate",
+            "no_tests": "no_tests",
+            END: END,
+        },
+    )
 
-    graph.add_conditional_edges("agent3_validate", route_after_agent3, {
-        "agent5_report": "agent5_report",
-        "agent2_gap_fill": "agent2_gap_fill",
-        END: END,
-    })
+    graph.add_conditional_edges(
+        "agent3_validate",
+        route_after_agent3,
+        {
+            "agent5_report": "agent5_report",
+            "agent2_gap_fill": "agent2_gap_fill",
+            END: END,
+        },
+    )
 
     # Après gap-fill → re-validation
     graph.add_edge("agent2_gap_fill", "agent3_validate")
@@ -883,6 +995,7 @@ def get_compiled_graph():
 # ═══════════════════════════════════════════════════════════════
 #  6. API PUBLIQUE
 # ═══════════════════════════════════════════════════════════════
+
 
 def run_pipeline(
     story_id: str,
@@ -948,45 +1061,7 @@ def run_pipeline(
     final_state["duration_ms"] = duration_ms
     final_state["token_usage"] = token_usage
 
-    # ── Construction du payload d'évaluation (images, RAG, inputs des agents) ──
-    analysis        = final_state.get("analysis")
-    generation      = final_state.get("generation_result")
-    validation      = final_state.get("validation")
-    report          = final_state.get("report")
-    business_model  = final_state.get("business_model")
-    tests           = final_state.get("tests", [])
-
-    images = collect_story_images(story_id)
-    agent2_input = build_agent2_input(
-        legacy_examples=final_state.get("legacy_examples"),
-        rag_context=final_state.get("rag_context"),
-    )
-
-    export_source = {
-        "story_id": story_id,
-        "story": final_state.get("story"),
-        "images": images,
-        "agent2_input": agent2_input,
-        "agent15_business_model": business_model.model_dump() if business_model else None,
-        "agent2_tests": [t.model_dump() for t in tests],
-        "agent2_golden_rule_warnings": final_state.get("agent2_golden_rule_warnings"),
-        "agent2_message": final_state.get("agent2_message"),
-        "agent1_analysis": final_state.get("analysis_dict"),
-        "agent3_validation": validation.model_dump() if validation else None,
-        "agent5_report": report.model_dump() if report else None,
-        "legacy_examples": final_state.get("legacy_examples"),
-        "rag_context": final_state.get("rag_context"),
-        "status": final_state.get("status"),
-        "tests_count": len(tests),
-        "coverage_rate": validation.report.coverage_rate if validation else None,
-        "validation_status": validation.report.validation_status if validation else None,
-        "correction_iterations": final_state.get("correction_iteration"),
-        "duration_ms": duration_ms,
-        "errors": final_state.get("errors"),
-        "token_usage": token_usage,
-    }
-
-    
+    tests = final_state.get("tests", [])
 
     status = final_state.get("status", "completed")
     logger.info(

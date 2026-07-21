@@ -18,6 +18,7 @@ Usage :
     python -m eval.enrich_legacy_tests --resume
     python -m eval.enrich_legacy_tests --inplace        # remplace le .jsonl original
 """
+
 from __future__ import annotations
 
 import argparse
@@ -61,7 +62,9 @@ def _fix_module_root(pivot: dict) -> bool:
     return False
 
 
-def _fetch_issuelinks(test_key: str, max_retries: int = 3, backoff: float = 2.0) -> dict:
+def _fetch_issuelinks(
+    test_key: str, max_retries: int = 3, backoff: float = 2.0
+) -> dict:
     """
     Récupère UNIQUEMENT le champ issuelinks pour un test (appel léger).
     Retourne {"issuelinks": [...]} ou {"error": True, ...}.
@@ -73,7 +76,7 @@ def _fetch_issuelinks(test_key: str, max_retries: int = 3, backoff: float = 2.0)
         except requests.RequestException as e:
             if attempt == max_retries:
                 return {"error": True, "body": str(e)}
-            time.sleep(backoff ** attempt)
+            time.sleep(backoff**attempt)
             continue
 
         if resp.status_code == 200:
@@ -81,11 +84,19 @@ def _fetch_issuelinks(test_key: str, max_retries: int = 3, backoff: float = 2.0)
             return {"issuelinks": (data.get("fields") or {}).get("issuelinks") or []}
 
         if resp.status_code < 500:
-            return {"error": True, "status_code": resp.status_code, "body": resp.text[:300]}
+            return {
+                "error": True,
+                "status_code": resp.status_code,
+                "body": resp.text[:300],
+            }
 
         if attempt == max_retries:
-            return {"error": True, "status_code": resp.status_code, "body": resp.text[:300]}
-        time.sleep(backoff ** attempt)
+            return {
+                "error": True,
+                "status_code": resp.status_code,
+                "body": resp.text[:300],
+            }
+        time.sleep(backoff**attempt)
     return {"error": True, "body": "max retries"}
 
 
@@ -168,8 +179,9 @@ def enrich_project(
     failed = 0
     t0 = time.time()
 
-    with src_path.open("r", encoding="utf-8") as src, \
-         dst_path.open("a", encoding="utf-8") as dst:
+    with src_path.open("r", encoding="utf-8") as src, dst_path.open(
+        "a", encoding="utf-8"
+    ) as dst:
 
         for i, line in enumerate(src, start=1):
             line = line.strip()
@@ -191,9 +203,13 @@ def enrich_project(
             if err:
                 failed += 1
                 with err_path.open("a", encoding="utf-8") as ef:
-                    ef.write(json.dumps(
-                        {"test_id": test_id, "error": err}, ensure_ascii=False,
-                    ) + "\n")
+                    ef.write(
+                        json.dumps(
+                            {"test_id": test_id, "error": err},
+                            ensure_ascii=False,
+                        )
+                        + "\n"
+                    )
                 # On écrit quand même la version partiellement enrichie
                 # (module_root est déjà corrigé)
 

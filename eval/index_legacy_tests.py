@@ -15,6 +15,7 @@ Usage :
     python -m eval.index_legacy_tests --reset            # vide la collection avant
     python -m eval.index_legacy_tests --batch-size 64
 """
+
 from __future__ import annotations
 
 import argparse
@@ -165,7 +166,10 @@ def index_all(
         name=COLLECTION_NAME,
         metadata={"hnsw:space": "cosine"},
     )
-    print(f"  Collection '{COLLECTION_NAME}' prête (count actuel = {collection.count()}).", flush=True)
+    print(
+        f"  Collection '{COLLECTION_NAME}' prête (count actuel = {collection.count()}).",
+        flush=True,
+    )
 
     # On rassemble par batch pour limiter les appels Chroma.
     ids_batch: List[str] = []

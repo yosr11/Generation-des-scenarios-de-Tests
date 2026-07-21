@@ -5,18 +5,26 @@ from sqlalchemy import delete
 
 from app.db.postgres import get_sync_session
 from app.models.pg_models import (
-    Story, StoryAnalysis, StoryManualTests, Agent3Validation,
-    AutomationClassification, GeneratedScenario, StoryBusinessModel
+    Story,
+    StoryAnalysis,
+    StoryManualTests,
+    Agent3Validation,
+    AutomationClassification,
+    GeneratedScenario,
+    StoryBusinessModel,
 )
 
 from app.repositories.story_repository import (
-    get_story_by_id, get_all_stories,
+    get_story_by_id,
+    get_all_stories,
 )
 from app.repositories.analysis_repository import (
-    get_analyses_by_story, get_latest_analysis,
+    get_analyses_by_story,
+    get_latest_analysis,
 )
 from app.repositories.scenario_repository import (
-    get_scenarios_by_story, get_all_scenarios,
+    get_scenarios_by_story,
+    get_all_scenarios,
 )
 
 db_router = APIRouter(prefix="/db", tags=["Database"])
@@ -25,6 +33,7 @@ db_router = APIRouter(prefix="/db", tags=["Database"])
 # ══════════════════════════════════════════════════════
 #  STORIES
 # ══════════════════════════════════════════════════════
+
 
 @db_router.get("/stories", response_model=List[Dict[str, Any]])
 def list_stored_stories():
@@ -37,7 +46,9 @@ def get_stored_story(story_id: str):
     """Récupère une story par son ID."""
     story = get_story_by_id(story_id)
     if not story:
-        raise HTTPException(status_code=404, detail=f"Story {story_id} introuvable en base")
+        raise HTTPException(
+            status_code=404, detail=f"Story {story_id} introuvable en base"
+        )
     return story
 
 
@@ -48,18 +59,32 @@ def delete_stored_story(story_id: str):
     try:
         # Supprimer toutes les dépendances liées à la story_id
         session.execute(delete(StoryAnalysis).where(StoryAnalysis.story_id == story_id))
-        session.execute(delete(StoryManualTests).where(StoryManualTests.story_id == story_id))
-        session.execute(delete(Agent3Validation).where(Agent3Validation.story_id == story_id))
-        session.execute(delete(AutomationClassification).where(AutomationClassification.story_id == story_id))
-        session.execute(delete(GeneratedScenario).where(GeneratedScenario.story_id == story_id))
-        session.execute(delete(StoryBusinessModel).where(StoryBusinessModel.story_id == story_id))
-        
+        session.execute(
+            delete(StoryManualTests).where(StoryManualTests.story_id == story_id)
+        )
+        session.execute(
+            delete(Agent3Validation).where(Agent3Validation.story_id == story_id)
+        )
+        session.execute(
+            delete(AutomationClassification).where(
+                AutomationClassification.story_id == story_id
+            )
+        )
+        session.execute(
+            delete(GeneratedScenario).where(GeneratedScenario.story_id == story_id)
+        )
+        session.execute(
+            delete(StoryBusinessModel).where(StoryBusinessModel.story_id == story_id)
+        )
+
         # Supprimer la story elle-même
         result = session.execute(delete(Story).where(Story.id == story_id))
         session.commit()
-        
+
         if result.rowcount == 0:
-            raise HTTPException(status_code=404, detail=f"Story {story_id} introuvable en base")
+            raise HTTPException(
+                status_code=404, detail=f"Story {story_id} introuvable en base"
+            )
         return {"status": "ok", "story_id": story_id}
     except Exception as e:
         session.rollback()
@@ -72,6 +97,7 @@ def delete_stored_story(story_id: str):
 #  ANALYSES
 # ══════════════════════════════════════════════════════
 
+
 @db_router.get("/stories/{story_id}/analyses")
 def list_analyses(story_id: str):
     """Récupère toutes les analyses LLM pour une story."""
@@ -79,17 +105,22 @@ def list_analyses(story_id: str):
 
 
 @db_router.get("/stories/{story_id}/analysis/latest")
-def latest_analysis(story_id: str, model: str = Query(None, description="qwen3 | llama4")):
+def latest_analysis(
+    story_id: str, model: str = Query(None, description="qwen3 | llama4")
+):
     """Récupère la dernière analyse pour une story (optionnel : par modèle)."""
     analysis = get_latest_analysis(story_id, model)
     if not analysis:
-        raise HTTPException(status_code=404, detail=f"Aucune analyse trouvée pour {story_id}")
+        raise HTTPException(
+            status_code=404, detail=f"Aucune analyse trouvée pour {story_id}"
+        )
     return analysis
 
 
 # ══════════════════════════════════════════════════════
 #  SCÉNARIOS
 # ══════════════════════════════════════════════════════
+
 
 @db_router.get("/stories/{story_id}/scenarios")
 def list_scenarios(story_id: str):
@@ -102,9 +133,12 @@ def list_scenarios(story_id: str):
 def get_manual_tests(story_id: str):
     """Récupère les tests manuels enregistrés pour une story."""
     from app.repositories.manual_tests_repository import get_latest_manual_tests
+
     tests = get_latest_manual_tests(story_id)
     if not tests:
-        raise HTTPException(status_code=404, detail=f"Aucun test manuel trouvé pour {story_id}")
+        raise HTTPException(
+            status_code=404, detail=f"Aucun test manuel trouvé pour {story_id}"
+        )
     return {"story_id": story_id, "tests": tests}
 
 
@@ -112,9 +146,12 @@ def get_manual_tests(story_id: str):
 def get_validations(story_id: str):
     """Récupère la validation enregistrée pour une story."""
     from app.repositories.validation_repository import fetch_validation_by_story_id
+
     val = fetch_validation_by_story_id(story_id)
     if not val:
-        raise HTTPException(status_code=404, detail=f"Aucune validation trouvée pour {story_id}")
+        raise HTTPException(
+            status_code=404, detail=f"Aucune validation trouvée pour {story_id}"
+        )
     return val
 
 

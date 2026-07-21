@@ -10,10 +10,10 @@ user_flows, testable_points) et les transforme en :
 
 Il ne génère PAS de tests. Il prépare le terrain pour Agent 2.
 """
+
 from __future__ import annotations
 
-import json
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 
 def build_business_modeling_system_prompt() -> str:

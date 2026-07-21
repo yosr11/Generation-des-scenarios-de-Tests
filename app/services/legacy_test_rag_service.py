@@ -46,7 +46,10 @@ def _get_model():
         with _lock:
             if _model is None:
                 from sentence_transformers import SentenceTransformer
-                logger.info(f"[legacy_rag] Loading embedding model '{EMBED_MODEL_NAME}'")
+
+                logger.info(
+                    f"[legacy_rag] Loading embedding model '{EMBED_MODEL_NAME}'"
+                )
                 _model = SentenceTransformer(EMBED_MODEL_NAME)
     return _model
 
@@ -57,7 +60,10 @@ def _get_collection():
         with _lock:
             if _collection is None:
                 import chromadb
-                logger.info(f"[legacy_rag] Opening Chroma collection '{COLLECTION_NAME}' at {VECTOR_STORE_PATH}")
+
+                logger.info(
+                    f"[legacy_rag] Opening Chroma collection '{COLLECTION_NAME}' at {VECTOR_STORE_PATH}"
+                )
                 client = chromadb.PersistentClient(path=str(VECTOR_STORE_PATH))
                 _collection = client.get_collection(COLLECTION_NAME)
     return _collection
@@ -197,14 +203,16 @@ def retrieve_similar(
         if not _passes_quality_filter(pivot, min_steps, min_action_chars):
             rejected_quality += 1
             continue
-        out.append({
-            "test_id": test_id,
-            "title": pivot.get("title") or meta.get("title") or "",
-            "score": round(score, 4),
-            "project": meta.get("project") or "",
-            "module_root": meta.get("module_root") or "",
-            "pivot": pivot,
-        })
+        out.append(
+            {
+                "test_id": test_id,
+                "title": pivot.get("title") or meta.get("title") or "",
+                "score": round(score, 4),
+                "project": meta.get("project") or "",
+                "module_root": meta.get("module_root") or "",
+                "pivot": pivot,
+            }
+        )
 
     logger.info(
         f"[legacy_rag] query='{query_text[:80]}...' "

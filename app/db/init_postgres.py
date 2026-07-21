@@ -11,7 +11,7 @@ from app.services.auth_service import seed_admin_user
 async def init_postgres() -> None:
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
-        
+
         migrations = [
             "ALTER TABLE users ADD COLUMN IF NOT EXISTS is_active BOOLEAN DEFAULT TRUE",
             "ALTER TABLE users ADD COLUMN IF NOT EXISTS display_name VARCHAR(255)",

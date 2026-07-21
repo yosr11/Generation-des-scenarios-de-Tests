@@ -2,7 +2,7 @@
 import json
 import re
 import logging
-from typing import Any, Callable, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional
 
 from pydantic import ValidationError
 
@@ -26,7 +26,9 @@ class StoryAnalysisError(Exception):
 
 _ACTOR_PATTERNS = [
     # "[En tant que] qu'utilisateur RH..." or "[En tant que] utilisateur RH..."
-    re.compile(r"\[en\s+tant\s+que\]\s*(?:qu['\u2019])?\s*(.+?)(?:\n|\[|,\s*\[)", re.IGNORECASE),
+    re.compile(
+        r"\[en\s+tant\s+que\]\s*(?:qu['\u2019])?\s*(.+?)(?:\n|\[|,\s*\[)", re.IGNORECASE
+    ),
     # "En tant que collaborateur..."
     re.compile(r"en\s+tant\s+que\s+(.+?)(?:\n|\[|,\s*\[|,?\s*je\s+)", re.IGNORECASE),
 ]
@@ -37,7 +39,9 @@ def _extract_actors_from_description(story: Dict[str, Any]) -> List[str]:
     Fallback: extracts actors from description when the LLM fails to do so.
     Looks for 'En tant que ...' or '[En tant que] ...' patterns.
     """
-    description = story.get("description_clean", "") or story.get("description", "") or ""
+    description = (
+        story.get("description_clean", "") or story.get("description", "") or ""
+    )
     if not description:
         return []
 
@@ -131,14 +135,20 @@ def _fetch_referenced_stories(ticket_keys: List[str]) -> List[Dict[str, Any]]:
             if resp.get("status") == 200 and resp.get("data"):
                 fields = resp["data"].get("fields", {})
                 raw_desc = fields.get("description") or ""
-                results.append({
-                    "key": key,
-                    "summary": fields.get("summary", ""),
-                    "description": clean_text(raw_desc) if raw_desc else "",
-                })
-                logger.info(f"Résolution automatique : ticket {key} récupéré depuis Jira")
+                results.append(
+                    {
+                        "key": key,
+                        "summary": fields.get("summary", ""),
+                        "description": clean_text(raw_desc) if raw_desc else "",
+                    }
+                )
+                logger.info(
+                    f"Résolution automatique : ticket {key} récupéré depuis Jira"
+                )
             else:
-                logger.warning(f"Ticket {key} non trouvé dans Jira (status={resp.get('status')})")
+                logger.warning(
+                    f"Ticket {key} non trouvé dans Jira (status={resp.get('status')})"
+                )
         except Exception as e:
             logger.warning(f"Impossible de récupérer le ticket {key} depuis Jira : {e}")
 
@@ -202,7 +212,9 @@ def extract_json_object(text: str) -> Dict[str, Any]:
     # fallback: extract first {...}
     match = re.search(r"\{.*\}", text, re.DOTALL)
     if not match:
-        raise StoryAnalysisError(f"No JSON object found in LLM response. Raw: {text[:500]}")
+        raise StoryAnalysisError(
+            f"No JSON object found in LLM response. Raw: {text[:500]}"
+        )
 
     json_candidate = match.group(0)
 
@@ -279,15 +291,24 @@ def merge_story_analysis(
         technical_scope=list(getattr(analysis, "technical_scope", []) or []),
         testable_points=list(getattr(analysis, "testable_points", []) or []),
         user_flows=list(getattr(analysis, "user_flows", []) or []),
-        acceptance_criteria_explicit=list(getattr(analysis, "acceptance_criteria_explicit", []) or []),
-        acceptance_criteria_inferred=list(getattr(analysis, "acceptance_criteria_inferred", []) or []),
-        clarification_questions=list(getattr(analysis, "clarification_questions", []) or []),
-        analysis_reason=classification_reasons or [
+        acceptance_criteria_explicit=list(
+            getattr(analysis, "acceptance_criteria_explicit", []) or []
+        ),
+        acceptance_criteria_inferred=list(
+            getattr(analysis, "acceptance_criteria_inferred", []) or []
+        ),
+        clarification_questions=list(
+            getattr(analysis, "clarification_questions", []) or []
+        ),
+        analysis_reason=classification_reasons
+        or [
             str(item).strip()
             for item in (getattr(analysis, "analysis_reason", None) or [])
             if str(item).strip()
         ],
-        resolved_from_references=list(getattr(analysis, "resolved_from_references", []) or []),
+        resolved_from_references=list(
+            getattr(analysis, "resolved_from_references", []) or []
+        ),
     )
 
 
@@ -298,9 +319,7 @@ def classify_story_with_llm(
 ) -> StoryClassificationResult:
     """Classify a story into functional/technical/invalid_or_too_weak."""
     description = (
-        story.get("description_clean")
-        or story.get("description")
-        or ""
+        story.get("description_clean") or story.get("description") or ""
     ).strip()
 
     if not description:
@@ -346,10 +365,9 @@ def classify_story_with_llm(
                 story_type="invalid_or_too_weak",
                 analysis_reason=[
                     "La description est trop vague pour identifier un comportement utilisateur.",
-                    f"Description reçue : \"{description[:100]}\"",
+                    f'Description reçue : "{description[:100]}"',
                 ],
             )
-
 
     # Use the analysis prompt as the single canonical prompt for story understanding.
     # The analysis prompt contains story_type and analysis_reason fields which we use
@@ -379,9 +397,12 @@ def classify_story_with_llm(
     # required by StoryClassificationResult to avoid pydantic extra-field errors.
     classification_data = {
         "story_id": data.get("story_id", story.get("id", "")),
-        "story_title": data.get("story_title", story.get("summary") or story.get("title") or ""),
+        "story_title": data.get(
+            "story_title", story.get("summary") or story.get("title") or ""
+        ),
         "story_type": data.get("story_type", "invalid_or_too_weak"),
-        "analysis_reason": data.get("analysis_reason") or [
+        "analysis_reason": data.get("analysis_reason")
+        or [
             f"Story classée '{data.get('story_type','invalid_or_too_weak')}' sans justification détaillée."
         ],
     }
@@ -389,7 +410,9 @@ def classify_story_with_llm(
     try:
         return StoryClassificationResult(**classification_data)
     except ValidationError as e:
-        raise StoryAnalysisError(f"Classification LLM output does not match expected schema: {e}")
+        raise StoryAnalysisError(
+            f"Classification LLM output does not match expected schema: {e}"
+        )
 
 
 def extract_story_analysis_with_llm(
@@ -399,9 +422,7 @@ def extract_story_analysis_with_llm(
 ) -> StoryAnalysisResult:
     """Extract analysis fields for a functional story without re-running classification."""
     description = (
-        story.get("description_clean")
-        or story.get("description")
-        or ""
+        story.get("description_clean") or story.get("description") or ""
     ).strip()
 
     enriched_story = story
@@ -474,7 +495,9 @@ def analyze_story_with_llm(
     )
 
     if classification.story_type != "functional":
-        return merge_story_analysis(classification=classification, analysis=None, story=story)
+        return merge_story_analysis(
+            classification=classification, analysis=None, story=story
+        )
 
     analysis = extract_story_analysis_with_llm(
         story=story,
@@ -496,11 +519,11 @@ def analyze_story_with_groq(
 ) -> StoryAnalysisResult:
     """
     Legacy helper (now redirects to adaptive LLM selection).
-    
+
     This function now supports both Groq and Bedrock models:
     - Groq models: qwen3, llama4, gptoss, gptoss120b, qwen3.6
     - Bedrock models: nova-lite-2 (Amazon Nova)
-    
+
     Example with Nova-2-lite:
         analysis = analyze_story_with_groq(story, model_alias="nova-lite-2")
     """
@@ -518,6 +541,7 @@ def classify_story_with_adaptive_llm(
 ) -> StoryClassificationResult:
     """Classification-only helper using the same provider selection as the analysis service."""
     if model_alias in BEDROCK_MODELS:
+
         def _bedrock_callable(system_prompt: str, user_prompt: str) -> str:
             return call_bedrock(
                 system_prompt=system_prompt,
@@ -556,6 +580,7 @@ def extract_story_analysis_with_adaptive_llm(
 ) -> StoryAnalysisResult:
     """Extraction-only helper using the same provider selection as the analysis service."""
     if model_alias in BEDROCK_MODELS:
+
         def _bedrock_callable(system_prompt: str, user_prompt: str) -> str:
             return call_bedrock(
                 system_prompt=system_prompt,
@@ -594,15 +619,15 @@ def analyze_story_with_adaptive_llm(
 ) -> StoryAnalysisResult:
     """
     Smart helper that auto-detects whether to use Groq or Bedrock based on model_alias.
-    
+
     Supports:
     - Groq models: qwen3, llama4, gptoss, gptoss120b, qwen3.6
     - Bedrock models: nova-lite-2 (Amazon Nova)
-    
+
     Example:
         analysis = analyze_story_with_adaptive_llm(story, model_alias="nova-lite-2")
     """
-    
+
     # Detect provider based on model_alias
     if model_alias in BEDROCK_MODELS:
         # Use Bedrock (Nova)
@@ -614,13 +639,13 @@ def analyze_story_with_adaptive_llm(
                 temperature=0.0,
                 max_tokens=2000,
             )
-        
+
         return analyze_story_with_llm(
             story=story,
             llm_callable=_bedrock_callable,
             story_attachments=story_attachments,
         )
-    
+
     elif model_alias in GROQ_MODELS or model_alias not in BEDROCK_MODELS:
         # Use Groq (default fallback)
         def _groq_callable(system_prompt: str, user_prompt: str) -> str:
@@ -631,7 +656,7 @@ def analyze_story_with_adaptive_llm(
                 temperature=0.0,
                 max_tokens=2000,
             )
-        
+
         return analyze_story_with_llm(
             story=story,
             llm_callable=_groq_callable,

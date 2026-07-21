@@ -9,15 +9,15 @@ from sqlalchemy import case, select, update
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.security import hash_password, verify_password
+from app.core.security import hash_password
 from app.models.pg_models import User
 import secrets
 from app.services.email_service import send_account_created_email
 
-
 # ──────────────────────────────────────────────────────────
 #  Helpers
 # ──────────────────────────────────────────────────────────
+
 
 def _user_to_dict(u: User) -> Dict[str, Any]:
     return {
@@ -36,6 +36,7 @@ def _user_to_dict(u: User) -> Dict[str, Any]:
 #  Read
 # ──────────────────────────────────────────────────────────
 
+
 async def list_users(db: AsyncSession) -> List[Dict[str, Any]]:
     result = await db.execute(select(User).order_by(User.created_at.desc()))
     return [_user_to_dict(u) for u in result.scalars().all()]
@@ -46,11 +47,15 @@ async def get_user_by_id(db: AsyncSession, user_id: int) -> Optional[Dict[str, A
     u = result.scalar_one_or_none()
     return _user_to_dict(u) if u else None
 
-async def get_user_by_email_and_role(db: AsyncSession, email: str, role: str) -> Optional[User]:
+
+async def get_user_by_email_and_role(
+    db: AsyncSession, email: str, role: str
+) -> Optional[User]:
     result = await db.execute(
         select(User).where(User.email == email, User.role == role)
     )
     return result.scalar_one_or_none()
+
 
 async def get_users_by_email(db: AsyncSession, email: str) -> List[User]:
     result = await db.execute(
@@ -60,22 +65,22 @@ async def get_users_by_email(db: AsyncSession, email: str) -> List[User]:
     )
     return result.scalars().all()
 
+
 async def get_user_by_email(db: AsyncSession, email: str) -> Optional[User]:
     users = await get_users_by_email(db, email)
     return users[0] if users else None
 
 
-async def get_user_by_jira_username(db: AsyncSession, jira_username: str) -> Optional[User]:
-    result = await db.execute(
-        select(User).where(User.jira_username == jira_username)
-    )
+async def get_user_by_jira_username(
+    db: AsyncSession, jira_username: str
+) -> Optional[User]:
+    result = await db.execute(select(User).where(User.jira_username == jira_username))
     return result.scalar_one_or_none()
 
 
 # ──────────────────────────────────────────────────────────
 #  Create
 # ──────────────────────────────────────────────────────────
-
 
 
 async def create_user(
@@ -88,16 +93,23 @@ async def create_user(
     jira_username: Optional[str] = None,
 ) -> Dict[str, Any]:
     """Create a new user. Un même email peut être utilisé pour un compte admin
-    ET un compte tester (deux comptes distincts), mais pas deux fois pour le même rôle."""
+    ET un compte tester (deux comptes distincts), mais pas deux fois pour le même rôle.
+    """
     existing = await get_user_by_email_and_role(db, email, role)
     if existing:
         role_label = "administrateur" if role == "admin" else "testeur"
-        return {"ok": False, "error": f"Un compte {role_label} avec cet email existe déjà."}
+        return {
+            "ok": False,
+            "error": f"Un compte {role_label} avec cet email existe déjà.",
+        }
 
     if jira_username:
         existing_jira = await get_user_by_jira_username(db, jira_username)
         if existing_jira:
-            return {"ok": False, "error": f"L'identifiant Jira '{jira_username}' est déjà enregistré."}
+            return {
+                "ok": False,
+                "error": f"L'identifiant Jira '{jira_username}' est déjà enregistré.",
+            }
 
     # Placeholder aléatoire : jamais utilisé pour se connecter (auth via Jira ou admin dédié)
     placeholder_password = password or secrets.token_urlsafe(32)
@@ -121,7 +133,9 @@ async def create_user(
     # Envoi de l'email de bienvenue (best-effort, ne bloque pas la création)
     email_sent = False
     if jira_username:
-        email_sent = await send_account_created_email(email, jira_username, display_name)
+        email_sent = await send_account_created_email(
+            email, jira_username, display_name
+        )
 
     return {"ok": True, "user": _user_to_dict(user), "email_sent": email_sent}
 
@@ -129,6 +143,7 @@ async def create_user(
 # ──────────────────────────────────────────────────────────
 #  Update
 # ──────────────────────────────────────────────────────────
+
 
 async def update_user(
     db: AsyncSession,
@@ -151,12 +166,18 @@ async def update_user(
         # Unicité vérifiée par rapport au rôle ACTUEL du compte (pas email seul)
         existing_email = await get_user_by_email_and_role(db, email, user.role)
         if existing_email and existing_email.id != user_id:
-            return {"ok": False, "error": f"Un autre compte {user.role} utilise déjà l'email '{email}'."}
+            return {
+                "ok": False,
+                "error": f"Un autre compte {user.role} utilise déjà l'email '{email}'.",
+            }
         user.email = email
     if jira_username is not None:
         existing_jira = await get_user_by_jira_username(db, jira_username)
         if existing_jira and existing_jira.id != user_id:
-            return {"ok": False, "error": f"L'identifiant Jira '{jira_username}' est déjà utilisé."}
+            return {
+                "ok": False,
+                "error": f"L'identifiant Jira '{jira_username}' est déjà utilisé.",
+            }
         user.jira_username = jira_username
     if password:
         user.hashed_password = hash_password(password)
@@ -177,7 +198,10 @@ async def update_user(
 #  Activate / Deactivate
 # ──────────────────────────────────────────────────────────
 
-async def set_user_active(db: AsyncSession, user_id: int, is_active: bool) -> Dict[str, Any]:
+
+async def set_user_active(
+    db: AsyncSession, user_id: int, is_active: bool
+) -> Dict[str, Any]:
     result = await db.execute(select(User).where(User.id == user_id))
     user = result.scalar_one_or_none()
     if not user:
@@ -194,13 +218,19 @@ async def set_user_active(db: AsyncSession, user_id: int, is_active: bool) -> Di
 #  Delete
 # ──────────────────────────────────────────────────────────
 
-async def delete_user(db: AsyncSession, user_id: int, current_admin_id: int) -> Dict[str, Any]:
+
+async def delete_user(
+    db: AsyncSession, user_id: int, current_admin_id: int
+) -> Dict[str, Any]:
     result = await db.execute(select(User).where(User.id == user_id))
     user = result.scalar_one_or_none()
     if not user:
         return {"ok": False, "error": "Utilisateur introuvable."}
     if user.id == current_admin_id:
-        return {"ok": False, "error": "Vous ne pouvez pas supprimer votre propre compte."}
+        return {
+            "ok": False,
+            "error": "Vous ne pouvez pas supprimer votre propre compte.",
+        }
 
     await db.delete(user)
     await db.commit()
@@ -210,6 +240,7 @@ async def delete_user(db: AsyncSession, user_id: int, current_admin_id: int) -> 
 # ──────────────────────────────────────────────────────────
 #  Last login update
 # ──────────────────────────────────────────────────────────
+
 
 async def update_last_login(db: AsyncSession, user_id: int) -> None:
     await db.execute(
@@ -224,21 +255,26 @@ async def update_last_login(db: AsyncSession, user_id: int) -> None:
 #  Stats
 # ──────────────────────────────────────────────────────────
 
+
 async def get_stats(db: AsyncSession) -> Dict[str, Any]:
     from sqlalchemy import func as sqlfunc
-    from app.models.pg_models import AuditLog, PipelineRun
+    from app.models.pg_models import PipelineRun
 
     total_users = (await db.execute(select(sqlfunc.count(User.id)))).scalar() or 0
     active_users = (
-        await db.execute(select(sqlfunc.count(User.id)).where(User.is_active == True))
+        await db.execute(select(sqlfunc.count(User.id)).where(User.is_active))
     ).scalar() or 0
     tester_count = (
         await db.execute(select(sqlfunc.count(User.id)).where(User.role == "tester"))
     ).scalar() or 0
-    total_pipelines = (await db.execute(select(sqlfunc.count(PipelineRun.id)))).scalar() or 0
+    total_pipelines = (
+        await db.execute(select(sqlfunc.count(PipelineRun.id)))
+    ).scalar() or 0
     successful_pipelines = (
         await db.execute(
-            select(sqlfunc.count(PipelineRun.id)).where(PipelineRun.status == "completed")
+            select(sqlfunc.count(PipelineRun.id)).where(
+                PipelineRun.status == "completed"
+            )
         )
     ).scalar() or 0
 
