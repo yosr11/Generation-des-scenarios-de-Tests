@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    env:
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@localhost:5432/agent_test
+      JWT_SECRET: test-secret
+      JWT_ALGORITHM: HS256
+      ADMIN_EMAIL: admin@example.com
+      ADMIN_PASSWORD: strong-test-password
+      GROQ_API_KEY: test-groq-key
+      JIRA_PROD_URL: https://jira.example.com
+      JIRA_TEST_URL: https://jira-test.example.com
+      JIRA_USERNAME: jira-user
+      JIRA_PASSWORD: jira-password
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: agent_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt pytest
+
+      - name: Run tests
+        run: pytest -q

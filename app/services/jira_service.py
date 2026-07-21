@@ -1,6 +1,7 @@
 import os
 import re
 import json
+import logging
 import requests
 import urllib3
 
@@ -8,6 +9,8 @@ from typing import Dict, Any, List, Optional
 from dotenv import load_dotenv
 
 from app.utils.cleaning import clean_text
+
+logger = logging.getLogger(__name__)
 
 
 # ============================================================
@@ -48,9 +51,12 @@ def _create_session(
     username: Optional[str] = None,
     password: Optional[str] = None,
 ) -> requests.Session:
-    """
-    Crée une session Jira avec auth et headers JSON.
-    """
+    """Crée une session Jira avec auth et headers JSON."""
+    if not username and not JIRA_USERNAME:
+        raise RuntimeError("JIRA_USERNAME is not configured")
+    if not password and not JIRA_PASSWORD:
+        raise RuntimeError("JIRA_PASSWORD is not configured")
+
     session = requests.Session()
     session.auth = (username or JIRA_USERNAME, password or JIRA_PASSWORD)
     session.verify = False
@@ -107,6 +113,7 @@ def search_issues_with_session(
         try:
             resp = session.get(url, params=params, timeout=timeout_sec)
         except requests.RequestException as exc:
+            logger.warning("Jira request failed: %s", exc)
             return {
                 "error": True,
                 "detail": str(exc),

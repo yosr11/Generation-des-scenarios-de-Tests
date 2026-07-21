@@ -19,6 +19,7 @@ from app.services.audit_service import log_action
 from app.services.auth_service import authenticate_user, build_admin_token, build_user_token, logout_tester
 from app.services.user_service import get_user_by_email, get_user_by_jira_username, get_users_by_email, update_last_login
 from app.core.cookies import set_auth_cookie as _set_auth_cookie, clear_auth_cookie as _clear_auth_cookie
+from app.core.legacy_compat import warn_legacy_module
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
@@ -141,6 +142,7 @@ async def login(
     Le backend tente d'abord une authentification admin (email + bcrypt),
     puis une authentification testeur Jira si l'admin échoue.
     """
+    warn_legacy_module("auth.login", "legacy auth route")
     result = await authenticate_user(db, identifier=body.identifier, password=body.password)
 
     if not result.get("success"):

@@ -22,12 +22,14 @@ from app.api.routes_test_editing import router as test_editing_router
 from app.api.routes_auth import router as auth_router
 from app.api.routes_admin import router as admin_router
 from app.api.routes_agent15 import router as agent15_router
+from app.core.legacy_compat import warn_legacy_module
 
 logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    warn_legacy_module("app.main.lifespan", "startup bootstrap")
     try:
         await init_postgres()
     except Exception as exc:

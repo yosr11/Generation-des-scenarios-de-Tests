@@ -2,6 +2,7 @@
 import os
 import time
 import json
+import logging
 import httpx
 from dotenv import load_dotenv
 from groq import Groq
@@ -12,6 +13,8 @@ from openai import APIStatusError as OpenAIAPIStatusError
 from openai import APIError as OpenAIAPIError
 import boto3
 from botocore.exceptions import ClientError
+
+logger = logging.getLogger(__name__)
 
 from app.services.token_tracker import record_from_response
 
