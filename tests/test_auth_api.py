@@ -19,7 +19,9 @@ def test_auth_login_admin_success(monkeypatch):
     async def fake_update_last_login(db, user_id):
         return None
 
-    async def fake_log_action(db, user_identifier, role, action, details=None, ip_address=None):
+    async def fake_log_action(
+        db, user_identifier, role, action, details=None, ip_address=None
+    ):
         return None
 
     monkeypatch.setattr("app.api.routes_auth.get_db", fake_get_db)
