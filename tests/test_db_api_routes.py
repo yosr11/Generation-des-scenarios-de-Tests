@@ -37,9 +37,28 @@ def test_db_story_get_and_delete(monkeypatch, tmp_path):
         assert response.json()["id"] == "STORY-42"
         assert response.json()["summary"] == "Story for API test"
 
+        response = client.get("/db/stories")
+        assert response.status_code == 200
+        assert any(story["id"] == "STORY-42" for story in response.json())
+
         response = client.delete("/db/stories/STORY-42")
         assert response.status_code == 200
         assert response.json() == {"status": "ok", "story_id": "STORY-42"}
 
         response = client.get("/db/stories/STORY-42")
         assert response.status_code == 404
+
+
+def test_db_story_not_found_returns_404(monkeypatch, tmp_path):
+    sqlite_url = f"sqlite:///{tmp_path / 'test2.db'}"
+    engine = create_engine(sqlite_url, connect_args={"check_same_thread": False})
+    SessionLocal = sessionmaker(bind=engine)
+    Base.metadata.create_all(bind=engine)
+
+    monkeypatch.setattr(story_repository, "get_sync_session", lambda: SessionLocal())
+    monkeypatch.setattr(routes_db, "get_sync_session", lambda: SessionLocal())
+
+    with TestClient(app) as client:
+        response = client.get("/db/stories/UNKNOWN")
+        assert response.status_code == 404
+        assert "introuvable" in response.json()["detail"].lower()

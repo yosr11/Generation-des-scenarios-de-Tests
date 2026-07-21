@@ -1,20 +1,14 @@
 # Agent Test
 
-Agent Test est une application FastAPI orientée orchestration d’agents pour l’analyse de stories, la génération de tests et l’intégration avec des services externes comme Jira, Groq et Azure/Microsoft.
+Agent Test est une application FastAPI orientée orchestration d’agents pour l’analyse de stories, la génération de tests et l’intégration avec des services externes comme Jira, Groq et Microsoft.
 
 ## Fonctionnalités principales
 
-- API FastAPI pour l’orchestration des agents
+- API FastAPI modulaire
+- Authentification et JWT
 - Base PostgreSQL avec SQLAlchemy et Alembic
-- Authentification administrateur et testeur
-- Analyse de stories et génération de tests
-- Frontend Vite/Tailwind dans le dossier frontend
-
-## Prérequis
-
-- Python 3.10+
-- PostgreSQL local ou accessible
-- Un fichier .env basé sur .env.example
+- Routes d’administration, d’analyse, de génération et de gestion des stories
+- Frontend Vite/Tailwind dans le dossier `frontend`
 
 ## Installation locale sans Docker
 
@@ -26,35 +20,32 @@ Agent Test est une application FastAPI orientée orchestration d’agents pour l
 
 2. Installez les dépendances :
    ```powershell
-   pip install --upgrade pip
-   pip install -r requirements.txt
+   python -m pip install --upgrade pip
+   python -m pip install -r requirements.txt
    ```
 
-3. Installez PostgreSQL localement ou utilisez une base PostgreSQL accessible :
-   - Windows : installez PostgreSQL via l’installateur officiel ou via le package manager de votre entreprise.
-   - Linux : installez `postgresql` et démarrez le service.
+3. Configurez PostgreSQL local ou à distance.
+   - Créez la base de données :
+     ```sql
+     CREATE DATABASE agent_test;
+     ```
 
-4. Créez la base de données de développement ou de test :
-   ```sql
-   CREATE DATABASE agent_test;
-   ```
-
-5. Copiez le fichier d’exemple de configuration :
+4. Copiez et éditez la configuration :
    ```powershell
    copy .env.example .env
    ```
 
-6. Modifiez `.env` selon votre environnement, par exemple :
+5. Mettez à jour `.env` avec vos valeurs locales :
    ```ini
    DATABASE_URL=postgresql+asyncpg://postgres:postgres@localhost:5432/agent_test
-   JWT_SECRET=your-strong-secret
+   JWT_SECRET=replace_with_a_long_random_secret
    ADMIN_EMAIL=admin@example.com
-   ADMIN_PASSWORD=strong-test-password
-   GROQ_API_KEY=test-groq-key
+   ADMIN_PASSWORD=replace_with_strong_password
+   GROQ_API_KEY=replace_with_your_groq_key
    JIRA_PROD_URL=https://jira.example.com
    JIRA_TEST_URL=https://jira-test.example.com
-   JIRA_USERNAME=jira-user
-   JIRA_PASSWORD=jira-password
+   JIRA_USERNAME=your_jira_username
+   JIRA_PASSWORD=your_jira_password
    ```
 
 ## Lancer l’application
@@ -63,17 +54,9 @@ Agent Test est une application FastAPI orientée orchestration d’agents pour l
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-## Tests
+## Migrations de base de données
 
-Exécutez les tests avec :
-
-```powershell
-pytest -q
-```
-
-## Base de données
-
-Les migrations Alembic sont gérées dans le dossier `alembic`.
+Les migrations sont stockées dans `alembic/`.
 
 Pour appliquer les migrations :
 
@@ -81,50 +64,34 @@ Pour appliquer les migrations :
 alembic upgrade head
 ```
 
-Si vous n’utilisez pas Alembic pour démarrer, le service initialise également les tables de base à l’exécution via `app/db/init_postgres.py`.
-
-### Backend
-
-```bash
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-```
-
-### Frontend
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-## Base de données
-
-Les migrations Alembic sont gérées dans le dossier `alembic`.
-
-Pour appliquer les migrations :
-
-```powershell
-alembic upgrade head
-```
-
-Si vous n’utilisez pas Alembic pour démarrer, le service initialise également les tables de base à l’exécution via `app/db/init_postgres.py`.
+> Si vous ne souhaitez pas exécuter Alembic, l’application tente d’initialiser les tables via `app/db/init_postgres.py` au démarrage.
 
 ## Tests
 
-Exécutez les tests avec :
+Exécutez le jeu de tests complet :
 
 ```powershell
 pytest -q
 ```
 
-## CI
+Pour exécuter seulement les tests d’API et d’intégration :
 
-Une workflow GitHub Actions est disponible dans .github/workflows/ci.yml.
-Elle exécute automatiquement les tests à chaque push ou pull request.
+```powershell
+pytest -q tests/test_db_api_routes.py tests/test_db_integration.py tests/test_story_repository.py tests/test_auth_api.py
+```
+
+## CI GitHub Actions
+
+Le workflow GitHub Actions est défini dans `.github/workflows/ci.yml`.
+Il exécute :
+
+- lint avec `ruff`
+- format check avec `black`
+- tests unitaires et d’intégration via `pytest`
 
 ## Structure du projet
 
-- app/ : code applicatif principal
-- alembic/ : migrations de base de données
-- frontend/ : interface utilisateur Vite
-- tests/ : tests automatisés
+- `app/` : code métier et routes FastAPI
+- `alembic/` : migrations de base de données
+- `tests/` : tests unitaires et d’intégration
+- `frontend/` : interface utilisateur Vite/Tailwind
