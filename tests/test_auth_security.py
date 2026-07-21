@@ -27,3 +27,13 @@ def test_access_token_contains_expected_claims():
     assert decoded["role"] == "admin"
     assert decoded["email"] == "admin@example.com"
     assert "exp" in decoded
+
+
+def test_decode_access_token_rejects_invalid_signature():
+    token = create_access_token({"sub": "1", "role": "tester"}, expires_delta=timedelta(minutes=1))
+    tampered = token[:-1] + ("A" if token[-1] != "A" else "B")
+
+    import pytest
+
+    with pytest.raises(Exception):
+        decode_access_token(tampered)
