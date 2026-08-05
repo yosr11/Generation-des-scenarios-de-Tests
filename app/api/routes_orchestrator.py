@@ -1,4 +1,4 @@
-import asyncio
+﻿import asyncio
 import logging
 from datetime import datetime, timezone
 from typing import Any, List, Optional, Dict
@@ -29,6 +29,8 @@ async def _log_pipeline_run(
     tests_count: int = 0,
     error_message: Optional[str] = None,
     started_at: Optional[datetime] = None,
+    agent3_tests: Optional[list] = None,
+    agent5_report: Optional[dict] = None,
 ) -> None:
     """Persist a PipelineRun record to PostgreSQL (fire-and-forget)."""
     try:
@@ -36,6 +38,19 @@ async def _log_pipeline_run(
         from app.models.pg_models import PipelineRun
 
         async with AsyncSessionLocal() as db:
+            # Remove previous runs for the same story_id so re-runs replace history
+            try:
+                from sqlalchemy import delete, func
+
+                await db.execute(
+                    delete(PipelineRun).where(
+                        func.upper(PipelineRun.story_id) == story_id.upper()
+                    )
+                )
+            except Exception:
+                # If delete fails, continue to insert the new run (avoid blocking pipeline logging)
+                logger.exception("Failed to delete previous PipelineRun entries for %s", story_id)
+
             run = PipelineRun(
                 story_id=story_id,
                 launched_by=launched_by,
@@ -46,11 +61,14 @@ async def _log_pipeline_run(
                 error_message=error_message,
                 started_at=started_at or datetime.now(timezone.utc),
                 finished_at=datetime.now(timezone.utc),
+                agent3_tests=agent3_tests,
+                agent5_report=agent5_report,
             )
             db.add(run)
             await db.commit()
     except Exception as exc:
         logger.warning("[PipelineRun] Failed to log run: %s", exc)
+
 
 
 # ═══════════════════════════════════════════════════════════════
@@ -66,21 +84,21 @@ class PipelineRequest(BaseModel):
     use_rag: bool = Field(default=False, description="Activer le RAG ChromaDB")
     use_legacy_rag: bool = Field(
         default=True,
-        description="Activer le RAG des tests Xray legacy Sopra HR (few-shot Agent 2)",
+        description="Activer le RAG des tests Xray legacy Sopra HR (few-shot Agent 3)",
     )
     model_agent1: str = Field(
         default="nova-lite-2",
         description="Modèle LLM pour Agent 1 (analyse). Options: qwen3, llama4, gptoss, gptoss120b, qwen3.6, nova-lite-2",
     )
-    model_agent15: str = Field(
-        default="nova-lite-2",
-        description="Modèle LLM pour Agent 1.5 (business modeling)",
-    )
     model_agent2: str = Field(
-        default="nova-lite-2", description="Modèle LLM pour Agent 2 (génération)"
+        default="nova-lite-2",
+        description="Modèle LLM pour Agent 2 (business modeling)",
     )
-    model_agent3_quality: str = Field(
-        default="nova-lite-2", description="Modèle LLM pour Agent 3 (qualité)"
+    model_agent3: str = Field(
+        default="nova-lite-2", description="Modèle LLM pour Agent 3 (génération)"
+    )
+    model_agent4_quality: str = Field(
+        default="nova-lite-2", description="Modèle LLM pour Agent 4 (qualité)"
     )
     model_agent5: str = Field(
         default="nova-lite-2", description="Modèle LLM pour Agent 5 (rapport)"
@@ -125,14 +143,14 @@ class PipelineStoryResult(BaseModel):
     status: str  # completed | skipped | failed
     story_type: Optional[str] = None
 
-    # ── Traçabilité RAG tests legacy (few-shot Agent 2) ──
+    # ── Traçabilité RAG tests legacy (few-shot Agent 3) ──
     legacy_examples: Optional[List[dict]] = Field(
         default=None,
-        description="Tests Xray legacy injectés en few-shot à Agent 2 (id, score, titre, pivot complet).",
+        description="Tests Xray legacy injectés en few-shot à Agent 3 (id, score, titre, pivot complet).",
     )
-    agent2_input: Optional[dict] = Field(
+    agent3_input: Optional[dict] = Field(
         default=None,
-        description="Input Agent 2 : tests legacy RAG (few-shot) + contexte RAG epic.",
+        description="Input Agent 3 : tests legacy RAG (few-shot) + contexte RAG epic.",
     )
     images: Optional[List[dict]] = Field(
         default=None,
@@ -140,7 +158,7 @@ class PipelineStoryResult(BaseModel):
     )
     rag_context: Optional[List[Any]] = Field(
         default=None,
-        description="Contexte RAG epic récupéré pour Agent 1 / Agent 2.",
+        description="Contexte RAG epic récupéré pour Agent 1 / Agent 3.",
     )
     tests_count: int = 0
     coverage_rate: Optional[float] = None
@@ -154,19 +172,19 @@ class PipelineStoryResult(BaseModel):
     agent1_analysis: Optional[dict] = Field(
         default=None, description="Sortie Agent 1 (analyse)"
     )
-    agent2_tests: Optional[List[dict]] = Field(
-        default=None, description="Sortie Agent 2 (tests générés)"
+    agent3_tests: Optional[List[dict]] = Field(
+        default=None, description="Sortie Agent 3 (tests générés)"
     )
-    agent2_golden_rule_warnings: Optional[List[str]] = Field(
+    agent3_golden_rule_warnings: Optional[List[str]] = Field(
         default=None,
-        description="Avertissements golden rules non bloquants (Agent 2)",
+        description="Avertissements golden rules non bloquants (Agent 3)",
     )
-    agent2_message: Optional[str] = Field(default=None, description="Message Agent 2")
-    agent15_business_model: Optional[dict] = Field(
-        default=None, description="Sortie Agent 1.5 (business goals + workflows)"
+    agent3_message: Optional[str] = Field(default=None, description="Message Agent 3")
+    agent2_business_model: Optional[dict] = Field(
+        default=None, description="Sortie Agent 2 (business goals + workflows)"
     )
-    agent3_validation: Optional[dict] = Field(
-        default=None, description="Sortie Agent 3 (validation/couverture)"
+    agent4_validation: Optional[dict] = Field(
+        default=None, description="Sortie Agent 4 (validation/couverture)"
     )
     agent5_report: Optional[dict] = Field(
         default=None, description="Sortie Agent 5 (rapport final)"
@@ -222,7 +240,7 @@ def _state_to_result(
 ) -> PipelineStoryResult:
     """Convertit le PipelineState final en réponse API."""
     from app.services.pipeline_export_service import (
-        build_agent2_input,
+        build_agent3_input,
         collect_story_images,
     )
 
@@ -235,7 +253,7 @@ def _state_to_result(
     rag_context = state.get("rag_context") or None
 
     images = collect_story_images(story_id) or None
-    agent2_input = build_agent2_input(
+    agent3_input = build_agent3_input(
         legacy_examples=legacy_examples, rag_context=rag_context
     )
 
@@ -253,14 +271,14 @@ def _state_to_result(
         rag_context=rag_context,
         images=images,
         legacy_examples=legacy_examples,
-        agent2_input=agent2_input,
+        agent3_input=agent3_input,
         errors=state.get("errors", []),
         agent1_analysis=_dump(analysis),
-        agent15_business_model=_dump(state.get("business_model")),
-        agent2_tests=[d for d in (_dump(t) for t in tests) if d is not None] or None,
-        agent2_golden_rule_warnings=state.get("agent2_golden_rule_warnings") or None,
-        agent2_message=state.get("agent2_message"),
-        agent3_validation=_dump(validation),
+        agent2_business_model=_dump(state.get("business_model")),
+        agent3_tests=[d for d in (_dump(t) for t in tests) if d is not None] or None,
+        agent3_golden_rule_warnings=state.get("agent3_golden_rule_warnings") or None,
+        agent3_message=state.get("agent3_message"),
+        agent4_validation=_dump(validation),
         agent5_report=_dump(report),
         token_usage=state.get("token_usage"),
     )
@@ -326,6 +344,8 @@ async def run_story_pipeline(
         status = "failed"
         tests_count = 0
         error_msg = None
+        agent3_tests = None
+        agent5_report = None
 
         try:
             import anyio
@@ -336,9 +356,9 @@ async def run_story_pipeline(
                     use_rag=params.use_rag,
                     use_legacy_rag=params.use_legacy_rag,
                     model_agent1=params.model_agent1,
-                    model_agent15=params.model_agent15,
                     model_agent2=params.model_agent2,
-                    model_agent3_quality=params.model_agent3_quality,
+                    model_agent3=params.model_agent3,
+                    model_agent4_quality=params.model_agent4_quality,
                     model_agent5=params.model_agent5,
                     coverage_threshold=params.coverage_threshold,
                     max_correction_iterations=params.max_correction_iterations,
@@ -348,6 +368,9 @@ async def run_story_pipeline(
             result = _state_to_result(final_state, include_markdown=False)
             status = result.status
             tests_count = result.tests_count
+            # persist full outputs for history
+            agent3_tests = result.agent3_tests if hasattr(result, "agent3_tests") else None
+            agent5_report = result.agent5_report if hasattr(result, "agent5_report") else None
 
             if sid in jobs_db:
                 jobs_db[sid]["status"] = (
@@ -376,17 +399,24 @@ async def run_story_pipeline(
                 jobs_db[sid]["status"] = "failed"
                 jobs_db[sid]["error"] = error_msg
         finally:
-            await _log_pipeline_run(
-                story_id=sid,
-                launched_by=launched_by,
-                status=jobs_db[sid]["status"] if sid in jobs_db else status,
-                use_rag=params.use_rag,
-                use_legacy_rag=params.use_legacy_rag,
-                tests_count=tests_count,
-                error_message=error_msg,
-                started_at=started_at,
-            )
             running_tasks.pop(sid, None)
+            try:
+                asyncio.create_task(
+                    _log_pipeline_run(
+                        story_id=sid,
+                        launched_by=launched_by,
+                        status=status,
+                        use_rag=params.use_rag,
+                        use_legacy_rag=params.use_legacy_rag,
+                        tests_count=tests_count,
+                        error_message=error_msg,
+                        started_at=started_at,
+                        agent3_tests=agent3_tests,
+                        agent5_report=agent5_report,
+                    )
+                )
+            except Exception as exc:
+                logger.warning("Failed to schedule pipeline run log: %s", exc)
 
     task = asyncio.create_task(run_task())
     running_tasks[sid] = task
@@ -459,9 +489,9 @@ def run_story_pipeline_with_markdown(story_id: str, body: PipelineRequest = None
             use_rag=params.use_rag,
             use_legacy_rag=params.use_legacy_rag,
             model_agent1=params.model_agent1,
-            model_agent15=params.model_agent15,
             model_agent2=params.model_agent2,
-            model_agent3_quality=params.model_agent3_quality,
+            model_agent3=params.model_agent3,
+            model_agent4_quality=params.model_agent4_quality,
             model_agent5=params.model_agent5,
             coverage_threshold=params.coverage_threshold,
             max_correction_iterations=params.max_correction_iterations,
@@ -491,9 +521,9 @@ def run_story_pipeline_report_md(story_id: str, body: PipelineRequest = None):
             use_rag=params.use_rag,
             use_legacy_rag=params.use_legacy_rag,
             model_agent1=params.model_agent1,
-            model_agent15=params.model_agent15,
             model_agent2=params.model_agent2,
-            model_agent3_quality=params.model_agent3_quality,
+            model_agent3=params.model_agent3,
+            model_agent4_quality=params.model_agent4_quality,
             model_agent5=params.model_agent5,
             coverage_threshold=params.coverage_threshold,
             max_correction_iterations=params.max_correction_iterations,
@@ -557,9 +587,9 @@ def run_story_pipeline_report_html(story_id: str, body: PipelineRequest = None):
             use_rag=params.use_rag,
             use_legacy_rag=params.use_legacy_rag,
             model_agent1=params.model_agent1,
-            model_agent15=params.model_agent15,
             model_agent2=params.model_agent2,
-            model_agent3_quality=params.model_agent3_quality,
+            model_agent3=params.model_agent3,
+            model_agent4_quality=params.model_agent4_quality,
             model_agent5=params.model_agent5,
             coverage_threshold=params.coverage_threshold,
             max_correction_iterations=params.max_correction_iterations,
@@ -651,9 +681,9 @@ def run_epic_pipeline(epic_key: str, body: PipelineRequest = None):
                 use_rag=params.use_rag,
                 use_legacy_rag=params.use_legacy_rag,
                 model_agent1=params.model_agent1,
-                model_agent15=params.model_agent15,
                 model_agent2=params.model_agent2,
-                model_agent3_quality=params.model_agent3_quality,
+                model_agent3=params.model_agent3,
+                model_agent4_quality=params.model_agent4_quality,
                 model_agent5=params.model_agent5,
                 coverage_threshold=params.coverage_threshold,
                 max_correction_iterations=params.max_correction_iterations,

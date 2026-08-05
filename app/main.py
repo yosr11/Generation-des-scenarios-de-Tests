@@ -1,4 +1,4 @@
-import logging
+﻿import logging
 import traceback
 from contextlib import asynccontextmanager
 
@@ -11,7 +11,7 @@ from app.api.routes_epic import router as epic_router
 from app.api.routes_analysis import router as analysis_router
 from app.api.routes_db import db_router
 from app.api.routes_documents import router as documents_router
-from app.api.routes_agent3 import router as agent3_router
+from app.api.routes_agent4 import router as agent4_router
 from app.db.init_postgres import init_postgres
 from app.api.manual_test_generation import router as manual_test_generation_router
 from app.api.routes_agent5 import router as agent5_router
@@ -21,7 +21,8 @@ from app.api.routes_integration import router as integration_router
 from app.api.routes_test_editing import router as test_editing_router
 from app.api.routes_auth import router as auth_router
 from app.api.routes_admin import router as admin_router
-from app.api.routes_agent15 import router as agent15_router
+from app.api.routes_agent2 import router as agent2_router
+from app.core.config import settings
 from app.core.legacy_compat import warn_legacy_module
 
 logger = logging.getLogger(__name__)
@@ -33,7 +34,8 @@ async def lifespan(app: FastAPI):
     try:
         await init_postgres()
     except Exception as exc:
-        logger.warning("PostgreSQL init skipped or failed: %s", exc)
+        logger.error("FATAL: PostgreSQL init failed: %s", exc)
+        raise
     yield
 
 
@@ -45,12 +47,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-    ],
+    allow_origins=settings.ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -76,13 +73,13 @@ app.include_router(analysis_router)
 app.include_router(db_router)
 app.include_router(documents_router)
 app.include_router(manual_test_generation_router)
-app.include_router(agent3_router)
+app.include_router(agent4_router)
 app.include_router(agent5_router)
 app.include_router(orchestrator_router)
 app.include_router(legacy_tests_router)
 app.include_router(integration_router)
 app.include_router(test_editing_router)
-app.include_router(agent15_router)
+app.include_router(agent2_router)
 
 
 @app.get("/")

@@ -1,4 +1,4 @@
-from app.services.legacy_test_rag_service import retrieve_similar
+﻿from app.services.legacy_test_rag_service import retrieve_similar
 
 r = retrieve_similar(
     "Envoyer une question RH au gestionnaire",

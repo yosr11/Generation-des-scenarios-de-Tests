@@ -1,4 +1,4 @@
-"""API pour l'édition et le refinement IA des tests manuels."""
+﻿"""API pour l'édition et le refinement IA des tests manuels."""
 
 from __future__ import annotations
 

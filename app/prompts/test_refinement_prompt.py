@@ -1,4 +1,4 @@
-"""Prompts pour l'assistant IA de refinement des tests manuels."""
+﻿"""Prompts pour l'assistant IA de refinement des tests manuels."""
 
 from __future__ import annotations
 

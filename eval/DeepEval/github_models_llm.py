@@ -1,4 +1,4 @@
-"""
+﻿"""
 Wrapper DeepEval pour utiliser GitHub Models (gpt-4.1, gpt-4o, etc.)
 comme juge LLM dans GEval, au lieu d'OpenAI directement.
 """

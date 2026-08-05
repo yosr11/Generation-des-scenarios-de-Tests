@@ -1,4 +1,4 @@
-"""Service d'authentification unifié — un seul point d'entrée pour admin et testeur."""
+﻿"""Service d'authentification unifié — un seul point d'entrée pour admin et testeur."""
 
 from __future__ import annotations
 

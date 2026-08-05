@@ -1,10 +1,10 @@
-"""
+﻿"""
 Helpers pour enrichir la réponse pipeline (export JSON / deepEval).
 
 Expose :
   - images liées à la story (description OCR+VLM + URL proxy)
-  - agent2_input : tests legacy RAG injectés en few-shot à Agent 2
-  - evaluation_export : payload structuré (Agent 1.5 → Agent 2, inputs, images)
+  - agent3_input : tests legacy RAG injectés en few-shot à Agent 2
+  - evaluation_export : payload structuré (Agent 2 → Agent 3, inputs, images)
 """
 
 from __future__ import annotations
@@ -86,7 +86,7 @@ def collect_story_images(story_id: str) -> List[Dict[str, Any]]:
 
 
 def format_legacy_example_input(example: Dict[str, Any]) -> Dict[str, Any]:
-    """Forme compacte d'un test legacy pour l'input Agent 2 / deepEval."""
+    """Forme compacte d'un test legacy pour l'input Agent 3 / deepEval."""
     pivot = example.get("pivot") or {}
     steps = pivot.get("steps") or []
     return {
@@ -102,11 +102,11 @@ def format_legacy_example_input(example: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
-def build_agent2_input(
+def build_agent3_input(
     legacy_examples: Optional[List[Dict[str, Any]]] = None,
     rag_context: Optional[List[Any]] = None,
 ) -> Dict[str, Any]:
-    """Input réellement injecté à Agent 2 (few-shot legacy + contexte RAG epic)."""
+    """Input réellement injecté à Agent 3 (few-shot legacy + contexte RAG epic)."""
     examples = legacy_examples or []
     return {
         "legacy_rag_examples": [format_legacy_example_input(e) for e in examples],
@@ -120,19 +120,19 @@ def build_evaluation_export(result: Dict[str, Any]) -> Dict[str, Any]:
     """
     Payload JSON structuré pour l'évaluation (deepEval).
 
-    Ordre : story → images → agent2_input → agent 1.5 → agent 2 → reste.
+    Ordre : story → images → agent3_input → agent 1.5 → agent 2 → reste.
     """
     return {
         "story_id": result.get("story_id"),
         "story": result.get("story"),
         "images": result.get("images") or [],
-        "agent2_input": result.get("agent2_input"),
-        "agent15_business_model": result.get("agent15_business_model"),
-        "agent2_tests": result.get("agent2_tests"),
-        "agent2_golden_rule_warnings": result.get("agent2_golden_rule_warnings"),
-        "agent2_message": result.get("agent2_message"),
+        "agent3_input": result.get("agent3_input"),
+        "agent2_business_model": result.get("agent2_business_model"),
+        "agent3_tests": result.get("agent3_tests"),
+        "agent3_golden_rule_warnings": result.get("agent3_golden_rule_warnings"),
+        "agent3_message": result.get("agent3_message"),
         "agent1_analysis": result.get("agent1_analysis"),
-        "agent3_validation": result.get("agent3_validation"),
+        "agent4_validation": result.get("agent4_validation"),
         "agent5_report": result.get("agent5_report"),
         "legacy_examples": result.get("legacy_examples"),
         "rag_context": result.get("rag_context"),

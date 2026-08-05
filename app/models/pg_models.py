@@ -1,4 +1,4 @@
-"""Modèles PostgreSQL : utilisateurs, logs d'audit, runs de pipeline et tables métier."""
+﻿"""Modèles PostgreSQL : utilisateurs, logs d'audit, runs de pipeline et tables métier."""
 
 from datetime import datetime
 from typing import Optional
@@ -48,23 +48,6 @@ class User(Base):
     )
 
 
-class AuditLog(Base):
-    __tablename__ = "audit_logs"
-
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    user_identifier: Mapped[str] = mapped_column(
-        String(255), nullable=False, index=True
-    )
-    role: Mapped[str] = mapped_column(String(50), nullable=False)
-    action: Mapped[str] = mapped_column(String(100), nullable=False)
-    resource: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
-    details: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
-    ip_address: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now()
-    )
-
-
 class PipelineRun(Base):
     """Trace chaque lancement de pipeline."""
 
@@ -88,6 +71,9 @@ class PipelineRun(Base):
     # Result summary
     tests_count: Mapped[int] = mapped_column(Integer, default=0)
     error_message: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    # Full outputs (JSON) persisted for history/debugging
+    agent3_tests: Mapped[Optional[list]] = mapped_column(PortableJSONB, nullable=True, default=list)
+    agent5_report: Mapped[Optional[dict]] = mapped_column(PortableJSONB, nullable=True)
 
 
 # ── Modèles métier (migrés depuis SQLite) ────────────────────────────────────
@@ -193,26 +179,10 @@ class StoryAnalysis(Base):
     )
 
 
-class StoryManualTests(Base):
-    """Dernier snapshot de tests manuels générés par l'Agent 2."""
+class Agent4Validation(Base):
+    """Résultats de validation Agent 4 par story."""
 
-    __tablename__ = "story_manual_tests"
-
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    story_id: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
-    tests_json: Mapped[list] = mapped_column(
-        PortableJSONB, nullable=False, default=list
-    )
-    generation_model: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now()
-    )
-
-
-class Agent3Validation(Base):
-    """Résultats de validation Agent 3 par story."""
-
-    __tablename__ = "agent3_validations"
+    __tablename__ = "agent4_validations"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     story_id: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
@@ -243,29 +213,8 @@ class Agent3Validation(Base):
     )
 
 
-class AutomationClassification(Base):
-    """Classifications d'automatisation par test (Agent 4)."""
-
-    __tablename__ = "automation_classifications"
-
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    story_id: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
-    test_name: Mapped[str] = mapped_column(Text, nullable=False)
-    classification: Mapped[str] = mapped_column(String(50), nullable=False)
-    confidence: Mapped[str] = mapped_column(String(50), nullable=False)
-    raison: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
-    po_feedback: Mapped[str] = mapped_column(
-        String(50), nullable=False, default="pending"
-    )
-    model: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
-    error: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now()
-    )
-
-
 class StoryBusinessModel(Base):
-    """Business models générés par l'Agent 1.5."""
+    """Business models générés par l'Agent 2."""
 
     __tablename__ = "story_business_models"
 
@@ -285,7 +234,7 @@ class StoryBusinessModel(Base):
 
 
 class GeneratedScenario(Base):
-    """Scénarios de test générés par l'Agent 2 (mode scénarios)."""
+    """Scénarios de test générés par l'Agent 3 (mode scénarios)."""
 
     __tablename__ = "generated_scenarios"
 

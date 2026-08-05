@@ -1,4 +1,4 @@
-"""Validation Jira et récupération des projets accessibles pour les testeurs."""
+﻿"""Validation Jira et récupération des projets accessibles pour les testeurs."""
 
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-from pathlib import Path
+﻿from pathlib import Path
 from typing import Any, Dict, List
 
 from deepeval.test_case import ConversationalTestCase, Turn
@@ -18,14 +18,14 @@ def build_conversational_case(story: Dict[str, Any]) -> ConversationalTestCase:
         Turn(
             role="user", content="Refine the business model and workflow from Agent 1."
         ),
-        Turn(role="assistant", content=payloads["agent1_5"]),
-        Turn(role="user", content="Generate test cases from the business model."),
         Turn(role="assistant", content=payloads["agent2"]),
+        Turn(role="user", content="Generate test cases from the business model."),
+        Turn(role="assistant", content=payloads["agent3"]),
         Turn(
             role="user",
             content="Validate the generated tests and highlight gaps or ambiguities.",
         ),
-        Turn(role="assistant", content=payloads["agent3"]),
+        Turn(role="assistant", content=payloads["agent4"]),
         Turn(role="user", content="Produce the final QA report with recommendations."),
         Turn(role="assistant", content=payloads["agent5"]),
     ]

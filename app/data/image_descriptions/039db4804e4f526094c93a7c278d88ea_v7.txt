@@ -1,0 +1,90 @@
+[Image jointe : image-2026-03-09-15-49-17-329.png]
+── Textes détectés (OCR) ──
+CongA® A
+B Accia. TIT avec hosp. protonga [ Accld. trajet avec hosp. [ Accid. travail avec hosp. [l Accident de trajer @8 Accident de wravall (< Alim. CET via RTT
+Allm. CET via congé ancienneté Alim. CET via congé annuel Cohab. pers. fragile COVID-19 a Confinement COVID-19 @ Congé payé @ Congé payé ancienneté
+@ Congé reporté A-2 E Congé reporté A-3 @ Congé reporté A-4 a Garde enfant COVID-19 @ Jours issus de dons ê Prise de CET Prol accid. trav avec hosp.
+Prolong. accident de trajet [l Prolong. accident de travall (<] RTT
+CongA® exceptionnel A
+\"_Îl Absence autorisée payée Act partielle - Fermeture étab Act partielle - Réduction hrs Cgé paternité enft hospitalisé Congé maternité Congé paternité
+\îl Congé sans solde Dons jours CET Dons jours RTT Dons jours anclenneté @ Dons jours congé payé Dons jours fractionnement Dons jours récupération
+\F_Îl Décès autre ascendant/desc. |Ë\ Décès beau-frère, belle-soeur |Î| Décès conjoint |Ë Décès enfant [Ël Décès père ou mère Délégation |Ï| Délégué représentant personnel
+\Ël Enfant malade Iäl Grève Longue maladie @ Maladie Maladie avec hospitalisation Maladie professionnelle \El Mariage / PACS [El Marlage / PACS enfant
+[ai] Nalssance / Adoption (<Tc] Paiement CET issu de CAnc (<] Palement CET issude CP (1) Paiement CET issu de RTT R Prolong. maladie avec hosp. B Prolongation maladie
+CongA®
+B Accia. TIT avec hosp. protonga Accld. trajet avec hosp. Accld. travail avechosp. [EB} Accident de trajer [ Accident de travall (< Alim. CET via RTT
+Allm. CET via congé ancienneté Alim. CET via congé annuel
+Cohab. pers. fragile COVID-19 a Confinement COVID-19 @ Congé payé @ Congé payé ancienneté
+CPR| Congé reporté A-2 cPR Congé reporté A-3 |cPr| Congé reporté A-4 a Garde enfant COVID-19 DON Joursissusdedons <E PrisedeCET MM Prol accid. trav avec hosp.
+Prolong. accident de trajet RSN Prolong. accident de travall |RTT] RTT
+L>
+CongA® exceptionnel
+AES
+Absence autorisée payée Act partielle - Fermeture étab Act partielle - Réduction hrs Cgé paternité enft hospltalisé É2N Congé maternité R Congé paternité
+I3
+Congé sans solde Dons Jours CET Dons jours RTT Dons jours anclenneté |2<| Dons jours congé payé Dons jours fractionnement Dons jours récupération
+CTA
+Décès autre ascendant/desc. |Ë\ Décès beau-frère, belle-soeur
+Dc
+Décès conjoint |Ë Décès enfant [Ël Décès père ou mère Délégation |Ï| Délégué représentant personnel
+Marlage / PACS enfant
+ENF
+Enfant malade Iäl Grève Longue maladie @ Maladie Maladie avec hospitalisation B Maladie professionnelle \El Mariage / PACS [E
+Nal
+Nalssance / Adoption Paiement CET issu de CAnc Palement CET issu de CP Paiement CET Issu de RTT Prolong. maladie avec hosp. [l Prolongation maladie
+── Analyse visuelle (VLM) ──
+<think>
+The user wants me to analyze a screenshot of a UI mockup, specifically focusing on non-textual elements, annotations, and layout, while relying on the provided OCR text for the content.
+
+**1. Context:**
+The image shows a user interface, likely a web application or a software dashboard, displaying a list of categories or types of leave/absences. It looks like a configuration or selection screen for HR management (Sopra HR). The layout consists of two main expandable sections (accordions) containing lists of items.
+
+**2. Annotations:**
+I need to look for anything added *on top* of the UI.
+- Looking closely at the image, there are no red boxes, arrows, circles, or handwritten notes added by a PO.
+- Wait, let me look closer at the second crop. There is a mouse cursor visible in the middle area between the two sections.
+- Is there anything else? No obvious red boxes or highlights.
+- Wait, looking at the very first crop, there are no annotations.
+- Looking at the second crop, there are no annotations.
+- Looking at the third crop, there are no annotations.
+- Looking at the fourth crop, there are no annotations.
+- Conclusion: No annotations detected.
+
+**3. Native UI Elements:**
+- **Badges/Tags:** There are many small rectangular badges with rounded corners next to the text labels.
+    - Some are dark blue/black with white text (e.g., "TJT", "TTL", "CET", "CP", "CPR", "DON", "RTT", "ABA", "ACT", "CSS", "DJC", "DJR", "DJA", "DCA", "DCB", "DCJ", "DCE", "DCP", "IRP", "ENF", "GRE", "MAL", "MAR", "NAI", "CTC", "CTR").
+    - Some are light grey/white with dark text (e.g., "CET", "CPA", "DJC", "DJR", "DJA", "DEL", "MAR", "CTC").
+    - Some are light purple/pink with dark text (e.g., "ABA", "CSS", "DCA", "DCB", "DCJ", "DCE", "DCP", "ENF", "GRE", "MAR", "NAI").
+    - Wait, let's look closer at the colors.
+        - Dark blue/black badges: "TJT", "TTL", "CET" (some), "CP", "CPR" (some), "DON", "RTT", "ACT" (some), "BHP", "MAL" (some), "MAR" (some), "NAI" (some), "CTC" (some), "CTR" (some).
+        - Light grey/white badges: "CET" (some), "CPA", "DJC", "DJR", "DJA", "DEL", "MAR" (some), "CTC" (some).
+        - Light purple/pink badges: "ABA", "CSS", "DCA", "DCB", "DCJ", "DCE", "DCP", "ENF", "GRE", "MAR" (some), "NAI" (some).
+    - Actually, looking at the third crop, the badges seem to have specific colors.
+        - "ABA" is light purple.
+        - "ACT" is light grey/white.
+        - "CSS" is light purple.
+        - "DJC" is light grey/white.
+        - "DJR" is light grey/white.
+        - "DJA" is light grey/white.
+        - "DCA" is light purple.
+        - "DCB" is light purple.
+        - "DCJ" is light purple.
+        - "DCE" is light purple.
+        - "DCP" is light purple.
+        - "IRP" is light purple.
+        - "ENF" is light purple.
+        - "GRE" is light purple.
+        - "MAL" is dark blue/black.
+        - "MAR" is light purple.
+        - "NAI" is light purple.
+        - "CTC" is light grey/white.
+        - "CTR" is light grey/white.
+    - Let's re-evaluate based on the full image.
+    - Top section ("Congé"):
+        - Dark blue badges: "TJT", "TTL", "CET" (first one), "CP", "CPR" (first one), "DON", "RTT".
+        - Light grey/white badges: "CET" (second one), "CPA", "CPR" (second one), "CPR" (third one).
+    - Bottom section ("Congé exceptionnel"):
+        - Light purple badges: "ABA", "CSS", "DCA", "DCB", "DCJ", "DCE", "DCP", "ENF", "GRE", "MAR", "NAI".
+        - Light grey/white badges: "ACT", "DJC", "DJR", "DJA", "DEL", "CTC", "CTR".
+        - Dark blue badges: "BHP", "MAL", "MAR" (wait, looking at crop 4, "MAR" is light purple, "MAL" is dark blue).
+    - Let's just describe them generally as "badges" or "tags" with varying colors (dark blue, light grey, light purple)

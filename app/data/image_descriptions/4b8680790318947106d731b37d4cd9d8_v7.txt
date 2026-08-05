@@ -1,0 +1,115 @@
+[Image jointe : image-2026-07-03-09-22-20-051.png]
+── Textes détectés (OCR) ──
+€ c 2s foryou-plannings-features.apps.shr-okd.marc.fr.ssg/app/foryou/#/demarches/planningmanager w s$ ®
+Bs * , AYOU - Se connecter L'accessibilité numé… @ Apache Karaf Web... C 4YOU dev 3 Tous les fave
+= @ France secteur privé Planning manager o ? C
+Ici, vous pouvez gérer le planning de votre équipe
+OO |
+18 collaborateurs Ve:1.3 Sam.4 Dim.5 Lun.6 Mar.7 Mer.8 Jeu.9 Ven. 10  Sam.11 DBim.12 Lun.13 Mar.14 Mer.15 Jeu.16
+O Hugo QMNPO1 (Vous) - n n n ‘Î‘
+Application Pale e A
+ç— ADAM TARTUF
+@ mmn S . S .
+. ERIC ONPRRH2
+(..
+-o
+foryou-plannings-features.apps.shr-okd.marc.fr.ssg/app/foryou/#/demarches/planningmanager
+g o
+* , AYOU - Se connecter
+L'accessibilité numé...
+@ Apache Karaf Web...
+C 4YOU dev
+C Tous les fave
+O,
+@ France secteur privé
+Planning manager
+@ @( @ Aujourd'hui ) ‘ ( 3 Juillet 2026 - 16 Juillet 2026 v )( (D Par 2 semaines v )( fJ Zones scolaires v )
+18 collaborateurs
+Ve:1.3
+Sam.4
+Dim.5
+Lun.6
+Mar.7
+Mer.8
+Jeu.9
+ven.10
+Sam.11
+Dim.12
+Lun.13
+Mar.14
+Mer.15
+Jeu.16
+——
+O Hugo QMNPO1 (Vous)
+Application Paie
+Q— ADAM TARTUF
+ALEX ONP08
+ANNA QNPQ9
+Benjamin QNPO3
+CATHERINE QNPO7
+ERIC ONPRRH2
+── Analyse visuelle (VLM) ──
+<think>
+The user wants me to analyze a screenshot of a "Planning manager" interface.
+I need to follow a specific structure:
+1.  **CONTEXTE**: Describe the screen type and intent.
+2.  **ANNOTATIONS AJOUTÉES PAR LE PO**: Identify any overlays (red boxes, arrows, etc.).
+3.  **ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI**: Describe pills, badges, buttons, etc.
+4.  **ICÔNES ET PICTOGRAMMES**: Describe icons and their probable function.
+5.  **AGENCEMENT ET RELATIONS**: Describe the layout, hierarchy, and spatial relationships.
+
+**Step 1: Analyze the image.**
+-   **Top Bar**: Black header with "France secteur privé", "Planning manager", search icon, help icon, settings icon.
+-   **Sub-header**: "Ici, vous pouvez gérer le planning de votre équipe".
+-   **Controls**:
+    -   Navigation arrows (left/right).
+    -   Button "Aujourd'hui" with a calendar icon.
+    -   Dropdown "3 Juillet 2026 - 16 Juillet 2026".
+    -   Dropdown "Par 2 semaines".
+    -   Dropdown "Zones scolaires".
+-   **Main Content**: A grid/table.
+    -   **Header Row**: Days of the week (Ven.3 to Jeu.16).
+    -   **Left Column**: List of names (Hugo QMNP01, ADAM TARTUF, ALEX QNP08, etc.) with avatars.
+    -   **Grid Cells**: Some cells have diagonal hatching (grey lines). One cell (Jeu.16 for Hugo) has a purple box with "M. 0...".
+-   **Annotations**: I need to look closely for anything added *on top* of the UI.
+    -   Looking at the full image and crops... I don't see any red boxes, arrows, or circles added by a PO. The purple box "M. 0..." looks like a native UI element (a badge or status indicator), not an annotation. Wait, let me re-examine.
+    -   The purple box "M. 0..." is inside the grid cell for "Jeu.16" and "Hugo QMNP01". It looks like a native UI element indicating a status (maybe "Maladie" or "Mission"?). It has a distinct purple border and background.
+    -   Are there any *other* annotations? No obvious red circles or arrows.
+    -   Wait, let's look at the "Application Paie" text. It's above the list of names.
+    -   Let's check the bottom right crop. Just grid lines.
+    -   Let's check the top right crop. Just the header.
+    -   Let's check the middle crop. Just the controls.
+    -   Conclusion: No explicit PO annotations (like red boxes/arrows) are visible. The purple box is likely part of the UI.
+
+**Step 2: Draft the sections.**
+
+*   **1. CONTEXTE**: C'est une interface de gestion de planning (Planning manager) sous forme de grille calendrier. L'intention est de visualiser et gérer les absences ou les plannings d'une équipe sur une période donnée.
+
+*   **2. ANNOTATIONS AJOUTÉES PAR LE PO**: Aucune annotation détectée. (Je ne vois pas de flèches rouges, de cadres ajoutés, etc. Le cadre violet "M. 0..." semble être un élément natif de l'interface, probablement un statut).
+
+*   **3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI**:
+    *   **Boutons/Contrôles**:
+        *   Bouton "Aujourd'hui" (contour noir, fond blanc).
+        *   Sélecteurs déroulants (dropdowns) : "3 Juillet 2026 - 16 Juillet 2026", "Par 2 semaines", "Zones scolaires". Ils ont un contour arrondi.
+    *   **Badges/Statuts**:
+        *   Un petit rectangle violet avec le texte "M. 0..." (visible dans la cellule de Hugo pour Jeu.16).
+    *   **Avatars**:
+        *   Petits cercles avec des photos ou des silhouettes grises à gauche des noms.
+    *   **En-tête de liste**: "Application Paie" (texte gris, semble être un titre de section ou un filtre actif).
+
+*   **4. ICÔNES ET PICTOGRAMMES**:
+    *   **Haut de page**:
+        *   Menu hamburger (3 barres) à gauche.
+        *   Logo "4YOU" (cercle avec 4 et un plus).
+        *   Loupe (recherche) à droite.
+        *   Point d'interrogation (aide) à droite.
+        *   Engrenage (paramètres) à droite.
+    *   **Barre de contrôle**:
+        *   Flèche gauche (précédent).
+        *   Flèche droite (suivant).
+        *   Icône calendrier (dans le bouton "Aujourd'hui").
+        *   Flèches bas (dans les dropdowns).
+    *   **Grille**:
+        *   Flèche haut (en haut à droite de la grille, probablement pour réduire/plier la vue).
+
+*   **5. AGENCEMENT

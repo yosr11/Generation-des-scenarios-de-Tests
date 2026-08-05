@@ -56,10 +56,9 @@ export const LandingPage: React.FC = () => {
 
       {/* ── Navbar ───────────────────────────── */}
       <nav className="relative z-20 flex items-center justify-between px-8 py-6 max-w-7xl mx-auto">
-        <div className="flex items-center gap-3">
-          <img src="/logo_sopra.png" alt="Sopra HR" className="h-8 w-auto object-contain"
-            style={{ filter: 'brightness(0) invert(1)', opacity: 0.9 }} />
-          <div className="w-px h-5 bg-white/20" />
+        <div className="flex items-center gap-2">
+          <img src="/synapTest1.png" alt="Synaptest" className="h-16 w-auto object-contain" />
+          <div className="w-px h-7 bg-white/20" />
           <span className="text-xl font-bold text-white">
             Synap<span style={{ color: '#f43f5e' }}>test</span>
           </span>
@@ -138,18 +137,23 @@ export const LandingPage: React.FC = () => {
             <div className="space-y-2 font-mono text-sm">
               <div className="flex items-center gap-3">
                 <span className="text-brand-violet">[Agent 1]</span>
-                <span className="text-white/70">Classifying story NUXEPM-2144...</span>
+                <span className="text-white/70">Analysing user story NUXEPM-2144...</span>
                 <span className="ml-auto text-green-400 text-xs">✓ done</span>
               </div>
               <div className="flex items-center gap-3">
                 <span className="text-brand-pink">[Agent 2]</span>
-                <span className="text-white/70">Analysing user story details...</span>
+                <span className="text-white/70">Business modeling & end-to-end workflows...</span>
                 <span className="ml-auto text-green-400 text-xs">✓ done</span>
               </div>
               <div className="flex items-center gap-3">
                 <span className="text-brand-orange">[Agent 3]</span>
                 <span className="text-white/70">Generating test scenarios via RAG...</span>
                 <span className="ml-auto animate-pulse text-brand-orange text-xs">● running</span>
+              </div>
+              <div className="flex items-center gap-3 opacity-40">
+                <span className="text-brand-rose">[Agent 4]</span>
+                <span className="text-white/50">Validating coverage & ambiguities...</span>
+                <span className="ml-auto text-white/30 text-xs">waiting</span>
               </div>
               <div className="flex items-center gap-3 opacity-40">
                 <span className="text-brand-rose">[Agent 5]</span>

@@ -1,4 +1,4 @@
-"""Modèles Pydantic pour Agent 1.5 — QA Business Modeling."""
+﻿"""Modèles Pydantic pour Agent 2 — QA Business Modeling."""
 
 from typing import List, Literal
 from pydantic import BaseModel, Field
@@ -30,7 +30,7 @@ class BusinessWorkflow(BaseModel):
 
 
 class BusinessModelingResult(BaseModel):
-    """Résultat complet de l'Agent 1.5 pour une story."""
+    """Résultat complet de l'Agent 2 pour une story."""
 
     story_id: str
     business_goals: List[BusinessGoal] = Field(default_factory=list)

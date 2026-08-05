@@ -70,7 +70,7 @@ const STEP_STYLE: Record<string, { bg: string; border: string; icon: React.Eleme
   pending:   { bg: 'rgba(10,22,40,0.02)',   border: 'rgba(10,22,40,0.08)',  icon: Clock },
 }
 
-const AGENT_ORDER = ['Agent 1', 'Agent 1.5', 'Agent 2', 'Agent 3', 'Agent 5'] as const
+const AGENT_ORDER = ['Agent 1', 'Agent 2', 'Agent 3', 'Agent 4', 'Agent 5'] as const
 const STATUS_LABELS: Record<string, string> = {
   completed: 'Terminé',
   failed: 'Échec',
@@ -79,11 +79,11 @@ const STATUS_LABELS: Record<string, string> = {
 }
 
 const AGENT_INFO: Record<string, { label: string; desc: string; step: number; icon: React.ElementType; gradient: string; accent: string }> = {
-  'Agent 1':   { step: 1, label: 'Agent 1 — Analyse',           desc: 'Analyse sémantique de la user story',      icon: FileText,      gradient: ICON_GRADIENT, accent: ROSE },
-  'Agent 1.5': { step: 2, label: 'Agent 1.5 — Modélisation',    desc: 'Objectifs métier et parcours end-to-end',    icon: GitBranch,     gradient: ICON_GRADIENT, accent: VIOLET },
-  'Agent 2':   { step: 3, label: 'Agent 2 — Tests manuels',     desc: 'Scénarios de tests générés automatiquement', icon: TestTube,      gradient: ICON_GRADIENT, accent: ORANGE },
-  'Agent 3':   { step: 4, label: 'Agent 3 — Validation',        desc: 'Couverture, ambiguïtés et cas limites',    icon: CheckCircle2,  gradient: ICON_GRADIENT, accent: ROSE },
-  'Agent 5':   { step: 5, label: 'Agent 5 — Rapport qualité',   desc: 'Synthèse et recommandations finales',      icon: FileBarChart2, gradient: ICON_GRADIENT, accent: VIOLET },
+  'Agent 1': { step: 1, label: 'Agent 1 — Analyse',         desc: 'Analyse sémantique de la user story',        icon: FileText,      gradient: ICON_GRADIENT, accent: ROSE },
+  'Agent 2': { step: 2, label: 'Agent 2 — Modélisation',    desc: 'Objectifs métier et parcours end-to-end',    icon: GitBranch,     gradient: ICON_GRADIENT, accent: VIOLET },
+  'Agent 3': { step: 3, label: 'Agent 3 — Tests manuels',   desc: 'Scénarios de tests générés automatiquement', icon: TestTube,      gradient: ICON_GRADIENT, accent: ORANGE },
+  'Agent 4': { step: 4, label: 'Agent 4 — Validation',      desc: 'Couverture, ambiguïtés et cas limites',      icon: CheckCircle2,  gradient: ICON_GRADIENT, accent: ROSE },
+  'Agent 5': { step: 5, label: 'Agent 5 — Rapport qualité', desc: 'Synthèse et recommandations finales',        icon: FileBarChart2, gradient: ICON_GRADIENT, accent: VIOLET },
 }
 
 const Toggle: React.FC<{ checked: boolean; onChange: () => void; label: string; desc?: string }> = ({ checked, onChange, label, desc }) => (
@@ -263,7 +263,7 @@ const AgentWorkspace: React.FC<{
   const info = AGENT_INFO[step.agent] || { label: step.agent, icon: Bot, gradient: CARD_GRADIENT, desc: '', accent: ROSE }
   const Icon = info.icon
 
-  const agent2Output = step.agent === 'Agent 2' && manualTests.length
+  const agentTestsOutput = step.agent === 'Agent 3' && manualTests.length
     ? manualTests
     : step.output
 
@@ -281,7 +281,7 @@ const AgentWorkspace: React.FC<{
           <h3 className="text-base font-extrabold text-brand-navy">{info.label}</h3>
           <p className="text-xs truncate text-brand-muted">{info.desc}</p>
         </div>
-        {step.agent === 'Agent 2' && manualTests.length > 0 && (
+        {step.agent === 'Agent 3' && manualTests.length > 0 && (
           <span className="syn-badge syn-badge--rose">
             {manualTests.length} test{manualTests.length > 1 ? 's' : ''}
           </span>
@@ -303,7 +303,7 @@ const AgentWorkspace: React.FC<{
         {step.status === 'completed' && (
           <AgentRichOutput
             agentKey={step.agent}
-            output={agent2Output}
+            output={agentTestsOutput}
             storyId={storyId}
             onTestsChange={onTestsChange}
           />
@@ -387,7 +387,7 @@ export const PipelinePage: React.FC = () => {
     const launch = async () => {
       try {
         const resp = await runRef.current({})
-        const tests = (resp as any)?.result?.agent2_tests || (resp as any)?.agent2_tests || []
+        const tests = (resp as any)?.result?.agent3_tests || (resp as any)?.agent3_tests || []
         setManualTests(tests)
         if ((resp as any)?.status === 'completed') toastRef.current.success('Pipeline terminé avec succès !')
       } catch (err: any) {
@@ -399,7 +399,7 @@ export const PipelinePage: React.FC = () => {
 
   useEffect(() => {
     if (data) {
-      const tests = (data as any)?.result?.agent2_tests || (data as any)?.agent2_tests || []
+      const tests = (data as any)?.result?.agent3_tests || (data as any)?.agent3_tests || []
       if (tests.length) setManualTests(tests)
     }
   }, [data])
@@ -412,7 +412,7 @@ export const PipelinePage: React.FC = () => {
   const pipelineResult = (data as any)?.result
   const tokenUsage     = (pipelineResult?.token_usage || {}) as Record<string, any>
   const agent1Step     = steps.find((s: any) => s.agent === 'Agent 1')
-  const agent2Step     = steps.find((s: any) => s.agent === 'Agent 2')
+  const agentTestsStep = steps.find((s: any) => s.agent === 'Agent 3')
   const selectedStep   = orderedSteps.find((s: any) => s.agent === selectedAgent) || null
 
   const handleSelectAgent = useCallback((agent: string) => {
@@ -457,7 +457,7 @@ export const PipelinePage: React.FC = () => {
     const errorText =
       (data as any)?.error ||
       agent1Step?.error ||
-      agent2Step?.error ||
+      agentTestsStep?.error ||
       (Array.isArray(pipelineResult?.errors) ? pipelineResult.errors.join(' ') : '')
 
     if (errorText) {
@@ -487,7 +487,7 @@ export const PipelinePage: React.FC = () => {
     if (pipelineResult?.status === 'failed') {
       const noTestError = Array.isArray(pipelineResult.errors)
         ? pipelineResult.errors.find((e: string) =>
-            /agent 2 n'a pas pu générer|aucun test généré|pas de tests/.test(e.toLowerCase()))
+            /agent 3 n'a pas pu générer|aucun test généré|pas de tests/.test(e.toLowerCase()))
         : undefined
       if (noTestError) {
         warnings.push({ title: 'Aucun test généré', description: noTestError })
@@ -499,7 +499,7 @@ export const PipelinePage: React.FC = () => {
     }
 
     return warnings
-  }, [data, pipelineResult, agent1Step, agent2Step])
+  }, [data, pipelineResult, agent1Step, agentTestsStep])
 
   return (
     <div className="max-w-6xl mx-auto space-y-6 animate-fade-in">
@@ -747,7 +747,7 @@ export const PipelinePage: React.FC = () => {
 
           {isCompleted && (
             <Alert type="success" title="Pipeline terminé avec succès"
-              description="Cliquez sur les cartes ci-dessus pour consulter chaque étape : commencez par l'Analyse (Agent 1), puis la Modélisation (Agent 1.5), les Tests (Agent 2), etc." />
+              description="Cliquez sur les cartes ci-dessus pour consulter chaque étape : commencez par l'Analyse (Agent 1), puis la Modélisation (Agent 2), les Tests (Agent 3), etc." />
           )}
           {isFailed && (
             <Alert type="error" title="Pipeline échoué"

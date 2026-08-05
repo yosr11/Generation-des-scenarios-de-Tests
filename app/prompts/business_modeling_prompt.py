@@ -1,14 +1,14 @@
-"""
+﻿"""
 app/prompts/business_modeling_prompt.py
 ────────────────────────────────────────
-Prompts pour Agent 1.5 — QA Business Modeling.
+Prompts pour Agent 2 — QA Business Modeling.
 
 Cet agent reçoit l'output structuré d'Agent 1 (acteurs, actions, règles métier,
 user_flows, testable_points) et les transforme en :
   - business_goals  : intentions utilisateur de haut niveau
   - business_workflows : parcours end-to-end pour atteindre ces goals
 
-Il ne génère PAS de tests. Il prépare le terrain pour Agent 2.
+Il ne génère PAS de tests. Il prépare le terrain pour Agent 3.
 """
 
 from __future__ import annotations
@@ -140,7 +140,7 @@ def build_business_modeling_user_prompt(
     acceptance_criteria_explicit: List[str],
     acceptance_criteria_inferred: List[str],
 ) -> str:
-    """Construit le prompt utilisateur pour Agent 1.5."""
+    """Construit le prompt utilisateur pour Agent 2."""
 
     def _fmt(items: List[str], prefix: str = "- ") -> str:
         if not items:

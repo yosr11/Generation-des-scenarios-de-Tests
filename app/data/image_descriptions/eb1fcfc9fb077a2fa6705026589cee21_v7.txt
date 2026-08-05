@@ -1,0 +1,84 @@
+[Image jointe : image-2025-09-29-10-51-09-452.png]
+── Textes détectés (OCR) ──
+Mes activités MES ACTIVITÉS (0] NON ATTRIBUEES @
+0 a « 4 B a « 4 B
+-À
+æ © u
+Y Non attribuée(s) En cours, En attente d... | hrcompanymanager
+NIR A
+CONTROLER I
+Par échéance V | Dans les 5 prochains jours
+22rejets
+: A E A B
+@ TEST1 TEST1 Confirmer la fin de la pé
+b Dans les 5 pro... e = FRLFR4Y3001 d'essai
+Mes activités
+NON ATTRIBUEES
+4 B
+-E
+v° es
+NIR À
+CONTRÔLER
+TEST1 TEST1
+Confirmer la fin de la pé
+b Dans les 5 pro... e
+FRLFR4Y3001
+d'essai
+── Analyse visuelle (VLM) ──
+<think>
+Here's a thinking process that leads to the suggested output:
+
+1.  **Analyze the Request:**
+    *   **Goal:** Describe the visual, non-textual elements of a UI screenshot/mockup.
+    *   **Input:** An image (which I can see) and a provided OCR text list.
+    *   **Constraint:** Do *not* re-list the text. Focus on what OCR misses (visuals, layout, annotations).
+    *   **Structure:** 5 specific sections (Context, Annotations, Native UI Elements, Icons, Layout).
+    *   **Tone:** Factual, neutral, structured.
+    *   **Language:** French.
+
+2.  **Analyze the Image & OCR:**
+    *   *Image Content:* It's a dashboard or task list interface. There's a sidebar on the left and a main content area on the right.
+    *   *Annotations:* I see red circles with numbers inside them (1, 2, 3, 4). These are clearly added by a Product Owner (PO) or designer to highlight specific areas.
+    *   *Native UI:* There are blue buttons/pills ("Non attribuée(s)", "En cours...", "hrcompanymanager"). There are dark blue headers ("Par échéance", "Dans les 5 prochains jours"). There are icons (filter funnel, refresh, flag, warning triangle, chat bubble, plus sign).
+    *   *Layout:* Sidebar navigation vs. Main content area. A list item is visible at the bottom.
+
+3.  **Drafting Section by Section:**
+
+    *   **1. CONTEXTE:**
+        *   *Observation:* It looks like a task management dashboard or a "to-do" list for HR (based on "NIR", "période d'essai").
+        *   *Draft:* Il s'agit d'une interface de type tableau de bord ou liste de tâches (dashboard), probablement destinée à la gestion RH, présentant une vue d'ensemble des activités et des éléments à traiter.
+
+    *   **2. ANNOTATIONS AJOUTÉES PAR LE PO:**
+        *   *Observation:* There are red circles with white numbers.
+        *   *Annotation 1:* Red circle with "1" inside. It's over a blue funnel icon (filter).
+        *   *Annotation 2:* Red circle with "2" inside. It's over a chat bubble icon in the top right area.
+        *   *Annotation 3:* Red circle with "3" inside. It's over the same blue funnel icon as #1 (Wait, looking closer at the full image vs crops).
+            *   *Correction:* Let's look at the full image.
+            *   Top left corner: Red circle "4" over the logo.
+            *   Main area, top left of the content: Red circle "1" over the funnel icon.
+            *   Main area, top right: Red circle "2" over the chat bubble icon.
+            *   Main area, middle left (sidebar): Red circle "3" over the funnel icon *again*? No, looking at the layout, there are two distinct funnel icons. One in the sidebar (under "Mes activités") and one in the main content area.
+            *   *Re-evaluating based on the full image:*
+                *   Circle 4: Top left, over the logo "4YOU".
+                *   Circle 1: Main content area, over the funnel icon next to "Non attribuée(s)".
+                *   Circle 2: Main content area, top right, over the chat bubble icon.
+                *   Circle 3: Sidebar, over the funnel icon under "Mes activités".
+        *   *Drafting the list:*
+            *   Cercle rouge avec le chiffre "1" : Entoure l'icône d'entonnoir (filtre) située à gauche de la zone de contenu principal.
+            *   Cercle rouge avec le chiffre "2" : Entoure l'icône de bulle de discussion située en haut à droite de la zone de contenu principal.
+            *   Cercle rouge avec le chiffre "3" : Entoure l'icône d'entonnoir (filtre) située dans la barre latérale gauche, sous le titre "Mes activités".
+            *   Cercle rouge avec le chiffre "4" : Entoure le logo circulaire situé en haut à gauche de l'écran.
+
+    *   **3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI:**
+        *   *Observation:* Blue rectangular buttons with rounded corners (pills). Dark blue headers.
+        *   *Element 1:* Blue pill "Non attribuée(s)".
+        *   *Element 2:* Blue pill "En cours, En attente d...".
+        *   *Element 3:* Blue pill "hrcompanymanager".
+        *   *Element 4:* Dark blue header bar "Par échéance".
+        *   *Element 5:* Dark blue header bar "Dans les 5 prochains jours".
+        *   *Element 6:* A white box with a blue plus sign (+) on the far right.
+        *   *Drafting:*
+            *   Pastille bleue à coins arrondis contenant le texte "Non attribuée(s)".
+            *   Pastille bleue à coins arrondis contenant le texte "En cours, En attente d...".
+            *   Pastille bleue à coins arrondis contenant le texte "hrcompanymanager".
+            *   Barre d'en-t

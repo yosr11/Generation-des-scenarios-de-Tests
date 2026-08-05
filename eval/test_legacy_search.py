@@ -1,4 +1,4 @@
-"""Petit script de test interactif pour la collection legacy_tests."""
+﻿"""Petit script de test interactif pour la collection legacy_tests."""
 
 import sys
 from pathlib import Path

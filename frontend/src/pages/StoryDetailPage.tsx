@@ -34,12 +34,11 @@ const KPI_GRADIENT = `linear-gradient(135deg, ${NAV} 0%, ${ROSE} 70%, ${ORANGE} 
 const KPI_SHADOW    = '0 8px 24px rgba(10, 15, 46, 0.18)'
 
 const AGENT_INFO: Record<string, { label: string; desc: string; icon: React.ElementType; gradient: string; accent: string }> = {
-  'Agent 1':   { label: 'Agent 1 — Analyse',              desc: 'Analyse sémantique de la user story',             icon: FileText,      gradient: ICON_GRADIENT, accent: VIOLET },
-  'Agent 1.5': { label: 'Agent 1.5 — Business Modeling',  desc: 'Goals métier & workflows end-to-end',              icon: GitBranch,     gradient: ICON_GRADIENT, accent: VIOLET },
-  'Agent 2':   { label: 'Agent 2 — Génération des tests', desc: 'Création des scénarios de tests manuels',         icon: TestTube,      gradient: ICON_GRADIENT, accent: ROSE },
-  'Agent 3':   { label: 'Agent 3 — Validation',           desc: 'Couverture, ambiguïtés & cas limites',            icon: CheckCircle2,  gradient: ICON_GRADIENT, accent: ORANGE },
-  'Agent 4':   { label: 'Agent 4 — Classification',       desc: 'Classification auto/manuel',                      icon: BarChart3,     gradient: ICON_GRADIENT, accent: VIOLET },
-  'Agent 5':   { label: 'Agent 5 — Rapport',              desc: 'Rapport qualité & recommandations',               icon: FileBarChart2, gradient: ICON_GRADIENT, accent: NAV },
+  'Agent 1': { label: 'Agent 1 — Analyse',              desc: 'Analyse sémantique de la user story',             icon: FileText,      gradient: ICON_GRADIENT, accent: VIOLET },
+  'Agent 2': { label: 'Agent 2 — Business Modeling',    desc: 'Goals métier & workflows end-to-end',              icon: GitBranch,     gradient: ICON_GRADIENT, accent: VIOLET },
+  'Agent 3': { label: 'Agent 3 — Génération des tests', desc: 'Création des scénarios de tests manuels',         icon: TestTube,      gradient: ICON_GRADIENT, accent: ROSE },
+  'Agent 4': { label: 'Agent 4 — Validation',           desc: 'Couverture, ambiguïtés & cas limites',            icon: CheckCircle2,  gradient: ICON_GRADIENT, accent: ORANGE },
+  'Agent 5': { label: 'Agent 5 — Rapport',              desc: 'Rapport qualité & recommandations',               icon: FileBarChart2, gradient: ICON_GRADIENT, accent: NAV },
 }
 
 // SectionTitle â€” replaced by AgentSectionTitle from AgentOutputs.tsx
@@ -160,9 +159,9 @@ export const StoryDetailPage: React.FC = () => {
   const storedStory = story.data as StoredStory | null
 
   const [agent1Output,  setAgent1Output]  = useState<any | null>(null)
-  const [agent15Output, setAgent15Output] = useState<any | null>(null)
   const [agent2Output,  setAgent2Output]  = useState<any | null>(null)
   const [agent3Output,  setAgent3Output]  = useState<any | null>(null)
+  const [agent4Output,  setAgent4Output]  = useState<any | null>(null)
   const [agent5Output,  setAgent5Output]  = useState<any | null>(null)
   const [openAgent,     setOpenAgent]     = useState<string | null>(null)
   const [showJsonHistory, setShowJsonHistory] = useState(false)
@@ -170,9 +169,9 @@ export const StoryDetailPage: React.FC = () => {
   const fetchHistoricalOutputs = useCallback(async () => {
     if (!storyId) return
     try { const ana   = await apiClient.db.getLatestAnalysis(storyId);       setAgent1Output(ana)   } catch {}
-    try { const bm    = await apiClient.agent15.getLatest(storyId);           setAgent15Output(bm)   } catch {}
-    try { const tests = await apiClient.db.getManualTests(storyId);           setAgent2Output(tests) } catch {}
-    try { const val   = await apiClient.db.getValidations(storyId);           setAgent3Output(val)   } catch {}
+    try { const bm    = await apiClient.agent2.getLatest(storyId);           setAgent2Output(bm)    } catch {}
+    try { const tests = await apiClient.db.getManualTests(storyId);           setAgent3Output(tests) } catch {}
+    try { const val   = await apiClient.db.getValidations(storyId);           setAgent4Output(val)   } catch {}
     try {
       const reportResponse = await apiClient.agent5.generateReport(storyId, { output_format: 'json' })
       setAgent5Output(reportResponse.report)
@@ -300,11 +299,11 @@ export const StoryDetailPage: React.FC = () => {
       <div className="space-y-3">
         <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400 px-1">Statut des Agents de la Story</h3>
         <div className="flex flex-col gap-3">
-          {renderCard('Agent 1',   !!agent1Output)}
-          {renderCard('Agent 1.5', !!agent15Output)}
-          {renderCard('Agent 2',   !!agent2Output)}
-          {renderCard('Agent 3',   !!agent3Output)}
-          {renderCard('Agent 5',   !!agent5Output)}
+          {renderCard('Agent 1', !!agent1Output)}
+          {renderCard('Agent 2', !!agent2Output)}
+          {renderCard('Agent 3', !!agent3Output)}
+          {renderCard('Agent 4', !!agent4Output)}
+          {renderCard('Agent 5', !!agent5Output)}
         </div>
       </div>
 
@@ -327,31 +326,31 @@ export const StoryDetailPage: React.FC = () => {
             </div>
           )}
 
-          {agent2Output?.legacy_examples && agent2Output.legacy_examples.length > 0 && (
+          {agent3Output?.legacy_examples && agent3Output.legacy_examples.length > 0 && (
             <div className="rounded-3xl border bg-white p-5 shadow-sm">
-              <p className="text-xs uppercase tracking-widest text-slate-400 mb-2">Exemples RAG legacy (Agent 2)</p>
-              <JsonSectionContent content={agent2Output.legacy_examples} />
+              <p className="text-xs uppercase tracking-widest text-slate-400 mb-2">Exemples RAG legacy (Agent 3)</p>
+              <JsonSectionContent content={agent3Output.legacy_examples} />
             </div>
           )}
 
-          {agent2Output?.rag_context && agent2Output.rag_context.length > 0 && (
+          {agent3Output?.rag_context && agent3Output.rag_context.length > 0 && (
             <div className="rounded-3xl border bg-white p-5 shadow-sm">
-              <p className="text-xs uppercase tracking-widest text-slate-400 mb-2">Contexte RAG (Agent 2)</p>
-              <RagContextSection ragContext={agent2Output.rag_context} />
+              <p className="text-xs uppercase tracking-widest text-slate-400 mb-2">Contexte RAG (Agent 3)</p>
+              <RagContextSection ragContext={agent3Output.rag_context} />
             </div>
           )}
 
-          {agent2Output?.images && agent2Output.images.length > 0 && (
+          {agent3Output?.images && agent3Output.images.length > 0 && (
             <div className="rounded-3xl border bg-white p-5 shadow-sm">
-              <p className="text-xs uppercase tracking-widest text-slate-400 mb-2">Images (Agent 2)</p>
-              <ImageGallery images={agent2Output.images} />
+              <p className="text-xs uppercase tracking-widest text-slate-400 mb-2">Images (Agent 3)</p>
+              <ImageGallery images={agent3Output.images} />
             </div>
           )}
 
           <div className="rounded-3xl border bg-white p-5 shadow-sm">
             <p className="text-xs uppercase tracking-widest text-slate-400 mb-2">JSON complet</p>
             <pre className="rounded-2xl bg-slate-50 p-3 text-xs text-slate-700 overflow-auto" style={{ maxHeight: 420 }}>
-              {JSON.stringify({ story: story.data || {}, agent1: agent1Output, agent15: agent15Output, agent2: agent2Output, agent3: agent3Output, agent5: agent5Output }, null, 2)}
+              {JSON.stringify({ story: story.data || {}, agent1: agent1Output, agent2: agent2Output, agent3: agent3Output, agent4: agent4Output, agent5: agent5Output }, null, 2)}
             </pre>
           </div>
         </div>
@@ -361,14 +360,14 @@ export const StoryDetailPage: React.FC = () => {
       {openAgent === 'Agent 1' && agent1Output && (
         <AgentResultModal agentKey="Agent 1" output={agent1Output} storyId={storyId} onClose={() => setOpenAgent(null)} />
       )}
-      {openAgent === 'Agent 1.5' && agent15Output && (
-        <AgentResultModal agentKey="Agent 1.5" output={agent15Output} storyId={storyId} onClose={() => setOpenAgent(null)} />
-      )}
       {openAgent === 'Agent 2' && agent2Output && (
         <AgentResultModal agentKey="Agent 2" output={agent2Output} storyId={storyId} onClose={() => setOpenAgent(null)} />
       )}
       {openAgent === 'Agent 3' && agent3Output && (
         <AgentResultModal agentKey="Agent 3" output={agent3Output} storyId={storyId} onClose={() => setOpenAgent(null)} />
+      )}
+      {openAgent === 'Agent 4' && agent4Output && (
+        <AgentResultModal agentKey="Agent 4" output={agent4Output} storyId={storyId} onClose={() => setOpenAgent(null)} />
       )}
       {openAgent === 'Agent 5' && agent5Output && (
         <AgentResultModal agentKey="Agent 5" output={agent5Output} storyId={storyId} onClose={() => setOpenAgent(null)} />

@@ -1,4 +1,4 @@
-"""
+﻿"""
 app/services/vision_client.py
 ─────────────────────────────
 Extraction de texte/sémantique depuis les images (mockups, captures d'écran,
@@ -27,11 +27,12 @@ load_dotenv(override=True)
 logger = logging.getLogger(__name__)
 
 # Modèle VLM. Surchargeable via env var `VISION_MODEL`.
-# - llama-4-scout (défaut)   : rapide, OCR correct, mais rate les distinctions visuelles fines.
+# - qwen3.6-27b (défaut)     : multimodal Vision-Language Model, image+texte, généralement plus performant
+#                               pour les captures d'écran et les interfaces visuelles plus complexes.
 # - llama-4-maverick         : plus précis sur badges/couleurs/encadrés MAIS nécessite un accès
 #                               Groq spécifique (sinon 404 model_not_found).
 #                               meta-llama/llama-4-maverick-17b-128e-instruct
-VISION_MODEL = os.getenv("VISION_MODEL", "meta-llama/llama-4-scout-17b-16e-instruct")
+VISION_MODEL = os.getenv("VISION_MODEL", "qwen/qwen3.6-27b")
 # 1200 tokens : évite la troncature des descriptions sur les écrans riches (vignettes 15+ éléments).
 VISION_MAX_TOKENS = int(os.getenv("VISION_MAX_TOKENS", "1200"))
 

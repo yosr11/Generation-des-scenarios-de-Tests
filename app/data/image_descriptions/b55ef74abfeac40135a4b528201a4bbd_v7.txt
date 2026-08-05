@@ -1,0 +1,100 @@
+[Image jointe : image-2025-02-19-10-18-47-523.png]
+── Textes détectés (OCR) ──
+= ® æ … a?0
+sopra Sterca onnonce nc noceelle Sopta Stetia announces « we Sapra Sttt lance un souveais Sopea Stetis launches à new
+=~ [ ] =~ [ ] =~ CHNES N = -1 ] )
+Routtigue Q1 INVMNT
+[ N _
+. °
+230
+a?0
+Sopra Sterci onnor
+e notre
+Sopta SL ANNOUPEES à OV
+sapra Stes
+sLance vn souve
+opea $
+11 L
+nchi o new
+u quiste
+stestégqque
+MK AIN
+Dropronne
+ce adé
+Hopper
+su
+ity prog
+@\\
+/(Aﬁ
+(/Àñ
+-]
+[ ]
+-1 ]
+Rodaue (1
+1 N:/MN 1
+….
+| B
+── Analyse visuelle (VLM) ──
+<think>
+The user wants me to analyze a screenshot of a UI mockup.
+I need to follow a specific structure:
+1.  **CONTEXTE**: Describe the screen type and intent.
+2.  **ANNOTATIONS AJOUTÉES PAR LE PO**: Identify any overlays (arrows, boxes, circles) added by the Product Owner.
+3.  **ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI**: Describe native UI elements like pills, badges, buttons.
+4.  **ICÔNES ET PICTOGRAMMES**: Describe icons and their probable function/position.
+5.  **AGENCEMENT ET RELATIONS**: Describe layout, hierarchy, and spatial relationships.
+
+**Constraint Checklist & Confidence Score:**
+1.  Context? Yes.
+2.  Annotations? Yes.
+3.  Native UI elements? Yes.
+4.  Icons? Yes.
+5.  Layout/Relations? Yes.
+6.  No OCR text copying? Yes.
+7.  No inventing text? Yes.
+8.  Neutral vocabulary? Yes.
+9.  No functional assumptions? Yes.
+
+Confidence Score: 5/5
+
+**Mental Sandbox Simulation:**
+*   **Image Analysis**: The image shows a dashboard-like interface.
+    *   Top section: A carousel of news items. One is highlighted with a purple box and a cursor arrow.
+    *   Middle section: A banner with a mountain landscape.
+    *   Bottom section: A white area with "Mon Espace" (My Space).
+    *   Left side: A blue box "Mon solde de congés" (My leave balance).
+    *   Right side: A list of items under "Rechercher" (Search).
+    *   Top right: User profile info "Rodrigue Q11NVMN1".
+    *   Top left: "Mon Espace" header.
+    *   There is a distinct purple box around the second news item in the carousel. There is also a mouse cursor pointing at it.
+    *   There is a blue circle icon on the right side of the carousel area.
+    *   There is a blue circle icon at the bottom right of the carousel area.
+    *   Wait, looking closely at the top right of the carousel, there's a blue circle with a globe icon inside.
+    *   Looking at the bottom right of the carousel, there's a blue circle with a globe icon inside.
+    *   Actually, let's look at the "Annotations" part. The prompt says "ANNOTATIONS AJOUTÉES PAR LE PO".
+    *   I see a purple box around the second news card: "Sopra Steria announces a new strategic acquisition".
+    *   I see a mouse cursor (arrow) pointing at that same card.
+    *   I see a blue circle with a globe icon on the right side of the carousel. Is this an annotation or native UI? It looks like a language switcher or a specific UI element. Given the context of "Sopra Steria announces..." in English vs French, it's likely a language switcher. But wait, looking at the very top right, there are icons (question mark, power button).
+    *   Let's look at the "Annotations" section again. The prompt asks for "encadrés colorés... flèches...".
+    *   The purple box is definitely an annotation.
+    *   The mouse cursor is an annotation (or a screenshot of a cursor).
+    *   The blue circle with the globe on the right side of the carousel looks like a native UI element (language switcher), but it's floating. Let's look closer. It's a blue circle with a white globe. It's positioned near the right edge.
+    *   Wait, there is a blue circle with a globe icon *inside* the carousel area on the right. And another one below it? No, looking at the full image, there is a blue circle with a globe icon on the right side of the carousel.
+    *   Let's re-examine the whole image.
+    *   Top part: Carousel of news.
+        *   Card 1: "Sopra Steria annonce une nouvelle acquisition stratégique" (French).
+        *   Card 2: "Sopra Steria announces a new strategic acquisition" (English). This one has a purple box around it and a mouse cursor.
+        *   Card 3: "Sopra Steria lance un nouveau programme de développement..." (French).
+        *   Card 4: "Sopra Steria launches a new sustainability program" (English).
+    *   Below the carousel: A dark banner with mountains.
+    *   Below that: "Rodrigue Q11NVMN1", "Clone particulier".
+    *   Below that: A white section.
+        *   Left: "Vous n'avez actuellement aucune tâche à traiter." (You currently have no tasks to process).
+        *   Right: "Mon solde de congés" (My leave balance) - 0j / 0j.
+        *   Below that: "Mes autres absences" (My other absences) - 0j pris.
+        *   Right side list: "Rechercher" (Search bar).
+        *   List items: "Mon changement de situation familiale", "Mon changement de composition familiale", "Mes questions RH", "Le planning de mes collègues".
+    *   Top right corner: Icons (Question mark, Power button).
+    *   Top left: "Mon Espace".
+
+    *   **Annotations**:

@@ -1,4 +1,4 @@
-"""
+﻿"""
 Extraction bulk des tests Xray "legacy" au format pivot.
 
 Itère projet par projet, récupère chaque test via l'API Jira/Xray

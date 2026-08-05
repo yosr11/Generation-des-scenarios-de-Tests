@@ -1,0 +1,84 @@
+[Image jointe : Carriere_acceuil.png]
+── Textes détectés (OCR) ──
+Ma carrière
+Vous êtes arrivé(e) dans Etablissement QA1 depuis le 01 janvier 2020.
+Vous êtes depuis le 01 janvier 2020, Affecté dans l'admin(ACTIVITE) à Temps plein depuis le 01 janvier 2020.
+Votre service d'affectation est DEPARTEMENT QA1.
+Votre carrière d'origine est ADMINISTRATEURS CIVILS, au grade ADMINISTRATEUR CIVIL HORS CLASSE, 06/¢™e échelon et au 1°" chevron.
+Votre carrière d'accueil est ADMINISTRATEURS CIVILS, au grade ADMINISTRATEUR GENERAL, 04ième échelon et au 3ÈM® chevron
+── Analyse visuelle (VLM) ──
+<think>
+Here's a thinking process that leads to the suggested output:
+
+1.  **Analyze the Request:**
+    *   **Goal:** Describe the visual, non-textual elements of a UI screenshot/mockup.
+    *   **Input:** An image (which I can see) and OCR text (which I must trust and not recite).
+    *   **Output Format:** 5 specific sections (Context, Annotations, Native UI Elements, Icons, Layout/Relations).
+    *   **Language:** French.
+    *   **Constraints:** Be factual, neutral, avoid inventing text, avoid assuming functionality (e.g., don't say "search bar" if it's just a text field, though here it's a button), and strictly follow the "no hallucination" rule.
+
+2.  **Analyze the Image:**
+    *   **Visual Content:** It's a clean, white background interface.
+    *   **Text Structure:** There's a title "Ma carrière" followed by several lines of text describing career details (dates, departments, grades).
+    *   **Interactive Elements:** There is a button at the bottom left.
+    *   **Annotations:** I need to look closely for red boxes, arrows, circles, etc.
+        *   *Observation:* The image looks like a raw screenshot or a very clean mockup. There are *no* visible red boxes, arrows, or scribbles added by a Product Owner (PO). It looks like a standard UI state.
+    *   **Native UI Elements:**
+        *   There is a button with rounded corners.
+        *   Text styling: Some text is bold (e.g., "Etablissement QA1", "DEPARTEMENT QA1", "ADMINISTRATEURS CIVILS", "ADMINISTRATEUR CIVIL HORS CLASSE", "ADMINISTRATEUR GENERAL").
+    *   **Icons:**
+        *   Inside the button "Voir +", there is a plus sign (+).
+    *   **Layout:**
+        *   Vertical list of information.
+        *   Title at the top.
+        *   Button at the bottom left.
+
+3.  **Drafting the Response (Section by Section):**
+
+    *   **1. CONTEXTE:**
+        *   *Observation:* It's a detail view or a summary card. It lists career history.
+        *   *Draft:* Il s'agit d'une vue de détail ou d'une fiche résumant les informations de carrière d'un utilisateur, probablement une page de profil ou un module RH.
+
+    *   **2. ANNOTATIONS AJOUTÉES PAR LE PO:**
+        *   *Observation:* I am scanning the image again. No red circles, no yellow highlights, no arrows.
+        *   *Draft:* Aucune annotation détectée.
+
+    *   **3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI:**
+        *   *Observation:* There is one distinct interactive element.
+        *   *Element:* A button.
+        *   *Shape:* Rounded rectangle (pill shape).
+        *   *Color:* White background with a thin grey border.
+        *   *Text:* "Voir +" (from OCR).
+        *   *Text Styling:* Several parts of the text are bolded (e.g., "Etablissement QA1", "DEPARTEMENT QA1", "ADMINISTRATEURS CIVILS", "ADMINISTRATEUR CIVIL HORS CLASSE", "ADMINISTRATEUR GENERAL").
+
+    *   **4. ICÔNES ET PICTOGRAMMES:**
+        *   *Observation:* Inside the button.
+        *   *Symbol:* A plus sign (+).
+        *   *Position:* To the right of the text "Voir" inside the button.
+        *   *Function:* Likely indicates expansion or more details (but I must stick to description).
+
+    *   **5. AGENCEMENT ET RELATIONS:**
+        *   *Structure:* Vertical flow.
+        *   *Hierarchy:* "Ma carrière" is the largest text (Title). The rest are body text lines.
+        *   *Spacing:* There is significant whitespace between the text lines and the button.
+        *   *Alignment:* Left-aligned text.
+        *   *Button Position:* Located at the bottom left of the content block.
+
+4.  **Refining and Formatting (Self-Correction):**
+    *   *Check against constraints:* Did I invent text? No. Did I describe the OCR text? No, I described the *styling* (bolding) which is visual.
+    *   *Refining Section 3:* Make sure to mention the bold text as a visual element, as it's not just "text" but "styled text".
+    *   *Refining Section 5:* Ensure the description of the button's position relative to the text is clear.
+
+5.  **Final Polish (French):**
+
+    *   *Context:* Vue d'information statique ou fiche de synthèse concernant le parcours professionnel.
+    *   *Annotations:* Aucune.
+    *   *UI Elements:* Bouton "Voir +" (fond blanc, bordure grise, coins arrondis). Mise en gras sur certains termes clés.
+    *   *Icons:* Le signe "+" dans le bouton.
+    *   *Layout:* Liste verticale, alignement à gauche.
+
+6.  **Final Output Generation** (Proceeding to generate the response based on these steps).
+</think>
+
+1. CONTEXTE
+Il s'agit d'une vue de type fiche de synthèse ou page de détail présentant les

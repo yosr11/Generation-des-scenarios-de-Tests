@@ -1,4 +1,4 @@
-"""Routes Admin — CRUD utilisateurs, historique pipelines, audit."""
+﻿"""Routes Admin — CRUD utilisateurs, historique pipelines, audit."""
 
 from __future__ import annotations
 
@@ -6,12 +6,12 @@ from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Response
 from pydantic import BaseModel, EmailStr, Field
-from sqlalchemy import select, desc
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.deps import CurrentUser, get_current_user
 from app.db.postgres import get_db
-from app.models.pg_models import AuditLog, PipelineRun, User
+from app.models.pg_models import User, PipelineRun
 from app.services.user_service import (
     create_user,
     delete_user,
@@ -210,33 +210,23 @@ async def admin_deactivate_user(
     return result
 
 
-# ──────────────────────────────────────────────────────────
-#  Pipeline runs history
-# ──────────────────────────────────────────────────────────
-
-
 @router.get("/pipelines")
 async def admin_pipeline_history(
-    limit: int = 100,
-    offset: int = 0,
     launched_by: Optional[str] = None,
+    limit: int = 50,
+    offset: int = 0,
     current_user: CurrentUser = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
     _require_admin(current_user)
-    stmt = (
-        select(PipelineRun)
-        .order_by(desc(PipelineRun.started_at))
-        .limit(limit)
-        .offset(offset)
-    )
+    q = select(PipelineRun).order_by(PipelineRun.started_at.desc()).limit(limit).offset(offset)
     if launched_by:
-        stmt = stmt.where(PipelineRun.launched_by == launched_by)
-    result = await db.execute(stmt)
+        q = q.where(PipelineRun.launched_by == launched_by)
+    result = await db.execute(q)
     runs = result.scalars().all()
-    return {
-        "total": len(runs),
-        "runs": [
+    out = []
+    for r in runs:
+        out.append(
             {
                 "id": r.id,
                 "story_id": r.story_id,
@@ -249,43 +239,8 @@ async def admin_pipeline_history(
                 "finished_at": r.finished_at.isoformat() if r.finished_at else None,
                 "tests_count": r.tests_count,
                 "error_message": r.error_message,
+                "agent3_tests": r.agent3_tests,
+                "agent5_report": r.agent5_report,
             }
-            for r in runs
-        ],
-    }
-
-
-# ──────────────────────────────────────────────────────────
-#  Audit log
-# ──────────────────────────────────────────────────────────
-
-
-@router.get("/audit")
-async def admin_audit_log(
-    limit: int = 100,
-    offset: int = 0,
-    current_user: CurrentUser = Depends(get_current_user),
-    db: AsyncSession = Depends(get_db),
-):
-    _require_admin(current_user)
-    stmt = (
-        select(AuditLog).order_by(desc(AuditLog.created_at)).limit(limit).offset(offset)
-    )
-    result = await db.execute(stmt)
-    logs = result.scalars().all()
-    return {
-        "total": len(logs),
-        "logs": [
-            {
-                "id": lg.id,
-                "user_identifier": lg.user_identifier,
-                "role": lg.role,
-                "action": lg.action,
-                "resource": lg.resource,
-                "details": lg.details,
-                "ip_address": lg.ip_address,
-                "created_at": lg.created_at.isoformat() if lg.created_at else None,
-            }
-            for lg in logs
-        ],
-    }
+        )
+    return {"runs": out}

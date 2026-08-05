@@ -1,0 +1,171 @@
+[Image jointe : ACharge_PLD.png]
+── Textes détectés (OCR) ──
+€ —- C @ foryou-pld4u-snapshotapps.shr-okd.marc.fr.ssg/pleiades/#/login o P w % =J O & :
+GF F2F - My Enterprise.. 1 Test Repository - In... performance execu... jenkins wiki automatique git
+P l é i 3 d es ® — Gestionnaire (PTA et GA) Société Collaborateur (PTA et GA) Organisme de niveau 1 Ouverture de tickets pour un tiers Organisme de niveau 1 QGESTRH1 ? Q)
+Ressources Humaines  Temps & Activités … APropos
+= # & W: Famille (00000042 QUATE... A 5 VX
+E 1 Valider et Retour Collaborateur Tableau des compteurs
+Rechercher X
+‘ A Identification du collaborateur
+» Processus d'embauche/départ
+v Collaborateur Matricule 00000042
+« Dossier du collaborateur Etat civil Monsieur QUIATEL1  Lionel
+; ; ; Date de naissance  29/05/1990 32  ans
+«3 Situation matrimoniale
+« Famille X Qualité a Nom Prénom Date de naissance Lien Parenté ‘
+< Adresses Madame  DUPONT  isabelle  06/12/1999 Enfant ®
+«: Comptes bancaires SEPA @ @ Nbre total : 1
+< Anclennete generale .
+« Habilitations Membres à charge
+«3 Permis de conduire
+; , _ X  Qualité Nom Prénom Date de naissance Date de début Date de Fin Y
+«3 Equipements mis à disposition
+. _ Madame  DUPONT  isabelle  06/12/1999 06/12/1999 01/01/2030 ®
+«3 Handicaps, inaptitudes et invalidités
+en crrr
+«* Situation militaire A UE
+«3 Nationalités et cartes de séjour
+Personnes à prévenir en cas Conjoints à charge
+«3 d'urgence
+n n X Nom à Prénom NIR du conjoint NIR de rattachement Scolarisé v
+Mandats électifs et élections -
+«" nrud'hnmales b
+o sopra he
+Æ Taper ici pour rechercher 5t o=~ M v 9 E @ 22€ Ensoleilé ~ ® _ 9 @ m 77 B
+P P = m " 4 ‘ - ' 21/02/2023 729
+T7
+™,
+- #*
+<h
+& foryou-pld4u-snapshot.apps.shr-okd.marc.fr.ssg/pleiades/#/login
+= 0
+wiki
+GF F2F - My Enterprise...
+o Test Repository - In...
+performance execu...
+jenkins
+automatique
+git
+Gestionnaire (PTA et GA) Société
+Collaborateur (PTA et GA) Organisme de niveau 1
+Ouverture de tickets pour un tiers Organisme de niveau 1
+Pléiades °
+QGESTRH1 ? Q)
+Ressources Humaines
+Temps & Activités
+A Propos
+Famille (00000042 Q11ATE...
+= * & W
+A 5 VX
+NM 1
+( Quitter > < Suivant == > < Sauvegarder > < Valider >
+< Valider et Retour Collaborateur > < Tableau des compteurs >
+Rechercher
+Matricule
+00000042
+w Collaborateur
+Etat civil
+Monsieur
+QUATEL1
+Lionel
+«3 Dossier du collaborateur
+Date de naissance
+29/05/1990
+32
+ans
+«* Famille
+X Qualité a
+Nom
+Prénom Date de naissance Lien Parenté
+«3 Adresses
+Madame
+DUPONT
+isabelle
+06/12/1999
+Enfant
+«3 Comptes bancaires SEPA
+@ Nbre total
+«3 Ancienneté générale
+«3 Habilitations
+Membres à charge
+Prénom Date de naissance Date de début Date de Fin Y
+X Qualité
+01/01/2030
+NOTE 101d
+«3 Situation militaire
+Personnes à prévenir en cas
+Conjoints à charge
+Mandats électifs et élections
+X Nom à Prénom NIR du conjoint
+NIR de rattachement Scolarisé
+«* nrud'hnmales
+es l
+==
+15:33
+51
+T -
+@ 22°C Ensoleilé ~ ) _ # @ FRA
+E P Taper ici pour rechercher
+21/02/2023
+Fs
+── Analyse visuelle (VLM) ──
+<think>
+Here's a thinking process that leads to the suggested response:
+
+1.  **Analyze the Request:**
+    *   **Goal:** Describe the visual, non-textual elements of the provided screenshot/mockup.
+    *   **Input:** An image (screenshot of a software interface) and OCR text.
+    *   **Constraint:** Do *not* re-list the OCR text. Focus on what the OCR misses (visuals, layout, annotations).
+    *   **Structure:** 5 specific sections (Context, Annotations, Native UI Elements, Icons, Layout/Relations).
+    *   **Tone:** Factual, neutral, structured.
+    *   **Language:** French.
+
+2.  **Analyze the Image (Visual Inspection):**
+    *   *Overall:* It's a desktop application interface, likely a web app running in a browser (Chrome/Edge based on the top bar). It looks like an HR management system ("Pléiades").
+    *   *Annotations:* There are distinct pink/red rectangular outlines drawn over specific parts of the interface.
+        *   One large box encompasses the "Famille" section (top table) and the "Membres à charge" section (middle table).
+        *   Another box (or part of the same complex shape) highlights the "Nbre total" area and the "Date de Fin" column in the "Membres à charge" section.
+    *   *UI Elements:*
+        *   Top navigation bar (black).
+        *   Left sidebar (menu tree).
+        *   Main content area (white background).
+        *   Tables with rows and columns.
+        *   Buttons (rounded rectangles).
+        *   Icons (plus, minus, eye, cross, arrows).
+    *   *Layout:* Standard master-detail or form layout. Header, sidebar, main content.
+
+3.  **Drafting the Content - Section by Section:**
+
+    *   **1. CONTEXTE:**
+        *   *Observation:* It's a screenshot of a web application interface, specifically an HR module ("Ressources Humaines"). It shows a detailed view of an employee's family information.
+        *   *Draft (FR):* Capture d'écran d'une interface web de gestion des ressources humaines (logiciel "Pléiades"), affichant la fiche détaillée d'un collaborateur, spécifiquement la section "Famille".
+
+    *   **2. ANNOTATIONS AJOUTÉES PAR LE PO:**
+        *   *Observation:* There are pink/red outlines.
+        *   *Detail 1:* A large pink rectangle surrounds the table under "Famille" (headers: Qualité, Nom, Prénom...) and the table under "Membres à charge" (headers: Qualité, Nom, Prénom...).
+        *   *Detail 2:* There is a specific focus on the "Nbre total" area and the "Date de Fin" column within the "Membres à charge" section.
+        *   *Refinement:* The prompt asks to link to OCR text.
+        *   *Draft (FR):*
+            *   Cadre rectangulaire de couleur rose/rouge clair : Entoure l'ensemble du tableau de la section "Famille" (en-têtes "Qualité", "Nom", "Prénom", "Date de naissance", "Lien Parenté") et le tableau de la section "Membres à charge" (en-têtes "Qualité", "Nom", "Prénom", "Date de naissance", "Date de début", "Date de Fin").
+            *   Cadre rectangulaire de couleur rose/rouge clair (partie inférieure) : Entoure spécifiquement la zone "Nbre total : 1" et la colonne "Date de Fin" avec la date "01/01/2030" dans la section "Membres à charge".
+
+    *   **3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI:**
+        *   *Observation:* Buttons, pills, badges.
+        *   *Buttons:* "Quitter", "Suivant >>", "Sauvegarder", "Valider", "Valider et Retour Collaborateur", "Tableau des compteurs". They are white with grey borders.
+        *   *Badges/Tags:* "Nbre total : 1" looks like a small badge or label.
+        *   *Draft (FR):*
+            *   Boutons rectangulaires aux bords arrondis (fond blanc, bordure grise) : "Quitter", "Suivant >>", "Sauvegarder", "Valider", "Valider et Retour Collaborateur", "Tableau des compteurs".
+            *   Étiquette/Badge (fond gris clair) : Contient le texte "Nbre total : 1".
+
+    *   **4. ICÔNES ET PICTOGRAMMES:**
+        *   *Observation:* Lots of small icons.
+        *   *Top Bar:* Bell (notifications), Printer, Arrow down, X (close).
+        *   *Sidebar:* Hamburger menu, Star, Envelope (mail).
+        *   *Tables:*
+            *   Plus sign (+) in a circle (add row).
+            *   X in a circle (delete row).
+            *   Eye icon (view details).
+            *   Arrows (up/down) for sorting columns.
+        *   *Draft (FR):*
+            *   Icône "Plus" (+) dans un cercle : Située sous les en-t

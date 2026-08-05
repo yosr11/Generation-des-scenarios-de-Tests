@@ -1,4 +1,4 @@
-"""
+﻿"""
 evaluate_generated_tests.py
 ============================
 Évalue les generated_tests par rapport aux gold_tests pour chaque user story du JSON file.
@@ -54,8 +54,8 @@ OUTPUT_FILE = (
 ST_MODEL_NAME = "paraphrase-multilingual-MiniLM-L12-v2"
 
 # ── LLM Judge model ─────────────────────────────────────────────────────────
-JUDGE_MODEL = "gpt-4.1"  # GitHub Models — contexte 128k, pas de limite TPM stricte
-JUDGE_MAX_CHARS = None  # troncature par bloc (gold / generated). None = no truncation
+JUDGE_MODEL = "gpt-4.1-mini"  # GitHub Models — contexte 128k, pas de limite TPM stricte
+JUDGE_MAX_CHARS = 12000  # limite conservatrice pour éviter les dépassements de payload
 
 
 # ────────────────────────────────────────────────────────────────────────────

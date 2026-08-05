@@ -1,4 +1,4 @@
-"""Helpers cookie JWT partagés entre les routes auth et admin."""
+﻿"""Helpers cookie JWT partagés entre les routes auth et admin."""
 
 from fastapi import Response
 from app.core.config import settings

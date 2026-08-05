@@ -14,6 +14,8 @@ interface PipelineRun {
   finished_at: string | null
   tests_count: number
   error_message: string | null
+  agent3_tests?: any[]
+  agent5_report?: any
 }
 
 const STATUS_STYLE: Record<string, { bg: string; color: string; icon: React.ElementType }> = {
@@ -28,6 +30,7 @@ export const PipelineHistoryPage: React.FC = () => {
   const [loading, setLoading] = useState(true)
   const [filterUser, setFilterUser] = useState('')
   const [uniqueUsers, setUniqueUsers] = useState<string[]>([])
+  const [selectedRun, setSelectedRun] = useState<PipelineRun | null>(null)
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -131,11 +134,18 @@ export const PipelineHistoryPage: React.FC = () => {
                       <td className="py-3.5 px-4 font-semibold text-brand-navy">{run.tests_count}</td>
                       <td className="py-3.5 px-4 text-brand-muted text-xs">{duration(run) || '—'}</td>
                       <td className="py-3.5 px-4">
-                        <div className="flex items-center gap-1">
+                        <div className="flex items-center gap-2">
                           {run.use_rag && (
                             <span className="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase"
                               style={{ background: 'rgba(124,58,237,0.08)', color: '#7c3aed' }}>RAG</span>
                           )}
+                          <button
+                            type="button"
+                            onClick={() => setSelectedRun(run)}
+                            className="ml-2 px-2 py-1 rounded-xl border border-gray-100 text-xs text-brand-navy hover:bg-gray-50"
+                          >
+                            Détails
+                          </button>
                         </div>
                       </td>
                       <td className="py-3.5 px-4 text-xs text-brand-muted">
@@ -151,6 +161,55 @@ export const PipelineHistoryPage: React.FC = () => {
           </div>
         )}
       </div>
+      {selectedRun && <PipelineRunModal run={selectedRun} onClose={() => setSelectedRun(null)} />}
     </div>
   )
 }
+
+// ── Modal to show run details (tests + report)
+const PipelineRunModal: React.FC<{
+  run: PipelineRun | null
+  onClose: () => void
+}> = ({ run, onClose }) => {
+  if (!run) return null
+
+  return (
+    <div className="fixed inset-0 z-[9999] flex items-start justify-center p-4 md:p-8">
+      <div className="absolute inset-0 backdrop-blur-sm" style={{ background: 'rgba(10,22,40,0.6)' }} onClick={onClose} />
+      <div className="relative bg-white rounded-3xl w-full max-w-4xl shadow-2xl my-4 flex flex-col">
+        <div className="flex items-center justify-between px-6 py-4 border-b">
+          <div>
+            <h3 className="text-lg font-bold">Détails pipeline — {run.story_id}</h3>
+            <p className="text-sm text-brand-muted">Lancé par {run.launched_by} — statut {run.status}</p>
+          </div>
+          <button onClick={onClose} className="p-2 rounded-lg">Fermer</button>
+        </div>
+        <div className="p-6 overflow-y-auto">
+          <h4 className="font-bold mb-2">Tests générés (Agent 3)</h4>
+          {run.agent3_tests && run.agent3_tests.length > 0 ? (
+            <div className="space-y-3">
+              {run.agent3_tests.map((t, i) => (
+                <div key={i} className="p-3 border rounded-lg bg-gray-50">
+                  <pre className="whitespace-pre-wrap text-xs">{JSON.stringify(t, null, 2)}</pre>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-sm text-brand-muted">Aucun test disponible.</div>
+          )}
+
+          <h4 className="font-bold mt-6 mb-2">Rapport (Agent 5)</h4>
+          {run.agent5_report ? (
+            <div className="p-3 border rounded-lg bg-gray-50">
+              <pre className="whitespace-pre-wrap text-xs">{JSON.stringify(run.agent5_report, null, 2)}</pre>
+            </div>
+          ) : (
+            <div className="text-sm text-brand-muted">Aucun rapport disponible.</div>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default PipelineHistoryPage

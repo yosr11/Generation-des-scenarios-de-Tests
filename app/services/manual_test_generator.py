@@ -1,4 +1,4 @@
-import json
+﻿import json
 import logging
 from typing import Dict, Any, List, Optional
 
@@ -176,7 +176,7 @@ class ManualTestGeneratorService:
                 raise  # Pas de marge supplémentaire, inutile de réessayer
 
             logger.warning(
-                f"[Agent2] json_validate_failed, retrying with max_tokens={retry_max} (was {max_tokens})"
+                f"[Agent3] json_validate_failed, retrying with max_tokens={retry_max} (was {max_tokens})"
             )
             return self._request_content(
                 system_prompt, user_prompt, max_tokens=retry_max, _retry=True
@@ -187,7 +187,7 @@ class ManualTestGeneratorService:
     ) -> Dict[str, Any]:
         content = self._request_content(system_prompt, user_prompt)
         logger.warning(
-            "[Agent2-DEBUG] content brut (500 chars): %r",
+            "[Agent3-DEBUG] content brut (500 chars): %r",
             content[:500] if content else "<VIDE>",
         )
 
@@ -198,12 +198,12 @@ class ManualTestGeneratorService:
         if start != -1 and end != -1 and end > start:
             content_clean = content_clean[start : end + 1]
 
-        logger.warning("[Agent2-DEBUG] content après strip: %r", content_clean[:200])
+        logger.warning("[Agent3-DEBUG] content après strip: %r", content_clean[:200])
 
         try:
             return extract_json_from_llm_response(content_clean)
         except ValueError as exc:
-            logger.warning("[Agent2-DEBUG] extract_json failed: %s", exc)
+            logger.warning("[Agent3-DEBUG] extract_json failed: %s", exc)
             light_system = build_manual_test_repair_system_prompt()
             reformat_prompt = build_manual_test_json_reformat_prompt(
                 content_clean, str(exc)
@@ -523,7 +523,7 @@ class ManualTestGeneratorService:
         legacy_examples: Optional[List[Dict[str, Any]]] = None,
     ) -> ManualTestGenerationResult:
         """
-        Agent 2 — génération ciblée pour des testable_points non couverts (typiquement invoquée par l'orchestrateur).
+        Agent 3 — génération ciblée pour des testable_points non couverts (typiquement invoquée par l'orchestrateur).
         """
         story_id = story.get("id", "")
         story_type = (analysis.get("story_type") or "").strip().lower()

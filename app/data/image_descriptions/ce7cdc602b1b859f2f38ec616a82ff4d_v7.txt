@@ -1,0 +1,70 @@
+[Image jointe : image-2025-10-15-14-26-24-077.png]
+── Textes détectés (OCR) ──
+. <0 ... . s.- 0
+0 - . T . a L] L
+= à 4 ?c
+H . e ue °
+L e 1-—" *
+Trzere A -
+- m
+° OL 04 BUC = S 4 @ s e 0T
+<o
+e B
+L]
+2u
+* ZIS CEOE
+es
+a .
+QAW
+NN Bui C
+T e
+── Analyse visuelle (VLM) ──
+<think>
+Here's a thinking process that leads to the suggested response:
+
+1.  **Analyze the Request:**
+    *   **Goal:** Describe the visual, non-textual elements of a UI screenshot/mockup.
+    *   **Input:** An image (which I can see) and a provided OCR text list (which I must trust and not re-transcribe).
+    *   **Constraint:** Do *not* list the text itself. Focus on layout, icons, colors, annotations, and structure.
+    *   **Format:** 5 specific sections (Context, Annotations, Native UI Elements, Icons, Layout).
+    *   **Language:** French.
+    *   **Tone:** Factual, neutral, descriptive.
+
+2.  **Analyze the Image (Visual Inspection):**
+    *   *Overall:* It's a screenshot of a web application, likely an internal tool or dashboard. It looks like a "Kanban" or "Task List" view.
+    *   *Sidebar:* Left side, vertical navigation.
+    *   *Main Content:* Center area with columns or lists.
+    *   *Annotations:* There are distinct yellow highlights on the sidebar. There is a red notification badge on a funnel icon. There is a greyed-out text area.
+    *   *Icons:* Lots of them (menu, search, help, power, filters, flags, etc.).
+
+3.  **Drafting Section 1: CONTEXTE**
+    *   *Observation:* It's a dashboard or task management screen. The sidebar suggests navigation. The main area has columns ("MES ACTIVITÉS", "NON ATTRIBUÉES").
+    *   *Draft (Mental):* C'est un écran de tableau de bord ou de gestion de tâches. Il y a une barre latérale et une zone principale avec des colonnes.
+    *   *Refinement (French):* Il s'agit d'une capture d'écran d'une interface web de type tableau de bord ou gestion de tâches (Kanban/Liste), présentant une navigation latérale et une zone de contenu principale divisée en colonnes.
+
+4.  **Drafting Section 2: ANNOTATIONS AJOUTÉES PAR LE PO**
+    *   *Observation:*
+        *   Yellow highlight on "Conseillers de paie" (sidebar).
+        *   Yellow highlight on "Mes collaborateurs" (sidebar).
+        *   Yellow highlight on "Processus RH" (sidebar).
+        *   Red circle with a number (looks like '1') on a funnel icon in the main area.
+        *   Greyed out text: "TOUTES LES PRIORITÉS / TOUTES LES CATÉGORIES" (Wait, looking closer at the image, specifically the zoomed-in crops).
+        *   *Correction on Greyed out text:* In the main view, there is a grey bar with text that looks like "TOUTES LES PRIORITÉS / TOUTES LES CATÉGORIES". It looks like a placeholder or a disabled state, but the prompt asks for *annotations added by the PO*. The yellow highlights are definitely added. The red badge on the funnel looks like a native UI element (notification count), but let's check the prompt instructions. "Annotations... tout ce qui a été ajouté PAR-DESSUS". The yellow highlights are clearly added. The red badge on the funnel *might* be native, but often in these mockups, red badges indicate "look here". However, looking at the sidebar highlights, those are definitely "added on top".
+        *   *Re-evaluating the "Greyed out text":* In the zoomed crop, there is a grey bar with text "TOUTES LES PRIORITÉS / TOUTES LES CATÉGORIES". It looks like a disabled dropdown or a placeholder. Is it an annotation? It looks like a UI state (disabled). I will treat the yellow highlights as the primary annotations.
+        *   *Wait, looking at the sidebar again:* The yellow highlights are underlining the text "Conseillers de paie", "Mes collaborateurs", and "Processus RH".
+        *   *Looking at the main area:* There is a red circle with a '1' on the funnel icon. This is likely a native notification badge, but could be an annotation. Given the prompt asks for "annotations added by the PO", the yellow highlights are the strongest candidates. The red badge is ambiguous but usually native. I will focus on the yellow highlights.
+        *   *Wait, looking at the grey bar again:* "TOUTES LES PRIORITÉS / TOUTES LES CATÉGORIES". It is greyed out. This looks like a disabled state, not an annotation.
+        *   *Decision:* I will list the yellow highlights.
+        *   *Refinement:*
+            *   Surlignage jaune sous "Conseillers de paie".
+            *   Surlignage jaune sous "Mes collaborateurs".
+            *   Surlignage jaune sous "Processus RH".
+
+5.  **Drafting Section 3: ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI**
+    *   *Observation:*
+        *   Blue buttons: "Activités à faire", "En cours, En attente".
+        *   Dropdowns: "Par échéance", "Par catégorie".
+        *   Sidebar items: Rectangular buttons/cards.
+        *   Pagination: "0 élément", "Nombre d'éléments par page".
+    *   *Refinement:*
+        *   Deux boutons rectangulaires bleus avec texte blanc (probablement des filtres ou des onglets

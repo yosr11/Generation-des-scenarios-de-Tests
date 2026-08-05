@@ -1,7 +1,7 @@
-"""
+﻿"""
 Orchestrateur LangGraph — Pipeline multi-agents.
 
-Graphe : Enrich → Agent 1 → Agent 2 → Agent 3 → (gap-fill loop) → Agent 5
+Graphe : Enrich → Agent 1 → Agent 3 → Agent 4 → (gap-fill loop) → Agent 5
 Chaque nœud appelle les services existants sans les modifier.
 """
 
@@ -54,10 +54,10 @@ class PipelineState(TypedDict, total=False):
     # ── Entrées ──
     story_id: str
     use_rag: bool
-    use_legacy_rag: bool  # RAG des tests Xray legacy Sopra HR (Agent 2 few-shot)
+    use_legacy_rag: bool  # RAG des tests Xray legacy Sopra HR (Agent 3 few-shot)
     model_agent1: str
-    model_agent2: str
-    model_agent3_quality: str
+    model_agent3: str
+    model_agent4_quality: str
     model_agent5: str
     coverage_threshold: float
     max_correction_iterations: int
@@ -69,23 +69,23 @@ class PipelineState(TypedDict, total=False):
     # ── Données accumulées ──
     story: Dict[str, Any]  # Story Jira enrichie
     rag_context: Optional[list]  # Contexte RAG (optionnel)
-    legacy_examples: Optional[list]  # Tests legacy similaires (few-shot Agent 2)
+    legacy_examples: Optional[list]  # Tests legacy similaires (few-shot Agent 3)
     analysis: Optional[Any]  # StoryAnalysisResult (merged final output)
     analysis_dict: Optional[Dict]  # Version dict pour Agent 2
     classification: Optional[
         Any
     ]  # StoryClassificationResult (classification-only output)
-    business_model: Optional[Any]  # BusinessModelingResult (Agent 1.5)
+    business_model: Optional[Any]  # BusinessModelingResult (Agent 2)
     tests: List[Any]  # List[ManualTestCase]
     generation_result: Optional[Any]  # ManualTestGenerationResult
-    agent2_golden_rule_warnings: List[str]
-    agent2_message: Optional[str]
-    validation: Optional[Any]  # Agent3ValidationResult
+    agent3_golden_rule_warnings: List[str]
+    agent3_message: Optional[str]
+    validation: Optional[Any]  # Agent4ValidationResult
     report: Optional[Any]  # Agent5Report
     classification_result: Optional[Any]  # Agent4 — StoryAutomationClassificationResult
 
     # ── Modèles par agent ──
-    model_agent15: str  # Modèle LLM pour Agent 1.5
+    model_agent2: str  # Modèle LLM pour Agent 2
 
     # ── Contrôle ──
     correction_iteration: int
@@ -188,7 +188,7 @@ def node_enrich_story(state: PipelineState) -> dict:
 
 
 def node_build_rag_context(state: PipelineState) -> dict:
-    """Construit le contexte RAG (si use_rag=True) — partagé par Agent 1 & Agent 2.
+    """Construit le contexte RAG (si use_rag=True) — partagé par Agent 1 & Agent 3.
 
     Réplique la logique de routes_analysis._get_rag_context pour garantir que
     les inputs des agents dans l'orchestrateur soient identiques à ceux des
@@ -380,7 +380,7 @@ def node_extract_analysis(state: PipelineState) -> dict:
         _safe_update_step(
             story_id, "Agent 1", "completed", output=analysis_dict, progress=25
         )
-        _safe_update_step(story_id, "Agent 1.5", "running", progress=26)
+        _safe_update_step(story_id, "Agent 2", "running", progress=26)
 
         return {
             "analysis": analysis,
@@ -396,21 +396,21 @@ def node_extract_analysis(state: PipelineState) -> dict:
         }
 
 
-def node_agent15_business_model(state: PipelineState) -> dict:
-    """Agent 1.5 : modélisation des business goals et workflows."""
+def node_agent2_business_model(state: PipelineState) -> dict:
+    """Agent 2 : modélisation des business goals et workflows."""
     from app.services.business_modeling_service import build_business_model
     from app.repositories.business_model_repository import save_business_model
 
     story_id = state["story_id"]
     analysis_dict = state.get("analysis_dict") or {}
-    model = state.get("model_agent15") or state.get("model_agent1", "nova-lite-2")
+    model = state.get("model_agent2") or state.get("model_agent1", "nova-lite-2")
 
     check_pipeline_cancelled(story_id)
-    _safe_update_step(story_id, "Agent 1.5", "running", progress=27)
-    logger.info(f"[Orchestrator] Agent 1.5 modélisation de {story_id} (modèle={model})")
+    _safe_update_step(story_id, "Agent 2", "running", progress=27)
+    logger.info(f"[Orchestrator] Agent 2 modélisation de {story_id} (modèle={model})")
 
     try:
-        with track_agent("agent15"):
+        with track_agent("agent2"):
             result = build_business_model(analysis=analysis_dict, model_alias=model)
 
         result_dict = result.model_dump()
@@ -419,20 +419,20 @@ def node_agent15_business_model(state: PipelineState) -> dict:
 
         bm_out = result_dict
         _safe_update_step(
-            story_id, "Agent 1.5", "completed", output=bm_out, progress=30
+            story_id, "Agent 2", "completed", output=bm_out, progress=30
         )
 
         return {"business_model": result}
 
     except Exception as exc:
-        # Agent 1.5 est non-bloquant : en cas d'échec, le pipeline continue sans business model
-        logger.error(f"[Orchestrator] Agent 1.5 failed for {story_id}: {exc}")
-        _safe_update_step(story_id, "Agent 1.5", "failed", error=str(exc), progress=30)
+        # Agent 2 est non-bloquant : en cas d'échec, le pipeline continue sans business model
+        logger.error(f"[Orchestrator] Agent 2 failed for {story_id}: {exc}")
+        _safe_update_step(story_id, "Agent 2", "failed", error=str(exc), progress=30)
         return {"business_model": None}
 
 
-def node_agent2_generate(state: PipelineState) -> dict:
-    """Agent 2 : génération de tests manuels."""
+def node_agent3_generate(state: PipelineState) -> dict:
+    """Agent 3 : génération de tests manuels."""
     from app.api.manual_test_generation import generate_manual_tests_for_story_data
     from app.repositories.manual_tests_repository import save_manual_tests_snapshot
 
@@ -451,9 +451,9 @@ def node_agent2_generate(state: PipelineState) -> dict:
         )
         analysis_dict["business_goals"] = bm_dict.get("business_goals", [])
         analysis_dict["business_workflows"] = bm_dict.get("business_workflows", [])
-    model = state.get("model_agent2", "nova-lite-2")
+    model = state.get("model_agent3", "nova-lite-2")
     rag_context = state.get("rag_context")
-    _safe_update_step(story_id, "Agent 2", "running", progress=35)
+    _safe_update_step(story_id, "Agent 3", "running", progress=35)
 
     # ── RAG tests legacy Sopra HR (few-shot) ──
     legacy_examples: Optional[list] = state.get("legacy_examples")
@@ -492,12 +492,12 @@ def node_agent2_generate(state: PipelineState) -> dict:
             legacy_examples = []
 
     logger.info(
-        f"[Orchestrator] Agent 2 generating tests for {story_id} (model={model})"
+        f"[Orchestrator] Agent 3 generating tests for {story_id} (model={model})"
     )
 
     try:
         check_pipeline_cancelled(story_id)
-        with track_agent("agent2"):
+        with track_agent("agent3"):
             result = generate_manual_tests_for_story_data(
                 story=story,
                 analysis=analysis_dict,
@@ -510,11 +510,8 @@ def node_agent2_generate(state: PipelineState) -> dict:
 
         # Persister uniquement si le pipeline n'a pas été annulé
         if result.tests:
-            save_manual_tests_snapshot(
-                story_id,
-                [t.model_dump() for t in result.tests],
-                generation_model=model,
-            )
+            tests_dicts = [t.model_dump() for t in result.tests]
+            save_manual_tests_snapshot(story_id, tests_dicts, generation_model=model)
 
         tests_out = (
             [
@@ -525,34 +522,34 @@ def node_agent2_generate(state: PipelineState) -> dict:
             else []
         )
         _safe_update_step(
-            story_id, "Agent 2", "completed", output=tests_out, progress=50
+            story_id, "Agent 3", "completed", output=tests_out, progress=50
         )
-        _safe_update_step(story_id, "Agent 3", "running", progress=55)
+        _safe_update_step(story_id, "Agent 4", "running", progress=55)
 
         return {
             "generation_result": result,
             "tests": list(result.tests),
             "legacy_examples": legacy_examples or [],
-            "agent2_golden_rule_warnings": list(
+            "agent3_golden_rule_warnings": list(
                 getattr(result, "golden_rule_warnings", None) or []
             ),
-            "agent2_message": getattr(result, "message", None),
+            "agent3_message": getattr(result, "message", None),
         }
 
     except PipelineCancelled:
         raise
     except Exception as e:
-        logger.error(f"[Orchestrator] Agent 2 failed for {story_id}: {e}")
-        _safe_update_step(story_id, "Agent 2", "failed", error=str(e), progress=50)
+        logger.error(f"[Orchestrator] Agent 3 failed for {story_id}: {e}")
+        _safe_update_step(story_id, "Agent 3", "failed", error=str(e), progress=50)
         return {
             "status": "failed",
-            "errors": [f"Agent 2 failed: {e}"],
+            "errors": [f"Agent 3 failed: {e}"],
         }
 
 
-def node_agent3_validate(state: PipelineState) -> dict:
-    """Agent 3 : validation des tests (couverture, doublons, ambiguïtés)."""
-    from app.services.agent3_test_validator_service import validate_and_improve_tests
+def node_agent4_validate(state: PipelineState) -> dict:
+    """Agent 4 : validation des tests (couverture, doublons, ambiguïtés)."""
+    from app.services.agent4_test_validator_service import validate_and_improve_tests
     from app.repositories.validation_repository import save_validation_result
 
     story_id = state["story_id"]
@@ -561,19 +558,19 @@ def node_agent3_validate(state: PipelineState) -> dict:
     tests = state.get("tests", [])
     story = state.get("story", {})
     coverage_threshold = state.get("coverage_threshold", 0.70)
-    quality_model = state.get("model_agent3_quality", "nova-lite-2")
+    quality_model = state.get("model_agent4_quality", "nova-lite-2")
 
     testable_points = list(analysis.testable_points) if analysis else []
     story_summary = story.get("summary", "") if isinstance(story, dict) else ""
-    _safe_update_step(story_id, "Agent 3", "running", progress=60)
+    _safe_update_step(story_id, "Agent 4", "running", progress=60)
 
     logger.info(
-        f"[Orchestrator] Agent 3 validating {story_id} "
+        f"[Orchestrator] Agent 4 validating {story_id} "
         f"({len(tests)} tests, {len(testable_points)} points, iteration={state.get('correction_iteration', 0)})"
     )
 
     try:
-        with track_agent("agent3"):
+        with track_agent("agent4"):
             result = validate_and_improve_tests(
                 story_id=story_id,
                 testable_points=testable_points,
@@ -588,25 +585,25 @@ def node_agent3_validate(state: PipelineState) -> dict:
         save_validation_result(story_id, result)
 
         val_out = result.model_dump() if hasattr(result, "model_dump") else dict(result)
-        _safe_update_step(story_id, "Agent 3", "completed", output=val_out, progress=75)
+        _safe_update_step(story_id, "Agent 4", "completed", output=val_out, progress=75)
 
         _safe_update_step(story_id, "Agent 5", "running", progress=85)
 
         return {"validation": result}
 
     except Exception as e:
-        logger.error(f"[Orchestrator] Agent 3 failed for {story_id}: {e}")
-        _safe_update_step(story_id, "Agent 3", "failed", error=str(e), progress=75)
+        logger.error(f"[Orchestrator] Agent 4 failed for {story_id}: {e}")
+        _safe_update_step(story_id, "Agent 4", "failed", error=str(e), progress=75)
         return {
             "status": "failed",
-            "errors": [f"Agent 3 failed: {e}"],
+            "errors": [f"Agent 4 failed: {e}"],
         }
 
 
-def node_agent2_gap_fill(state: PipelineState) -> dict:
-    """Gap-fill : Agent 2 génère des tests pour les points non couverts, avec feedback Agent 3."""
-    from app.services.agent3_correction_loop import run_agent2_gap_fill
-    from app.services.agent3_duplicate_service import remove_duplicate_tests
+def node_agent3_gap_fill(state: PipelineState) -> dict:
+    """Gap-fill : Agent 3 génère des tests pour les points non couverts, avec feedback Agent 4."""
+    from app.services.agent4_correction_loop import run_agent3_gap_fill
+    from app.services.agent4_duplicate_service import remove_duplicate_tests
     from app.repositories.manual_tests_repository import save_manual_tests_snapshot
 
     story_id = state["story_id"]
@@ -615,12 +612,12 @@ def node_agent2_gap_fill(state: PipelineState) -> dict:
     analysis_dict = state.get("analysis_dict", {})
     tests = state.get("tests", [])
     validation = state.get("validation")
-    model = state.get("model_agent2", "nova-lite-2")
+    model = state.get("model_agent3", "nova-lite-2")
     iteration = state.get("correction_iteration", 0)
 
     uncovered = validation.report.uncovered_testable_points if validation else []
 
-    # ── Extraire le feedback Agent 3 pour le passer à Agent 2 ──
+    # ── Extraire le feedback Agent 4 pour le passer à Agent 3 ──
     dup_pairs = None
     amb_findings = None
     corr_instructions = None
@@ -642,8 +639,8 @@ def node_agent2_gap_fill(state: PipelineState) -> dict:
     )
 
     try:
-        with track_agent("agent2"):
-            gap_result = run_agent2_gap_fill(
+        with track_agent("agent3"):
+            gap_result = run_agent3_gap_fill(
                 story=story,
                 analysis=analysis_dict,
                 missing_testable_points=uncovered,
@@ -673,11 +670,8 @@ def node_agent2_gap_fill(state: PipelineState) -> dict:
 
         # Persister le nouveau snapshot (sauf si annulé entre-temps)
         check_pipeline_cancelled(story_id)
-        save_manual_tests_snapshot(
-            story_id,
-            [t.model_dump() for t in merged_tests],
-            generation_model=model,
-        )
+        merged_dicts = [t.model_dump() for t in merged_tests]
+        save_manual_tests_snapshot(story_id, merged_dicts, generation_model=model)
 
         logger.info(
             f"[Orchestrator] Gap-fill added {len(gap_result.tests) if gap_result.tests else 0} tests, "
@@ -778,8 +772,8 @@ def route_after_agent1(state: PipelineState) -> str:
     return "analysis_agent"
 
 
-def route_after_agent2(state: PipelineState) -> str:
-    """Après Agent 2 : si pas de tests générés → END, sinon → Agent 3."""
+def route_after_agent3(state: PipelineState) -> str:
+    """Après Agent 3 : si pas de tests générés → END, sinon → Agent 4."""
     if state.get("status") == "failed":
         return END
 
@@ -793,11 +787,11 @@ def route_after_agent2(state: PipelineState) -> str:
             f"[Orchestrator] No tests generated for {state['story_id']} → stopping"
         )
         return "no_tests"
-    return "agent3_validate"
+    return "agent4_validate"
 
 
-def route_after_agent3(state: PipelineState) -> str:
-    """Après Agent 3 : VALID → Agent 5, sinon → gap-fill (si itérations restantes et issues actionnables)."""
+def route_after_agent4(state: PipelineState) -> str:
+    """Après Agent 4 : VALID → Agent 5, sinon → gap-fill (si itérations restantes et issues actionnables)."""
     if state.get("status") == "failed":
         return END
 
@@ -827,7 +821,7 @@ def route_after_agent3(state: PipelineState) -> str:
             f"duplicates={len(duplicates)}, ambiguities={len(ambiguities)}) "
             f"→ gap-fill itération {iteration + 1}/{max_iter}"
         )
-        return "agent2_gap_fill"
+        return "agent3_gap_fill"
 
     logger.info(
         f"[Orchestrator] Couverture {coverage:.1%} (seuil={coverage_threshold:.1%}), "
@@ -845,9 +839,9 @@ def node_skip(state: PipelineState) -> dict:
     """Story non exploitable → fin avec statut skipped."""
     story_id = state["story_id"]
     _safe_update_step(
-        story_id, "Agent 2", "failed", error="Story non exploitable", progress=100
+        story_id, "Agent 3", "failed", error="Story non exploitable", progress=100
     )
-    _safe_update_step(story_id, "Agent 3", "failed", error="Story non exploitable")
+    _safe_update_step(story_id, "Agent 4", "failed", error="Story non exploitable")
     _safe_update_step(story_id, "Agent 5", "failed", error="Story non exploitable")
     return {"status": "skipped"}
 
@@ -865,9 +859,9 @@ def node_not_functional(state: PipelineState) -> dict:
     logger.info(f"[Orchestrator] {story_id} → not_functional ({story_type})")
 
     _safe_update_step(
-        story_id, "Agent 2", "failed", error="Story non fonctionnelle", progress=100
+        story_id, "Agent 3", "failed", error="Story non fonctionnelle", progress=100
     )
-    _safe_update_step(story_id, "Agent 3", "failed", error="Story non fonctionnelle")
+    _safe_update_step(story_id, "Agent 4", "failed", error="Story non fonctionnelle")
     _safe_update_step(story_id, "Agent 5", "failed", error="Story non fonctionnelle")
 
     return {"status": "skipped", "errors": [msg]}
@@ -876,7 +870,7 @@ def node_not_functional(state: PipelineState) -> dict:
 def node_no_tests(state: PipelineState) -> dict:
     """Aucun test généré → fin avec statut failed."""
     story_id = state["story_id"]
-    errors = ["Agent 2 n'a pas pu générer de tests"]
+    errors = ["Agent 3 n'a pas pu générer de tests"]
     gen = state.get("generation_result")
     if gen:
         message = (getattr(gen, "message", None) or "").strip()
@@ -889,9 +883,9 @@ def node_no_tests(state: PipelineState) -> dict:
                 errors.append(note_text)
 
     _safe_update_step(
-        story_id, "Agent 2", "failed", error="\n".join(errors), progress=100
+        story_id, "Agent 3", "failed", error="\n".join(errors), progress=100
     )
-    _safe_update_step(story_id, "Agent 3", "failed", error="Pas de tests generes")
+    _safe_update_step(story_id, "Agent 4", "failed", error="Pas de tests generes")
     _safe_update_step(story_id, "Agent 5", "failed", error="Pas de tests generes")
 
     return {"status": "failed", "errors": errors}
@@ -912,10 +906,10 @@ def build_pipeline_graph() -> StateGraph:
     graph.add_node("build_rag_context", node_build_rag_context)
     graph.add_node("classify_story", node_classify_story)
     graph.add_node("analysis_agent", node_extract_analysis)
-    graph.add_node("agent2_generate", node_agent2_generate)
-    graph.add_node("agent3_validate", node_agent3_validate)
-    graph.add_node("agent2_gap_fill", node_agent2_gap_fill)
-    graph.add_node("agent15_business_model", node_agent15_business_model)
+    graph.add_node("agent3_generate", node_agent3_generate)
+    graph.add_node("agent4_validate", node_agent4_validate)
+    graph.add_node("agent3_gap_fill", node_agent3_gap_fill)
+    graph.add_node("agent2_business_model", node_agent2_business_model)
     graph.add_node("agent5_report", node_agent5_report)
     graph.add_node("skip", node_skip)
     graph.add_node("no_tests", node_no_tests)
@@ -945,31 +939,31 @@ def build_pipeline_graph() -> StateGraph:
         },
     )
 
-    graph.add_edge("analysis_agent", "agent15_business_model")
-    graph.add_edge("agent15_business_model", "agent2_generate")
+    graph.add_edge("analysis_agent", "agent2_business_model")
+    graph.add_edge("agent2_business_model", "agent3_generate")
 
     graph.add_conditional_edges(
-        "agent2_generate",
-        route_after_agent2,
+        "agent3_generate",
+        route_after_agent3,
         {
-            "agent3_validate": "agent3_validate",
+            "agent4_validate": "agent4_validate",
             "no_tests": "no_tests",
             END: END,
         },
     )
 
     graph.add_conditional_edges(
-        "agent3_validate",
-        route_after_agent3,
+        "agent4_validate",
+        route_after_agent4,
         {
             "agent5_report": "agent5_report",
-            "agent2_gap_fill": "agent2_gap_fill",
+            "agent3_gap_fill": "agent3_gap_fill",
             END: END,
         },
     )
 
     # Après gap-fill → re-validation
-    graph.add_edge("agent2_gap_fill", "agent3_validate")
+    graph.add_edge("agent3_gap_fill", "agent4_validate")
 
     # Pipeline final : report (Agent 5) → END
     graph.add_edge("agent5_report", END)
@@ -1000,17 +994,17 @@ def get_compiled_graph():
 def run_pipeline(
     story_id: str,
     *,
-    use_rag: bool = False,
+    use_rag: bool = True,
     use_legacy_rag: bool = True,
     model_agent1: str = "nova-lite-2",
-    model_agent15: str = "nova-lite-2",
     model_agent2: str = "nova-lite-2",
-    model_agent3_quality: str = "nova-lite-2",
+    model_agent3: str = "nova-lite-2",
+    model_agent4_quality: str = "nova-lite-2",
     model_agent5: str = "nova-lite-2",
     coverage_threshold: float = 0.70,
     max_correction_iterations: int = 2,
     force_reanalyze: bool = True,
-    force_refresh: bool = False,
+    force_refresh: bool = True,
 ) -> PipelineState:
     """
     Lance le pipeline complet pour une story.
@@ -1025,9 +1019,9 @@ def run_pipeline(
         "use_rag": use_rag,
         "use_legacy_rag": use_legacy_rag,
         "model_agent1": model_agent1,
-        "model_agent15": model_agent15,
         "model_agent2": model_agent2,
-        "model_agent3_quality": model_agent3_quality,
+        "model_agent3": model_agent3,
+        "model_agent4_quality": model_agent4_quality,
         "model_agent5": model_agent5,
         "coverage_threshold": coverage_threshold,
         "max_correction_iterations": max_correction_iterations,

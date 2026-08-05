@@ -1,0 +1,87 @@
+[Image jointe : image-2024-07-24-18-02-54-407.png]
+── Textes détectés (OCR) ──
+rrr
+MES COLLABORATEURS
+PROCESSUS RH
+Noah
+; [ FRzl\(()o(âoTaLTo1 1A
+0 ACTIVITÉS NON ATTRIBUÉES 0
+Sarah QTLTO2
+N _a A kA -H FR4Y00005 1=
+ACTIVITES ATTRIBUEES AUX 0 Paul DURAND
+AUTRES TEST-002
+- -|- EN -F /HI AZERTY
+FRAY0055
+Noah QTLTO1
+14
+ACTIVITÉS NON ATTRIBUÉES
+FR4Y00004
+FR4Y00005
+13
+-Ja
+- uE
+ACTIVITÉS ATTRIBUÉES AUX
+Paul DURAND
+AUTRES
+TEST-002
+/HI AZERTY
+-|x
+FR4Y0055
+── Analyse visuelle (VLM) ──
+<think>
+Here's a thinking process that leads to the suggested output:
+
+1.  **Analyze the Request:**
+    *   **Goal:** Describe the visual, non-textual elements of a UI screenshot/mockup.
+    *   **Input:** An image (which I need to analyze) and a provided OCR text list.
+    *   **Constraint:** Do *not* re-list the text. Focus on layout, icons, colors, annotations, and structure.
+    *   **Format:** 5 specific sections (Context, Annotations, Native UI Elements, Icons, Layout).
+    *   **Language:** French.
+    *   **Tone:** Factual, neutral, descriptive.
+
+2.  **Analyze the Image (Mental Walkthrough):**
+    *   *Overall View:* It looks like a dashboard or a management interface. There are multiple views shown (zoomed out and zoomed in).
+    *   *Top Left:* A card-like widget with a large "0" in a circle. Below it are icons (warning triangle, speech bubble).
+    *   *Top Right:* A list titled "MES COLLABORATEURS". It has user avatars (blue circles with silhouettes), names, and IDs.
+    *   *Middle/Bottom:* Zoomed-in crops of the top-left widget.
+    *   *Annotations:* I see red warning triangles and black flag icons next to text labels. There are also red numbers "1" next to these icons in the zoomed-in view. Wait, looking closely at the full image vs. the crops.
+    *   *Full Image (Top):*
+        *   Left side: A grey card. Top right corner has a white circle with "0". Below are two icons: a warning triangle and a speech bubble.
+        *   Right side: A list "MES COLLABORATEURS".
+            *   Row 1: Noah QTLT01. To the far right, a red warning triangle with "1".
+            *   Row 2: Sarah QTLT02. To the far right, a black speech bubble with "1".
+            *   Row 3: Paul DURAND.
+            *   Row 4: /HI AZERTY.
+    *   *Zoomed-in crops (Bottom):*
+        *   Crop 1 (Left): Shows the grey card. Icons: Warning triangle, Speech bubble.
+        *   Crop 2 (Right): Shows the text "ACTIVITÉS NON ATTRIBUÉES" (partially cut off) and "ACTIVITÉS ATTRIBUÉES AUX AUTRES". Below these texts are the red warning triangle and black flag/speech bubble icons.
+        *   Crop 3 (Bottom Left): Shows "PROCESSUS RH".
+        *   Crop 4 (Bottom Right): Shows the list items again.
+
+3.  **Drafting the Content - Section by Section:**
+
+    *   **1. CONTEXTE:**
+        *   It's a dashboard or management screen.
+        *   It shows a list of collaborators and some activity counters.
+        *   *Draft:* Il s'agit d'une interface de type tableau de bord ou liste de gestion, probablement pour un manager, affichant des collaborateurs et des compteurs d'activités.
+
+    *   **2. ANNOTATIONS AJOUTÉES PAR LE PO:**
+        *   *Observation:* The prompt asks for annotations *added on top* (like red boxes, arrows).
+        *   *Analysis:* Looking at the image, the red triangles and black icons seem to be part of the UI design (badges/indicators), not "drawn on top" like a marker. However, the prompt says "ANNOTATIONS AJOUTÉES PAR LE PO... tout ce qui a été ajouté PAR-DESSUS".
+        *   *Correction:* Actually, looking at the zoomed-in crops, they look like standard UI elements (badges). There are no obvious "red boxes drawn with a mouse" or "arrows pointing". The red triangles and black icons are likely native UI elements indicating status.
+        *   *Decision:* I will treat the red triangles and black icons as *Native UI Elements* (Section 3) unless they look like a digital highlighter. They look like vector icons integrated into the design.
+        *   *Result:* "Aucune annotation détectée" (or very minimal if I consider the crops themselves as annotations, but usually, crops are just views). Let's stick to "Aucune annotation détectée" regarding *overlays* like red boxes. The red icons are part of the UI.
+
+    *   **3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI:**
+        *   *Avatars:* Blue circles with a generic person silhouette inside. Located next to names in the "MES COLLABORATEURS" list.
+        *   *Counters/Badges:*
+            *   White circle with a black "0" inside (top right of the grey card).
+            *   Red warning triangle icon with a white exclamation mark.
+            *   Black speech bubble icon.
+            *   Black flag icon (seen in the zoomed crop next to "ACTIVITÉS ATTRIBUÉES AUX AUTRES").
+        *   *Cards/Containers:*
+            *   A large grey rounded rectangle (card) on the left.
+            *   A white list container on the right.
+
+    *   **4. ICÔNES ET PICTOGRAMMES:**
+        *   *Warning Triangle:* Red outline, white exclamation mark

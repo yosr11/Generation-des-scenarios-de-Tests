@@ -1,4 +1,4 @@
-"""
+﻿"""
 app/repositories/scenario_repository.py
 ────────────────────────────────────────
 CRUD pour la table generated_scenarios — PostgreSQL (SQLAlchemy ORM).
@@ -6,7 +6,7 @@ CRUD pour la table generated_scenarios — PostgreSQL (SQLAlchemy ORM).
 
 from typing import Any, Dict, List
 
-from sqlalchemy import select
+from sqlalchemy import delete, select
 
 from app.db.postgres import get_sync_session
 from app.models.pg_models import GeneratedScenario
@@ -91,6 +91,18 @@ def get_scenarios_by_story(story_id: str) -> List[Dict[str, Any]]:
             .all()
         )
         return [_row_to_dict(r) for r in rows]
+    finally:
+        session.close()
+
+
+def delete_scenarios_by_story(story_id: str) -> bool:
+    session = get_sync_session()
+    try:
+        session.execute(
+            delete(GeneratedScenario).where(GeneratedScenario.story_id == story_id)
+        )
+        session.commit()
+        return True
     finally:
         session.close()
 

@@ -1,0 +1,115 @@
+[Image jointe : CompFam_ACharge.png]
+── Textes détectés (OCR) ──
+= @ Mon changement de composition familiale
+Scuvesarder Envoyer
+“ Les membres de ma famille
+= Aouter u mermbre
+& NOM & PRÉNOM & SEXE & DATE DE à PARENTÉ & À CHARGE | ACTIONS
+NAISSAN... SECURITE
+SOCIALE
+ZITOUNI Azziz Masculin 15/11/2024 Autre Qui
+BARGAOUI Haythem Masculin 06/03/2025 Conjoint Non
+ZITOUNI AMIRA Féminin 13/12/2023 Enfant Non
+GORHBEM Dhia Masculin 20/11/2024 Enfant Non
+BO Vinc Masculin 01/03/2025 Enfant Non
+Mon changement de composition familiale
+Envoyer
+& NOM
+& PRÉNOM
+& SEXE
+& DATE DE
+à PARENTÉ
+& À CHARGE
+ACTIONS
+NAISSAN
+SÉCURITÉ
+ZITOUNI
+Azziz
+Masculin
+15/11/2024
+Autre
+Oui
+BARGAOUI
+Haythem
+06/03/2025
+Conjoint
+Non
+AMIRA
+Féminin
+13/12/2023
+Enfant
+GORHBEM
+Dhia
+20/11/2024
+BO
+Vinc
+01/03/2025
+── Analyse visuelle (VLM) ──
+<think>
+The user wants me to analyze a screenshot of a UI mockup.
+I need to follow a specific structure:
+1.  **CONTEXTE**: Describe the screen type and intent.
+2.  **ANNOTATIONS AJOUTÉES PAR LE PO**: Identify any overlays (red boxes, arrows, etc.).
+3.  **ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI**: Describe buttons, badges, etc.
+4.  **ICÔNES ET PICTOGRAMMES**: Describe icons (pencil, trash can, etc.).
+5.  **AGENCEMENT ET RELATIONS**: Describe layout, hierarchy, and spatial relationships.
+
+**Analysis of the image:**
+-   **Top Header**: Black bar with a menu icon (hamburger), a logo (circle with "A" and "nox"), and the title "Mon changement de composition familiale".
+-   **Action Bar**: Below the header, there are buttons: "Quitter", "Supprimer", "Sauvegarder" (greyed out/disabled), "Envoyer" (greyed out/disabled).
+-   **Section Header**: A dark blue bar with a chevron (down arrow) and text "Les membres de ma famille".
+-   **Add Button**: A light grey button "+ Ajouter un membre".
+-   **Table**: A table with columns: NOM, PRÉNOM, SEXE, DATE DE NAISSAN..., PARENTÉ, À CHARGE SÉCURITÉ SOCIALE, ACTIONS.
+-   **Table Rows**: Several rows of data (ZITOUNI, BARGAOUI, etc.).
+-   **Annotations**: There is a red rectangular box around the column header "À CHARGE SÉCURITÉ SOCIALE".
+-   **Icons**:
+    -   Hamburger menu (top left).
+    -   Logo (top center).
+    -   Chevron down (next to "Les membres de ma famille").
+    -   Plus sign (next to "Ajouter un membre").
+    -   Sort icons (up/down arrows) next to column headers.
+    -   Pencil icon (edit) in the ACTIONS column.
+    -   Trash can icon (delete) in the ACTIONS column (only for the first two rows).
+
+**Drafting the response:**
+
+1.  **CONTEXTE**: C'est une interface de gestion de données, probablement une page de formulaire ou de tableau de bord pour modifier la composition familiale d'un employé. L'intention est de lister, ajouter, modifier ou supprimer des membres de la famille.
+
+2.  **ANNOTATIONS AJOUTÉES PAR LE PO**:
+    -   Un cadre rouge entoure l'en-tête de colonne "À CHARGE SÉCURITÉ SOCIALE".
+
+3.  **ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI**:
+    -   Boutons en haut : "Quitter" (contour noir), "Supprimer" (contour noir), "Sauvegarder" (gris, désactivé), "Envoyer" (gris, désactivé).
+    -   Bouton "+ Ajouter un membre" (fond gris clair).
+    -   En-tête de section sombre : "Les membres de ma famille".
+    -   Lignes du tableau alternant couleurs (blanc, beige clair, gris clair).
+
+4.  **ICÔNES ET PICTOGRAMMES**:
+    -   Menu hamburger (3 lignes horizontales) en haut à gauche.
+    -   Logo circulaire avec "A" et "nox" en haut au centre.
+    -   Chevron vers le bas à gauche de "Les membres de ma famille".
+    -   Signe "+" à gauche de "Ajouter un membre".
+    -   Icônes de tri (flèches haut/bas) à gauche de chaque en-tête de colonne (NOM, PRÉNOM, SEXE, etc.).
+    -   Icône crayon (modifier) dans la colonne ACTIONS.
+    -   Icône poubelle (supprimer) dans la colonne ACTIONS (visible sur les deux premières lignes).
+
+5.  **AGENCEMENT ET RELATIONS**:
+    -   Structure verticale : En-tête noir -> Barre d'actions -> Section sombre -> Bouton d'ajout -> Tableau.
+    -   Le tableau est structuré en colonnes.
+    -   La colonne "ACTIONS" est à l'extrême droite.
+    -   Les boutons "Sauvegarder" et "Envoyer" sont grisés, suggérant qu'ils ne sont pas actifs tant que des modifications ne sont pas faites ou validées.
+    -   L'annotation rouge met en évidence spécifiquement la colonne "À CHARGE SÉCURITÉ SOCIALE".
+
+**Refining based on strict rules:**
+-   Do not invent text.
+-   Do not list OCR text unnecessarily.
+-   Be factual.
+-   Use neutral vocabulary.
+
+**Final Polish (French):**
+1.  **CONTEXTE**: Il s'agit d'une interface de type tableau de données (data grid) ou formulaire de gestion, destinée à la modification de la composition familiale.
+2.  **ANNOTATIONS**: Un cadre rouge entoure l'en-tête de colonne "À CHARGE SÉCURITÉ SOCIALE".
+3.  **ÉLÉMENTS GRAPHIQUES**:
+    -   Boutons "Quitter" et "Supprimer" avec contour noir.
+    -   Boutons "Sauvegarder" et "Envoyer" en gris (état désactivé).
+    -   Bouton "+

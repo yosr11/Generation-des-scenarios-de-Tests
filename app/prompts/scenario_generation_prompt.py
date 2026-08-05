@@ -1,4 +1,4 @@
-import json
+﻿import json
 import re
 from typing import Dict, Any, List, Optional, Tuple
 
@@ -212,7 +212,7 @@ Les testable_points servent à compléter la couverture métier, ils ne définis
     - introduce a new feature, tab, workflow, data field, business rule, page or business object absent from the primary story sources
     - generate a test whose core objective comes only from RAG
     - import domain details from another project or another feature
-    - override or contradict the business_goals / business_workflows from Agent 1.5
+    - override or contradict the business_goals / business_workflows from Agent 2
 
 - actor = the user role who may perform this action (e.g. "Collaborateur", "Manager RH", "Gestionnaire RH de proximité", "Ingénieur"). Actor is OPTIONAL: prefer to leave it empty unless the role is explicitly mentioned or different actors appear in the same test. NEVER put system state, values or descriptions in `actor` — ONLY the actor name.
 - Cover ALL described behaviours. If insufficient information → generation_status="not_generated".
@@ -599,7 +599,7 @@ def build_manual_test_generation_user_prompt(
             return ""
         return text if len(text) <= n else text[:n].rstrip() + "..."
 
-    # Business model (Agent 1.5) — injecté si disponible
+    # Business model (Agent 2) — injecté si disponible
     business_goals = analysis.get("business_goals", []) or []
     business_workflows = analysis.get("business_workflows", []) or []
 
@@ -709,7 +709,7 @@ def build_manual_test_gap_coverage_user_prompt(
     legacy_examples: Optional[List[Dict[str, Any]]] = None,
 ) -> str:
     """
-    User prompt for Agent 2 when Agent 3 requests supplementary tests for uncovered
+    User prompt for Agent 3 when Agent 4 requests supplementary tests for uncovered
     testable_points only.
     """
     base = build_manual_test_generation_user_prompt(
@@ -721,7 +721,7 @@ def build_manual_test_gap_coverage_user_prompt(
     summaries_text = "\n".join(summaries) if summaries else "(aucun test existant)"
     missing_text = "\n".join(f"- {p}" for p in missing_testable_points)
 
-    # ── Feedback Agent 3 ──
+    # ── Feedback Agent 4 ──
     feedback_sections = []
 
     if duplicate_pairs:
@@ -732,7 +732,7 @@ def build_manual_test_gap_coverage_user_prompt(
             sim = dp.get("similarity", 0)
             dup_lines.append(f'  - "{na}" ≈ "{nb}" (similarité {sim:.2f})')
         feedback_sections.append(
-            "DOUBLONS DÉTECTÉS par Agent 3 (tests trop similaires — NE PAS les reproduire) :\n"
+            "DOUBLONS DÉTECTÉS par Agent 4 (tests trop similaires — NE PAS les reproduire) :\n"
             + "\n".join(dup_lines)
         )
 
@@ -745,7 +745,7 @@ def build_manual_test_gap_coverage_user_prompt(
             reason = af.get("reason", "")
             amb_lines.append(f"  - [{name}] step {step_idx}, {field}: {reason}")
         feedback_sections.append(
-            "AMBIGUÏTÉS DÉTECTÉES par Agent 3 (ne pas reproduire ces défauts) :\n"
+            "AMBIGUÏTÉS DÉTECTÉES par Agent 4 (ne pas reproduire ces défauts) :\n"
             + "\n".join(amb_lines)
         )
 
@@ -788,7 +788,7 @@ def build_manual_test_gap_coverage_user_prompt(
 
         if instr_lines:
             feedback_sections.append(
-                "INSTRUCTIONS DE CORRECTION Agent 3 :\n" + "\n".join(instr_lines)
+                "INSTRUCTIONS DE CORRECTION Agent 4 :\n" + "\n".join(instr_lines)
             )
 
     feedback_block = ""
@@ -800,7 +800,7 @@ def build_manual_test_gap_coverage_user_prompt(
 
     return f"""{base}
 
-=== COUVERTURE DES LACUNES (demande Agent 3) ===
+=== COUVERTURE DES LACUNES (demande Agent 4) ===
 Les points testables ci-dessous ne sont PAS couverts de façon suffisante par les tests existants.
 Génère UNIQUEMENT des tests NOUVEAUX (complémentaires) qui couvrent explicitement chaque point manquant.
 Respecte le schéma JSON complet (story_id, recommended_test_strategy, generation_status, message, tests, notes).

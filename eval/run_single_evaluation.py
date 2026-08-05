@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 # eval/run_single_evaluation.py
 import sys
 import json
@@ -13,7 +13,7 @@ story_id = sys.argv[1]
 out_path = (
     Path(sys.argv[2])
     if len(sys.argv) >= 3
-    else Path("eval/results/generated_tests_evaluation_YOU-9098.json")
+    else Path("eval/results/generated_tests_evaluation_YOU-10742.json")
 )
 
 # locate module file

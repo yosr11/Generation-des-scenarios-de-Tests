@@ -1,0 +1,75 @@
+[Image jointe : screenshot-2.png]
+── Textes détectés (OCR) ──
+DUPLICATION D UN TYPE DE DOCUMENT *
+RES CNAMES NOQUÉS PIT UNE * SONT CEI GatD ‘ES
+DUPLICATION D UN TYPE DE DOCUMENT
+Nom source *
+Nom cible *
+su
+der
+── Analyse visuelle (VLM) ──
+<think>
+Here's a thinking process that leads to the suggested output:
+
+1.  **Analyze the Request:**
+    *   **Goal:** Describe the visual, non-textual elements of a UI screenshot/mockup.
+    *   **Input:** An image (which I can see) and OCR text (which I must trust and not recopy).
+    *   **Constraint:** Do *not* recopy OCR text. Focus on what OCR misses (visuals, layout, annotations).
+    *   **Structure:** 5 specific sections (Context, Annotations, Native UI Elements, Icons, Layout/Relations).
+    *   **Tone:** Factual, neutral, structured.
+    *   **Language:** French.
+
+2.  **Analyze the Image:**
+    *   **Visual Content:** It's a modal window (popup) overlaid on a white background.
+    *   **Title:** "DUPLICATION D UN TYPE DE DOCUMENT" (Top left).
+    *   **Close Button:** An 'X' icon (Top right).
+    *   **Form Fields:**
+        *   Label: "Nom source *" -> Input field (greyed out/disabled) containing "Etat civil".
+        *   Label: "Nom cible *" -> Input field (white/active) containing "Etat civil - conjoint".
+    *   **Helper Text:** "Les champs indiqués par une * sont obligatoires." (Small grey text below fields).
+    *   **Buttons:**
+        *   "Annuler" (White background, grey border).
+        *   "Sauvegarder" (Dark blue/black background, white text).
+    *   **Annotations:** I need to look closely for red boxes, arrows, circles, etc.
+        *   *Observation:* The image provided is a clean screenshot. There are no red boxes, arrows, or scribbles added by a PO. It looks like a standard UI state.
+    *   **Icons:** Just the 'X' close button.
+
+3.  **Drafting the Content - Section by Section:**
+
+    *   **1. CONTEXTE:**
+        *   *Observation:* It's a modal dialog box (popup) used for a specific action (duplication).
+        *   *Draft (FR):* Il s'agit d'une fenêtre modale (popup) superposée à l'interface principale, destinée à la configuration d'une duplication de document.
+
+    *   **2. ANNOTATIONS AJOUTÉES PAR LE PO:**
+        *   *Observation:* None found.
+        *   *Draft (FR):* Aucune annotation détectée.
+
+    *   **3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI:**
+        *   *Field 1 (Nom source):* It's a text input field. It has a grey background, indicating it is likely disabled or read-only.
+        *   *Field 2 (Nom cible):* It's a text input field. It has a white background and a border, indicating it is active/editable.
+        *   *Button 1 (Annuler):* A pill-shaped button with a white background and a thin grey border.
+        *   *Button 2 (Sauvegarder):* A pill-shaped button with a dark (black or dark blue) background and white text.
+        *   *Draft (FR):*
+            *   Champ de saisie gris (désactivé) pour le champ "Nom source".
+            *   Champ de saisie blanc (actif) pour le champ "Nom cible".
+            *   Bouton "Annuler" : forme arrondie (pill), fond blanc, contour gris fin.
+            *   Bouton "Sauvegarder" : forme arrondie (pill), fond sombre (noir ou bleu nuit), texte blanc.
+
+    *   **4. ICÔNES ET PICTOGRAMMES:**
+        *   *Observation:* Top right corner.
+        *   *Draft (FR):*
+            *   Croix (X) : située en haut à droite de la fenêtre modale, fonction probable de fermeture de la fenêtre.
+
+    *   **5. AGENCEMENT ET RELATIONS:**
+        *   *Structure:* Vertical stack. Title -> Field 1 -> Field 2 -> Helper text -> Buttons.
+        *   *Alignment:* Labels are left-aligned. Inputs are right-aligned next to labels.
+        *   *Mandatory fields:* Asterisks (*) are present next to labels.
+        *   *Draft (FR):*
+            *   Structure verticale : Titre en haut, suivi de deux lignes de champs (label à gauche, zone de saisie à droite), puis d'un texte d'aide en petit, et enfin les boutons d'action en bas à gauche.
+            *   Les champs "Nom source" et "Nom cible" sont alignés verticalement.
+            *   Le champ "Nom source" est visuellement désactivé (gris), tandis que le champ "Nom cible" est actif (blanc).
+            *   Les boutons d'action sont regroupés en bas à gauche, le bouton "Sauvegarder" étant mis en avant par sa couleur sombre (primary action).
+
+4.  **Review and Refine:**
+    *   Check against constraints: Did I recopy OCR? No. Did I invent text? No. Is it factual? Yes.
+    *   *Self-Correction on OCR:* The OCR provided is a bit messy ("RES CNAMES NOQUÉS PIT UNE * SONT CEI GatD ‘ES"). I must ignore

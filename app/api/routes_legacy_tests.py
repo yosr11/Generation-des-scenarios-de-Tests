@@ -1,6 +1,6 @@
-"""
+﻿"""
 Routes pour l'extraction des tests Xray "legacy" Sopra HR au format pivot.
-Servent à alimenter le RAG few-shot du générateur de tests manuels (Agent 2).
+Servent à alimenter le RAG few-shot du générateur de tests manuels (Agent 3).
 """
 
 from typing import List, Optional

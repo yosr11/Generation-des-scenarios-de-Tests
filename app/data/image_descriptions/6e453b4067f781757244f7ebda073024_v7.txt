@@ -1,0 +1,167 @@
+[Image jointe : HRa - Infobulle Date de naissance.png]
+── Textes détectés (OCR) ──
+S caovsoe X P 4007 x P souss x P UOU x P 0Tl %
+€ C æ foryou-nradu-develop.apps.sar-okd.marc.fr.ssg - PL L # 2
+= @ Profil collaborateur
+Elyes Q11CONGEO3 | FRLFR4Y1316
+3 an et 6 mois chez Société 4YOU - Etablissement de Etablissement QAT O
+C/
+Employé qualifié -
+Durée indéterminée | Tempspleim | Cyclenormal (1) | 3500 heures
+€ OD S N TR UP AP IR EN se 2E e % 802 00000 :
+VCOUS av22 33 ans , êres <—l bat-11r-— eTVvauE aver ‘ enter” = @ 920
+us n =- pa:d-.. . létec-e- D Q > Uerwkan > Mésktacess > Domescomaets s PS %
+Jlusnmaver LB.L‘ c< ane |Utesies rrr
+VOUS AT T INTAT EN TR Te cé EN R OIS POUE prevendirons LI DOs A rn Mn Lo B e ll é 7581 2T
+- VD CEEEE * — *. <1 e mn o
+=> N Ly e teve N
+Remplacer dans l’infobulle "Mon age” par "Ma date de naissance : 9/07/1990" SR e
+La date de naissance du collaborateur se trouve sur la page HRa : FSW0DO04 _.:, PR TT —… - T T
+Hooext 250 r 2)=|e[2:
+Bhsnedis T o =1 ;
+S0 - 8993.4130 5 b R T ““‘ R
+<o
+o0
+CU-32
+[N
+SCos
+-ecz
+[ ]
+foryou-hradu-develor.apps.sar-okd.marcfrssg -
+Profil collaborateur
+FRLFR4Y1316
+Elyes Q11CONGEO3 |
+3 anet 6 mois chez Société 4YOU - Etablissement de Etablissement QAT 0
+Employé qualifié
+Durée indéterminée
+Temps plein
+Cycle normal (1)
+35 00 heures
+@@9
+< cr
+LN
+>*
+Dn
+19 x S
+« +
+Mes données individuelles
+dl
+#0à
+Jous av#2 33 ans | êres
+lbat
+AT
+avel
+#n
+?20
+2 Q > divsrehst > Mébticecss > Damies sentrée
+"4s EEER ETE
+ezCa:
+Ciesiesz
+ur e maoble
+nn
+ch
+cs
+Jous êtes jcignable
+sx.
+Jous avez 1
+3T
+AT en
+SRR
+en
+Pc
+n,
+5 INCTHEL
+2l
+el 2 #.
+eers
+En prorite rou
+prevendrans .1 [oirs
+es |
+D -
+we
+cu
+Fn
+°s
+cnece
+Remplacer dans l’infobulle "Mon âge” par "Ma date de naissance : 9/07/1990
+Mireseade praesta
+DTN
+aamnge
+vs faen e
+La date de naissance du collaborateur se trouve sur la page HRa : FSW0DO04
+Fore
+N 22
+Shsnedi
+BRES
+a Û
+mY g
+} 03 05 r
+@ ce
+── Analyse visuelle (VLM) ──
+<think>
+Here's a thinking process that leads to the suggested response:
+
+1.  **Analyze the Request:**
+    *   **Goal:** Describe the visual, non-textual elements of the provided screenshot/mockup.
+    *   **Input:** An image containing a screenshot of a web application (likely an HR portal) with annotations, and a smaller inset screenshot of a backend system (HRa).
+    *   **Constraint:** Use the provided OCR text. Do not re-list the text. Focus on what OCR *misses* (visuals, layout, annotations).
+    *   **Structure:** 5 specific sections (Context, Annotations, Native UI Elements, Icons, Layout/Relations).
+    *   **Tone:** Factual, neutral, structured.
+
+2.  **Analyze the Image (Visual Inspection):**
+    *   **Overall Composition:** It's a composite image.
+        *   Top/Left: A large screenshot of a mobile-responsive web view ("Profil collaborateur").
+        *   Bottom/Right: A smaller screenshot of a desktop application (looks like an older SAP or similar enterprise system, "HRa").
+    *   **Annotations:**
+        *   There is a red box around the text "Mon âge" in the main screenshot.
+        *   There is red text below the main screenshot: "Remplacer dans l'infobulle 'Mon âge' par 'Ma date de naissance : 9/07/1990'".
+        *   There is red text below that: "La date de naissance du collaborateur se trouve sur la page HRa : FSW0DO04".
+        *   There is a red box around the text "FSW0DO04" in the bottom screenshot.
+    *   **Native UI Elements (Main Screenshot):**
+        *   Header bar with a logo (Sopra Steria logo partially visible).
+        *   Navigation icons (hamburger menu, back arrow, home, document, user profile).
+        *   A "hero" image background (wooden deck/pier).
+        *   Section title "Mes données individuelles".
+        *   Text blocks with specific formatting (bolding, blue links).
+        *   A small flag icon (French flag).
+    *   **Native UI Elements (Bottom Screenshot):**
+        *   Standard Windows taskbar at the bottom.
+        *   Browser tabs at the top.
+        *   A complex form interface with many fields, buttons, and grids.
+        *   A specific field highlighted by the red box.
+
+3.  **Drafting the Content - Section by Section:**
+
+    *   **1. CONTEXTE:**
+        *   *Observation:* It's a composite image showing a user story requirement. It compares a frontend view (mobile/web) with a backend source system.
+        *   *Draft:* Capture d'écran composite présentant une user story technique. Elle juxtapose une vue mobile d'un portail collaborateur (en haut à gauche) et une capture d'un système backend (HRa) en bas à droite pour illustrer une modification de données.
+
+    *   **2. ANNOTATIONS AJOUTÉES PAR LE PO:**
+        *   *Observation:* Red text and red boxes.
+        *   *Detail 1:* Red text block at the bottom left.
+        *   *Detail 2:* Red box around "Mon âge".
+        *   *Detail 3:* Red box around "FSW0DO04" in the bottom screenshot.
+        *   *Draft:*
+            *   Texte rouge en bas à gauche : "Remplacer dans l'infobulle 'Mon âge' par 'Ma date de naissance : 9/07/1990'".
+            *   Texte rouge en bas à gauche : "La date de naissance du collaborateur se trouve sur la page HRa : FSW0DO04".
+            *   Cadre rouge : Entoure le texte "Mon âge" dans la section "Mes données individuelles".
+            *   Cadre rouge : Entoure le code "FSW0DO04" dans la capture du système HRa en bas à droite.
+
+    *   **3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI:**
+        *   *Observation:* Focus on the main screenshot first.
+        *   *Logo:* Top left, circular, blue/red/yellow (Sopra Steria).
+        *   *Icons:* White icons on dark background.
+        *   *Flag:* Small French flag next to the phone number.
+        *   *Draft:*
+            *   Logo circulaire en haut à gauche (couleurs bleu, rouge, jaune).
+            *   Drapeau français (bleu, blanc, rouge) à côté du numéro de téléphone.
+            *   Fond d'écran "hero" montrant une planche de bois (quai/ponton) derrière les informations du profil.
+
+    *   **4. ICÔNES ET PICTOGRAMMES:**
+        *   *Observation:* Top bar and navigation bar.
+        *   *Top Left:* Hamburger menu (three lines).
+        *   *Top Right:* Search (magnifying glass), Question mark (help), Bell (notifications).
+        *   *Navigation Bar (below hero):* Back arrow, Home (house), Document (file), User (person silhouette).
+        *   *Bottom Screenshot:* Standard browser icons (back, forward, refresh), Windows taskbar icons (Start, search, chrome, etc.).
+        *   *Draft:*
+            *   Menu

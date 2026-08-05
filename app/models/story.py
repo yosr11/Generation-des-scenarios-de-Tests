@@ -1,4 +1,4 @@
-# Représente une user story.id,titre,description;critères d’acceptation
+﻿# Représente une user story.id,titre,description;critères d’acceptation
 # Un modèle pour représenter une User Story , Avec ses critères d’acceptation , Validé automatiquement
 
 # bibliothèque Python qui sert à :définir des modèles de données ,valider automatiquement les données,convertir les types automatiquement

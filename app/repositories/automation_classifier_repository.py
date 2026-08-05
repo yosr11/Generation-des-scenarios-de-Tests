@@ -1,4 +1,4 @@
-"""
+﻿"""
 Repository pour les classifications d'automatisation (Agent 4) — PostgreSQL (SQLAlchemy ORM).
 
 Stocke le dernier snapshot par story (les classifications sont remplacées

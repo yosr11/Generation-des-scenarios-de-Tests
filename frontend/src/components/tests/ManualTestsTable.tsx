@@ -49,7 +49,7 @@ function buildPayload(test: any, storyId?: string) {
         (e.steps || []).map((s: any) => ({
           action: s.action || e.titre || '',
           expected_result: s.expected_result || '',
-          data: s.data || '',
+          data: s.data || e.data || '',
           actor: s.actor || e.actor || '',
         }))
       )
@@ -121,6 +121,27 @@ const TestEditDrawer: React.FC<{
     })
   }
 
+  const updateGroupField = (groupIndex: number, field: string, value: string) => {
+    setEditedTest((prev: any) => {
+      const next = { ...prev }
+      if (Array.isArray(next.étapes)) {
+        next.étapes = next.étapes.map((g: any, idx: number) =>
+          idx === groupIndex ? { ...g, [field]: value } : g
+        )
+      }
+      return next
+    })
+  }
+
+  const getGroupDataValue = (group: any) => {
+    if (group.data) return group.data
+    if (!Array.isArray(group.steps)) return ''
+    const values = group.steps
+      .map((s: any) => (s.data || '').trim())
+      .filter(Boolean)
+    return Array.from(new Set(values)).join('\n')
+  }
+
   const updateSubStepField = (groupIndex: number, stepIndex: number, field: string, value: string) => {
     setEditedTest((prev: any) => {
       const next = { ...prev }
@@ -134,6 +155,35 @@ const TestEditDrawer: React.FC<{
         })
         next.steps = next.étapes.flatMap((g: any) => g.steps || [])
       }
+      return next
+    })
+  }
+
+  const updatePrecondition = (preIndex: number, value: string) => {
+    setEditedTest((prev: any) => {
+      const next = { ...prev }
+      const preconditions = Array.isArray(next.preconditions) ? [...next.preconditions] : []
+      preconditions[preIndex] = value
+      next.preconditions = preconditions
+      return next
+    })
+  }
+
+  const addPrecondition = () => {
+    setEditedTest((prev: any) => {
+      const next = { ...prev }
+      next.preconditions = Array.isArray(next.preconditions)
+        ? [...next.preconditions, '']
+        : ['']
+      return next
+    })
+  }
+
+  const removePrecondition = (preIndex: number) => {
+    setEditedTest((prev: any) => {
+      const next = { ...prev }
+      if (!Array.isArray(next.preconditions)) return next
+      next.preconditions = next.preconditions.filter((_: any, idx: number) => idx !== preIndex)
       return next
     })
   }
@@ -304,6 +354,45 @@ const TestEditDrawer: React.FC<{
             />
           </section>
 
+          {/* Préconditions */}
+          <section className="space-y-3">
+            <div className="flex items-center gap-2">
+              <div className="w-1 h-4 rounded-full" style={{ background: 'linear-gradient(135deg, #0B1E3E, #1E3A8A)' }} />
+              <p className="text-sm font-extrabold uppercase tracking-widest text-brand-navy font-sans">Préconditions</p>
+            </div>
+            {Array.isArray(editedTest?.preconditions) && editedTest.preconditions.length > 0 ? (
+              <div className="space-y-3">
+                {editedTest.preconditions.map((pre: string, pi: number) => (
+                  <div key={pi} className="grid gap-2 sm:grid-cols-[1fr_auto]">
+                    <input
+                      className="w-full text-sm text-brand-navy rounded-xl px-3 py-2 border border-brand-navy/[0.08] bg-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/10 transition-all font-sans"
+                      value={pre}
+                      onChange={(e) => updatePrecondition(pi, e.target.value)}
+                      onClick={(e) => e.stopPropagation()}
+                      placeholder="Précondition…"
+                    />
+                    <button
+                      type="button"
+                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); removePrecondition(pi) }}
+                      className="rounded-xl border border-brand-navy/10 px-3 text-sm text-brand-rose hover:bg-brand-rose/10 transition"
+                    >
+                      Supprimer
+                    </button>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-brand-muted">Aucune précondition définie.</p>
+            )}
+            <button
+              type="button"
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); addPrecondition() }}
+              className="inline-flex items-center gap-2 rounded-xl bg-brand-offwhite px-3 py-2 text-sm font-semibold text-brand-navy hover:bg-brand-navy/5 transition"
+            >
+              + Ajouter une précondition
+            </button>
+          </section>
+
           {/* Étapes groupées (Xray / normal format) */}
           {Array.isArray(editedTest?.étapes) && editedTest.étapes.length > 0 ? (
             <section className="space-y-4">
@@ -398,6 +487,20 @@ const TestEditDrawer: React.FC<{
                         />
                       </div>
 
+                      {/* Group Data */}
+                      <div>
+                        <p className="text-[10px] font-extrabold uppercase tracking-widest mb-1.5 font-sans" style={{ color: '#102b75' }}>
+                          Données de l'étape
+                        </p>
+                        <input
+                          className="w-full text-xs text-brand-navy rounded-xl px-3 py-2 border border-brand-navy/[0.1] bg-white focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/10 transition-all font-sans"
+                          value={getGroupDataValue(group)}
+                          onChange={(e) => updateGroupField(gi, 'data', e.target.value)}
+                          onClick={(e) => e.stopPropagation()}
+                          placeholder="Donnée unique pour cette étape…"
+                        />
+                      </div>
+
                       {/* Sub-steps of this group */}
                       {Array.isArray(group.steps) && group.steps.length > 0 && (
                         <div className="space-y-3 pt-2 border-t border-dashed border-brand-navy/10">
@@ -435,19 +538,6 @@ const TestEditDrawer: React.FC<{
                                 />
                               </div>
 
-                              {/* SubStep Data */}
-                              <div>
-                                <p className="text-[10px] font-extrabold uppercase tracking-widest mb-1.5 font-sans" style={{ color: '#102b75' }}>
-                                  Données de test
-                                </p>
-                                <input
-                                  className="w-full text-xs text-brand-navy rounded-lg px-2.5 py-2 border border-brand-navy/[0.08] bg-slate-50/50 focus:border-violet-500 focus:outline-none focus:ring-1 focus:ring-violet-500 font-sans"
-                                  value={subStep.data || ''}
-                                  onChange={(e) => updateSubStepField(gi, si, 'data', e.target.value)}
-                                  onClick={(e) => e.stopPropagation()}
-                                  placeholder="Données (optionnel)…"
-                                />
-                              </div>
                             </div>
                           ))}
                         </div>

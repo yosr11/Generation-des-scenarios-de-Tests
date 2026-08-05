@@ -1,4 +1,4 @@
-"""Manager for tracking asynchronous pipeline runs in memory."""
+﻿"""Manager for tracking asynchronous pipeline runs in memory."""
 
 from typing import Dict, Any
 import logging
@@ -22,9 +22,9 @@ def create_job(story_id: str) -> Dict[str, Any]:
         "progress": 0,
         "steps": [
             {"agent": "Agent 1", "status": "pending", "output": None, "error": None},
-            {"agent": "Agent 1.5", "status": "pending", "output": None, "error": None},
             {"agent": "Agent 2", "status": "pending", "output": None, "error": None},
             {"agent": "Agent 3", "status": "pending", "output": None, "error": None},
+            {"agent": "Agent 4", "status": "pending", "output": None, "error": None},
             {"agent": "Agent 5", "status": "pending", "output": None, "error": None},
         ],
         "result": None,

@@ -74,9 +74,9 @@ export interface OrchestratorRequest {
   use_rag?: boolean
   use_legacy_rag?: boolean
   model_agent1?: string
-  model_agent15?: string
   model_agent2?: string
-  model_agent3_quality?: string
+  model_agent3?: string
+  model_agent4_quality?: string
   model_agent5?: string
   coverage_threshold?: number
   max_correction_iterations?: number
@@ -509,11 +509,11 @@ export const apiClient = {
     },
   },
 
-  // ── Agent 1.5 — Business Modeling ───────────────────────────
-  agent15: {
+  // ── Agent 2 — Business Modeling ───────────────────────────
+  agent2: {
     async getLatest(storyId: string): Promise<any> {
       const response = await axiosInstance.get<any>(
-        `/agent15/${encodeURIComponent(storyId)}/latest`
+        `/agent2/${encodeURIComponent(storyId)}/latest`
       )
       return response.data
     },
@@ -523,7 +523,7 @@ export const apiClient = {
       if (options?.model_alias) params.append('model_alias', options.model_alias)
       if (options?.force !== undefined) params.append('force', String(options.force))
       const response = await axiosInstance.get<any>(
-        `/agent15/${encodeURIComponent(storyId)}?${params.toString()}`
+        `/agent2/${encodeURIComponent(storyId)}?${params.toString()}`
       )
       return response.data
     },
@@ -715,15 +715,11 @@ export const apiClient = {
     async deactivateUser(id: number): Promise<any> {
       try { return (await axiosInstance.post(`/admin/users/${id}/deactivate`)).data } catch (e) { throw handleError(e) }
     },
-    async getPipelineHistory(params?: {
-      limit?: number
-      offset?: number
-      launched_by?: string
-    }): Promise<any> {
-      try { return (await axiosInstance.get('/admin/pipelines', { params })).data } catch (e) { throw handleError(e) }
-    },
     async getAuditLog(params?: { limit?: number; offset?: number }): Promise<any> {
       try { return (await axiosInstance.get('/admin/audit', { params })).data } catch (e) { throw handleError(e) }
+    },
+    async getPipelineHistory(params?: { launched_by?: string; limit?: number; offset?: number }): Promise<{ runs: any[] }> {
+      try { return (await axiosInstance.get('/admin/pipelines', { params })).data } catch (e) { throw handleError(e) }
     },
   },
 }

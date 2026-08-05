@@ -1,0 +1,124 @@
+[Image jointe : image-2025-12-15-11-22-37-927.png]
+── Textes détectés (OCR) ──
+Créer une demande x
+Les champs indiqués par une * sont obligatoires. ¢ Avril 2025 < >
+Type de demande * ;
+Lun Mar Mer Jeu Ven sam Dim
+Congés “ NN N
+—— 1 2 3 4 5\ \6\
+SIS
+Type de congé * - EFN SS
+» 8 7 8 o o @ @
+Congés payés - RO N N
+c NS IN
+14 15 ¢ 17 48 \ä \Q\
+Solde disponible : % N N
+37 jours Torar — 15jours 20252026 ©  22jours 20262077 © TV NN NN
+! 21 \\ 1 23 4 3 \{s\ \{7\
+4 XSNS SS
+Durée du congé
+28 29 30
+(O Journée entière @ En heures
+Date de début * Heure de début *
+j/mmraaaa th:mm
+Date de fin * Heure de fin *
+Piece jointe *
+La taille maximale du fichier est de 500 Ko. Les types de fichiers pris en charge
+sont .jpg et .png.
+Créer une demande
+Les champs indiqués par une * sont obligatoires.
+Avril 2025 v
+Type de demande *
+Lun
+Mar
+Mer
+Jeu
+Ven
+sam
+Dim
+Congés
+NONS
+Type de congé *
+CM
+Jo
+s,
+VN
+Congés payés
+14
+17
+18
+soide disponibte
+15W
+NNN
+37 jours Tour
+15 jours 20252026 ©
+22 jours 2026/2027 ©
+\N/
+21
+23
+24
+25
+SS
+28
+29
+30
+(O Journée entière
+© En heures
+Date de début *
+Heure de début *
+j/mm/aaaa
+fh:mm
+Date de fin
+Heure de fin
+sont jpg et .png
+Annuter
+── Analyse visuelle (VLM) ──
+<think>
+Here's a thinking process that leads to the suggested response:
+
+1.  **Analyze the Request:**
+    *   **Goal:** Analyze a screenshot/mockup of a UI interface (Sopra HR user story).
+    *   **Input:** An image (provided in the prompt) and OCR text (provided in the prompt).
+    *   **Constraint:** Do *not* re-list the OCR text. Focus *only* on visual elements not captured by OCR (annotations, layout, icons, specific UI states).
+    *   **Output Format:** 5 specific sections (Context, Annotations, Native UI Elements, Icons, Layout/Relations).
+    *   **Language:** French.
+    *   **Tone:** Factual, neutral, structured.
+
+2.  **Analyze the Image (Visual Inspection):**
+    *   *Overall:* It's a modal window or a split-screen form. Left side is a form, right side is a calendar.
+    *   *Left Side (Form):*
+        *   Header: "Créer une demande".
+        *   Fields: Dropdowns for "Type de demande" and "Type de congé".
+        *   Info Box: A light purple box showing "Solde disponible" with breakdown (Total, 2025/2026, 2026/2027).
+        *   Radio buttons: "Journée entière" vs "En heures" (En heures is selected).
+        *   Date/Time inputs: Four fields (Start Date, Start Time, End Date, End Time).
+        *   File upload area: "Piece jointe" with a dashed border box.
+        *   Footer buttons: "Annuler" (white) and "Continuer" (purple).
+    *   *Right Side (Calendar):*
+        *   Header: "Avril 2025" with navigation arrows.
+        *   Grid: Days of the week (Lun-Dim).
+        *   Dates: Numbers 1-30.
+        *   *Visual Markings on Calendar:*
+            *   Weekends (5, 6, 12, 13, 19, 20, 26, 27) have diagonal hatching (grey lines).
+            *   Specific dates have colored triangles in corners:
+                *   8th: Blue triangle top-left.
+                *   10th-11th: Blue parallelogram shape connecting them.
+                *   16th: Blue triangle top-left.
+                *   21st: Blue triangle top-left.
+                *   22nd: Green triangle top-left.
+            *   There are small text labels inside the calendar cells: "CM" on 10, 11, 16. "MN" on 22.
+            *   There is a mouse cursor (hand icon) hovering over the 16th.
+            *   There is a dotted blue line connecting the 10th and 11th.
+            *   There is a dotted blue line connecting the 16th and 22nd (actually, looking closer, it seems to be a selection range or a specific visual indicator). Wait, let's look closer at the "Annotations" part.
+            *   *Correction on Annotations:* The prompt asks for annotations *added by the PO*.
+                *   I see a dotted blue line connecting the 10th and 11th.
+                *   I see a dotted blue line connecting the 16th and 22nd? No, looking at the full image, there's a dotted line from the 16th going down to the 22nd.
+                *   There are colored triangles (blue/green) in the corners of dates (8, 10, 11, 16, 21, 22). These look like native UI indicators for existing bookings or types of leave, not necessarily PO annotations, *unless* they are highlighted.
+                *   *Wait, looking at the "Annotations" section requirement:* "tout ce qui a été ajouté PAR-DESSUS l'écran original".
+                *   The dotted lines connecting dates (10-11 and 16-22) look like a selection tool or a visual aid added to show a range.
+                *   The mouse cursor is a screenshot artifact, not a PO annotation per se, but worth noting in "Icons" or "Layout".
+                *   Actually, looking very closely at the calendar:
+                    *   The blue triangles (8, 10, 11, 16, 21) and green triangle (22) look like native UI indicators (badges) for existing leave.
+                    *   The dotted lines connecting 10-11 and 16-22 look like a *selection* made by the user or a visual aid.
+                    *   *Self-Correction:* The prompt asks for "Annotations added by the PO". Usually, this means red boxes, arrows, etc. Here, I see dotted blue lines connecting dates. This looks like a "selection range" visualization. Is it a PO annotation or a UI feature? It looks like a UI feature showing a selected range. However, the prompt says "Si aucune annotation n'est ajoutée par-dessus, écris explicitement « Aucune annotation détectée »".
+                    *   Let's look for *external* annotations. I don't see red boxes or yellow highlights added *over*

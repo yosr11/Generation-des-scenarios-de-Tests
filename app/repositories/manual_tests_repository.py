@@ -1,65 +1,71 @@
-"""Dernier jeu de tests manuels (Agent 2) par story — PostgreSQL (SQLAlchemy ORM)."""
+﻿"""Dernier jeu de tests manuels (Agent 3) par story — PostgreSQL (SQLAlchemy ORM)."""
 
 from __future__ import annotations
 
 from typing import Any, Dict, List, Optional
 
-from sqlalchemy import select
+from app.repositories.scenario_repository import (
+    delete_scenarios_by_story,
+    get_scenarios_by_story,
+    save_scenarios_bulk,
+)
 
-from app.db.postgres import get_sync_session
-from app.models.pg_models import StoryManualTests
+
+def _test_dict_to_scenario(test_dict: Dict[str, Any], story_id: str) -> Dict[str, Any]:
+    return {
+        "source_story": story_id,
+        "title": test_dict.get("test_name") or test_dict.get("title") or "",
+        "type": test_dict.get("type", ""),
+        "priority": test_dict.get("priority", ""),
+        "preconditions": test_dict.get("preconditions", []),
+        "steps": test_dict.get("steps", []),
+        "expected_result": test_dict.get("expected_result", ""),
+        "source_ustype": test_dict.get("source_ustype", ""),
+        "model": test_dict.get("model", ""),
+    }
+
+
+def _scenario_to_test_dict(scenario: Dict[str, Any]) -> Dict[str, Any]:
+    return {
+        "test_name": scenario.get("title", ""),
+        "preconditions": scenario.get("preconditions", []) or [],
+        "steps": scenario.get("steps", []) or [],
+        "expected_result": scenario.get("expected_result", ""),
+        "priority": scenario.get("priority", ""),
+        "source_ustype": scenario.get("source_ustype", ""),
+        "model": scenario.get("model", ""),
+    }
 
 
 def save_manual_tests_snapshot(
     story_id: str, tests: List[Dict[str, Any]], generation_model: str = ""
 ) -> int:
-    """Sauvegarde un snapshot de tests en remplaçant l'ancien (idempotent)."""
+    """Persiste les tests manuels en remplaçant l'ensemble des scénarios existants."""
     if not story_id:
         return -1
-    session = get_sync_session()
-    try:
-        # Supprimer l'ancien snapshot (idempotence)
-        existing = (
-            session.execute(
-                select(StoryManualTests).where(StoryManualTests.story_id == story_id)
-            )
-            .scalars()
-            .all()
-        )
-        for row in existing:
-            session.delete(row)
 
-        obj = StoryManualTests(
-            story_id=story_id,
-            tests_json=tests,  # JSONB natif — pas de json.dumps()
-            generation_model=generation_model or "",
-        )
-        session.add(obj)
-        session.commit()
-        session.refresh(obj)
-        return obj.id
-    finally:
-        session.close()
+    delete_scenarios_by_story(story_id)
+    if not tests:
+        return 0
+
+    scenarios = [
+        _test_dict_to_scenario(test, story_id)
+        for test in tests
+        if isinstance(test, dict)
+    ]
+    return save_scenarios_bulk(scenarios, model=generation_model)
 
 
 def get_latest_manual_tests(story_id: str) -> Optional[List[Dict[str, Any]]]:
-    """Retourne la liste des tests du dernier enregistrement, ou None."""
+    """Retourne les tests manuels reconstruits depuis generated_scenarios."""
     if not story_id:
         return None
-    session = get_sync_session()
-    try:
-        obj = session.execute(
-            select(StoryManualTests)
-            .where(StoryManualTests.story_id == story_id)
-            .order_by(StoryManualTests.id.desc())
-            .limit(1)
-        ).scalar_one_or_none()
-        if not obj or not obj.tests_json:
-            return None
-        data = obj.tests_json  # Déjà désérialisé par SQLAlchemy/JSONB
-        return data if isinstance(data, list) else None
-    finally:
-        session.close()
+
+    scenarios = get_scenarios_by_story(story_id)
+    if not scenarios:
+        return None
+
+    return [_scenario_to_test_dict(s) for s in scenarios]
 
 
 def get_latest_manual_tests_as_pydantic(story_id: str):

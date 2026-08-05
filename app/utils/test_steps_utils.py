@@ -1,4 +1,4 @@
-"""Utilitaires partagés pour la structure étapes / steps des tests manuels."""
+﻿"""Utilitaires partagés pour la structure étapes / steps des tests manuels."""
 
 from __future__ import annotations
 
@@ -139,6 +139,19 @@ def finalize_edited_test(test: Dict[str, Any]) -> Dict[str, Any]:
     return test
 
 
+def _is_actor_only_data(data: str) -> bool:
+    text = (data or "").strip()
+    if not text:
+        return False
+    return bool(
+        re.match(
+            r"^\s*en tant que\s+[^,;\.]+(?:\s+des?\b|\s+du\b|\s+de\b|\s+pour\b)?\s*$",
+            text,
+            re.IGNORECASE,
+        )
+    )
+
+
 def normalize_step_fields(
     step: Dict[str, Any], *, index: int, default_actor: str = ""
 ) -> Dict[str, Any]:
@@ -157,8 +170,8 @@ def normalize_step_fields(
 
     if not s.get("actor") and default_actor:
         s["actor"] = default_actor
-    if not s.get("data") and s.get("actor"):
-        s["data"] = f"en tant que {s['actor']}"
+    if s.get("actor") and s.get("data") and _is_actor_only_data(s["data"]):
+        s["data"] = ""
     if "revision_po" not in s:
         s["revision_po"] = ""
     return s

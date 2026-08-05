@@ -1,4 +1,4 @@
-"""
+﻿"""
 Stats rapides sur les types de liens (issue_links) présents dans les
 fichiers enrichis. Aide à choisir quels types compter comme
 "couverture de User Story" pour `covered_stories`.

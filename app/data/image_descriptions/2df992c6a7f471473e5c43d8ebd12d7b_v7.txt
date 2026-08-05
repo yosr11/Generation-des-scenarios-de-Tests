@@ -1,0 +1,78 @@
+[Image jointe : screenshot-1.png]
+── Textes détectés (OCR) ──
+DUPLICATION D UN TYPE DE DOCUMENT *
+L5 CNAMGS NOQUÉS DI UNE * SON OD SIO €5
+Bouton actif dès le premier
+L ce ct caractère saisi
+DUPLICATION D UN TYPE DE DOCUMENT
+Nom source *
+Nom cible *
+(…
+Les cnamps néqués par une * sort otl-gatores
+caractère saisi
+── Analyse visuelle (VLM) ──
+<think>
+Here's a thinking process that leads to the suggested output:
+
+1.  **Analyze the Request:**
+    *   **Goal:** Describe the visual, non-textual elements of a UI screenshot/mockup.
+    *   **Input:** An image (which I can see) and OCR text (which I must trust and not recopy).
+    *   **Constraint:** Do *not* recopy OCR text. Focus on what OCR misses (visuals, layout, annotations).
+    *   **Structure:** 5 specific sections (Context, Annotations, Native UI Elements, Icons, Layout/Relations).
+    *   **Tone:** Factual, neutral, structured.
+    *   **Language:** French.
+
+2.  **Analyze the Image:**
+    *   *Visuals:* It's a modal window or popup.
+    *   *Content:* A form for duplicating a document type.
+    *   *Fields:* "Nom source" (greyed out/disabled), "Nom cible" (active input).
+    *   *Buttons:* "Annuler" (white/grey outline), "Sauvegarder" (dark/black filled).
+    *   *Annotations:* There is a large blue arrow pointing from the "Sauvegarder" button to a blue text box.
+    *   *Icons:* A close 'X' icon in the top right corner.
+
+3.  **Drafting the Content - Section by Section:**
+
+    *   **1. CONTEXTE:**
+        *   *Observation:* It looks like a modal dialog box overlaying a screen. It's a form.
+        *   *Draft (Mental):* C'est une fenêtre modale ou popup pour dupliquer un document.
+        *   *Refinement (French):* Il s'agit d'une fenêtre modale (popup) ou d'un formulaire contextuel superposé à l'interface principale, destinée à la duplication d'un type de document.
+
+    *   **2. ANNOTATIONS AJOUTÉES PAR LE PO:**
+        *   *Observation:* There is a big blue arrow. It points from the "Sauvegarder" button to a blue rectangle containing text.
+        *   *Details:*
+            *   Type: Flèche (arrow) + Cadre rectangulaire (rectangular box).
+            *   Color: Bleu (Blue).
+            *   Target: The arrow originates from the "Sauvegarder" button. The box contains the text "Bouton actif dès le premier caractère saisi".
+        *   *Drafting:* Une flèche bleue part du bouton "Sauvegarder" et pointe vers un encadré bleu contenant le texte explicatif.
+        *   *Refinement:*
+            *   Type : Flèche et encadré rectangulaire.
+            *   Couleur : Bleu.
+            *   Élément désigné : La flèche part du bouton "Sauvegarder" et pointe vers un encadré contenant le texte "Bouton actif dès le premier caractère saisi".
+
+    *   **3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI:**
+        *   *Observation:*
+            *   "Nom source" field: Grey background, looks disabled/readonly.
+            *   "Nom cible" field: White background, active input.
+            *   "Annuler" button: White background, grey border.
+            *   "Sauvegarder" button: Dark (black/navy) background, white text.
+        *   *Drafting:* Le champ "Nom source" est gris. Le champ "Nom cible" est blanc. Le bouton "Annuler" est blanc avec bordure. Le bouton "Sauvegarder" est noir.
+        *   *Refinement:*
+            *   Champ "Nom source" : Fond gris clair, indiquant un état désactivé ou en lecture seule.
+            *   Champ "Nom cible" : Fond blanc, indiquant un champ de saisie actif.
+            *   Bouton "Annuler" : Fond blanc avec une bordure grise fine.
+            *   Bouton "Sauvegarder" : Fond sombre (noir ou bleu nuit) avec texte blanc.
+
+    *   **4. ICÔNES ET PICTOGRAMMES:**
+        *   *Observation:* Top right corner has an 'X'.
+        *   *Drafting:* Une croix en haut à droite pour fermer.
+        *   *Refinement:*
+            *   Croix (X) : Située en haut à droite de la fenêtre modale, fonction probable de fermeture de la fenêtre.
+
+    *   **5. AGENCEMENT ET RELATIONS:**
+        *   *Observation:* Vertical layout. Title at top. Two fields stacked. Text below fields. Buttons at bottom left.
+        *   *Drafting:* Titre en haut. Deux champs l'un sous l'autre. Texte d'aide en dessous. Boutons en bas à gauche.
+        *   *Refinement:*
+            *   Structure verticale : Le titre est en haut, suivi de deux champs de saisie empilés ("Nom source" au-dessus de "Nom cible").
+            *   Position des boutons : Les boutons d'action ("Annuler" et "Sauvegarder") sont alignés horizontalement en bas à gauche de la fenêtre.
+            *   Indicateurs obligatoires : Une astérisque (*) est visible à droite des libellés des champs "Nom source" et "Nom cible".
+            *   Texte d'aide : Une ligne de

@@ -1,0 +1,111 @@
+[Image jointe : image-2026-07-03-09-21-34-270.png]
+── Textes détectés (OCR) ──
+€ C 2s foryou-plannings-features.apps.shr-okd.marc.fr.ssg/app/foryou/#/demarches/planningmanager Ÿ S ©
+E8 * , AYOU - Se connecter L'accessibilité numé… — @ Apache Karaf Web... C 4YOU dev C Tous les favc
+= @ France secteur privé Planning manager o ? d
+Ici, vous pouvez gérer le planning de votre équipe
+(D O (@ auourenes ) |
+18 collaborateurs Ve:1.3 Sam.4 Dim.5 Lun.6 Mar.7 Mer.8 Jeu.9 ven.10 Sam.11 Dim.12 Lun.13 Mar.14 Mer.15 Jeu.16
+Q Hugo QMNPO01 (Vous) - . n n ‘Î‘
+Application Paie | | | | e A
+Q— ADAM TARTUF
+@ oo o | L |
+@ oo A . A .
+<_.
+-0
+foryou-plannings-features.apps.shr-okd.marc.fr.ssg/app/foryou/#/demarches/planningmanager
+g o
+* , AYOU - Se connecter
+L'accessibilité numé...
+@ Apache Karaf Web...
+C 4YOU dev
+CO Tous les favc
+Planning manager
+O,
+@ France secteur privé
+@ @( @ Aujourd'hui ) ‘ ( 3 Juillet 2026 - 16 Juillet 2026 v )( (D Par 2 semaines v )( fJ Zones scolaires v )
+18 collaborateurs
+Ve:1.3
+Sam.4
+Dim.5
+Lun.6
+Mar.7
+Mer.8
+Jeu.9
+ven.10
+Sam.11
+Dim.12
+Lun.13
+Mar.14
+Mer.15
+Jeu.16
+——
+Q Hugo QMNPO1 (Vous)
+Application Paie
+Q‘ ADAM TARTUF
+ALEX ONP08
+ANNA QNPQ9
+Benjamin ONP03
+CATHERINE QNPO7
+── Analyse visuelle (VLM) ──
+<think>
+Here's a thinking process that leads to the suggested output:
+
+1.  **Analyze the Request:**
+    *   **Goal:** Describe the visual, non-textual elements of a UI screenshot/mockup.
+    *   **Input:** An image (which I need to analyze) and a provided OCR text list.
+    *   **Constraint:** Do *not* re-list the OCR text. Focus *only* on what the OCR misses (visuals, layout, icons, annotations).
+    *   **Format:** 5 specific sections (Context, Annotations, Native UI Elements, Icons, Layout/Relations).
+    *   **Language:** French.
+    *   **Tone:** Factual, neutral, structured.
+
+2.  **Analyze the Image (Visual Inspection):**
+    *   *Image Content:* It's a screenshot of a web application called "Planning manager". It looks like a calendar view for managing employee schedules.
+    *   *Annotations:* I see a purple box around a specific cell in the calendar grid. It highlights a cell with "M. 0..." inside.
+    *   *UI Elements:*
+        *   Top bar: Logo (4YOU), "France secteur privé", "Planning manager".
+        *   Filters/Controls: Arrows (left/right), "Aujourd'hui" button, Date range selector ("3 juillet 2026..."), "Par 2 semaines" dropdown, "Zones scolaires" dropdown.
+        *   Grid: Rows of names (Hugo, Adam, Alex, etc.) with profile pictures. Columns of dates (Ven.3 to Jeu.16).
+        *   Grid Content: Hatched grey boxes indicating absence or specific status. One purple box (the annotation).
+    *   *Icons:* Hamburger menu, Search glass, Question mark, Power/Logout icon, Calendar icon (in "Aujourd'hui"), Chevron down arrows (in dropdowns), Left/Right arrows (navigation), Profile avatars (circular photos).
+
+3.  **Drafting the Response - Section by Section:**
+
+    *   **1. CONTEXTE:**
+        *   *Observation:* It's a dashboard or management screen. Specifically a "Planning manager".
+        *   *Draft:* Il s'agit d'une interface de gestion de planning (dashboard) affichant un calendrier hebdomadaire ou bi-mensuel pour une équipe. L'intention est de visualiser et gérer les absences ou statuts des collaborateurs sur une période donnée.
+
+    *   **2. ANNOTATIONS AJOUTÉES PAR LE PO:**
+        *   *Observation:* There is a distinct purple rectangle.
+        *   *Target:* It surrounds a cell in the grid. The text inside is "M. 0..." (partially visible in OCR as "M. 0...").
+        *   *Draft:*
+            *   Type : Cadre rectangulaire.
+            *   Couleur : Violet (bordure et fond léger).
+            *   Élément désigné : Il entoure une cellule spécifique du calendrier correspondant à la date "Mer. 15" (ou "Jeu. 16" selon la lecture exacte de la colonne, mais visuellement c'est la colonne avant la dernière visible) pour la ligne "Hugo QMNP01". Le texte à l'intérieur est "M. 0...".
+
+    *   **3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI:**
+        *   *Observation:*
+            *   Dropdowns: "3 juillet...", "Par 2 semaines", "Zones scolaires". They have rounded corners and chevron icons.
+            *   Buttons: "Aujourd'hui" (pill shape).
+            *   Avatars: Circular photos next to names.
+            *   Grid cells: Grey hatched patterns (diagonal lines).
+        *   *Draft:*
+            *   Bouton "Aujourd'hui" : Forme de pilule (coins arrondis), fond blanc, bordure grise.
+            *   Sélecteurs de date et de vue ("3 juillet 2026...", "Par 2 semaines", "Zones scolaires") : Forme de pilule, fond blanc, bordure grise, avec une icône de chevron vers le bas à droite.
+            *   Avatars : Cercles contenant des photographies de profil, situés à gauche de chaque nom de collaborateur.
+            *   Cellules de statut : Rectangles gris avec un motif de hachures diagonales (lignes grises sur fond gris clair), indiquant probablement une absence ou un statut spécifique.
+
+    *   **4. ICÔNES ET PICTOGRAMMES:**
+        *   *Observation:*
+            *   Top left: Hamburger menu (3 lines).
+            *   Top right: Search (magnifying glass), Help (question mark), Logout (power symbol).
+            *   Navigation: Left/Right arrows.
+            *   Inside "Aujourd'hui": Calendar icon.
+            *   Inside dropdowns: Chevron down.
+            *   Inside "Zones scolaires": School building icon.
+            *   Inside "Par 2 semaines": Calendar icon.
+        *   *Draft:*
+            *   Menu hamburger (3 lignes horizontales) : En haut à gauche, probablement pour ouvrir le menu latéral.
+            *   Loupe : En haut à droite, fonction de recherche globale.
+            *   Point d'interrogation : En haut à droite, fonction d'aide.
+            *   Symbole d'alimentation (cercle avec

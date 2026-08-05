@@ -1,4 +1,4 @@
-"""Service CRUD utilisateurs — logique métier centralisée."""
+﻿"""Service CRUD utilisateurs — logique métier centralisée."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.security import hash_password
-from app.models.pg_models import User
+from app.models.pg_models import User, PipelineRun
 import secrets
 from app.services.email_service import send_account_created_email
 
@@ -258,7 +258,6 @@ async def update_last_login(db: AsyncSession, user_id: int) -> None:
 
 async def get_stats(db: AsyncSession) -> Dict[str, Any]:
     from sqlalchemy import func as sqlfunc
-    from app.models.pg_models import PipelineRun
 
     total_users = (await db.execute(select(sqlfunc.count(User.id)))).scalar() or 0
     active_users = (
@@ -267,14 +266,13 @@ async def get_stats(db: AsyncSession) -> Dict[str, Any]:
     tester_count = (
         await db.execute(select(sqlfunc.count(User.id)).where(User.role == "tester"))
     ).scalar() or 0
+
     total_pipelines = (
         await db.execute(select(sqlfunc.count(PipelineRun.id)))
     ).scalar() or 0
     successful_pipelines = (
         await db.execute(
-            select(sqlfunc.count(PipelineRun.id)).where(
-                PipelineRun.status == "completed"
-            )
+            select(sqlfunc.count(PipelineRun.id)).where(PipelineRun.status == "completed")
         )
     ).scalar() or 0
 

@@ -1,4 +1,4 @@
-"""
+﻿"""
 Métriques LLM-judge (GEval) pour évaluer la fidélité sémantique du pipeline.
 Contrairement à metrics.py (déterministe, gratuit), ces métriques appellent
 un LLM et doivent être utilisées de façon ciblée (pas sur tout le dataset
@@ -11,22 +11,33 @@ Historique des changements :
 - agent1_faithfulness et agent1_hallucination restent séparées (granularité
   du reporting préférée à la fusion : on veut pouvoir distinguer un problème
   de traçabilité d'un problème d'invention pure)
-- agent2_functional_relevance retirée (redondante avec independent_coverage)
-- agent15_hallucination ajoutée (lacune identifiée : agent1.5 pouvait
+- agent3_functional_relevance retirée (redondante avec independent_coverage)
+- agent2_hallucination ajoutée (lacune identifiée : agent1.5 pouvait
   inventer des règles métier dans ses workflows sans que rien ne le détecte)
 - seuils différenciés selon la gravité : 0.85 pour tout ce qui touche à
   l'exactitude factuelle/hallucination, 0.7 pour le reste (style, logique)
+- télémétrie DeepEval désactivée (os.environ) pour éviter les erreurs
+  PostHog bruyantes dans les environnements avec proxy/certificat
+  self-signed (voir aussi run_geval_evaluation.py)
 """
+
+import os
+
+# Doit être défini AVANT le premier import de deepeval, sinon la
+# télémétrie est déjà initialisée et l'opt-out n'a aucun effet.
+os.environ["DEEPEVAL_TELEMETRY_OPT_OUT"] = "YES"
 
 from deepeval.metrics import GEval
 from deepeval.test_case import LLMTestCaseParams
 
-from eval.DeepEval.github_models_llm import GitHubModelsLLM
+#from eval.DeepEval.github_models_llm import GitHubModelsLLM
+from eval.DeepEval.groq_llm import GroqLLM
 
 # ---------------------------------------------------------------------------
 # Juge LLM partagé par toutes les métriques (une seule instance)
 # ---------------------------------------------------------------------------
-judge_model = GitHubModelsLLM(model_alias="gpt-4.1-mini")
+#judge_model = GitHubModelsLLM(model_alias="gpt-4.1")
+judge = GroqLLM("gptoss120b")
 
 
 # ---------------------------------------------------------------------------
@@ -48,7 +59,7 @@ def agent1_faithfulness_metric(threshold: float = 0.85) -> GEval:
         ),
         evaluation_params=[LLMTestCaseParams.INPUT, LLMTestCaseParams.ACTUAL_OUTPUT],
         threshold=threshold,
-        model=judge_model,
+        model=judge,
     )
 
 
@@ -71,7 +82,7 @@ def agent1_hallucination_metric(threshold: float = 0.85) -> GEval:
         ),
         evaluation_params=[LLMTestCaseParams.INPUT, LLMTestCaseParams.ACTUAL_OUTPUT],
         threshold=threshold,
-        model=judge_model,
+        model=judge,
     )
 
 
@@ -96,17 +107,17 @@ def agent1_factual_accuracy_metric(threshold: float = 0.85) -> GEval:
         ),
         evaluation_params=[LLMTestCaseParams.INPUT, LLMTestCaseParams.ACTUAL_OUTPUT],
         threshold=threshold,
-        model=judge_model,
+        model=judge,
     )
 
 
 # ---------------------------------------------------------------------------
 # AGENT 1.5 — Hallucination des règles métier dans le business model
-# Lacune comblée : la vérification déterministe (Agent15Metrics) ne
+# Lacune comblée : la vérification déterministe (Agent2Metrics) ne
 # détectait que les acteurs inventés, pas les règles métier inventées
 # dans les success_criteria / steps / business_goals.
 # ---------------------------------------------------------------------------
-def agent15_hallucination_metric(threshold: float = 0.85) -> GEval:
+def agent2_hallucination_metric(threshold: float = 0.85) -> GEval:
     """agent1.5 invente-t-il des règles métier, contraintes ou comportements
     absents de l'analyse d'agent1 dans ses business_goals/business_workflows ?"""
     return GEval(
@@ -127,7 +138,7 @@ def agent15_hallucination_metric(threshold: float = 0.85) -> GEval:
         ),
         evaluation_params=[LLMTestCaseParams.INPUT, LLMTestCaseParams.ACTUAL_OUTPUT],
         threshold=threshold,
-        model=judge_model,
+        model=judge,
     )
 
 
@@ -155,18 +166,18 @@ def business_workflow_quality_metric(threshold: float = 0.7) -> GEval:
         ),
         evaluation_params=[LLMTestCaseParams.INPUT, LLMTestCaseParams.ACTUAL_OUTPUT],
         threshold=threshold,
-        model=judge_model,
+        model=judge,
     )
 
 
 # ---------------------------------------------------------------------------
 # AGENT 2 — Conformité des tests aux workflows métier (agent1.5)
 # ---------------------------------------------------------------------------
-def agent2_workflow_compliance_metric(threshold: float = 0.7) -> GEval:
+def agent3_workflow_compliance_metric(threshold: float = 0.7) -> GEval:
     """Les tests respectent-ils les workflows métier définis par agent1.5,
     ou s'en écartent-ils (étapes différentes, ordre différent, acteurs différents) ?"""
     return GEval(
-        name="Agent2 Workflow Compliance",
+        name="Agent3 Workflow Compliance",
         criteria=(
             "You are given the business_workflows produced by agent1.5, each with "
             "steps, actors_involved, and success_criteria (input), and the test cases "
@@ -180,18 +191,18 @@ def agent2_workflow_compliance_metric(threshold: float = 0.7) -> GEval:
         ),
         evaluation_params=[LLMTestCaseParams.INPUT, LLMTestCaseParams.ACTUAL_OUTPUT],
         threshold=threshold,
-        model=judge_model,
+        model=judge,
     )
 
 
 # ---------------------------------------------------------------------------
-# COUVERTURE SÉMANTIQUE INDÉPENDANTE — story -> tests (sans passer par agent3)
+# COUVERTURE SÉMANTIQUE INDÉPENDANTE — story -> tests (sans passer par agent4)
 # Reste la seule vérification comparant directement story brute <-> tests,
-# après retrait d'agent2_functional_relevance qui faisait doublon.
+# après retrait d'agent3_functional_relevance qui faisait doublon.
 # ---------------------------------------------------------------------------
 def independent_coverage_metric(threshold: float = 0.7) -> GEval:
     """Juge indépendant de la couverture : ne fait pas confiance au coverage_rate
-    déclaré par agent3, ré-évalue depuis zéro à partir de la story et des tests."""
+    déclaré par agent4, ré-évalue depuis zéro à partir de la story et des tests."""
     return GEval(
         name="Independent Story-to-Tests Coverage",
         criteria=(
@@ -208,7 +219,7 @@ def independent_coverage_metric(threshold: float = 0.7) -> GEval:
         ),
         evaluation_params=[LLMTestCaseParams.INPUT, LLMTestCaseParams.ACTUAL_OUTPUT],
         threshold=threshold,
-        model=judge_model,
+        model=judge,
     )
 
 
@@ -217,16 +228,16 @@ def independent_coverage_metric(threshold: float = 0.7) -> GEval:
 # ---------------------------------------------------------------------------
 def agent5_fidelity_metric(threshold: float = 0.7) -> GEval:
     """Le rapport final résume-t-il fidèlement TOUTES les erreurs/risques
-    identifiés en amont (agent3), sans en omettre ni en minimiser certains ?"""
+    identifiés en amont (agent4), sans en omettre ni en minimiser certains ?"""
     return GEval(
         name="Agent5 Report Fidelity",
         criteria=(
-            "You are given agent3's full validation output including "
+            "You are given agent4's full validation output including "
             "ambiguity_findings, uncovered_testable_points, and duplicate_pairs "
             "(input), and agent5's final report with its executive_summary, "
             "quality_assurance issues, and recommendations (actual_output). "
             "Check whether the report accurately and completely reflects every "
-            "significant issue found by agent3: no ambiguity or coverage gap should "
+            "significant issue found by agent4: no ambiguity or coverage gap should "
             "be silently dropped, downplayed, or contradicted in the final report. "
             "Also check that recommendations are specific and actionable, not generic "
             "boilerplate disconnected from the actual issues found. "
@@ -236,7 +247,7 @@ def agent5_fidelity_metric(threshold: float = 0.7) -> GEval:
         ),
         evaluation_params=[LLMTestCaseParams.INPUT, LLMTestCaseParams.ACTUAL_OUTPUT],
         threshold=threshold,
-        model=judge_model,
+        model=judge,
     )
 
 
@@ -263,5 +274,5 @@ def test_style_readability_metric(threshold: float = 0.7) -> GEval:
         ),
         evaluation_params=[LLMTestCaseParams.ACTUAL_OUTPUT],
         threshold=threshold,
-        model=judge_model,
+        model=judge,
     )

@@ -1,4 +1,4 @@
-"""
+﻿"""
 app/services/rag_service.py
 ────────────────────────────
 Service RAG (Retrieval-Augmented Generation).

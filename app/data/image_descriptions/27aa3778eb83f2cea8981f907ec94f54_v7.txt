@@ -1,0 +1,156 @@
+[Image jointe : image-2025-10-08-11-11-48-598.png]
+── Textes détectés (OCR) ──
+& G L foryou hrlocal features.apps.shr okd.marc.fr.ssg/apa/foryou/#/sydexnert/dasnocardexpert * 2 ® :
+= t
+= 0 o ? 0
+Mes activités RES ACHIVITÉS 3] NON ATTRIBUFES O " Ox
+A F ». R A F 1 R A = 2 R
+24 0
+e à @l En cours, En erreur Pat Do de Clanee v & v
+NIR À
+CONTRÔLER R
+Par échéance V | Enretard v
+22-syerc ;
+A E B2
+yo A QT EVZ RIS R X R En cours M'‘attribuer la demande
+D En retard o Q FRLFRAYC00012 TESZT
+HABILITATIONS Trs-
+AÉCHÉANCE D Danslesspro.. @
+@ O A Aevorant.s Ui Pac t A R n ce
+22 et Par catégorie > Atuibuée 3 : QPROXI04 TESTI
+TAUX DGFIP ’o RUFEL < 16 e Demronse ISN En cours Réattribuer la demande
+ABSENTS FRLFRAYTEST TEST
+>3m TEs- Marquer cotitie répondue
+a Pn ‘ Pl d mx B Demander plus d'informations
+'o Pc VA R (R Cnecsaude ] En cours Réattribuer la demande
+, FRLFR4Y1332 MM
+0 Marquer comme répondue
+A Acratec ovroz. z MéiCIGIT ALIN LUIN OI cEME 22303 Demander plus d'informations
+4 éléments o Mombre d'eléments par page v3 v
+e .. æ ; c . -~ æ 12:07 PM
+aQ…L….. » * = B € s- S @ 7 s@ 5 MD 08102025
+foryou hrlocal features.apps.shr okd.marc.fr.ss
+ar
+oryoi
+yde
+carcdexpert
+g @
+o ? 0
+Mes activités
+WES ACTIVITES
+NON ALTRIBUÉES
+RRH
+Ox
+A M
+à F
+1=}
+248
+Par
+Dote de Cletire
+, &
+D cous r sc
+CONTRÔLER
+En retard
+22z
+=]
+AT
+th
+En cours
+D En retard
+FRLFR4YC00012
+TES2T
+HABILITATIONS
+A ECHEANCE
+P Dans les 5 pro... o
+LI
+pn
+St
+e e
+Atuibute 3 :
+QFROXIO4 TEST1
+22
+TAUX DGFIP
+RUFEL A UE ce
+Tenense
+ABSENTS
+FRUFRAYTEST
+TEST
+>3m
+22t
+v OIS
+RPN
+es — |
+(S
+Cù
+MM
+FRLFR4Y1332
+« av o
+sn
+ms
+ce
+4 éléments
+Mombre d'eléments par page
+12:07 PM
+A e
+) ®
+Qe
+- @
+« B o
+e = S @
+08/10/2025
+── Analyse visuelle (VLM) ──
+<think>
+Here's a thinking process that leads to the suggested output:
+
+1.  **Analyze the Request:**
+    *   **Goal:** Describe the visual, non-textual elements of the provided screenshots (mockups/UI captures).
+    *   **Input:** A set of screenshots (one main full view, several zoomed-in crops) and an OCR text dump.
+    *   **Constraint:** Do *not* re-list the text found in the OCR. Focus *only* on what the OCR misses (visuals, layout, annotations, icons).
+    *   **Format:** 5 specific sections (Context, Annotations, Native UI Elements, Icons, Layout/Relations).
+    *   **Language:** French.
+    *   **Tone:** Factual, neutral, structured.
+
+2.  **Analyze the Images:**
+    *   *Image 1 (Top Left):* Full dashboard view. Shows a sidebar on the left, a main content area with tabs ("MES ACTIVITÉS", "NON ATTRIBUÉES"), filters, and a list of items.
+    *   *Image 2 (Top Right):* Zoomed-in view of the top navigation bar and filters.
+    *   *Image 3 (Bottom Left):* Zoomed-in view of the sidebar and the first item in the list.
+    *   *Image 4 (Bottom Right):* Zoomed-in view of the action buttons on the right side of the list items.
+
+3.  **Drafting Section 1: CONTEXTE**
+    *   *Observation:* It's a web application dashboard. The sidebar suggests navigation. The main area shows a list of tasks or requests ("Mes activités").
+    *   *Draft:* Il s'agit d'une capture d'écran d'un tableau de bord web (dashboard) de gestion de tâches ou de demandes, probablement pour un expert RH ou un manager. L'interface présente une navigation latérale et une zone principale listant des éléments à traiter.
+
+4.  **Drafting Section 2: ANNOTATIONS AJOUTÉES PAR LE PO**
+    *   *Observation:* I see distinct visual markers added on top of the UI.
+    *   *Marker 1:* A red circle with the number "2" inside. It's pointing to a funnel icon (filter).
+    *   *Marker 2:* A yellow highlight/underline under the blue pills "En cours, En erreur" and "hrlocal".
+    *   *Marker 3:* A red circle with the number "2" inside, located on the sidebar item "Mes activités".
+    *   *Marker 4:* A red circle with the number "6" inside, located on the Windows taskbar icon (OneDrive?).
+    *   *Refining descriptions:*
+        *   Red circle "2" on the funnel icon.
+        *   Yellow highlight under the filter pills.
+        *   Red circle "2" on the sidebar menu item.
+        *   Red circle "6" on the taskbar icon.
+
+5.  **Drafting Section 3: ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI**
+    *   *Observation:* Look for pills, badges, buttons that are part of the app design.
+    *   *Badges/Counters:*
+        *   Black circle with "3" next to "MES ACTIVITÉS".
+        *   Black circle with "0" next to "NON ATTRIBUÉES".
+        *   Black circle with "3" next to "RRH".
+        *   Black circle with "3" next to "En retard".
+        *   Black circle with "1" next to "Dans les 5 pro...".
+        *   Red circle with "2" on the funnel icon (Wait, is this native or annotation? The prompt says "ANNOTATIONS AJOUTÉES PAR LE PO". The red circle with '2' looks like an annotation because it's bright red and has a number, typical of a "step 2" guide. However, looking closely at the sidebar, there is a red circle with '2' there too. Let's look at the "En retard" section. There is a red triangle icon. The red circle with '2' on the funnel is definitely an annotation. The red circle with '2' on the sidebar is also an annotation. The red circle with '6' on the taskbar is an annotation.
+        *   *Correction:* The prompt asks for *native* elements.
+        *   Blue pills: "En cours, En erreur", "hrlocal".
+        *   Grey/White pills: "En cours" (status tag on the right).
+        *   Dark buttons: "M'attribuer la demande", "Réattribuer la demande", "Marquer comme répondue", "Demander plus d'informations".
+        *   Dropdowns: "Par échéance", "Date de Clôture", "Choisir une action".
+        *   Pagination: "1" in a blue circle.
+
+6.  **Drafting Section 4: ICÔNES ET PICTOGRAMMES**
+    *   *Observation:* Scan for symbols.
+    *   *Top Bar:* Hamburger menu (top left), Logo (4HR?), Search (magnifying glass), Help (?), Power/Logout.
+    *   *Tabs:* Warning triangle (red), Flag (grey), Warning triangle (white/grey), Chat bubble.
+    *   *Filters:* Funnel icon (filter), Sort arrows (up/down).
+    *   *List Items:* User avatars (

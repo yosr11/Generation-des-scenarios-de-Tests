@@ -1,4 +1,4 @@
-import os
+﻿import os
 
 
 def _set_default_env(name: str, value: str) -> None:

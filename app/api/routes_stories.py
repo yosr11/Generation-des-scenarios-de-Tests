@@ -1,4 +1,4 @@
-# app/api/routes_stories.py
+﻿# app/api/routes_stories.py
 from fastapi import APIRouter, HTTPException, Query, Body
 from app.services.jira_service import (
     get_story_byID,
@@ -81,7 +81,7 @@ def enrich_dataset(
     pour chaque test lié : summary, description, priority, status et les étapes Xray.
 
     Usage : récupérer d'abord la liste, puis poster le JSON ici pour avoir les détails.
-    Le résultat peut être sauvegardé tel quel pour servir de dataset d'évaluation Agent 2.
+    Le résultat peut être sauvegardé tel quel pour servir de dataset d'évaluation Agent 3.
     """
     if "stories" not in dataset:
         raise HTTPException(

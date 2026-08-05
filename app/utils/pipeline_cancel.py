@@ -1,4 +1,4 @@
-"""Annulation coopérative des pipelines (thread-safe)."""
+﻿"""Annulation coopérative des pipelines (thread-safe)."""
 
 from __future__ import annotations
 

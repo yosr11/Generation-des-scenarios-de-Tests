@@ -1,12 +1,12 @@
-"""
+﻿"""
 RAG des tests Xray legacy (Sopra HR).
 
 Recherche sémantique dans la collection Chroma `legacy_tests` (5906 tests
 extraits des projets historiques YOUQA / QAGT / YTINMA / HRAE2EQA / PLD4UE2E)
-pour fournir à Agent 2 des exemples few-shot du style maison.
+pour fournir à Agent 3 des exemples few-shot du style maison.
 
 API publique : `retrieve_similar(title, description, ...)`.
-Tout échec retourne `[]` (fallback graceful : Agent 2 continue sans exemples).
+Tout échec retourne `[]` (fallback graceful : Agent 3 continue sans exemples).
 """
 
 from __future__ import annotations
@@ -28,7 +28,7 @@ MAX_EMBED_CHARS = 1500
 DEFAULT_K = 5
 DEFAULT_MIN_SCORE = 0.55
 # Filtres qualité pour écarter les tests legacy trop pauvres / mal renseignés :
-# ils dégradent la génération Agent 2 en poussant le LLM à imiter une concision excessive
+# ils dégradent la génération Agent 3 en poussant le LLM à imiter une concision excessive
 # (ex: action "Accéder" seule au lieu de "Accéder à la démarche X").
 DEFAULT_MIN_STEPS = 2
 DEFAULT_MIN_ACTION_CHARS = 12
@@ -130,7 +130,7 @@ def retrieve_similar(
       - qualité : exclut les pivots avec moins de `min_steps` étapes
         ou aucune action ≥ `min_action_chars` caractères
 
-    Format de retour (peut être `[]` si rien ne matche — Agent 2 doit gérer ce cas) :
+    Format de retour (peut être `[]` si rien ne matche — Agent 3 doit gérer ce cas) :
         [
           {
             "test_id": "YOUQA-1234",

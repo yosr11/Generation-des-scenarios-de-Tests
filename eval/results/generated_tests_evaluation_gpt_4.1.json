@@ -1,53 +1,42 @@
 {
-  "evaluation_model": "gpt-4.1 (GitHub Models) + paraphrase-multilingual-MiniLM-L12-v2",
+  "evaluation_model": "gpt-4.1-mini (GitHub Models) + paraphrase-multilingual-MiniLM-L12-v2",
   "summary": {
-    "evaluated_stories": 34,
+    "evaluated_stories": 101,
     "skipped_stories": 0,
     "averages": {
-      "cosine_similarity": 0.75,
-      "coverage_score": 80.0,
-      "missing_tests_score": 72.21,
-      "qa_quality_score": 88.53,
-      "business_similarity": 88.09,
-      "final_score": 82.21
+      "cosine_similarity": 0.71,
+      "coverage_score": 83.61,
+      "missing_tests_score": 76.19,
+      "qa_quality_score": 87.73,
+      "business_similarity": 92.66,
+      "final_score": 85.05
     },
     "verdict_distribution": {
-      "GOOD": 22,
-      "PARTIAL": 10,
-      "BAD": 2
+      "GOOD": 81,
+      "PARTIAL": 17,
+      "BAD": 3
     },
     "per_story_scores": [
-      {
-        "story_id": "NUXEPM-1843",
-        "user_story_title": "ST13_RH de proximité : utilisation de toutes les fonctionnalités d'un RRH pour un user externe",
-        "cosine_similarity": 0.7505,
-        "coverage_score": 70,
-        "missing_tests_score": 60,
-        "qa_quality_score": 85,
-        "business_similarity": 80,
-        "final_score": 73.75,
-        "verdict": "PARTIAL"
-      },
       {
         "story_id": "NUXEPM-1871",
         "user_story_title": "ST11_RH de proximité - Widget population_Débranchement vers l'inbox des activités : nouvelle vue 'Par collaborateur préfiltrée'",
         "cosine_similarity": 0.8205,
-        "coverage_score": 90,
-        "missing_tests_score": 80,
-        "qa_quality_score": 95,
-        "business_similarity": 95,
-        "final_score": 90.0,
+        "coverage_score": 95,
+        "missing_tests_score": 90,
+        "qa_quality_score": 92,
+        "business_similarity": 98,
+        "final_score": 93.75,
         "verdict": "GOOD"
       },
       {
         "story_id": "NUXEPM-1831",
         "user_story_title": "Ancienneté abattue",
         "cosine_similarity": 0.7053,
-        "coverage_score": 90,
-        "missing_tests_score": 85,
+        "coverage_score": 95,
+        "missing_tests_score": 90,
         "qa_quality_score": 85,
-        "business_similarity": 95,
-        "final_score": 88.75,
+        "business_similarity": 100,
+        "final_score": 92.5,
         "verdict": "GOOD"
       },
       {
@@ -60,17 +49,6 @@
         "business_similarity": 95,
         "final_score": 87.5,
         "verdict": "GOOD"
-      },
-      {
-        "story_id": "NUXEPM-2283",
-        "user_story_title": "PPBACKLOG-7653 - Enveloppe Macro - Onglet rémunération du profil collaborateur",
-        "cosine_similarity": 0.8301,
-        "coverage_score": 70,
-        "missing_tests_score": 60,
-        "qa_quality_score": 85,
-        "business_similarity": 80,
-        "final_score": 73.75,
-        "verdict": "PARTIAL"
       },
       {
         "story_id": "NUXEPM-1412",
@@ -117,39 +95,6 @@
         "verdict": "GOOD"
       },
       {
-        "story_id": "NUXEPM-2285",
-        "user_story_title": "PPBACKLOG-7651 - Affichage du libellé emploi bulletin",
-        "cosine_similarity": 0.8627,
-        "coverage_score": 70,
-        "missing_tests_score": 60,
-        "qa_quality_score": 80,
-        "business_similarity": 85,
-        "final_score": 73.75,
-        "verdict": "PARTIAL"
-      },
-      {
-        "story_id": "NUXEPM-1893",
-        "user_story_title": "ST03_RH de proximité - Poser une question RH : Alimentation automatique du bénéficiaire depuis le profil et les démarches collaborateur",
-        "cosine_similarity": 0.8135,
-        "coverage_score": 60,
-        "missing_tests_score": 55,
-        "qa_quality_score": 80,
-        "business_similarity": 70,
-        "final_score": 66.25,
-        "verdict": "PARTIAL"
-      },
-      {
-        "story_id": "NUXEPM-2233",
-        "user_story_title": "ST17_RH de proximité - Prise en compte de l'acteur \"Superviseur\" dans SYD et Sidebarre",
-        "cosine_similarity": 0.7717,
-        "coverage_score": 70,
-        "missing_tests_score": 60,
-        "qa_quality_score": 85,
-        "business_similarity": 80,
-        "final_score": 73.75,
-        "verdict": "PARTIAL"
-      },
-      {
         "story_id": "NUXEPM-1858",
         "user_story_title": "ST14_RH de proximité : Origine du document dans le DN",
         "cosine_similarity": 0.6636,
@@ -172,36 +117,14 @@
         "verdict": "GOOD"
       },
       {
-        "story_id": "NUXEPM-1838",
-        "user_story_title": "ST15_RH de proximité - Popin Correction d'adresses : Présence du justificatif obligatoire ou facultatif",
-        "cosine_similarity": 0.6261,
-        "coverage_score": 60,
-        "missing_tests_score": 50,
-        "qa_quality_score": 85,
-        "business_similarity": 70,
-        "final_score": 66.25,
-        "verdict": "PARTIAL"
-      },
-      {
-        "story_id": "NUXEPM-1827",
-        "user_story_title": "ST01_RH de proximité - Widget et Page Processus RH : statuts des demandes",
-        "cosine_similarity": 0.8217,
-        "coverage_score": 70,
-        "missing_tests_score": 60,
-        "qa_quality_score": 85,
-        "business_similarity": 80,
-        "final_score": 73.75,
-        "verdict": "PARTIAL"
-      },
-      {
         "story_id": "NUXEPM-1740",
         "user_story_title": "NEWS - Capacité à naviguer dans le carrousel des news",
         "cosine_similarity": 0.7003,
         "coverage_score": 90,
-        "missing_tests_score": 80,
+        "missing_tests_score": 85,
         "qa_quality_score": 95,
-        "business_similarity": 95,
-        "final_score": 90.0,
+        "business_similarity": 100,
+        "final_score": 92.5,
         "verdict": "GOOD"
       },
       {
@@ -225,17 +148,6 @@
         "business_similarity": 95,
         "final_score": 85.0,
         "verdict": "GOOD"
-      },
-      {
-        "story_id": "NUXEPM-1640",
-        "user_story_title": "ST05_RH de proximité - Inbox \"Activités\"_ Filtrer sur l'Acteur RH de proximité",
-        "cosine_similarity": 0.713,
-        "coverage_score": 60,
-        "missing_tests_score": 50,
-        "qa_quality_score": 85,
-        "business_similarity": 70,
-        "final_score": 66.25,
-        "verdict": "PARTIAL"
       },
       {
         "story_id": "NUXEPM-1617",
@@ -264,32 +176,21 @@
         "user_story_title": "ST04_RH de proximité - Widget Processus - Récupérer les activités du processus \"Poser une question RH\"/ Débranchement vers l'inbox",
         "cosine_similarity": 0.7875,
         "coverage_score": 90,
-        "missing_tests_score": 85,
+        "missing_tests_score": 80,
         "qa_quality_score": 95,
         "business_similarity": 100,
-        "final_score": 92.5,
+        "final_score": 91.25,
         "verdict": "GOOD"
-      },
-      {
-        "story_id": "NUXEPM-1842",
-        "user_story_title": "News - Capacité à mettre en forme le texte d'une News",
-        "cosine_similarity": 0.7834,
-        "coverage_score": 70,
-        "missing_tests_score": 60,
-        "qa_quality_score": 80,
-        "business_similarity": 85,
-        "final_score": 73.75,
-        "verdict": "PARTIAL"
       },
       {
         "story_id": "NUXEPM-1287",
         "user_story_title": "Présence permanente de la barre de recherche dans l'Espace Collaborateur/Manager - version Mobile",
         "cosine_similarity": 0.7163,
-        "coverage_score": 90,
-        "missing_tests_score": 80,
+        "coverage_score": 95,
+        "missing_tests_score": 90,
         "qa_quality_score": 95,
         "business_similarity": 100,
-        "final_score": 91.25,
+        "final_score": 95.0,
         "verdict": "GOOD"
       },
       {
@@ -298,9 +199,9 @@
         "cosine_similarity": 0.6938,
         "coverage_score": 95,
         "missing_tests_score": 90,
-        "qa_quality_score": 90,
+        "qa_quality_score": 95,
         "business_similarity": 100,
-        "final_score": 93.75,
+        "final_score": 95.0,
         "verdict": "GOOD"
       },
       {
@@ -337,17 +238,6 @@
         "verdict": "GOOD"
       },
       {
-        "story_id": "NUXEPM-2282",
-        "user_story_title": "Configuration de la prise en charge sociale dans le formulaire de changement de composition familiale",
-        "cosine_similarity": 0.3184,
-        "coverage_score": 40,
-        "missing_tests_score": 30,
-        "qa_quality_score": 85,
-        "business_similarity": 50,
-        "final_score": 51.25,
-        "verdict": "BAD"
-      },
-      {
         "story_id": "NUXEPM-1885",
         "user_story_title": "News - Capacité à consulter une News dans le tableau des News (Auteur)",
         "cosine_similarity": 0.7681,
@@ -370,17 +260,6 @@
         "verdict": "PARTIAL"
       },
       {
-        "story_id": "NUXEPM-1784",
-        "user_story_title": "Mise en conformité RGAA : Navigation + Switch",
-        "cosine_similarity": 0.3585,
-        "coverage_score": 40,
-        "missing_tests_score": 40,
-        "qa_quality_score": 85,
-        "business_similarity": 50,
-        "final_score": 53.75,
-        "verdict": "BAD"
-      },
-      {
         "story_id": "YOU-12432",
         "user_story_title": "RGAA Ordre de tabulation - une seule div (réalisation) - SP16",
         "cosine_similarity": 0.7595,
@@ -390,36 +269,868 @@
         "business_similarity": 100,
         "final_score": 98.75,
         "verdict": "GOOD"
-      }
-    ]
-  },
-  "results": [
-    {
-      "story_id": "NUXEPM-1843",
-      "user_story_title": "ST13_RH de proximité : utilisation de toutes les fonctionnalités d'un RRH pour un user externe",
-      "priority": "P2-Medium",
-      "gold_tests_count": 5,
-      "generated_tests_count": 4,
-      "metric_1_cosine_similarity": 0.7505,
-      "metric_2_llm_judge": {
+      },
+      {
+        "story_id": "YOU-10156",
+        "user_story_title": "RH de proximité - création du widget population \"Mes collaborateurs\"",
+        "cosine_similarity": 0.6239,
+        "coverage_score": 40,
+        "missing_tests_score": 40,
+        "qa_quality_score": 70,
+        "business_similarity": 60,
+        "final_score": 52.5,
+        "verdict": "BAD"
+      },
+      {
+        "story_id": "YOU-9098",
+        "user_story_title": "Menu de navigation",
+        "cosine_similarity": 0.5837,
+        "coverage_score": 80,
+        "missing_tests_score": 75,
+        "qa_quality_score": 90,
+        "business_similarity": 85,
+        "final_score": 82.5,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-10291",
+        "user_story_title": "RGAA - Accueil",
+        "cosine_similarity": 0.5854,
+        "coverage_score": 95,
+        "missing_tests_score": 90,
+        "qa_quality_score": 90,
+        "business_similarity": 100,
+        "final_score": 93.75,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-10742",
+        "user_story_title": "RH de proximité - HRA4U - Widget population - Sourcing back-end - collaborateurs et Activités",
+        "cosine_similarity": 0.7925,
+        "coverage_score": 80,
+        "missing_tests_score": 70,
+        "qa_quality_score": 85,
+        "business_similarity": 90,
+        "final_score": 81.25,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-10500",
+        "user_story_title": "RGAA - Quick Win SPRINT 4 - Critère 11.1 et 11.9",
+        "cosine_similarity": 0.4976,
         "coverage_score": 70,
         "missing_tests_score": 60,
         "qa_quality_score": 85,
         "business_similarity": 80,
         "final_score": 73.75,
-        "missing_scenarios": [
-          "Répondre à la Question RH du RRH de proximité par le gestionnaire RH",
-          "Consulter le mail reçu au cours du traitement de la question RH",
-          "Accepter la réponse du gestionnaire RH",
-          "Consulter le mail reçu suite à l'acceptation de la question RH",
-          "Vérifier le statut 'Acceptée' de la QRH depuis l'historique",
-          "Corriger une adresse d'un collaborateur depuis son profil collaborateur",
-          "Consulter l'Inbox RH de proximité avec une demande en cours"
-        ],
-        "summary": "Les tests générés couvrent les principaux accès et restrictions pour un RRH de proximité, ainsi que la navigation dans le menu burger et la démarche 'Poser une question RH'. Cependant, plusieurs scénarios métier importants liés au traitement des questions RH, à la gestion des mails, à la correction d'adresse et à l'Inbox sont absents. La qualité des tests est bonne, mais la couverture reste partielle.",
         "verdict": "PARTIAL"
+      },
+      {
+        "story_id": "YOU-9266",
+        "user_story_title": "Accès sans rôle collaborateur - Mes questions RH - OnBehalf sans filtrage POPULATION non hired",
+        "cosine_similarity": 0.6739,
+        "coverage_score": 85,
+        "missing_tests_score": 80,
+        "qa_quality_score": 90,
+        "business_similarity": 95,
+        "final_score": 87.5,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-9229",
+        "user_story_title": "Alerte - temps partiels arrivant à échéance (dans les 2 mois) hors lien legacy",
+        "cosine_similarity": 0.6858,
+        "coverage_score": 60,
+        "missing_tests_score": 50,
+        "qa_quality_score": 70,
+        "business_similarity": 80,
+        "final_score": 65.0,
+        "verdict": "PARTIAL"
+      },
+      {
+        "story_id": "YOU-9279",
+        "user_story_title": "GTA - Démarche Ma journée - Pointages en attente de validation chez le collaborateur - Mes pointages (Section Tableau)",
+        "cosine_similarity": 0.6461,
+        "coverage_score": 90,
+        "missing_tests_score": 80,
+        "qa_quality_score": 85,
+        "business_similarity": 95,
+        "final_score": 87.5,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-9281",
+        "user_story_title": "GTA - Widget de pointage - afficher les pointages en attente de validation chez le collaborateur",
+        "cosine_similarity": 0.6251,
+        "coverage_score": 95,
+        "missing_tests_score": 90,
+        "qa_quality_score": 90,
+        "business_similarity": 100,
+        "final_score": 93.75,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-9282",
+        "user_story_title": "GTA - Démarche Journée - pointages en attente de validation d'un collaborateur chez le manager - Vérification",
+        "cosine_similarity": 0.6875,
+        "coverage_score": 60,
+        "missing_tests_score": 50,
+        "qa_quality_score": 70,
+        "business_similarity": 80,
+        "final_score": 65.0,
+        "verdict": "PARTIAL"
+      },
+      {
+        "story_id": "YOU-9316",
+        "user_story_title": "GTA - Démarche Ma journée - Pointages en attente de validation chez le collaborateur - Mes Références Horaires (Timeline)",
+        "cosine_similarity": 0.6518,
+        "coverage_score": 90,
+        "missing_tests_score": 85,
+        "qa_quality_score": 90,
+        "business_similarity": 95,
+        "final_score": 90.0,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-9317",
+        "user_story_title": "GTA CH - Démarche Ma synthèse de la journée - Pointages en attente de validation chez le collaborateur",
+        "cosine_similarity": 0.5799,
+        "coverage_score": 80,
+        "missing_tests_score": 70,
+        "qa_quality_score": 85,
+        "business_similarity": 90,
+        "final_score": 81.25,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-9232",
+        "user_story_title": "Alerte - contrats arrivant à échéance (dans les 2 mois) hors lien legacy",
+        "cosine_similarity": 0.7027,
+        "coverage_score": 70,
+        "missing_tests_score": 60,
+        "qa_quality_score": 80,
+        "business_similarity": 90,
+        "final_score": 75.0,
+        "verdict": "PARTIAL"
+      },
+      {
+        "story_id": "YOU-9985",
+        "user_story_title": "RGAA - Bandeau 4YOU et Menu Principal (partie 1)",
+        "cosine_similarity": 0.3485,
+        "coverage_score": 95,
+        "missing_tests_score": 90,
+        "qa_quality_score": 92,
+        "business_similarity": 98,
+        "final_score": 93.75,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "NUXEPM-1344",
+        "user_story_title": "RH de proximité - création du nouvel acteur \"RH de proximité\" et de sa page d'accueil",
+        "cosine_similarity": 0.7759,
+        "coverage_score": 90,
+        "missing_tests_score": 80,
+        "qa_quality_score": 95,
+        "business_similarity": 95,
+        "final_score": 90.0,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "NUXEPM-1276",
+        "user_story_title": "Modification du sourcing HRA et du libellé 4YOU de la notion de personne \"à charge\"",
+        "cosine_similarity": 0.7351,
+        "coverage_score": 90,
+        "missing_tests_score": 80,
+        "qa_quality_score": 85,
+        "business_similarity": 95,
+        "final_score": 87.5,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-10070",
+        "user_story_title": "RGAA - Bandeau 4YOU partie 2 : Recherche, aide et déconnexion",
+        "cosine_similarity": 0.5124,
+        "coverage_score": 85,
+        "missing_tests_score": 70,
+        "qa_quality_score": 90,
+        "business_similarity": 80,
+        "final_score": 81.25,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-10074",
+        "user_story_title": "RGAA - Mes rapports (Faire OFFREPRV)",
+        "cosine_similarity": 0.4286,
+        "coverage_score": 95,
+        "missing_tests_score": 90,
+        "qa_quality_score": 85,
+        "business_similarity": 100,
+        "final_score": 92.5,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-10175",
+        "user_story_title": "MultiContrat - Démarche Le planning de mes collègues",
+        "cosine_similarity": 0.677,
+        "coverage_score": 70,
+        "missing_tests_score": 60,
+        "qa_quality_score": 75,
+        "business_similarity": 80,
+        "final_score": 71.25,
+        "verdict": "PARTIAL"
+      },
+      {
+        "story_id": "NUXEPM-1695",
+        "user_story_title": "PLD - RH de proximité - 360 HRLocal - Profil : Débranchement et utilisation du DN du collaborateur (back)",
+        "cosine_similarity": 0.605,
+        "coverage_score": 85,
+        "missing_tests_score": 80,
+        "qa_quality_score": 90,
+        "business_similarity": 95,
+        "final_score": 87.5,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "NUXEPM-1752",
+        "user_story_title": "News - Création de l'Espace Administrateur de News avec la possibilité de supprimer en masse.",
+        "cosine_similarity": 0.7198,
+        "coverage_score": 80,
+        "missing_tests_score": 70,
+        "qa_quality_score": 90,
+        "business_similarity": 85,
+        "final_score": 81.25,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "NUXEPM-1884",
+        "user_story_title": "News - Prévisualisation du document de l'actualité",
+        "cosine_similarity": 0.6281,
+        "coverage_score": 90,
+        "missing_tests_score": 85,
+        "qa_quality_score": 95,
+        "business_similarity": 100,
+        "final_score": 92.5,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "NUXEPM-2284",
+        "user_story_title": "PPBACKLOG-7652 - Enveloppe Macro - Affichage du temps de travail",
+        "cosine_similarity": 0.6859,
+        "coverage_score": 100,
+        "missing_tests_score": 100,
+        "qa_quality_score": 90,
+        "business_similarity": 100,
+        "final_score": 97.5,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "NUXEPM-1736",
+        "user_story_title": "News - Visualisation du bandeau d'annonces par manager",
+        "cosine_similarity": 0.5755,
+        "coverage_score": 90,
+        "missing_tests_score": 85,
+        "qa_quality_score": 80,
+        "business_similarity": 95,
+        "final_score": 87.5,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "NUXEPM-1733",
+        "user_story_title": "News - Visualisation du bandeau d'annonces par collaborateur",
+        "cosine_similarity": 0.538,
+        "coverage_score": 80,
+        "missing_tests_score": 70,
+        "qa_quality_score": 85,
+        "business_similarity": 90,
+        "final_score": 81.25,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "NUXEPM-1730",
+        "user_story_title": "News - Capacité à visualiser le nombre de news du tableau - M4",
+        "cosine_similarity": 0.7862,
+        "coverage_score": 100,
+        "missing_tests_score": 100,
+        "qa_quality_score": 95,
+        "business_similarity": 100,
+        "final_score": 98.75,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "NUXEPM-1728",
+        "user_story_title": "News - Capacité à consulter un ensemble de NEWS",
+        "cosine_similarity": 0.8111,
+        "coverage_score": 95,
+        "missing_tests_score": 90,
+        "qa_quality_score": 85,
+        "business_similarity": 100,
+        "final_score": 92.5,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "NUXEPM-2285",
+        "user_story_title": "PPBACKLOG-7651 - Affichage du libellé emploi bulletin",
+        "cosine_similarity": 0.8454,
+        "coverage_score": 70,
+        "missing_tests_score": 60,
+        "qa_quality_score": 75,
+        "business_similarity": 85,
+        "final_score": 72.5,
+        "verdict": "PARTIAL"
+      },
+      {
+        "story_id": "NUXEPM-1843",
+        "user_story_title": "ST13_RH de proximité : utilisation de toutes les fonctionnalités d'un RRH pour un user externe (anc. Poser une question RH pour un user externe)",
+        "cosine_similarity": 0.7326,
+        "coverage_score": 70,
+        "missing_tests_score": 60,
+        "qa_quality_score": 85,
+        "business_similarity": 90,
+        "final_score": 76.25,
+        "verdict": "PARTIAL"
+      },
+      {
+        "story_id": "NUXEPM-1737",
+        "user_story_title": "News - Visualisation du bandeau d'annonces par gestionnaire",
+        "cosine_similarity": 0.5879,
+        "coverage_score": 80,
+        "missing_tests_score": 70,
+        "qa_quality_score": 85,
+        "business_similarity": 90,
+        "final_score": 81.25,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "NUXEPM-744",
+        "user_story_title": "Inbox gestionnaire : Cohérence des filtres sur les statuts des Demandes traitées & à traiter",
+        "cosine_similarity": 0.6543,
+        "coverage_score": 70,
+        "missing_tests_score": 60,
+        "qa_quality_score": 85,
+        "business_similarity": 80,
+        "final_score": 73.75,
+        "verdict": "PARTIAL"
+      },
+      {
+        "story_id": "NUXEPM-1886",
+        "user_story_title": "News - Capacité à modifier et dupliquer une NEWS (Complément)",
+        "cosine_similarity": 0.6883,
+        "coverage_score": 30,
+        "missing_tests_score": 30,
+        "qa_quality_score": 80,
+        "business_similarity": 90,
+        "final_score": 57.5,
+        "verdict": "BAD"
+      },
+      {
+        "story_id": "NUXEPM-2268",
+        "user_story_title": "Absences : définition workflow manager - EM",
+        "cosine_similarity": 0.6786,
+        "coverage_score": 90,
+        "missing_tests_score": 85,
+        "qa_quality_score": 85,
+        "business_similarity": 95,
+        "final_score": 88.75,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-13303",
+        "user_story_title": "[FRONT] Popin “Détails de la demande” depuis l'historique Partie1",
+        "cosine_similarity": 0.6926,
+        "coverage_score": 95,
+        "missing_tests_score": 90,
+        "qa_quality_score": 90,
+        "business_similarity": 100,
+        "final_score": 93.75,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "NUXEPM-2308",
+        "user_story_title": "Absences : définition workflow - EXA",
+        "cosine_similarity": 0.6402,
+        "coverage_score": 95,
+        "missing_tests_score": 90,
+        "qa_quality_score": 95,
+        "business_similarity": 100,
+        "final_score": 95.0,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-13138",
+        "user_story_title": "[Front] Implémentation de la popin \"Créer une demande\" pour le type Absence",
+        "cosine_similarity": 0.8393,
+        "coverage_score": 95,
+        "missing_tests_score": 90,
+        "qa_quality_score": 95,
+        "business_similarity": 100,
+        "final_score": 95.0,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-14162",
+        "user_story_title": "[BACK][FRONT] Avatar non genré",
+        "cosine_similarity": 0.6941,
+        "coverage_score": 90,
+        "missing_tests_score": 85,
+        "qa_quality_score": 95,
+        "business_similarity": 100,
+        "final_score": 92.5,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-13340",
+        "user_story_title": "[FRONT] Affichage des congés en heures",
+        "cosine_similarity": 0.627,
+        "coverage_score": 70,
+        "missing_tests_score": 60,
+        "qa_quality_score": 85,
+        "business_similarity": 80,
+        "final_score": 73.75,
+        "verdict": "PARTIAL"
+      },
+      {
+        "story_id": "YOU-13386",
+        "user_story_title": "[FRONT] Visualisation du calendrier Collectif vide pour un Manager",
+        "cosine_similarity": 0.659,
+        "coverage_score": 95,
+        "missing_tests_score": 90,
+        "qa_quality_score": 90,
+        "business_similarity": 100,
+        "final_score": 93.75,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-13300",
+        "user_story_title": "[FRONT] Annulation de congés validés (depuis Planning)",
+        "cosine_similarity": 0.7467,
+        "coverage_score": 90,
+        "missing_tests_score": 85,
+        "qa_quality_score": 90,
+        "business_similarity": 95,
+        "final_score": 90.0,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-13666",
+        "user_story_title": "[Back] HRA - Récupérer les demandes cloturées : Ancienne démarche leave",
+        "cosine_similarity": 0.6602,
+        "coverage_score": 85,
+        "missing_tests_score": 80,
+        "qa_quality_score": 90,
+        "business_similarity": 95,
+        "final_score": 87.5,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-13502",
+        "user_story_title": "[FRONT] Fil de discussion Partie 2",
+        "cosine_similarity": 0.7013,
+        "coverage_score": 90,
+        "missing_tests_score": 80,
+        "qa_quality_score": 85,
+        "business_similarity": 95,
+        "final_score": 87.5,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-13628",
+        "user_story_title": "News [REDACTION - QA] - Carrousel - limitation du nombre de news à afficher",
+        "cosine_similarity": 0.7941,
+        "coverage_score": 100,
+        "missing_tests_score": 100,
+        "qa_quality_score": 90,
+        "business_similarity": 100,
+        "final_score": 97.5,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-13432",
+        "user_story_title": "News - Capacité à traduire une News",
+        "cosine_similarity": 0.6759,
+        "coverage_score": 90,
+        "missing_tests_score": 85,
+        "qa_quality_score": 80,
+        "business_similarity": 95,
+        "final_score": 87.5,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-13618",
+        "user_story_title": "News - [REDACTION QA] Capacité à traduire une News",
+        "cosine_similarity": 0.7247,
+        "coverage_score": 85,
+        "missing_tests_score": 80,
+        "qa_quality_score": 90,
+        "business_similarity": 95,
+        "final_score": 87.5,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "NUXEPM-1893",
+        "user_story_title": "ST03_RH de proximité - Poser une question RH : Alimentation automatique du bénéficiaire depuis le profil et les démarches collaborateur",
+        "cosine_similarity": 0.8135,
+        "coverage_score": 85,
+        "missing_tests_score": 80,
+        "qa_quality_score": 90,
+        "business_similarity": 95,
+        "final_score": 87.5,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "NUXEPM-2233",
+        "user_story_title": "ST17_RH de proximité - Prise en compte de l'acteur \"Superviseur\" dans SYD et Sidebarre",
+        "cosine_similarity": 0.7717,
+        "coverage_score": 85,
+        "missing_tests_score": 80,
+        "qa_quality_score": 90,
+        "business_similarity": 95,
+        "final_score": 87.5,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "NUXEPM-1827",
+        "user_story_title": "ST01_RH de proximité - Widget et Page Processus RH : statuts des demandes",
+        "cosine_similarity": 0.8217,
+        "coverage_score": 70,
+        "missing_tests_score": 60,
+        "qa_quality_score": 85,
+        "business_similarity": 75,
+        "final_score": 72.5,
+        "verdict": "PARTIAL"
+      },
+      {
+        "story_id": "YOU-9508",
+        "user_story_title": "DEM MES CONGES - Gestion de la saisie d'un congé en heure hors récurrence et l'ajout au panier.",
+        "cosine_similarity": 0.8152,
+        "coverage_score": 60,
+        "missing_tests_score": 50,
+        "qa_quality_score": 70,
+        "business_similarity": 75,
+        "final_score": 63.75,
+        "verdict": "PARTIAL"
+      },
+      {
+        "story_id": "NUXEPM-2282",
+        "user_story_title": "PPBACKLOG-7656 - Enveloppe Macro - Démarche \"Mon changement de composition familiale\"",
+        "cosine_similarity": 0.621,
+        "coverage_score": 40,
+        "missing_tests_score": 30,
+        "qa_quality_score": 85,
+        "business_similarity": 70,
+        "final_score": 56.25,
+        "verdict": "BAD"
+      },
+      {
+        "story_id": "YOU-13234",
+        "user_story_title": "ST15_RH de proximité - Popin Correction d'adresses : Présence du justificatif obligatoire ou facultatif - QA",
+        "cosine_similarity": 0.6765,
+        "coverage_score": 80,
+        "missing_tests_score": 70,
+        "qa_quality_score": 85,
+        "business_similarity": 90,
+        "final_score": 81.25,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "NUXEPM-1640",
+        "user_story_title": "ST05_RH de proximité - Inbox \"Activités\"_ Filtrer sur l'Acteur RH de proximité",
+        "cosine_similarity": 0.713,
+        "coverage_score": 80,
+        "missing_tests_score": 70,
+        "qa_quality_score": 85,
+        "business_similarity": 90,
+        "final_score": 81.25,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "NUXEPM-1842",
+        "user_story_title": "News - Capacité à mettre en forme le texte d'une News",
+        "cosine_similarity": 0.7834,
+        "coverage_score": 70,
+        "missing_tests_score": 60,
+        "qa_quality_score": 75,
+        "business_similarity": 85,
+        "final_score": 72.5,
+        "verdict": "PARTIAL"
+      },
+      {
+        "story_id": "NUXEPM-1721",
+        "user_story_title": "News - Lot1 Création d'une annonce par un auteur",
+        "cosine_similarity": 0.6297,
+        "coverage_score": 85,
+        "missing_tests_score": 70,
+        "qa_quality_score": 90,
+        "business_similarity": 95,
+        "final_score": 85.0,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-12999",
+        "user_story_title": "[FRONT] Affichage dynamique de la légende",
+        "cosine_similarity": 0.6125,
+        "coverage_score": 85,
+        "missing_tests_score": 70,
+        "qa_quality_score": 90,
+        "business_similarity": 95,
+        "final_score": 85.0,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-13030",
+        "user_story_title": "[FRONT] Visualisation du calendrier Collectif vide pour un collaborateur",
+        "cosine_similarity": 0.7233,
+        "coverage_score": 90,
+        "missing_tests_score": 80,
+        "qa_quality_score": 95,
+        "business_similarity": 95,
+        "final_score": 90.0,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-13178",
+        "user_story_title": "ST02_RH de proximité - Widget population_Débranchement vers l'inbox des activités (nouvel onglet préfiltré) - QA",
+        "cosine_similarity": 0.7835,
+        "coverage_score": 95,
+        "missing_tests_score": 90,
+        "qa_quality_score": 92,
+        "business_similarity": 98,
+        "final_score": 93.75,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-8939",
+        "user_story_title": "Ajouter la date de naissance du collaborateur dans l'infobulle",
+        "cosine_similarity": 0.8584,
+        "coverage_score": 75,
+        "missing_tests_score": 70,
+        "qa_quality_score": 90,
+        "business_similarity": 90,
+        "final_score": 81.25,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-8516",
+        "user_story_title": "CLONE - [MES QUESTION RH] - le statut d'une question RH répondue en attente d'acceptation est erroné après la suppression par le collaborateur",
+        "cosine_similarity": 0.6062,
+        "coverage_score": 70,
+        "missing_tests_score": 60,
+        "qa_quality_score": 85,
+        "business_similarity": 90,
+        "final_score": 76.25,
+        "verdict": "PARTIAL"
+      },
+      {
+        "story_id": "YOU-9768",
+        "user_story_title": "NUXEPM-474-C Ter - Informer le bénéficiaire par mails lors de la suppression de la QRH par le manager ou le gestionnaire OnBehalf - Réalisation",
+        "cosine_similarity": 0.6902,
+        "coverage_score": 80,
+        "missing_tests_score": 70,
+        "qa_quality_score": 85,
+        "business_similarity": 90,
+        "final_score": 81.25,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "NUXEPM-474",
+        "user_story_title": "Questions RH pour le compte de : informer le bénéficiaire de la demande par mail",
+        "cosine_similarity": 0.8224,
+        "coverage_score": 85,
+        "missing_tests_score": 80,
+        "qa_quality_score": 90,
+        "business_similarity": 95,
+        "final_score": 87.5,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-8821",
+        "user_story_title": "Ajouter un message de confirmation en sortie de démarche lorsqu'on passe par la loupe",
+        "cosine_similarity": 0.6497,
+        "coverage_score": 80,
+        "missing_tests_score": 70,
+        "qa_quality_score": 85,
+        "business_similarity": 90,
+        "final_score": 81.25,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-10157",
+        "user_story_title": "RH de proximité - HRa4U_PLD4U_Afficher la population dans le widget - Front end_Part1",
+        "cosine_similarity": 0.8459,
+        "coverage_score": 100,
+        "missing_tests_score": 95,
+        "qa_quality_score": 95,
+        "business_similarity": 100,
+        "final_score": 97.5,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-11205",
+        "user_story_title": "RH de proximité - \"Démarche POSER UNE QUESTION RH\"",
+        "cosine_similarity": 0.7559,
+        "coverage_score": 85,
+        "missing_tests_score": 70,
+        "qa_quality_score": 90,
+        "business_similarity": 95,
+        "final_score": 85.0,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-12094",
+        "user_story_title": "PLD - RH de proximité - 360 HRLocal - Profil : Débranchement et utilisation du DN du collaborateur (Front)",
+        "cosine_similarity": 0.7671,
+        "coverage_score": 85,
+        "missing_tests_score": 80,
+        "qa_quality_score": 90,
+        "business_similarity": 95,
+        "final_score": 87.5,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "NUXEPM-1786",
+        "user_story_title": "PLD - RH de proximité - 360 HRLocal - Ses données individuelles (FRONT) - Mise à jour directe via la démarche angularisée Déménagement & Situation familiale(M4)",
+        "cosine_similarity": 0.7185,
+        "coverage_score": 95,
+        "missing_tests_score": 90,
+        "qa_quality_score": 90,
+        "business_similarity": 100,
+        "final_score": 93.75,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-12429",
+        "user_story_title": "CLONE - PLD - RH de proximité - Mise à jour directe de la Correction d'adresse (Front)",
+        "cosine_similarity": 0.825,
+        "coverage_score": 85,
+        "missing_tests_score": 70,
+        "qa_quality_score": 90,
+        "business_similarity": 95,
+        "final_score": 85.0,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-13246",
+        "user_story_title": "[FRONT] Zones Scolaires",
+        "cosine_similarity": 0.8183,
+        "coverage_score": 75,
+        "missing_tests_score": 70,
+        "qa_quality_score": 90,
+        "business_similarity": 90,
+        "final_score": 81.25,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-9443",
+        "user_story_title": "DEM MES CONGES - Récupération et affichage des motifs de congés et congés exceptionnels en heure",
+        "cosine_similarity": 0.7054,
+        "coverage_score": 70,
+        "missing_tests_score": 60,
+        "qa_quality_score": 85,
+        "business_similarity": 90,
+        "final_score": 76.25,
+        "verdict": "PARTIAL"
+      },
+      {
+        "story_id": "NUXEPM-1699",
+        "user_story_title": "RH de proximité : Rechercher un processus RH (Poser une question RH en V9)",
+        "cosine_similarity": 0.7271,
+        "coverage_score": 70,
+        "missing_tests_score": 60,
+        "qa_quality_score": 85,
+        "business_similarity": 80,
+        "final_score": 73.75,
+        "verdict": "PARTIAL"
+      },
+      {
+        "story_id": "YOU-12963",
+        "user_story_title": "[FRONT] Filtres (statut + motif + date \"Date début - Date Fin\")",
+        "cosine_similarity": 0.5993,
+        "coverage_score": 90,
+        "missing_tests_score": 80,
+        "qa_quality_score": 95,
+        "business_similarity": 100,
+        "final_score": 91.25,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-9428",
+        "user_story_title": "[F] PC - MDC - Migration HRA - L’éligibilité au télétravail",
+        "cosine_similarity": 0.741,
+        "coverage_score": 90,
+        "missing_tests_score": 85,
+        "qa_quality_score": 80,
+        "business_similarity": 95,
+        "final_score": 87.5,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-13282",
+        "user_story_title": "[BACK] Récupérer les actions dans l'historique de mes demandes",
+        "cosine_similarity": 0.7161,
+        "coverage_score": 70,
+        "missing_tests_score": 60,
+        "qa_quality_score": 85,
+        "business_similarity": 90,
+        "final_score": 76.25,
+        "verdict": "PARTIAL"
+      },
+      {
+        "story_id": "YOU-8656",
+        "user_story_title": "4YOU GP : Transfert : Manager : Visualisation d'une tâche reçue par transfert",
+        "cosine_similarity": 0.4751,
+        "coverage_score": 80,
+        "missing_tests_score": 70,
+        "qa_quality_score": 85,
+        "business_similarity": 90,
+        "final_score": 81.25,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "NUXEPM-1223",
+        "user_story_title": "Mes questions RH - Mode Clôture par le collaborateur : Pouvoir relancer le collaborateur si pas d'acceptation de la réponse",
+        "cosine_similarity": 0.7765,
+        "coverage_score": 90,
+        "missing_tests_score": 80,
+        "qa_quality_score": 95,
+        "business_similarity": 95,
+        "final_score": 90.0,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-11798",
+        "user_story_title": "[F] PC - MC - Migration HRA FG - Types de carrières sur \"Ma carrière\"",
+        "cosine_similarity": 0.6581,
+        "coverage_score": 85,
+        "missing_tests_score": 80,
+        "qa_quality_score": 90,
+        "business_similarity": 95,
+        "final_score": 87.5,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "YOU-9424",
+        "user_story_title": "[F] PC - MR - Migration HRA - Bonus et prime variable",
+        "cosine_similarity": 0.8421,
+        "coverage_score": 90,
+        "missing_tests_score": 80,
+        "qa_quality_score": 85,
+        "business_similarity": 95,
+        "final_score": 87.5,
+        "verdict": "GOOD"
+      },
+      {
+        "story_id": "NUXEPM-1578",
+        "user_story_title": "PLD - RH de proximité - 360 HRLocal - Ses données contractuelles - (Front)",
+        "cosine_similarity": 0.7339,
+        "coverage_score": 85,
+        "missing_tests_score": 80,
+        "qa_quality_score": 90,
+        "business_similarity": 95,
+        "final_score": 87.5,
+        "verdict": "GOOD"
       }
-    },
+    ]
+  },
+  "results": [
     {
       "story_id": "NUXEPM-1871",
       "user_story_title": "ST11_RH de proximité - Widget population_Débranchement vers l'inbox des activités : nouvelle vue 'Par collaborateur préfiltrée'",
@@ -428,17 +1139,17 @@
       "generated_tests_count": 5,
       "metric_1_cosine_similarity": 0.8205,
       "metric_2_llm_judge": {
-        "coverage_score": 90,
-        "missing_tests_score": 80,
-        "qa_quality_score": 95,
-        "business_similarity": 95,
-        "final_score": 90.0,
+        "coverage_score": 95,
+        "missing_tests_score": 90,
+        "qa_quality_score": 92,
+        "business_similarity": 98,
+        "final_score": 93.75,
         "missing_scenarios": [
           "Scénario combiné RRH de proximité + Gestionnaire RH (connexion et consultation de la vue Par collaborateur pour un utilisateur ayant les deux rôles)",
-          "Affichage détaillé des vignettes collaborateur (photo, prénom, nom, matricule, icônes spécifiques, lien 'Voir toutes ses demandes', bouton 'Modifier la demande')",
-          "Indicateurs spécifiques : demandes en retard, critiques, à échéance, messages non lus (présence et vérification fine)"
+          "Affichage détaillé des indicateurs spécifiques (demandes en retard, critiques, à échéance, messages non lus) pour chaque collaborateur",
+          "Affichage du bouton 'Modifier la demande' et du lien 'Voir toutes ses demandes' si applicable"
         ],
-        "summary": "Les tests générés couvrent la majorité des fonctionnalités et objectifs métier des tests gold, avec une structure claire et professionnelle. Quelques scénarios spécifiques, notamment le cas combiné RRH de proximité + Gestionnaire RH et certains détails d'affichage, sont absents. La qualité des tests est élevée, mais une couverture complète nécessiterait l'ajout des scénarios manquants.",
+        "summary": "Les tests générés couvrent presque toutes les fonctionnalités et objectifs métier des tests gold, avec une structure claire et professionnelle. Quelques scénarios spécifiques liés à la gestion multi-rôles et certains indicateurs ou actions manquent. La qualité globale est très élevée, mais une couverture complète nécessiterait l'ajout de ces cas particuliers.",
         "verdict": "GOOD"
       }
     },
@@ -450,16 +1161,18 @@
       "generated_tests_count": 4,
       "metric_1_cosine_similarity": 0.7053,
       "metric_2_llm_judge": {
-        "coverage_score": 90,
-        "missing_tests_score": 85,
+        "coverage_score": 95,
+        "missing_tests_score": 90,
         "qa_quality_score": 85,
-        "business_similarity": 95,
-        "final_score": 88.75,
+        "business_similarity": 100,
+        "final_score": 92.5,
         "missing_scenarios": [
-          "Vérification détaillée de l'affichage de tous les éléments de l'entête du profil collaborateur (photo, nom en majuscule, séparateur, société, établissement, grade, département, nature de contrat, temps de travail, règle PTA, nombre d'heures hebdomadaire)",
-          "Vérification du texte spécifique dans l'onglet 'Mes données contractuelles' (libellé long, type de contrat, type temps contractuel, date d'affectation temps, service affecté)"
+          "Vérification détaillée de l'affichage des autres informations dans l'entête du profil collaborateur (photo, nom en majuscule, séparateur '|', société, établissement, grade, département, nature de contrat, temps de travail, règle PTA, nombre d'heures hebdomadaire)",
+          "Vérification du positionnement par défaut sur la page SYD collaborateur après connexion",
+          "Transformation du titre de l'onglet en 'Mes données contractuelles'",
+          "Affichage du texte concernant le service affecté : 'Vous êtes affecté(e) dans le service DEP QA1'"
         ],
-        "summary": "Les tests générés couvrent la majorité des fonctionnalités et objectifs métier des gold tests, notamment l'affichage de l'ancienneté abattue dans le profil et les données contractuelles. Cependant, certains détails d'affichage et de libellés spécifiques ne sont pas explicitement vérifiés. La qualité des tests est bonne, mais une précision supplémentaire serait nécessaire pour atteindre le niveau des tests humains.",
+        "summary": "Les tests générés couvrent presque tous les objectifs métier et scénarios des tests gold, avec une très bonne qualité et une forte similarité business. Quelques vérifications d'affichage détaillées et de textes spécifiques manquent, mais l'essentiel de l'ancienneté abattue est bien testé. Les tests sont clairs et structurés, mais pourraient être enrichis sur certains points d'affichage.",
         "verdict": "GOOD"
       }
     },
@@ -479,34 +1192,10 @@
         "missing_scenarios": [
           "Affichage distinct des données de prévoyance et mutuelle dans leurs colonnes respectives",
           "Validation de l'affichage des colonnes 'Caisse de prévoyance' et 'Options contractuelles' simultanément",
-          "Affichage du treizième mois dans le détail de la rémunération",
-          "Affichage du texte exact de la rémunération contractuelle"
+          "Affichage du salaire annuel brut contractuel et de ses composantes (treizième mois, etc.)"
         ],
-        "summary": "Les tests générés couvrent la majorité des fonctionnalités et objectifs métier des tests gold, avec une bonne qualité rédactionnelle et structurelle. Quelques scénarios spécifiques, notamment l'affichage distinct des données de prévoyance et mutuelle, ainsi que certains détails de la rémunération, sont absents. Globalement, la couverture est élevée et les tests sont utilisables en production.",
+        "summary": "Les tests générés couvrent la majorité des fonctionnalités et objectifs métier des tests gold, avec une bonne qualité rédactionnelle et structurelle. Quelques scénarios spécifiques, notamment l'affichage distinct des données de prévoyance et mutuelle, ainsi que la validation simultanée des colonnes, sont absents. La couverture reste élevée et les tests sont globalement cohérents avec les attentes métier.",
         "verdict": "GOOD"
-      }
-    },
-    {
-      "story_id": "NUXEPM-2283",
-      "user_story_title": "PPBACKLOG-7653 - Enveloppe Macro - Onglet rémunération du profil collaborateur",
-      "priority": "P1-High",
-      "gold_tests_count": 2,
-      "generated_tests_count": 7,
-      "metric_1_cosine_similarity": 0.8301,
-      "metric_2_llm_judge": {
-        "coverage_score": 70,
-        "missing_tests_score": 60,
-        "qa_quality_score": 85,
-        "business_similarity": 80,
-        "final_score": 73.75,
-        "missing_scenarios": [
-          "Affichage des données de prévoyance et mutuelle dans leurs onglets respectifs",
-          "Affichage des colonnes 'Caisse de prévoyance' et 'Options contractuelles' dans l'onglet rémunération",
-          "Validation de l'affichage restreint au nom de l'organisme uniquement",
-          "Validation de l'affichage correct des libellés ZYCS-CODCAI et ZYCS-REGIME dans le tableau"
-        ],
-        "summary": "Les tests générés couvrent la majorité des fonctionnalités attendues, mais certains scénarios spécifiques d'affichage et de validation de colonnes sont absents. La qualité des tests est bonne, avec des étapes claires et structurées. Les objectifs métier sont globalement respectés, mais il manque quelques validations fines pour atteindre une couverture complète.",
-        "verdict": "PARTIAL"
       }
     },
     {
@@ -523,13 +1212,12 @@
         "business_similarity": 90,
         "final_score": 81.25,
         "missing_scenarios": [
-          "Tests détaillés pour chaque démarche spécifique (fin de contrat, période d'essai, temps de travail, départs, dossier numérique, questions RH)",
-          "Validation des éléments affichés sur la page Navigation 360 (nom, prénom, matricule, données contractuelles, onglets spécifiques)",
-          "Vérification de l'affichage de l'info bulle '360' et de l'icône Loupe",
-          "Tests de préconditions métier (ex: ancienneté, type de contrat, date prévisionnelle)",
-          "Validation du statut affiché dans la vignette de la démarche après accès au 360"
+          "Tests spécifiques à chaque démarche RH (fin de contrat, période d'essai, temps de travail, départs, dossier numérique, questions RH) avec leurs préconditions et validations métier détaillées",
+          "Validation des éléments affichés sur la page Navigation 360 (titre, nom/prénom/matricule, données contractuelles, onglets spécifiques)",
+          "Vérification de l'affichage d'une info bulle '360' et de l'icône Loupe",
+          "Validation du statut affiché dans la vignette de la démarche (ex: '1 validée')"
         ],
-        "summary": "Les tests générés couvrent globalement l'accès direct à la vision 360 et la conformité aux normes d'accessibilité, mais manquent de granularité sur les démarches RH spécifiques et les validations d'affichage détaillées. La qualité rédactionnelle est bonne et les objectifs métier sont bien alignés. Quelques scénarios métier précis et validations d'UI sont absents.",
+        "summary": "Les tests générés couvrent globalement l'accès direct à la vision 360 et l'accessibilité, mais manquent de granularité sur les scénarios métier spécifiques et les validations d'affichage détaillées. La qualité rédactionnelle est bonne et les objectifs métier sont bien alignés, mais certains scénarios importants des gold tests ne sont pas explicitement couverts. Les tests restent utilisables pour une première validation, mais nécessitent des compléments pour une couverture exhaustive.",
         "verdict": "GOOD"
       }
     },
@@ -549,10 +1237,10 @@
         "missing_scenarios": [
           "Validation de l'affichage des boutons spécifiques ('Lire l'actualité', 'Fermer', 'Read the News', 'Close') selon la langue",
           "Validation de l'affichage de l'illustration ajoutée dans la popup lors de la consultation par le collaborateur",
-          "Validation du message d'erreur lors de l'ajout d'un document PDF non accepté",
+          "Validation du message d'erreur lors de l'ajout d'un fichier PDF non accepté",
           "Sélection et affichage des acteurs (collaborateur, manager, gestionnaire) lors de la création de la News"
         ],
-        "summary": "Les tests générés couvrent la majorité des fonctionnalités et objectifs métier des tests gold, avec une bonne qualité rédactionnelle et structure. Quelques scénarios spécifiques liés à l'affichage détaillé et aux erreurs ne sont pas explicitement couverts. L'ensemble reste très proche des attentes métier, mais une couverture complète nécessiterait d'ajouter les scénarios manquants.",
+        "summary": "Les tests générés couvrent la majorité des fonctionnalités et objectifs métier des tests gold, avec une bonne qualité rédactionnelle et structure. Quelques scénarios spécifiques liés à l'affichage détaillé et aux erreurs de fichiers sont absents. La couverture reste très élevée, mais certains détails métier manquent pour atteindre la perfection.",
         "verdict": "GOOD"
       }
     },
@@ -570,12 +1258,11 @@
         "business_similarity": 95,
         "final_score": 87.5,
         "missing_scenarios": [
-          "Création détaillée d'une annonce avec tous les champs et validations (ex : gestion des fichiers PDF non acceptés, illustration, acteurs, société, établissement)",
-          "Vérification du message d'erreur lors de l'ajout d'un fichier PDF non accepté",
-          "Validation de la création de la news avec succès (IF de confirmation)",
-          "Suppression par un administrateur des News (les generated tests ne couvrent que l'auteur)"
+          "Création détaillée d'une annonce avec validation des champs, fichiers attachés et gestion des erreurs lors de l'ajout de PDF non accepté",
+          "Suppression d'une news en cours de publication par un administrateur (les generated tests ne couvrent que l'auteur)",
+          "Vérification du message d'erreur spécifique lors de l'ajout de fichiers PDF non acceptés"
         ],
-        "summary": "Les tests générés couvrent la majorité des scénarios métier liés à la suppression d'une annonce, y compris la gestion des alertes et du carrousel. Quelques scénarios de création détaillée et de validation d'erreurs sont absents, ainsi que la suppression par un administrateur. La qualité et la similarité métier sont très bonnes, mais il manque certains détails importants pour une couverture complète.",
+        "summary": "Les tests générés couvrent la majorité des scénarios métier liés à la suppression d'une annonce, y compris la gestion du carrousel et des messages de prévention. Quelques scénarios détaillés de création et de gestion d'erreurs de fichiers sont absents. La qualité des tests est bonne, avec une structure claire et des objectifs métier bien alignés.",
         "verdict": "GOOD"
       }
     },
@@ -593,80 +1280,8 @@
         "business_similarity": 100,
         "final_score": 98.75,
         "missing_scenarios": [],
-        "summary": "Les tests générés couvrent toutes les fonctionnalités et scénarios des tests gold, sans aucun scénario manquant. La qualité des tests est très élevée, avec des étapes claires et structurées. Les objectifs métier sont parfaitement alignés avec ceux des tests de référence.",
+        "summary": "Les tests générés couvrent toutes les fonctionnalités et scénarios des tests gold, avec une excellente qualité rédactionnelle et une parfaite adéquation aux objectifs métier. Aucun scénario important n'est manquant. La structure et la clarté des tests sont proches du niveau professionnel, avec seulement de légères différences de formulation.",
         "verdict": "GOOD"
-      }
-    },
-    {
-      "story_id": "NUXEPM-2285",
-      "user_story_title": "PPBACKLOG-7651 - Affichage du libellé emploi bulletin",
-      "priority": "P1-High",
-      "gold_tests_count": 2,
-      "generated_tests_count": 3,
-      "metric_1_cosine_similarity": 0.8627,
-      "metric_2_llm_judge": {
-        "coverage_score": 70,
-        "missing_tests_score": 60,
-        "qa_quality_score": 80,
-        "business_similarity": 85,
-        "final_score": 73.75,
-        "missing_scenarios": [
-          "Affichage détaillé des autres informations dans l'en-tête du profil collaborateur (photo, séparateur, département, nature de contrat, temps de travail, heures hebdomadaires)",
-          "Affichage du libellé emploi bulletin spécifiquement dans l'en-tête du SYD collaborateur avec vérification du positionnement et du nom/prénom",
-          "Validation de la configuration spécifique sur SYD collaborateur"
-        ],
-        "summary": "Les tests générés couvrent les principaux objectifs métier et scénarios d'affichage du libellé emploi bulletin, mais omettent certains détails d'affichage et de configuration présents dans les tests gold. La qualité des tests est bonne, mais il manque des validations précises sur l'en-tête et le SYD collaborateur. Les scénarios sont globalement similaires mais moins exhaustifs.",
-        "verdict": "PARTIAL"
-      }
-    },
-    {
-      "story_id": "NUXEPM-1893",
-      "user_story_title": "ST03_RH de proximité - Poser une question RH : Alimentation automatique du bénéficiaire depuis le profil et les démarches collaborateur",
-      "priority": "P1-High",
-      "gold_tests_count": 4,
-      "generated_tests_count": 4,
-      "metric_1_cosine_similarity": 0.8135,
-      "metric_2_llm_judge": {
-        "coverage_score": 60,
-        "missing_tests_score": 55,
-        "qa_quality_score": 80,
-        "business_similarity": 70,
-        "final_score": 66.25,
-        "missing_scenarios": [
-          "Traitement complet du workflow : attribution et traitement de la demande par le gestionnaire",
-          "Vérification du statut de la demande (répondue, acceptée) et consultation de l'historique",
-          "Tests sur les boutons et états (quitter, supprimer, sauvegarder, envoyer, accepter la réponse)",
-          "Vérification de la zone de commentaire, pièces jointes, et champs obligatoires",
-          "Affichage des messages d'information et de confirmation (IF)",
-          "Interaction avec la case 'Informer le bénéficiaire du suivi de la question RH, par mail'"
-        ],
-        "summary": "Les tests générés couvrent le pré-remplissage automatique du champ bénéficiaire et la création de la question RH depuis différentes démarches, mais omettent le traitement complet du workflow, la gestion des statuts, et plusieurs interactions métier. La qualité des tests est bonne, mais la couverture fonctionnelle reste partielle. Les objectifs métier sont partiellement alignés, mais plusieurs scénarios clés sont absents.",
-        "verdict": "PARTIAL"
-      }
-    },
-    {
-      "story_id": "NUXEPM-2233",
-      "user_story_title": "ST17_RH de proximité - Prise en compte de l'acteur \"Superviseur\" dans SYD et Sidebarre",
-      "priority": "P1-High",
-      "gold_tests_count": 2,
-      "generated_tests_count": 6,
-      "metric_1_cosine_similarity": 0.7717,
-      "metric_2_llm_judge": {
-        "coverage_score": 70,
-        "missing_tests_score": 60,
-        "qa_quality_score": 85,
-        "business_similarity": 80,
-        "final_score": 73.75,
-        "missing_scenarios": [
-          "Correction de l'adresse d'un collaborateur depuis son profil pour RRH+Superviseur",
-          "Vérification de la population du RRH (affichage uniquement des collaborateurs de sa population)",
-          "Vérification de la présence du justificatif dans le DN du collaborateur",
-          "Envoi et suivi d'une question RH pour le compte du bénéficiaire",
-          "Traitement de la demande RH par le gestionnaire (M'attribuer, Marquer comme répondue)",
-          "Vérification du statut final de la demande dans l'historique"
-        ],
-        "summary": "Les tests générés couvrent bien l'affichage, l'accès et la présence des widgets et indicateurs pour le Superviseur, mais omettent les scénarios métier liés à la gestion de la population, la correction d'adresse, et le processus de question RH. La qualité des tests est bonne, mais la couverture fonctionnelle reste partielle. Les objectifs métier sont globalement respectés, mais certains aspects essentiels sont absents.",
-        "verdict": "PARTIAL"
       }
     },
     {
@@ -683,11 +1298,11 @@
         "business_similarity": 95,
         "final_score": 87.5,
         "missing_scenarios": [
-          "Absence de vérification détaillée de l'affichage de la popup de consultation avec tous les champs attendus (salarié, emplacement, propriété, période, visibilité, validité, bouton Annuler)",
-          "Manque de distinction claire entre les rôles (RH de proximité, Gestionnaire RH) dans certains tests pour la consultation du document",
-          "Non-vérification de la fermeture de la popup après consultation"
+          "Consultation de la popup de document par RRH de proximité avec vérification détaillée des champs attendus (salarié, emplacement, propriété, période, visibilité, validité, bouton Annuler)",
+          "Consultation de la popup de document par Gestionnaire RH avec vérification détaillée des champs attendus (salarié, emplacement, propriété, période, visibilité, validité, bouton Annuler)",
+          "Vérification de l'affichage du tableau des documents dans le DN avec toutes les colonnes attendues"
         ],
-        "summary": "Les tests générés couvrent la majorité des fonctionnalités et objectifs métier des tests gold, avec une bonne qualité rédactionnelle et structure. Quelques scénarios spécifiques liés à l'affichage complet de la popup et à la gestion des rôles sont absents. La couverture reste élevée, mais une amélioration sur les détails d'affichage et la gestion des interactions serait bénéfique.",
+        "summary": "Les tests générés couvrent la majorité des fonctionnalités et objectifs métier des tests gold, avec une bonne qualité rédactionnelle et structure. Quelques scénarios détaillés de consultation de la popup et du tableau des documents sont absents. La couverture reste élevée, mais une amélioration sur les vérifications fines des champs serait bénéfique.",
         "verdict": "GOOD"
       }
     },
@@ -708,58 +1323,8 @@
           "Vérification de l'absence des indicateurs Paie pour le profil Gestionnaire RH",
           "Affichage des entités organisationnelles avec les collaborateurs et leurs informations de base sur la page Mes collaborateurs"
         ],
-        "summary": "Les tests générés couvrent la majorité des fonctionnalités et objectifs métier des tests gold, avec une bonne qualité rédactionnelle et structure. Quelques scénarios spécifiques, notamment l'absence des indicateurs Paie et l'affichage détaillé des collaborateurs, sont manquants. Globalement, la couverture est élevée et les tests sont utilisables en production.",
+        "summary": "Les tests générés couvrent la majorité des fonctionnalités et objectifs métier des tests gold, avec une bonne qualité rédactionnelle et structure. Quelques scénarios spécifiques, comme l'absence des indicateurs Paie et l'affichage détaillé des collaborateurs, sont manquants. Globalement, les tests sont proches des attentes métier et utilisables en production.",
         "verdict": "GOOD"
-      }
-    },
-    {
-      "story_id": "NUXEPM-1838",
-      "user_story_title": "ST15_RH de proximité - Popin Correction d'adresses : Présence du justificatif obligatoire ou facultatif",
-      "priority": "P2-Medium",
-      "gold_tests_count": 1,
-      "generated_tests_count": 4,
-      "metric_1_cosine_similarity": 0.6261,
-      "metric_2_llm_judge": {
-        "coverage_score": 60,
-        "missing_tests_score": 50,
-        "qa_quality_score": 85,
-        "business_similarity": 70,
-        "final_score": 66.25,
-        "missing_scenarios": [
-          "Validation de la demande de correction d'adresse par un gestionnaire RH",
-          "Vérification de la présence du justificatif dans le dossier numérique (DN) du collaborateur pour les deux rôles",
-          "Scénario de correction d'adresse par le collaborateur avec ajout de justificatif",
-          "Scénario de correction d'adresse par le RRH de proximité avec ajout de justificatif",
-          "Affichage détaillé des différents champs du formulaire et des états des boutons",
-          "Gestion des messages de confirmation et de redirection après sauvegarde"
-        ],
-        "summary": "Les tests générés couvrent les aspects principaux de l'obligation ou non du justificatif selon le rôle, mais omettent plusieurs scénarios métier importants, notamment la validation RH et la vérification du justificatif dans le dossier numérique. La qualité des tests est bonne, mais la couverture fonctionnelle reste partielle. Les objectifs métier sont globalement respectés, mais certains points clés ne sont pas testés.",
-        "verdict": "PARTIAL"
-      }
-    },
-    {
-      "story_id": "NUXEPM-1827",
-      "user_story_title": "ST01_RH de proximité - Widget et Page Processus RH : statuts des demandes",
-      "priority": "P1-High",
-      "gold_tests_count": 1,
-      "generated_tests_count": 5,
-      "metric_1_cosine_similarity": 0.8217,
-      "metric_2_llm_judge": {
-        "coverage_score": 70,
-        "missing_tests_score": 60,
-        "qa_quality_score": 85,
-        "business_similarity": 80,
-        "final_score": 73.75,
-        "missing_scenarios": [
-          "Vérification de l'absence du statut Acceptée dans le widget et la page Processus RH",
-          "Affichage des statuts par ordre de priorité décroissant avec infobulle et icône alerte",
-          "Affichage du lien Accéder à tous les processus RH",
-          "Affichage de la barre de recherche Rechercher un processus",
-          "Tests détaillés sur la création de demandes avec différents statuts (A compléter, En attente d'acceptation, En cours, En cours de validation, Acceptée)",
-          "Vérification de l'affichage des statuts pour plusieurs collaborateurs"
-        ],
-        "summary": "Les tests générés couvrent la majorité des fonctionnalités principales, notamment l'affichage des statuts et la redirection selon la présence de demandes. Cependant, plusieurs scénarios spécifiques des gold tests sont absents, notamment la gestion du statut Acceptée et certains détails d'affichage. La qualité des tests générés est bonne, mais une couverture plus complète des cas métier est nécessaire.",
-        "verdict": "PARTIAL"
       }
     },
     {
@@ -771,15 +1336,15 @@
       "metric_1_cosine_similarity": 0.7003,
       "metric_2_llm_judge": {
         "coverage_score": 90,
-        "missing_tests_score": 80,
+        "missing_tests_score": 85,
         "qa_quality_score": 95,
-        "business_similarity": 95,
-        "final_score": 90.0,
+        "business_similarity": 100,
+        "final_score": 92.5,
         "missing_scenarios": [
           "Création de news par un auteur avec validation des étapes de création et confirmation",
           "Test explicite de la connexion en tant que Manager et vérification de l'affichage spécifique pour ce rôle"
         ],
-        "summary": "Les tests générés couvrent la majorité des fonctionnalités et objectifs métier des tests gold, notamment la navigation et l'affichage du carrousel. La qualité rédactionnelle est très bonne, mais certains scénarios spécifiques, comme la création détaillée de news et la connexion en tant que Manager, sont absents. Globalement, la couverture est élevée et les tests sont utilisables en production.",
+        "summary": "Les tests générés couvrent presque toutes les fonctionnalités des tests gold, avec une excellente qualité et une forte similarité métier. Quelques scénarios spécifiques liés à la création de news et à la connexion en tant que Manager sont absents. Globalement, les tests sont bien structurés et professionnels.",
         "verdict": "GOOD"
       }
     },
@@ -797,9 +1362,9 @@
         "business_similarity": 100,
         "final_score": 95.0,
         "missing_scenarios": [
-          "Vérifier que la languette de fermeture du bandeau n'est pas affichée lorsque le bandeau est ouvert (gold test DEMKNEWS_S1_ST1_CT3b, étape 3)"
+          "La languette de fermeture du bandeau n'est pas affichée lorsque le bandeau est ouvert (étape explicitement mentionnée dans le gold test DEMKNEWS_S1_ST1_CT3b)."
         ],
-        "summary": "Les tests générés couvrent presque toutes les fonctionnalités des tests gold, avec une très bonne qualité et une forte similarité métier. Un seul scénario mineur est manquant concernant la visibilité de la languette lors de l'ouverture par défaut. Les tests sont clairs, structurés et facilement exécutables.",
+        "summary": "Les tests générés couvrent presque toutes les fonctionnalités et objectifs métier des tests gold, avec une très bonne qualité rédactionnelle et structure. Un seul scénario mineur est manquant concernant la visibilité de la languette lors de l'ouverture par défaut. Les tests sont clairs, cohérents et facilement exécutables.",
         "verdict": "GOOD"
       }
     },
@@ -817,33 +1382,10 @@
         "business_similarity": 95,
         "final_score": 85.0,
         "missing_scenarios": [
-          "Vérification détaillée de l'affichage des vignettes du collaborateur (Photo, Matricule, Demande N°, Titre, Description, Date limite, icônes Œil, message, trombone, statut, lien Voir toutes ses demandes, bouton Modifier la demande et autres boutons d'action selon le statut)"
+          "Vérification détaillée de l'affichage des vignettes du collaborateur (Photo, Matricule, Demande N°, Titre, Description, A traiter avant le, icônes Œil, message, Trombone, statut, lien Voir toutes ses demandes, bouton Modifier la demande et autres boutons d'actions selon le statut)"
         ],
-        "summary": "Les tests générés couvrent la majorité des fonctionnalités et objectifs métier des tests gold, avec une bonne qualité rédactionnelle et structure. Cependant, certains détails d'affichage des vignettes et des éléments spécifiques ne sont pas explicitement vérifiés. La couverture reste élevée, mais quelques scénarios importants sont absents.",
+        "summary": "Les tests générés couvrent la majorité des fonctionnalités et objectifs métier des gold tests, avec une bonne qualité rédactionnelle et structure. Cependant, certains détails d'affichage des vignettes et des éléments spécifiques ne sont pas explicitement vérifiés. La couverture reste élevée, mais quelques scénarios importants sont manquants.",
         "verdict": "GOOD"
-      }
-    },
-    {
-      "story_id": "NUXEPM-1640",
-      "user_story_title": "ST05_RH de proximité - Inbox \"Activités\"_ Filtrer sur l'Acteur RH de proximité",
-      "priority": "P1-High",
-      "gold_tests_count": 2,
-      "generated_tests_count": 4,
-      "metric_1_cosine_similarity": 0.713,
-      "metric_2_llm_judge": {
-        "coverage_score": 60,
-        "missing_tests_score": 50,
-        "qa_quality_score": 85,
-        "business_similarity": 70,
-        "final_score": 66.25,
-        "missing_scenarios": [
-          "Filtrage combiné sur plusieurs acteurs (RRH de proximité, Gestionnaire RH, Gestionnaire Paie)",
-          "Vérification de l'attribution des demandes (s'attribuer les demandes)",
-          "Consultation des indicateurs et des bulles d'information dans le widget Mes activités",
-          "Affichage détaillé des résultats (statut, nombre de demandes, messages non lus, etc.)"
-        ],
-        "summary": "Les tests générés couvrent la base du filtrage par acteur et l'affichage des résultats, mais omettent des scénarios importants comme le filtrage combiné, l'attribution des demandes et la vérification des indicateurs. La qualité rédactionnelle est bonne, mais la couverture fonctionnelle reste partielle. Les objectifs métier sont globalement respectés, mais certains aspects clés ne sont pas testés.",
-        "verdict": "PARTIAL"
       }
     },
     {
@@ -860,13 +1402,13 @@
         "business_similarity": 90,
         "final_score": 83.75,
         "missing_scenarios": [
-          "Filtrage des processus via la zone de recherche (saisie de texte et validation du filtrage)",
-          "Débranchement vers une démarche spécifique depuis un résultat de recherche",
+          "Filtrage des processus via la zone de recherche avec saisie de texte et validation du filtrage",
+          "Débranchement vers la démarche choisie depuis les résultats de recherche",
           "Affichage du widget Processus RH et accès via le lien 'Accéder à tous les processus RH'",
-          "Affichage du tri décroissant par défaut sur la colonne nombre total de demandes",
-          "Affichage du libellé du processus RH plié/déplié selon la vue"
+          "Validation du tri par défaut (décroissant) sur la colonne nombre total de demandes",
+          "Affichage du libellé du processus RH et des statuts des demandes en cours"
         ],
-        "summary": "Les tests générés couvrent la majorité des fonctionnalités métier et sont bien structurés, avec une qualité professionnelle. Quelques scénarios de recherche, tri par défaut et navigation via widget sont absents. Les objectifs métier sont globalement respectés, mais certains détails spécifiques manquent.",
+        "summary": "Les tests générés couvrent la majorité des fonctionnalités métier et sont bien structurés, avec une qualité professionnelle. Quelques scénarios importants liés à la recherche, au tri par défaut et au débranchement depuis la recherche sont absents. Les objectifs métier sont globalement respectés, mais une couverture complète nécessiterait l'ajout des scénarios manquants.",
         "verdict": "GOOD"
       }
     },
@@ -890,7 +1432,7 @@
           "Affichage du volet Par échéance dans l'inbox Gestionnaire",
           "Affichage des vignettes des demandes en cours dans l'inbox Gestionnaire"
         ],
-        "summary": "Les tests générés couvrent la majorité des fonctionnalités métier et sont de bonne qualité, mais certains scénarios de tri et d'affichage spécifiques manquent. La structure et la clarté des tests sont professionnelles. Les objectifs métier sont bien alignés, mais quelques détails importants ne sont pas testés.",
+        "summary": "Les tests générés couvrent la majorité des fonctionnalités métier et sont de bonne qualité, mais certains scénarios spécifiques de tri et d'affichage d'infobulle sont absents. Les objectifs métier sont bien respectés, mais il manque quelques validations fines pour atteindre une couverture parfaite. Les tests sont clairs et structurés, adaptés à une exécution QA.",
         "verdict": "GOOD"
       }
     },
@@ -903,43 +1445,17 @@
       "metric_1_cosine_similarity": 0.7875,
       "metric_2_llm_judge": {
         "coverage_score": 90,
-        "missing_tests_score": 85,
+        "missing_tests_score": 80,
         "qa_quality_score": 95,
         "business_similarity": 100,
-        "final_score": 92.5,
+        "final_score": 91.25,
         "missing_scenarios": [
           "Vérification de la présence du bouton de rafraîchissement et du bouton de fermeture X dans l'onglet",
-          "Affichage du nombre total de demandes à droite de l'icône de priorité dans l'onglet",
-          "Vérification du lien 'Accéder à tous les processus RH' dans le widget"
+          "Affichage du lien 'Accéder à tous les processus RH' dans le widget",
+          "Vérification du positionnement par défaut sur la page d'accueil RH de proximité Espace gestionnaire"
         ],
-        "summary": "Les tests générés couvrent presque toutes les fonctionnalités et objectifs métier des tests gold, avec une excellente qualité rédactionnelle. Quelques scénarios spécifiques liés à l'UI de l'onglet et au widget sont absents. Globalement, la couverture est très satisfaisante pour une validation fonctionnelle.",
+        "summary": "Les tests générés couvrent presque toutes les fonctionnalités et objectifs métier des tests gold, avec une très bonne qualité rédactionnelle. Quelques scénarios secondaires sont absents, notamment des vérifications d'UI spécifiques. L'ensemble reste très proche des attentes métier et des standards QA.",
         "verdict": "GOOD"
-      }
-    },
-    {
-      "story_id": "NUXEPM-1842",
-      "user_story_title": "News - Capacité à mettre en forme le texte d'une News",
-      "priority": "P1-High",
-      "gold_tests_count": 1,
-      "generated_tests_count": 1,
-      "metric_1_cosine_similarity": 0.7834,
-      "metric_2_llm_judge": {
-        "coverage_score": 70,
-        "missing_tests_score": 60,
-        "qa_quality_score": 80,
-        "business_similarity": 85,
-        "final_score": 73.75,
-        "missing_scenarios": [
-          "Application des styles Titre 1/Titre 2",
-          "Application des formats barré, indice, exposant",
-          "Application de couleur de fond",
-          "Définition précise du tableau (colonnes, lignes, entête)",
-          "Vérification de l'affichage de la popin de consultation depuis le carrousel (collaborateur/manager)",
-          "Vérification de l'illustration (JPEG/JPG/PNG)",
-          "Sélection des dates de publication, société, établissement, acteurs"
-        ],
-        "summary": "Les tests générés couvrent les principales fonctionnalités de mise en forme, mais omettent plusieurs scénarios importants comme les styles avancés, la gestion du tableau, et la consultation depuis le carrousel. La qualité des tests est correcte et les objectifs métier sont globalement respectés. Des améliorations sont nécessaires pour atteindre une couverture complète.",
-        "verdict": "PARTIAL"
       }
     },
     {
@@ -950,16 +1466,15 @@
       "generated_tests_count": 2,
       "metric_1_cosine_similarity": 0.7163,
       "metric_2_llm_judge": {
-        "coverage_score": 90,
-        "missing_tests_score": 80,
+        "coverage_score": 95,
+        "missing_tests_score": 90,
         "qa_quality_score": 95,
         "business_similarity": 100,
-        "final_score": 91.25,
+        "final_score": 95.0,
         "missing_scenarios": [
-          "Vérification de l'affichage multi-line pour libellés longs dans les résultats",
-          "Vérification de la présence du bandeau noir, du logo et du menu lors de la consultation initiale"
+          "Vérification de l'affichage multi-line pour libellés longs dans les résultats"
         ],
-        "summary": "Les tests générés couvrent presque toutes les fonctionnalités et objectifs métier des tests gold, avec une excellente qualité rédactionnelle. Quelques scénarios mineurs, comme l'affichage multi-line et la vérification du bandeau complet, sont absents. La couverture reste très élevée et les tests sont utilisables en production.",
+        "summary": "Les tests générés couvrent presque toutes les fonctionnalités des tests gold, avec une excellente qualité et une parfaite adéquation aux objectifs métier. Un seul scénario mineur est manquant : l'affichage multi-line pour les libellés longs. Les tests sont clairs, structurés et facilement exécutables.",
         "verdict": "GOOD"
       }
     },
@@ -973,14 +1488,15 @@
       "metric_2_llm_judge": {
         "coverage_score": 95,
         "missing_tests_score": 90,
-        "qa_quality_score": 90,
+        "qa_quality_score": 95,
         "business_similarity": 100,
-        "final_score": 93.75,
+        "final_score": 95.0,
         "missing_scenarios": [
-          "Validation de l'affichage détaillé des items du menu (Accueil, Mes demandes, Mes documents, Mes préférences, Mes démarches, Accessibilité: non-conforme, A propos, Déconnexion)",
-          "Vérification de l'absence de l'IF de connexion 'Vous vous êtes connecté(e) avec succès !' et du positionnement par défaut sur la page SYD collaborateur"
+          "Validation explicite de l'affichage de l'item 'Accessibilité: non-conforme' dans le menu (libellé exact et état de conformité)",
+          "Validation de l'absence de l'IF de connexion 'Vous vous êtes connecté(e) avec succès !' lors de la connexion collaborateur",
+          "Validation du positionnement par défaut sur la page SYD collaborateur après connexion"
         ],
-        "summary": "Les tests générés couvrent presque toutes les fonctionnalités et objectifs métier des tests gold, avec une bonne qualité rédactionnelle et structurelle. Quelques scénarios de vérification fine du menu et de la connexion sont absents. Les tests sont globalement professionnels et alignés sur la user story.",
+        "summary": "Les tests générés couvrent presque toutes les fonctionnalités et objectifs métier des tests gold, avec une excellente qualité rédactionnelle et structure. Quelques scénarios spécifiques liés à l'affichage du menu et à la connexion ne sont pas explicitement couverts. L'ensemble reste très proche des attentes métier et des exigences QA.",
         "verdict": "GOOD"
       }
     },
@@ -998,7 +1514,7 @@
         "business_similarity": 100,
         "final_score": 98.75,
         "missing_scenarios": [],
-        "summary": "Les tests générés couvrent l'intégralité des scénarios métier et fonctionnels présents dans les tests gold. La qualité rédactionnelle et la structure sont très proches du niveau professionnel attendu. Aucun scénario important n'est manquant et les objectifs métier sont parfaitement alignés.",
+        "summary": "Les tests générés couvrent l'intégralité des scénarios métier et fonctionnels présents dans les tests gold. La qualité rédactionnelle et la structure sont très bonnes, avec des étapes claires et exécutables. Aucun scénario important n'est manquant, et les objectifs métier sont parfaitement alignés.",
         "verdict": "GOOD"
       }
     },
@@ -1019,7 +1535,7 @@
           "Traitement de la demande par le gestionnaire (attribution, traitement, passage au statut Répondue - en attente d'acceptation)",
           "Action d'accepter la réponse par le RH de proximité (confirmation de la fermeture de la demande)"
         ],
-        "summary": "Les tests générés couvrent la majorité des fonctionnalités et objectifs métier des tests gold, avec une excellente qualité rédactionnelle. Cependant, ils omettent le traitement détaillé par le gestionnaire et l'étape d'acceptation de la réponse par le RH de proximité. La couverture reste très élevée, mais quelques scénarios importants sont absents.",
+        "summary": "Les tests générés couvrent la majorité des fonctionnalités et objectifs métier des tests gold, avec une très bonne qualité rédactionnelle. Cependant, ils omettent le traitement détaillé par le gestionnaire et l'étape d'acceptation de la réponse par le RH de proximité. La couverture reste élevée, mais quelques scénarios importants sont absents.",
         "verdict": "GOOD"
       }
     },
@@ -1045,29 +1561,6 @@
       }
     },
     {
-      "story_id": "NUXEPM-2282",
-      "user_story_title": "Configuration de la prise en charge sociale dans le formulaire de changement de composition familiale",
-      "priority": "P1-High",
-      "gold_tests_count": 2,
-      "generated_tests_count": 6,
-      "metric_1_cosine_similarity": 0.3184,
-      "metric_2_llm_judge": {
-        "coverage_score": 40,
-        "missing_tests_score": 30,
-        "qa_quality_score": 85,
-        "business_similarity": 50,
-        "final_score": 51.25,
-        "missing_scenarios": [
-          "Envoi d'une demande d'ajout de membre sans prise en charge avec ou sans commentaire",
-          "Validation ou refus de la demande par le gestionnaire RH",
-          "Vérification du statut de la demande dans Mes demandes, SYD, dossier numérique et legacy",
-          "Interaction complète entre collaborateur et gestionnaire RH sur le processus métier"
-        ],
-        "summary": "Les tests générés couvrent bien la configuration technique du formulaire, mais omettent les scénarios métier d'ajout de membre et de gestion des demandes. La qualité des tests est bonne, mais la couverture fonctionnelle et la similarité métier restent limitées. Plusieurs scénarios clés de validation et refus de demande sont absents.",
-        "verdict": "BAD"
-      }
-    },
-    {
       "story_id": "NUXEPM-1885",
       "user_story_title": "News - Capacité à consulter une News dans le tableau des News (Auteur)",
       "priority": "P1-High",
@@ -1081,13 +1574,13 @@
         "business_similarity": 90,
         "final_score": 81.25,
         "missing_scenarios": [
-          "Connexion en tant qu'auteur et vérification de l'affichage du SYD gestionnaire",
-          "Création d'une News de type Annonce avec toutes les étapes (type, validité, dates, société, établissement, acteurs)",
+          "Connexion explicite en tant qu'auteur et vérification de l'affichage du SYD gestionnaire",
+          "Création d'une News de type Annonce avec toutes les étapes détaillées (type, validité, dates, société, établissement, acteurs)",
           "Création d'une Actualité multi-langues avec saisie en plusieurs langues, attachement d'image et document",
           "Vérification de l'absence de document attaché lors de la consultation",
           "Vérification de la présence du bouton 'Lire l'actualité' lors de la consultation d'une Actualité"
         ],
-        "summary": "Les tests générés couvrent la consultation d'une News et d'une Actualité, mais omettent les étapes de création et certains détails métier comme la gestion multi-langues et les documents attachés. La qualité des tests est bonne, mais plusieurs scénarios importants sont absents. Les objectifs métier sont globalement respectés, mais la couverture reste partielle.",
+        "summary": "Les tests générés couvrent la consultation d'une News et d'une Actualité, mais omettent les étapes de création et certains détails métier. La qualité des tests est bonne, mais plusieurs scénarios importants sont absents. Les objectifs métier sont globalement respectés, mais la couverture reste partielle.",
         "verdict": "GOOD"
       }
     },
@@ -1105,36 +1598,13 @@
         "business_similarity": 80,
         "final_score": 75.0,
         "missing_scenarios": [
-          "Vérification de la présence de l'annonce ou actualité sur le carrousel en tant que collaborateur ou manager après création",
-          "Vérification de la visibilité ou non d'une actualité sur le carrousel selon la date de publication (future/non atteinte)",
-          "Validation du message de succès lors de la création d'une annonce ou actualité",
-          "Ajout de document lors de la création d'une actualité"
+          "Vérification de la visibilité de l'annonce ou actualité sur le carrousel par un collaborateur ou manager après création",
+          "Gestion des dates de publication (date de début future, date de fin égale à date de début) et leur impact sur la visibilité dans le carrousel",
+          "Ajout de document lors de la création d'une actualité",
+          "Validation du message de succès lors de la sauvegarde d'une annonce ou actualité"
         ],
-        "summary": "Les tests générés couvrent la majorité des règles d'affichage de l'aperçu du carrousel, avec une bonne qualité rédactionnelle et une forte cohérence métier. Cependant, certains scénarios de validation post-création et de visibilité sur le carrousel selon le profil ou la date sont absents. La couverture fonctionnelle reste solide mais perfectible.",
+        "summary": "Les tests générés couvrent la majorité des règles d'affichage de l'aperçu du carrousel, avec une bonne qualité rédactionnelle et une forte cohérence métier. Cependant, certains scénarios de visibilité sur le carrousel selon les dates et rôles, ainsi que la gestion de documents et messages de succès, sont absents. La couverture reste satisfaisante mais perfectible.",
         "verdict": "PARTIAL"
-      }
-    },
-    {
-      "story_id": "NUXEPM-1784",
-      "user_story_title": "Mise en conformité RGAA : Navigation + Switch",
-      "priority": "P1-High",
-      "gold_tests_count": 2,
-      "generated_tests_count": 7,
-      "metric_1_cosine_similarity": 0.3585,
-      "metric_2_llm_judge": {
-        "coverage_score": 40,
-        "missing_tests_score": 40,
-        "qa_quality_score": 85,
-        "business_similarity": 50,
-        "final_score": 53.75,
-        "missing_scenarios": [
-          "Vérification de la présence d'un intitulé entre les balises <a> pour chaque lien (critère 6.2 RGAA)",
-          "Vérification de la présence et du fonctionnement d'un lien d'évitement ou d'accès rapide à la zone de contenu principal (critère 12.7 RGAA)",
-          "Vérification de la visibilité et de la prise de focus du lien d'accès rapide lors d'une tabulation",
-          "Vérification de la position et de l'ordre du lien d'évitement dans le code source"
-        ],
-        "summary": "Les tests générés sont bien structurés et couvrent la navigation, l'accès via le burger menu, et l'affichage du nom de rôle, mais ils omettent des scénarios RGAA essentiels sur les liens et l'accès rapide au contenu. La qualité rédactionnelle est élevée, mais la couverture fonctionnelle et métier reste partielle. Les objectifs métier sont partiellement alignés avec les gold tests.",
-        "verdict": "BAD"
       }
     },
     {
@@ -1151,7 +1621,1763 @@
         "business_similarity": 100,
         "final_score": 98.75,
         "missing_scenarios": [],
-        "summary": "Les tests générés couvrent entièrement les fonctionnalités et scénarios des tests gold, sans aucun scénario manquant. La qualité rédactionnelle est très bonne, avec des étapes claires et structurées. Les objectifs métier sont parfaitement alignés avec ceux des tests de référence.",
+        "summary": "Les tests générés couvrent entièrement les fonctionnalités et objectifs métier des tests gold, sans aucun scénario manquant. La qualité des tests est très élevée, avec des étapes claires et structurées. Quelques formulations pourraient être légèrement optimisées, mais l'ensemble est professionnel et complet.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-10156",
+      "user_story_title": "RH de proximité - création du widget population \"Mes collaborateurs\"",
+      "priority": "P1-High",
+      "gold_tests_count": 1,
+      "generated_tests_count": 1,
+      "metric_1_cosine_similarity": 0.6239,
+      "metric_2_llm_judge": {
+        "coverage_score": 40,
+        "missing_tests_score": 40,
+        "qa_quality_score": 70,
+        "business_similarity": 60,
+        "final_score": 52.5,
+        "missing_scenarios": [
+          "Vérification de l'affichage du bandeau 4YOU avec ses fonctions (Menu, Accueil, Accéder à mon espace, Rechercher, Aide, Se déconnecter)",
+          "Affichage du widget 'ACTIVITÉS' avec ses sous-widgets 'MES ACTIVITÉS' et 'ACTIVITÉS NON ATTRIBUÉES'",
+          "Affichage du widget 'PROCESSUS RH'"
+        ],
+        "summary": "Les tests générés couvrent partiellement la fonctionnalité principale du widget 'Mes collaborateurs', mais omettent plusieurs éléments clés de la page d'accueil. La qualité des tests est correcte, mais la couverture fonctionnelle et métier reste limitée. Plusieurs scénarios importants sont absents, notamment l'affichage des autres widgets et du bandeau 4YOU.",
+        "verdict": "BAD"
+      }
+    },
+    {
+      "story_id": "YOU-9098",
+      "user_story_title": "Menu de navigation",
+      "priority": null,
+      "gold_tests_count": 1,
+      "generated_tests_count": 11,
+      "metric_1_cosine_similarity": 0.5837,
+      "metric_2_llm_judge": {
+        "coverage_score": 80,
+        "missing_tests_score": 75,
+        "qa_quality_score": 90,
+        "business_similarity": 85,
+        "final_score": 82.5,
+        "missing_scenarios": [
+          "Validation de l'absence du nom, prénom et matricule de l'utilisateur dans le champ bénéficiaire du formulaire de question RH",
+          "Interdiction de création de question RH pour soi-même par Manager OnBehalf",
+          "Modification et vérification de la configuration du menu via le nouveau composant",
+          "Débranchement sur le legacy : Ressources humaines > Contrat > Affectation"
+        ],
+        "summary": "Les tests générés couvrent la majorité des fonctionnalités et objectifs métier des tests gold, avec une bonne qualité rédactionnelle et structurelle. Quelques scénarios spécifiques, notamment sur la configuration du menu et la gestion des bénéficiaires, sont absents. L'ensemble reste cohérent et exploitable pour la validation fonctionnelle.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-10291",
+      "user_story_title": "RGAA - Accueil",
+      "priority": "P1-High",
+      "gold_tests_count": 2,
+      "generated_tests_count": 6,
+      "metric_1_cosine_similarity": 0.5854,
+      "metric_2_llm_judge": {
+        "coverage_score": 95,
+        "missing_tests_score": 90,
+        "qa_quality_score": 90,
+        "business_similarity": 100,
+        "final_score": 93.75,
+        "missing_scenarios": [
+          "Vérification que les éléments sémantiques utilisés à des fins de présentation portent un attribut role=\"presentation\" (gold test RGAA_S1_ST41_CT1, étape 1, résultat attendu).",
+          "Vérification que le titre (<title>) contient le nom du site et le nom de la page, et que ce titre est unique (gold test RGAA_S1_ST34_CT1, étape 2, résultat attendu)."
+        ],
+        "summary": "Les tests générés couvrent presque tous les scénarios des tests gold, avec une très bonne qualité rédactionnelle et une forte cohérence métier. Quelques vérifications spécifiques sur l'attribut role=\"presentation\" et l'unicité/pertinence du titre sont absentes. Globalement, les tests sont utilisables et proches des attentes métier.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-10742",
+      "user_story_title": "RH de proximité - HRA4U - Widget population - Sourcing back-end - collaborateurs et Activités",
+      "priority": "P1-High",
+      "gold_tests_count": 1,
+      "generated_tests_count": 6,
+      "metric_1_cosine_similarity": 0.7925,
+      "metric_2_llm_judge": {
+        "coverage_score": 80,
+        "missing_tests_score": 70,
+        "qa_quality_score": 85,
+        "business_similarity": 90,
+        "final_score": 81.25,
+        "missing_scenarios": [
+          "Affichage détaillé de la structure de la page d'accueil (bandeau, menu, switch espace, aide, déconnexion)",
+          "Affichage du widget 'PROCESSUS RH'",
+          "Affichage du widget 'MES COLLABORATEURS'",
+          "Validation de la correspondance exacte des données selon la localisation sélectionnée",
+          "Affichage spécifique des widgets 'MES ACTIVITÉS' et 'ACTIVITÉS NON ATTRIBUÉES'",
+          "Tests pour PLD4U"
+        ],
+        "summary": "Les tests générés couvrent la majorité des fonctionnalités métier attendues, notamment la récupération et l'affichage des collaborateurs et activités. Cependant, certains scénarios spécifiques liés à la structure de la page d'accueil et à l'affichage de certains widgets sont absents. La qualité des tests est bonne et les objectifs métier sont globalement respectés.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-10500",
+      "user_story_title": "RGAA - Quick Win SPRINT 4 - Critère 11.1 et 11.9",
+      "priority": null,
+      "gold_tests_count": 2,
+      "generated_tests_count": 4,
+      "metric_1_cosine_similarity": 0.4976,
+      "metric_2_llm_judge": {
+        "coverage_score": 70,
+        "missing_tests_score": 60,
+        "qa_quality_score": 85,
+        "business_similarity": 80,
+        "final_score": 73.75,
+        "missing_scenarios": [
+          "Vérification de l'association correcte entre <label> et l'attribut for/id sur les champs de formulaire",
+          "Vérification du contenu invisible des étiquettes (aria-label, aria-labelledby, title) et leur pertinence",
+          "Vérification de la pertinence des étiquettes associées à chaque champ de formulaire",
+          "Vérification détaillée des intitulés de boutons selon tous les attributs possibles (value, alt, title, aria-label, aria-labelledby)",
+          "Vérification que l'intitulé invisible des boutons contient au moins l'intitulé visible"
+        ],
+        "summary": "Les tests générés couvrent les pages et composants principaux, ainsi que les attributs d'accessibilité de base. Cependant, plusieurs scénarios détaillés des gold tests sont absents, notamment sur la pertinence et l'association des étiquettes et intitulés. La qualité des tests générés est bonne, mais la couverture métier reste partielle.",
+        "verdict": "PARTIAL"
+      }
+    },
+    {
+      "story_id": "YOU-9266",
+      "user_story_title": "Accès sans rôle collaborateur - Mes questions RH - OnBehalf sans filtrage POPULATION non hired",
+      "priority": null,
+      "gold_tests_count": 3,
+      "generated_tests_count": 6,
+      "metric_1_cosine_similarity": 0.6739,
+      "metric_2_llm_judge": {
+        "coverage_score": 85,
+        "missing_tests_score": 80,
+        "qa_quality_score": 90,
+        "business_similarity": 95,
+        "final_score": 87.5,
+        "missing_scenarios": [
+          "Gestionnaire RH s'attribuant la demande depuis l'inbox",
+          "Gestionnaire RH marquant la demande comme répondue",
+          "Manager ou Gestionnaire acceptant la réponse via icône aide",
+          "Consultation du mail de notification par Manager ou Gestionnaire"
+        ],
+        "summary": "Les tests générés couvrent bien les fonctionnalités principales liées à l'accès et la création de questions RH par des acteurs OnBehalf et managers, avec une bonne qualité et une forte similarité métier. Cependant, ils omettent certains scénarios clés de gestion des demandes par le gestionnaire RH et la validation finale par le manager ou gestionnaire. La qualité des tests est professionnelle, mais quelques étapes importantes de workflow ne sont pas couvertes.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-9229",
+      "user_story_title": "Alerte - temps partiels arrivant à échéance (dans les 2 mois) hors lien legacy",
+      "priority": null,
+      "gold_tests_count": 1,
+      "generated_tests_count": 1,
+      "metric_1_cosine_similarity": 0.6858,
+      "metric_2_llm_judge": {
+        "coverage_score": 60,
+        "missing_tests_score": 50,
+        "qa_quality_score": 70,
+        "business_similarity": 80,
+        "final_score": 65.0,
+        "missing_scenarios": [
+          "Embaucher un collaborateur à Temps Partiel",
+          "Ajouter une date de fin prévue dans les 2 mois via interface spécifique",
+          "Attribuer la demande via le bouton 'M'attribuer la demande' et vérifier la vignette dans 'Mes activités'",
+          "Valider la demande en la marquant comme lue et vérifier la recherche personnalisée avec filtres"
+        ],
+        "summary": "Les tests générés couvrent partiellement les fonctionnalités principales des gold tests, notamment la visualisation des alertes. Cependant, plusieurs scénarios clés liés à la gestion et validation des demandes sont absents. La qualité des tests générés est correcte mais manque de détails précis pour une exécution complète. Les objectifs métier sont globalement respectés, centrés sur la gestion des alertes temps partiels.",
+        "verdict": "PARTIAL"
+      }
+    },
+    {
+      "story_id": "YOU-9279",
+      "user_story_title": "GTA - Démarche Ma journée - Pointages en attente de validation chez le collaborateur - Mes pointages (Section Tableau)",
+      "priority": null,
+      "gold_tests_count": 1,
+      "generated_tests_count": 2,
+      "metric_1_cosine_similarity": 0.6461,
+      "metric_2_llm_judge": {
+        "coverage_score": 90,
+        "missing_tests_score": 80,
+        "qa_quality_score": 85,
+        "business_similarity": 95,
+        "final_score": 87.5,
+        "missing_scenarios": [
+          "Détail du pointage affiché en pop-up dans Mes pointages",
+          "Renvoi vers l'onglet 'En cours' de 'Mes régularisations de pointage' via bouton",
+          "Affichage de l'info-bulle avec l'heure du pointage au survol du triangle hachuré",
+          "Consultation de la légende complète via l'icône 'i' (vérification de toutes les catégories affichées)"
+        ],
+        "summary": "Les tests générés couvrent la majorité des fonctionnalités et objectifs métier des tests gold, avec une bonne qualité rédactionnelle. Quelques scénarios détaillés, notamment sur les interactions et la légende, sont absents. La couverture reste élevée, mais une amélioration sur les cas spécifiques est nécessaire.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-9281",
+      "user_story_title": "GTA - Widget de pointage - afficher les pointages en attente de validation chez le collaborateur",
+      "priority": "P1-High",
+      "gold_tests_count": 1,
+      "generated_tests_count": 2,
+      "metric_1_cosine_similarity": 0.6251,
+      "metric_2_llm_judge": {
+        "coverage_score": 95,
+        "missing_tests_score": 90,
+        "qa_quality_score": 90,
+        "business_similarity": 100,
+        "final_score": 93.75,
+        "missing_scenarios": [
+          "Ajout d'un pointage via la démarche 'Mes régularisations de pointage' avec validation des étapes d'envoi et confirmation",
+          "Validation de la coloration des cadres et activation des boutons lors de l'ajout d'un pointage",
+          "Affichage de la pop-up de confirmation d'envoi de régularisation"
+        ],
+        "summary": "Les tests générés couvrent presque toutes les fonctionnalités métier et l'affichage attendu, avec une très bonne qualité et une forte similarité business. Quelques scénarios détaillés liés à l'ajout et à la confirmation d'un pointage manquent. L'ensemble reste très proche des tests gold, mais pourrait être complété pour une couverture parfaite.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-9282",
+      "user_story_title": "GTA - Démarche Journée - pointages en attente de validation d'un collaborateur chez le manager - Vérification",
+      "priority": "P1-High",
+      "gold_tests_count": 1,
+      "generated_tests_count": 3,
+      "metric_1_cosine_similarity": 0.6875,
+      "metric_2_llm_judge": {
+        "coverage_score": 60,
+        "missing_tests_score": 50,
+        "qa_quality_score": 70,
+        "business_similarity": 80,
+        "final_score": 65.0,
+        "missing_scenarios": [
+          "Ajout d'un pointage par le collaborateur via la démarche 'Mes régularisations de pointage'",
+          "Accès par le manager à la démarche 'Je consulte les compteurs de mon équipe' et consultation de la liste des collaborateurs",
+          "Consultation détaillée de la page 'Journée' du collaborateur par le manager avec navigation entre collaborateurs et jours",
+          "Déplier les sections 'Ses pointages' et 'Ses références horaires' avec interaction sur les boutons modifier/supprimer",
+          "Ajout d'un pointage par le manager via la pop-up dédiée"
+        ],
+        "summary": "Les tests générés couvrent partiellement les fonctionnalités principales liées à la visualisation des pointages en attente et réels, notamment côté collaborateur et manager. Cependant, plusieurs scénarios clés liés à l'ajout de pointages, la navigation détaillée et les interactions spécifiques sont absents. La qualité des tests est correcte mais manque de détails pour une exécution complète. Les objectifs métier sont globalement respectés mais avec une portée plus limitée.",
+        "verdict": "PARTIAL"
+      }
+    },
+    {
+      "story_id": "YOU-9316",
+      "user_story_title": "GTA - Démarche Ma journée - Pointages en attente de validation chez le collaborateur - Mes Références Horaires (Timeline)",
+      "priority": "P1-High",
+      "gold_tests_count": 1,
+      "generated_tests_count": 2,
+      "metric_1_cosine_similarity": 0.6518,
+      "metric_2_llm_judge": {
+        "coverage_score": 90,
+        "missing_tests_score": 85,
+        "qa_quality_score": 90,
+        "business_similarity": 95,
+        "final_score": 90.0,
+        "missing_scenarios": [
+          "Consultation de la section Mes pointages avec détails (date, heure, sens, nature, bouton loupe, bouton Aller à mes régularisations de pointage)",
+          "Consultation du contenu complet de la légende de l'icone d'information 'i' avec tous les éléments listés"
+        ],
+        "summary": "Les tests générés couvrent bien la majorité des fonctionnalités clés des tests gold, notamment l'affichage des triangles hachurés et la légende associée. Cependant, ils omettent certains scénarios importants comme la consultation détaillée de la section Mes pointages et la vérification complète de la légende. La qualité des tests générés est bonne, clairs et bien structurés, et les objectifs métier sont très proches de ceux des tests humains.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-9317",
+      "user_story_title": "GTA CH - Démarche Ma synthèse de la journée - Pointages en attente de validation chez le collaborateur",
+      "priority": "P1-High",
+      "gold_tests_count": 1,
+      "generated_tests_count": 1,
+      "metric_1_cosine_similarity": 0.5799,
+      "metric_2_llm_judge": {
+        "coverage_score": 80,
+        "missing_tests_score": 70,
+        "qa_quality_score": 85,
+        "business_similarity": 90,
+        "final_score": 81.25,
+        "missing_scenarios": [
+          "Connexion à l'application 4YOU avec profil GTA activé et soumis au pointage",
+          "Envoi d'une demande de pointage de type 'Entrée' (création d'un pointage en attente)",
+          "Consultation du détail de pointage via pop-up et bouton loupe",
+          "Consultation du bouton 'Aller à mes régularisations de pointage'",
+          "Affichage de l'onglet En cours de la démarche 'Mes régularisations de pointage'",
+          "Consultation de la position de l'icone 'i' par rapport à la Timeline",
+          "Affichage de l'info-bulle avec l'heure du pointage",
+          "Consultation du contenu détaillé de la légende de l'icone 'i' (toutes valeurs possibles)"
+        ],
+        "summary": "Les tests générés couvrent les principaux objectifs métier et la majorité des fonctionnalités attendues, notamment l'affichage des pointages en attente dans les deux sections. Cependant, plusieurs scénarios détaillés et interactions spécifiques sont absents, notamment la création du pointage, la légende complète et certains contrôles d'interface. La qualité des tests est bonne, mais une couverture plus exhaustive est nécessaire pour atteindre le niveau des tests gold.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-9232",
+      "user_story_title": "Alerte - contrats arrivant à échéance (dans les 2 mois) hors lien legacy",
+      "priority": "P2-Medium",
+      "gold_tests_count": 2,
+      "generated_tests_count": 3,
+      "metric_1_cosine_similarity": 0.7027,
+      "metric_2_llm_judge": {
+        "coverage_score": 70,
+        "missing_tests_score": 60,
+        "qa_quality_score": 80,
+        "business_similarity": 90,
+        "final_score": 75.0,
+        "missing_scenarios": [
+          "Consultation détaillée de l'alerte chez le gestionnaire RH (mode plié et déplié)",
+          "Attribution de la demande par le gestionnaire RH via l'interface",
+          "Validation de la demande par le gestionnaire RH avec filtres et recherche personnalisée"
+        ],
+        "summary": "Les tests générés couvrent bien la génération d'alertes pour les contrats arrivant à échéance et l'exclusion des contrats échus, mais manquent des scénarios précis d'interaction utilisateur et de validation via l'interface. La qualité des tests est bonne, clairs et structurés, avec un bon alignement sur les objectifs métier. Cependant, certains scénarios clés de consultation et de gestion des alertes sont absents.",
+        "verdict": "PARTIAL"
+      }
+    },
+    {
+      "story_id": "YOU-9985",
+      "user_story_title": "RGAA - Bandeau 4YOU et Menu Principal (partie 1)",
+      "priority": "P1-High",
+      "gold_tests_count": 4,
+      "generated_tests_count": 8,
+      "metric_1_cosine_similarity": 0.3485,
+      "metric_2_llm_judge": {
+        "coverage_score": 95,
+        "missing_tests_score": 90,
+        "qa_quality_score": 92,
+        "business_similarity": 98,
+        "final_score": 93.75,
+        "missing_scenarios": [
+          "Dans le test gold 12.7, la vérification de la position du lien d'évitement ou d'accès rapide dans le code source et sa visibilité lors de la tabulation n'est pas explicitement couverte dans les generated tests.",
+          "Dans le test gold 12.6, la vérification détaillée des rôles WAI-ARIA de type landmark et des titres de hiérarchie pour chaque zone n'est pas explicitement mentionnée dans les generated tests."
+        ],
+        "summary": "Les tests générés couvrent presque tous les scénarios des tests gold, avec une très bonne qualité rédactionnelle et une forte similarité métier. Quelques vérifications techniques précises sur l'accessibilité (position du lien, rôles WAI-ARIA) sont absentes. Globalement, les generated tests sont très proches des attentes professionnelles.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "NUXEPM-1344",
+      "user_story_title": "RH de proximité - création du nouvel acteur \"RH de proximité\" et de sa page d'accueil",
+      "priority": "P1-High",
+      "gold_tests_count": 1,
+      "generated_tests_count": 6,
+      "metric_1_cosine_similarity": 0.7759,
+      "metric_2_llm_judge": {
+        "coverage_score": 90,
+        "missing_tests_score": 80,
+        "qa_quality_score": 95,
+        "business_similarity": 95,
+        "final_score": 90.0,
+        "missing_scenarios": [
+          "Vérification de l'absence des liens vers HR Access et Pléiades dans le menu burger",
+          "Validation de la mise à jour des documents d'un collaborateur par le RH de proximité"
+        ],
+        "summary": "Les tests générés couvrent la majorité des fonctionnalités et objectifs métier des tests gold, avec une très bonne qualité rédactionnelle et structurelle. Quelques scénarios spécifiques, notamment sur l'accès aux applicatifs externes et la gestion des documents, sont absents. Globalement, la couverture est élevée et les tests sont utilisables en production.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "NUXEPM-1276",
+      "user_story_title": "Modification du sourcing HRA et du libellé 4YOU de la notion de personne \"à charge\"",
+      "priority": "P1-High",
+      "gold_tests_count": 1,
+      "generated_tests_count": 1,
+      "metric_1_cosine_similarity": 0.7351,
+      "metric_2_llm_judge": {
+        "coverage_score": 90,
+        "missing_tests_score": 80,
+        "qa_quality_score": 85,
+        "business_similarity": 95,
+        "final_score": 87.5,
+        "missing_scenarios": [
+          "Créer une demande de changement de composition familiale et quitter sans sauvegarde"
+        ],
+        "summary": "Les tests générés couvrent bien les modifications du mapping et des libellés attendues, avec une bonne qualité et une forte similarité métier. Cependant, ils ne couvrent pas certains scénarios de gestion de la demande comme la création et la sortie sans sauvegarde. Quelques améliorations dans la clarté des étapes pourraient être envisagées.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-10070",
+      "user_story_title": "RGAA - Bandeau 4YOU partie 2 : Recherche, aide et déconnexion",
+      "priority": "P1-High",
+      "gold_tests_count": 4,
+      "generated_tests_count": 8,
+      "metric_1_cosine_similarity": 0.5124,
+      "metric_2_llm_judge": {
+        "coverage_score": 85,
+        "missing_tests_score": 70,
+        "qa_quality_score": 90,
+        "business_similarity": 80,
+        "final_score": 81.25,
+        "missing_scenarios": [
+          "Vérification de la structure des balises HTML (<header>, <nav>, <main>, <footer>) pour le critère 9.2.",
+          "Désactivation des styles CSS pour vérifier la lisibilité et l'ordre des contenus (critères 10.2 et 10.3).",
+          "Validation des mécanismes permettant de contrôler les limites de temps pour les rafraîchissements, redirections et sessions (critère 13.1)."
+        ],
+        "summary": "Les tests générés couvrent une grande partie des fonctionnalités RGAA, notamment l'accessibilité de l'aide et de la déconnexion. Cependant, certains scénarios importants liés à la structure HTML, la désactivation des styles CSS, et le contrôle des limites de temps sont absents. La qualité des tests est élevée, mais une couverture complète des critères RGAA reste à améliorer.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-10074",
+      "user_story_title": "RGAA - Mes rapports (Faire OFFREPRV)",
+      "priority": "P1-High",
+      "gold_tests_count": 3,
+      "generated_tests_count": 6,
+      "metric_1_cosine_similarity": 0.4286,
+      "metric_2_llm_judge": {
+        "coverage_score": 95,
+        "missing_tests_score": 90,
+        "qa_quality_score": 85,
+        "business_similarity": 100,
+        "final_score": 92.5,
+        "missing_scenarios": [
+          "Utilisation d'un outil spécifique (Color Contrast Analyzer) pour vérifier le ratio de contraste",
+          "Vérification de la lecture d'écran (NVDA) pour l'ordre de lecture des cellules du tableau"
+        ],
+        "summary": "Les tests générés couvrent presque tous les scénarios des gold tests et sont alignés sur les objectifs métier. La qualité est bonne, mais il manque des vérifications précises avec des outils spécifiques et la validation de l'ordre de lecture par NVDA. Les tests sont clairs et structurés, mais pourraient être plus détaillés sur certains points techniques.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-10175",
+      "user_story_title": "MultiContrat - Démarche Le planning de mes collègues",
+      "priority": "P1-High",
+      "gold_tests_count": 4,
+      "generated_tests_count": 2,
+      "metric_1_cosine_similarity": 0.677,
+      "metric_2_llm_judge": {
+        "coverage_score": 70,
+        "missing_tests_score": 60,
+        "qa_quality_score": 75,
+        "business_similarity": 80,
+        "final_score": 71.25,
+        "missing_scenarios": [
+          "Validation de l'affichage des jours travaillés et non travaillés pour des demi-journées sur deux contrats différents.",
+          "Validation de l'affichage des absences sur une période couvrant deux contrats différents.",
+          "Validation de l'affichage des jours travaillés et non travaillés pour un seul contrat."
+        ],
+        "summary": "Les tests générés couvrent une partie significative des fonctionnalités des tests gold, mais certains scénarios spécifiques sont manquants. La qualité des tests est correcte, mais pourrait être améliorée pour une meilleure clarté et exhaustivité. Les objectifs métier sont globalement respectés.",
+        "verdict": "PARTIAL"
+      }
+    },
+    {
+      "story_id": "NUXEPM-1695",
+      "user_story_title": "PLD - RH de proximité - 360 HRLocal - Profil : Débranchement et utilisation du DN du collaborateur (back)",
+      "priority": "P1-High",
+      "gold_tests_count": 8,
+      "generated_tests_count": 5,
+      "metric_1_cosine_similarity": 0.605,
+      "metric_2_llm_judge": {
+        "coverage_score": 85,
+        "missing_tests_score": 80,
+        "qa_quality_score": 90,
+        "business_similarity": 95,
+        "final_score": 87.5,
+        "missing_scenarios": [
+          "Ajouter un type de document par un RH de proximité",
+          "Modifier un type de document par un RH de proximité",
+          "Paramétrer la confidentialité d'un RH de proximité sur un type de document avec tous les droits"
+        ],
+        "summary": "Les tests générés couvrent bien les fonctionnalités principales d'accès et de confidentialité du dossier numérique, avec une bonne qualité et une forte similarité métier. Cependant, ils omettent certains scénarios importants liés à l'ajout et la modification de documents ainsi qu'au paramétrage détaillé de la confidentialité. Globalement, les tests sont clairs, cohérents et exploitables.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "NUXEPM-1752",
+      "user_story_title": "News - Création de l'Espace Administrateur de News avec la possibilité de supprimer en masse.",
+      "priority": "P1-High",
+      "gold_tests_count": 4,
+      "generated_tests_count": 6,
+      "metric_1_cosine_similarity": 0.7198,
+      "metric_2_llm_judge": {
+        "coverage_score": 80,
+        "missing_tests_score": 70,
+        "qa_quality_score": 90,
+        "business_similarity": 85,
+        "final_score": 81.25,
+        "missing_scenarios": [
+          "Création d'une News par l'Auteur avec validation des champs, pièces jointes et messages d'erreur",
+          "Affichage détaillé des informations de publication et de confidentialité lors de la consultation d'une News",
+          "Affichage des onglets (Toutes, Annonces, Actualités) et des éléments de pagination dans le tableau des News",
+          "Affichage des messages de confirmation spécifiques lors de la suppression (texte exact, nombre de News supprimées)",
+          "Gestion des erreurs lors de l'ajout de fichiers non autorisés (PDF pour illustration)",
+          "Consultation d'une Actualité avec bouton 'Lire le document'"
+        ],
+        "summary": "Les tests générés couvrent la majorité des fonctionnalités métier attendues, notamment la consultation et la suppression (unitaire et massive) des News par l'administrateur. Cependant, certains scénarios détaillés liés à la création, à la gestion des pièces jointes, à l'affichage des informations de confidentialité et à la navigation dans le tableau des News sont absents. La qualité des tests générés est élevée, mais une couverture complète des cas métier reste à améliorer.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "NUXEPM-1884",
+      "user_story_title": "News - Prévisualisation du document de l'actualité",
+      "priority": "P1-High",
+      "gold_tests_count": 3,
+      "generated_tests_count": 6,
+      "metric_1_cosine_similarity": 0.6281,
+      "metric_2_llm_judge": {
+        "coverage_score": 90,
+        "missing_tests_score": 85,
+        "qa_quality_score": 95,
+        "business_similarity": 100,
+        "final_score": 92.5,
+        "missing_scenarios": [
+          "Tests spécifiques sur les rôles utilisateurs (Auteur, Gestionnaire, Manager, Collaborateur) et leurs droits d'accès aux actualités",
+          "Tests sur la création d'actualité avec validation des types de fichiers acceptés",
+          "Tests sur l'affichage ou non des actualités selon le profil utilisateur",
+          "Tests sur le téléchargement effectif du document depuis la popin"
+        ],
+        "summary": "Les tests générés couvrent bien les fonctionnalités principales de prévisualisation et d'accessibilité des documents dans la popin. Ils sont clairs, bien structurés et alignés avec les objectifs métier de la user story. Cependant, ils omettent certains scénarios importants liés aux rôles utilisateurs et à la gestion des droits d'accès, ainsi que la validation des types de fichiers et le téléchargement des documents. Une extension des tests sur ces aspects renforcerait la couverture globale.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "NUXEPM-2284",
+      "user_story_title": "PPBACKLOG-7652 - Enveloppe Macro - Affichage du temps de travail",
+      "priority": "P1-High",
+      "gold_tests_count": 2,
+      "generated_tests_count": 4,
+      "metric_1_cosine_similarity": 0.6859,
+      "metric_2_llm_judge": {
+        "coverage_score": 100,
+        "missing_tests_score": 100,
+        "qa_quality_score": 90,
+        "business_similarity": 100,
+        "final_score": 97.5,
+        "missing_scenarios": [],
+        "summary": "Les tests générés couvrent l'ensemble des fonctionnalités et scénarios présents dans les tests gold, sans aucun scénario manquant. La qualité des tests est très bonne, avec une structure claire et des résultats attendus précis. Les objectifs métier sont parfaitement alignés avec ceux des tests de référence.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "NUXEPM-1736",
+      "user_story_title": "News - Visualisation du bandeau d'annonces par manager",
+      "priority": "P1-High",
+      "gold_tests_count": 1,
+      "generated_tests_count": 3,
+      "metric_1_cosine_similarity": 0.5755,
+      "metric_2_llm_judge": {
+        "coverage_score": 90,
+        "missing_tests_score": 85,
+        "qa_quality_score": 80,
+        "business_similarity": 95,
+        "final_score": 87.5,
+        "missing_scenarios": [
+          "Création d'une News avec validation des formats de fichiers (PDF refusé, JPG accepté)",
+          "Navigation précise dans le carrousel (flèches gauche/droite, points horizontaux, navigation paquets)",
+          "Vérification du message de confirmation de création de News"
+        ],
+        "summary": "Les tests générés couvrent bien les fonctionnalités principales de visualisation du bandeau d'annonces pour les managers et collaborateurs. Cependant, ils omettent certains scénarios détaillés de création et validation des News présents dans les tests gold. La qualité des tests générés est bonne mais pourrait être améliorée en précisant davantage les étapes et validations. Les objectifs métier sont bien respectés.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "NUXEPM-1733",
+      "user_story_title": "News - Visualisation du bandeau d'annonces par collaborateur",
+      "priority": "P1-High",
+      "gold_tests_count": 1,
+      "generated_tests_count": 6,
+      "metric_1_cosine_similarity": 0.538,
+      "metric_2_llm_judge": {
+        "coverage_score": 80,
+        "missing_tests_score": 70,
+        "qa_quality_score": 85,
+        "business_similarity": 90,
+        "final_score": 81.25,
+        "missing_scenarios": [
+          "Création d'une News par un auteur avec validation des champs et erreurs",
+          "Navigation précise dans le carrousel (flèches gauche/droite, haut/bas)",
+          "Affichage du nombre maximum de News (16) et des points de navigation"
+        ],
+        "summary": "Les tests générés couvrent bien les fonctionnalités principales de visualisation et filtrage des annonces pour le collaborateur. Cependant, ils omettent certains scénarios détaillés comme la création de News et la navigation précise dans le carrousel. La qualité des tests générés est bonne, avec des étapes claires et exécutables. Les objectifs métier sont globalement respectés, centrés sur l'affichage des annonces pertinentes.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "NUXEPM-1730",
+      "user_story_title": "News - Capacité à visualiser le nombre de news du tableau - M4",
+      "priority": "P1-High",
+      "gold_tests_count": 1,
+      "generated_tests_count": 2,
+      "metric_1_cosine_similarity": 0.7862,
+      "metric_2_llm_judge": {
+        "coverage_score": 100,
+        "missing_tests_score": 100,
+        "qa_quality_score": 95,
+        "business_similarity": 100,
+        "final_score": 98.75,
+        "missing_scenarios": [],
+        "summary": "Les tests générés couvrent l'intégralité des fonctionnalités et scénarios des tests gold, sans aucun scénario manquant. La qualité rédactionnelle est très bonne, avec des étapes claires et structurées. Les objectifs métier sont parfaitement alignés avec ceux des tests de référence.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "NUXEPM-1728",
+      "user_story_title": "News - Capacité à consulter un ensemble de NEWS",
+      "priority": "P1-High",
+      "gold_tests_count": 1,
+      "generated_tests_count": 4,
+      "metric_1_cosine_similarity": 0.8111,
+      "metric_2_llm_judge": {
+        "coverage_score": 95,
+        "missing_tests_score": 90,
+        "qa_quality_score": 85,
+        "business_similarity": 100,
+        "final_score": 92.5,
+        "missing_scenarios": [
+          "Affichage de la zone de recherche avec une loupe",
+          "Affichage du nombre total des news en cours de publication en vert",
+          "Affichage du nombre des annonces et actualités en cours de publication en vert",
+          "Affichage du titre 'toutes' avec le nombre total des news à droite",
+          "Affichage des flèches pour naviguer entre les pages du tableau"
+        ],
+        "summary": "Les tests générés couvrent presque toutes les fonctionnalités des tests gold, avec une très bonne correspondance des objectifs métier. Quelques détails d'affichage (recherche, indicateurs de publication, navigation) sont absents. La qualité des tests est professionnelle, mais certains scénarios précis manquent pour atteindre la perfection.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "NUXEPM-2285",
+      "user_story_title": "PPBACKLOG-7651 - Affichage du libellé emploi bulletin",
+      "priority": "P1-High",
+      "gold_tests_count": 2,
+      "generated_tests_count": 2,
+      "metric_1_cosine_similarity": 0.8454,
+      "metric_2_llm_judge": {
+        "coverage_score": 70,
+        "missing_tests_score": 60,
+        "qa_quality_score": 75,
+        "business_similarity": 85,
+        "final_score": 72.5,
+        "missing_scenarios": [
+          "Configuration de l'affichage du libellé emploi bulletin par un administrateur dans Legacy",
+          "Connexion avec un collaborateur et vérification de l'absence du message de connexion",
+          "Consultation détaillée de l'en-tête du SYD collaborateur avec affichage spécifique du libellé emploi bulletin"
+        ],
+        "summary": "Les tests générés couvrent partiellement les fonctionnalités principales, notamment l'affichage du libellé emploi bulletin dans le profil collaborateur et le planning d'équipe. Cependant, ils omettent des scénarios clés liés à la configuration par l'administrateur et à la consultation du SYD collaborateur. La qualité des tests est correcte mais manque de détails et de précision dans les préconditions et validations. Les objectifs métier sont globalement respectés, avec un focus sur l'affichage du libellé.",
+        "verdict": "PARTIAL"
+      }
+    },
+    {
+      "story_id": "NUXEPM-1843",
+      "user_story_title": "ST13_RH de proximité : utilisation de toutes les fonctionnalités d'un RRH pour un user externe (anc. Poser une question RH pour un user externe)",
+      "priority": "P2-Medium",
+      "gold_tests_count": 1,
+      "generated_tests_count": 4,
+      "metric_1_cosine_similarity": 0.7326,
+      "metric_2_llm_judge": {
+        "coverage_score": 70,
+        "missing_tests_score": 60,
+        "qa_quality_score": 85,
+        "business_similarity": 90,
+        "final_score": 76.25,
+        "missing_scenarios": [
+          "Répondre à la Question RH du RRH par le gestionnaire RH",
+          "Consulter le mail reçu au cours du traitement de la question RH",
+          "Accepter la réponse du gestionnaire RH",
+          "Consulter le mail reçu suite à l'acceptation de la question RH",
+          "Vérifier le statut 'Acceptée' de la QRH depuis l'historique",
+          "Corriger une adresse d'un collaborateur depuis son profil collaborateur",
+          "Consulter l'Inbox RH de proximité avec une demande en cours"
+        ],
+        "summary": "Les tests générés couvrent bien les fonctionnalités principales d'accès et navigation pour un RRH de proximité non collaborateur, ainsi que l'accès à la démarche Poser une question RH. Cependant, plusieurs scénarios importants liés au traitement des questions RH, aux notifications par mail, à la correction d'adresse et à la consultation de l'Inbox sont absents. La qualité des tests générés est bonne, avec des étapes claires et structurées, et les objectifs métier sont globalement respectés.",
+        "verdict": "PARTIAL"
+      }
+    },
+    {
+      "story_id": "NUXEPM-1737",
+      "user_story_title": "News - Visualisation du bandeau d'annonces par gestionnaire",
+      "priority": "P1-High",
+      "gold_tests_count": 1,
+      "generated_tests_count": 2,
+      "metric_1_cosine_similarity": 0.5879,
+      "metric_2_llm_judge": {
+        "coverage_score": 80,
+        "missing_tests_score": 70,
+        "qa_quality_score": 85,
+        "business_similarity": 90,
+        "final_score": 81.25,
+        "missing_scenarios": [
+          "Création détaillée d'une News par un auteur avec validation des types de fichiers et dates",
+          "Navigation précise dans le carrousel (clic sur flèches gauche/droite, affichage des points horizontaux et flèche vers le haut)",
+          "Affichage limité à un maximum de 16 news dans le carrousel"
+        ],
+        "summary": "Les tests générés couvrent bien la visualisation du bandeau d'annonces pour gestionnaire et collaborateur, avec une bonne qualité et une forte similarité métier. Cependant, ils omettent certains scénarios clés comme la création détaillée des news et la navigation précise dans le carrousel. La couverture est donc partielle mais les tests restent exploitables et pertinents.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "NUXEPM-744",
+      "user_story_title": "Inbox gestionnaire : Cohérence des filtres sur les statuts des Demandes traitées & à traiter",
+      "priority": "P2-Medium",
+      "gold_tests_count": 1,
+      "generated_tests_count": 1,
+      "metric_1_cosine_similarity": 0.6543,
+      "metric_2_llm_judge": {
+        "coverage_score": 70,
+        "missing_tests_score": 60,
+        "qa_quality_score": 85,
+        "business_similarity": 80,
+        "final_score": 73.75,
+        "missing_scenarios": [
+          "Création d'une recherche personnalisée avec filtre sur les statuts",
+          "Consultation et modification des filtres via le bouton 'Modifier les filtres'",
+          "Gestion des filtres inactifs et annulation des modifications"
+        ],
+        "summary": "Les tests générés couvrent bien la sélection et la gestion des statuts des demandes à traiter, mais ne couvrent pas les aspects liés à la création et modification des recherches personnalisées. La qualité des tests est bonne, avec des étapes claires et exécutables. Les objectifs métier sont globalement respectés, mais certains scénarios clés manquent pour une couverture complète.",
+        "verdict": "PARTIAL"
+      }
+    },
+    {
+      "story_id": "NUXEPM-1886",
+      "user_story_title": "News - Capacité à modifier et dupliquer une NEWS (Complément)",
+      "priority": "P1-High",
+      "gold_tests_count": 3,
+      "generated_tests_count": 2,
+      "metric_1_cosine_similarity": 0.6883,
+      "metric_2_llm_judge": {
+        "coverage_score": 30,
+        "missing_tests_score": 30,
+        "qa_quality_score": 80,
+        "business_similarity": 90,
+        "final_score": 57.5,
+        "missing_scenarios": [
+          "Modifier la validité d'une annonce dont la date de jour dans la période de publication",
+          "Modifier une annonce avec la date début de publication dans le futur",
+          "Dupliquer une annonce avec saisie des dates et confidentialité"
+        ],
+        "summary": "Les tests générés couvrent partiellement la fonctionnalité principale de modification du titre de la section lors de l'édition ou duplication d'une News. Cependant, ils omettent des scénarios importants liés à la modification des dates de publication, validité et autres champs. La qualité des tests générés est bonne, clairs et exécutables, et les objectifs métier sont bien respectés.",
+        "verdict": "BAD"
+      }
+    },
+    {
+      "story_id": "NUXEPM-2268",
+      "user_story_title": "Absences : définition workflow manager - EM",
+      "priority": "P2-Medium",
+      "gold_tests_count": 4,
+      "generated_tests_count": 5,
+      "metric_1_cosine_similarity": 0.6786,
+      "metric_2_llm_judge": {
+        "coverage_score": 90,
+        "missing_tests_score": 85,
+        "qa_quality_score": 85,
+        "business_similarity": 95,
+        "final_score": 88.75,
+        "missing_scenarios": [
+          "Vérification par l'admin sur le legacy de l'affichage ou non du congé validé/refusé",
+          "Création de demande de congé via sélection directe d'une date de calendrier",
+          "Vérification du solde de congé du collaborateur en précondition"
+        ],
+        "summary": "Les tests générés couvrent la majorité des scénarios métier et fonctionnels des tests gold, avec une bonne qualité rédactionnelle et une forte similarité business. Quelques scénarios spécifiques, comme la vérification sur le legacy par l'admin et la création via calendrier, sont absents. La structure et la clarté des tests sont satisfaisantes, mais une couverture complète nécessiterait l'ajout des scénarios manquants.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-13303",
+      "user_story_title": "[FRONT] Popin “Détails de la demande” depuis l'historique Partie1",
+      "priority": "P1-High",
+      "gold_tests_count": 4,
+      "generated_tests_count": 10,
+      "metric_1_cosine_similarity": 0.6926,
+      "metric_2_llm_judge": {
+        "coverage_score": 95,
+        "missing_tests_score": 90,
+        "qa_quality_score": 90,
+        "business_similarity": 100,
+        "final_score": 93.75,
+        "missing_scenarios": [
+          "Fermeture de la popin via le footer (bouton Fermer) explicitement testée",
+          "Affichage du tableau Mes demandes avec toutes les colonnes attendues (Motif, Type de demande, Statut, Période, Durée, Demandée le, Actions)",
+          "Affichage du commentaire et du lien justificatif simultanément dans le bloc droit (cas combiné)"
+        ],
+        "summary": "Les tests générés couvrent presque tous les scénarios des tests gold, avec une très bonne qualité et une parfaite adéquation aux objectifs métier. Quelques détails spécifiques, comme la fermeture via le footer et l'affichage combiné commentaire/justificatif, sont absents. La structure et la clarté des tests sont professionnelles.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "NUXEPM-2308",
+      "user_story_title": "Absences : définition workflow - EXA",
+      "priority": "P2-Medium",
+      "gold_tests_count": 3,
+      "generated_tests_count": 5,
+      "metric_1_cosine_similarity": 0.6402,
+      "metric_2_llm_judge": {
+        "coverage_score": 95,
+        "missing_tests_score": 90,
+        "qa_quality_score": 95,
+        "business_similarity": 100,
+        "final_score": 95.0,
+        "missing_scenarios": [
+          "Refus d'une demande de congé exceptionnel par le gestionnaire et vérification du mail de refus",
+          "Vérification du statut Refusée sur le planning collaborateur après refus"
+        ],
+        "summary": "Les tests générés couvrent presque toutes les fonctionnalités et objectifs métier des tests gold, avec une excellente qualité rédactionnelle et structure. Seuls les scénarios de refus de demande et la vérification du statut refusé sont absents. La couverture est très élevée, mais il manque quelques cas importants pour atteindre la perfection.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-13138",
+      "user_story_title": "[Front] Implémentation de la popin \"Créer une demande\" pour le type Absence",
+      "priority": "P1-High",
+      "gold_tests_count": 4,
+      "generated_tests_count": 5,
+      "metric_1_cosine_similarity": 0.8393,
+      "metric_2_llm_judge": {
+        "coverage_score": 95,
+        "missing_tests_score": 90,
+        "qa_quality_score": 95,
+        "business_similarity": 100,
+        "final_score": 95.0,
+        "missing_scenarios": [
+          "Vérification du solde disponible avec nombre de jours et dates de validité lors de la création d'une demande d'absence",
+          "Vérification de l'initialisation du champ Type de congé avec la valeur Congés payés",
+          "Vérification de la présence des options Télétravail, Type 3, Type 4 dans le champ Type de demande"
+        ],
+        "summary": "Les tests générés couvrent presque toutes les fonctionnalités et objectifs métier des tests gold, avec une excellente qualité rédactionnelle et structure. Quelques scénarios spécifiques liés à l'affichage du solde, à l'initialisation du type de congé et à la diversité des types de demande sont absents. Globalement, la couverture et la similarité métier sont très élevées.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-14162",
+      "user_story_title": "[BACK][FRONT] Avatar non genré",
+      "priority": "P1-High",
+      "gold_tests_count": 2,
+      "generated_tests_count": 5,
+      "metric_1_cosine_similarity": 0.6941,
+      "metric_2_llm_judge": {
+        "coverage_score": 90,
+        "missing_tests_score": 85,
+        "qa_quality_score": 95,
+        "business_similarity": 100,
+        "final_score": 92.5,
+        "missing_scenarios": [
+          "Vérification explicite de l'affichage des avatars genrés (masculin et féminin) lorsque le paramétrage non genré n'est pas activé",
+          "Validation de l'absence de distinction de genre sur l'ensemble des avatars dans le cas non genré (gold test détaille l'identité visuelle pour chaque collaborateur)"
+        ],
+        "summary": "Les tests générés couvrent très bien les objectifs métier et la majorité des scénarios des gold tests, avec une excellente qualité rédactionnelle. Quelques scénarios de vérification de l'affichage genré en mode standard sont absents. La couverture reste très élevée et les tests sont cohérents et exploitables.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-13340",
+      "user_story_title": "[FRONT] Affichage des congés en heures",
+      "priority": "P1-High",
+      "gold_tests_count": 3,
+      "generated_tests_count": 4,
+      "metric_1_cosine_similarity": 0.627,
+      "metric_2_llm_judge": {
+        "coverage_score": 70,
+        "missing_tests_score": 60,
+        "qa_quality_score": 85,
+        "business_similarity": 80,
+        "final_score": 73.75,
+        "missing_scenarios": [
+          "Validation de la demande par le manager",
+          "Refus de la demande par le manager",
+          "Vérification du mail de confirmation de validation",
+          "Vérification du statut validé/refusé sur Mon planning",
+          "Vérification de l'affichage ou non dans le legacy (admin)"
+        ],
+        "summary": "Les tests générés couvrent correctement l'affichage et la création des congés en heures, mais omettent les scénarios de validation, refus, notification par mail et vérification dans le legacy. La qualité des tests est bonne et les objectifs métier sont globalement respectés, mais plusieurs cas importants sont absents.",
+        "verdict": "PARTIAL"
+      }
+    },
+    {
+      "story_id": "YOU-13386",
+      "user_story_title": "[FRONT] Visualisation du calendrier Collectif vide pour un Manager",
+      "priority": "P1-High",
+      "gold_tests_count": 2,
+      "generated_tests_count": 5,
+      "metric_1_cosine_similarity": 0.659,
+      "metric_2_llm_judge": {
+        "coverage_score": 95,
+        "missing_tests_score": 90,
+        "qa_quality_score": 90,
+        "business_similarity": 100,
+        "final_score": 93.75,
+        "missing_scenarios": [
+          "Chargement dynamique des événements lors de la navigation entre périodes",
+          "Vérification détaillée de la barre de navigation (menu burger, logo, loupe, aide, déconnexion)",
+          "Affichage précis de la nomenclature en bas de calendrier"
+        ],
+        "summary": "Les tests générés couvrent très bien les fonctionnalités principales décrites dans les tests gold, notamment la navigation, les modes d'affichage et la structure hiérarchique. Quelques scénarios détaillés comme le chargement dynamique des événements et certains éléments de la barre de navigation ne sont pas explicitement testés. La qualité des tests générés est bonne, clairs et bien structurés, et les objectifs métier sont parfaitement respectés.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-13300",
+      "user_story_title": "[FRONT] Annulation de congés validés (depuis Planning)",
+      "priority": "P1-High",
+      "gold_tests_count": 3,
+      "generated_tests_count": 2,
+      "metric_1_cosine_similarity": 0.7467,
+      "metric_2_llm_judge": {
+        "coverage_score": 90,
+        "missing_tests_score": 85,
+        "qa_quality_score": 90,
+        "business_similarity": 95,
+        "final_score": 90.0,
+        "missing_scenarios": [
+          "Annuler l'envoi d'une demande d'annulation d'un événement (confirmation d'annulation et vérification que la demande validée reste inchangée)",
+          "Vérification détaillée des éléments de la Popin 1 (pagination, état du bouton Appliquer les filtres grisé initialement)",
+          "Consultation détaillée de l'onglet 'Mes demandes' avec filtres et actions sur la demande"
+        ],
+        "summary": "Les tests générés couvrent bien la majorité des fonctionnalités clés décrites dans les tests gold, notamment la demande d'annulation et son affichage dans le planning. Cependant, certains scénarios importants comme l'annulation de la demande d'annulation et les détails de la popin de filtre sont absents. La qualité des tests générés est bonne, clairs et bien structurés, et les objectifs métier sont bien respectés.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-13666",
+      "user_story_title": "[Back] HRA - Récupérer les demandes cloturées : Ancienne démarche leave",
+      "priority": "P1-High",
+      "gold_tests_count": 1,
+      "generated_tests_count": 5,
+      "metric_1_cosine_similarity": 0.6602,
+      "metric_2_llm_judge": {
+        "coverage_score": 85,
+        "missing_tests_score": 80,
+        "qa_quality_score": 90,
+        "business_similarity": 95,
+        "final_score": 87.5,
+        "missing_scenarios": [
+          "Vérifier l'apparition des demandes avec leurs statuts validé et refusé dans l'onglet 'Mes demandes'",
+          "Vérifier la présence du fil de discussion et des pièces jointes dans la pop-in 'Détails de la demande'",
+          "Vérifier l'affichage différencié des demandes validées et refusées sur le calendrier dans l'onglet 'Mon planning'"
+        ],
+        "summary": "Les tests générés couvrent bien la majorité des fonctionnalités clés, notamment la configuration et la récupération des demandes clôturées. Cependant, ils omettent certains scénarios importants liés à l'affichage des statuts multiples et aux détails des demandes (fil de discussion, pièces jointes). La qualité des tests est bonne, clairs et bien structurés, et les objectifs métier sont très proches de ceux des tests gold.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-13502",
+      "user_story_title": "[FRONT] Fil de discussion Partie 2",
+      "priority": "P1-High",
+      "gold_tests_count": 1,
+      "generated_tests_count": 4,
+      "metric_1_cosine_similarity": 0.7013,
+      "metric_2_llm_judge": {
+        "coverage_score": 90,
+        "missing_tests_score": 80,
+        "qa_quality_score": 85,
+        "business_similarity": 95,
+        "final_score": 87.5,
+        "missing_scenarios": [
+          "Indicateur de message non lu visible sur le planning individuel du collaborateur",
+          "Filtrage des demandes avec ou sans messages non lus dans l'onglet Mes demandes",
+          "Attribution de la demande par le gestionnaire et notification associée"
+        ],
+        "summary": "Les tests générés couvrent bien la majorité des fonctionnalités principales du fil de discussion, notamment l'accès, l'envoi et la consultation des messages. Cependant, certains scénarios clés liés à l'indicateur de message non lu et au filtrage des demandes sont absents. La qualité des tests est bonne, avec des étapes claires et structurées, et les objectifs métier sont bien respectés.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-13628",
+      "user_story_title": "News [REDACTION - QA] - Carrousel - limitation du nombre de news à afficher",
+      "priority": "P2-Medium",
+      "gold_tests_count": 1,
+      "generated_tests_count": 3,
+      "metric_1_cosine_similarity": 0.7941,
+      "metric_2_llm_judge": {
+        "coverage_score": 100,
+        "missing_tests_score": 100,
+        "qa_quality_score": 90,
+        "business_similarity": 100,
+        "final_score": 97.5,
+        "missing_scenarios": [],
+        "summary": "Les tests générés couvrent parfaitement les fonctionnalités des tests gold, incluant la limitation du nombre de news, le tri par date de fin de publication, et l'affichage sur smartphone. La qualité des tests est élevée, bien structurée et claire, avec seulement quelques légères améliorations possibles. Les objectifs métier sont strictement respectés, assurant une forte similarité avec les tests humains.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-13432",
+      "user_story_title": "News - Capacité à traduire une News",
+      "priority": "P1-High",
+      "gold_tests_count": 2,
+      "generated_tests_count": 3,
+      "metric_1_cosine_similarity": 0.6759,
+      "metric_2_llm_judge": {
+        "coverage_score": 90,
+        "missing_tests_score": 85,
+        "qa_quality_score": 80,
+        "business_similarity": 95,
+        "final_score": 87.5,
+        "missing_scenarios": [
+          "Validation des erreurs liées aux types de fichiers non acceptés lors de l'ajout de documents",
+          "Consultation de la News dans l'interface 4YOU par un collaborateur avec vérification des boutons spécifiques selon la langue",
+          "Consultation de la News dans une langue de lecture indisponible avec affichage de la langue d'origine comme langue de secours"
+        ],
+        "summary": "Les tests générés couvrent bien les fonctionnalités principales de création et gestion multilingue des News, avec une bonne correspondance aux objectifs métier. Cependant, ils manquent certains scénarios détaillés de validation d'erreurs et de consultation utilisateur finaux présents dans les tests gold. La qualité des tests générés est correcte mais pourrait être améliorée par plus de détails et d'exemples concrets.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-13618",
+      "user_story_title": "News - [REDACTION QA] Capacité à traduire une News",
+      "priority": "P1-High",
+      "gold_tests_count": 2,
+      "generated_tests_count": 2,
+      "metric_1_cosine_similarity": 0.7247,
+      "metric_2_llm_judge": {
+        "coverage_score": 85,
+        "missing_tests_score": 80,
+        "qa_quality_score": 90,
+        "business_similarity": 95,
+        "final_score": 87.5,
+        "missing_scenarios": [
+          "Consultation de la News par un collaborateur dans chaque langue avec affichage correct du titre, texte, illustration et boutons spécifiques",
+          "Gestion des erreurs liées aux types de fichiers non acceptés lors de l'ajout d'illustrations",
+          "Affichage de la News dans la langue d'origine lorsque la langue de lecture n'est pas disponible"
+        ],
+        "summary": "Les tests générés couvrent bien la création multilingue et la cohérence des paramètres communs. Cependant, ils manquent certains scénarios clés de consultation utilisateur et gestion d'erreurs présents dans les tests gold. La qualité des tests générés est bonne, avec une structure claire et des objectifs métier bien respectés.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "NUXEPM-1893",
+      "user_story_title": "ST03_RH de proximité - Poser une question RH : Alimentation automatique du bénéficiaire depuis le profil et les démarches collaborateur",
+      "priority": "P1-High",
+      "gold_tests_count": 4,
+      "generated_tests_count": 4,
+      "metric_1_cosine_similarity": 0.8135,
+      "metric_2_llm_judge": {
+        "coverage_score": 85,
+        "missing_tests_score": 80,
+        "qa_quality_score": 90,
+        "business_similarity": 95,
+        "final_score": 87.5,
+        "missing_scenarios": [
+          "Traitement de la demande par le gestionnaire (s'attribuer la demande, marquer comme répondue)",
+          "Consultation du statut de la demande et interaction avec les boutons (accepter la réponse, historique, etc.)",
+          "Validation des états des boutons (Quitter, Supprimer, Sauvegarder, Envoyer, Accepter la réponse) dans différents contextes",
+          "Gestion des pièces jointes dans le détail de la demande après envoi",
+          "Interaction avec la case à cocher 'Informer le bénéficiaire du suivi de la question RH, par mail' dans le processus complet"
+        ],
+        "summary": "Les tests générés couvrent bien la création d'une question RH avec pré-remplissage automatique du bénéficiaire depuis différentes démarches. Cependant, ils omettent plusieurs scénarios clés liés au traitement et suivi des demandes par le gestionnaire et le RH de proximité. La qualité des tests générés est bonne, avec des étapes claires et structurées, et les objectifs métier sont bien respectés. Une extension des tests pour couvrir le cycle complet de gestion améliorerait la couverture globale.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "NUXEPM-2233",
+      "user_story_title": "ST17_RH de proximité - Prise en compte de l'acteur \"Superviseur\" dans SYD et Sidebarre",
+      "priority": "P1-High",
+      "gold_tests_count": 2,
+      "generated_tests_count": 6,
+      "metric_1_cosine_similarity": 0.7717,
+      "metric_2_llm_judge": {
+        "coverage_score": 85,
+        "missing_tests_score": 80,
+        "qa_quality_score": 90,
+        "business_similarity": 95,
+        "final_score": 87.5,
+        "missing_scenarios": [
+          "Corriger l'adresse d'un collaborateur depuis son profil",
+          "Vérifier la présence du justificatif dans le DN du collaborateur",
+          "Envoyer une question RH pour le compte du bénéficiaire et suivi par le gestionnaire",
+          "Consulter le statut final de la demande dans l'historique"
+        ],
+        "summary": "Les tests générés couvrent bien la majorité des fonctionnalités liées à l'affichage et l'accès aux widgets et sidebarre pour le Superviseur. Cependant, ils omettent les scénarios métier liés à la gestion des demandes RH et la correction des données collaborateur. La qualité des tests générés est bonne, clairs et bien structurés, et les objectifs métier sont très proches de ceux des tests gold.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "NUXEPM-1827",
+      "user_story_title": "ST01_RH de proximité - Widget et Page Processus RH : statuts des demandes",
+      "priority": "P1-High",
+      "gold_tests_count": 1,
+      "generated_tests_count": 5,
+      "metric_1_cosine_similarity": 0.8217,
+      "metric_2_llm_judge": {
+        "coverage_score": 70,
+        "missing_tests_score": 60,
+        "qa_quality_score": 85,
+        "business_similarity": 75,
+        "final_score": 72.5,
+        "missing_scenarios": [
+          "Vérification de l'absence des QRH fermées avec le statut Acceptée dans le widget Processus RH",
+          "Vérification de l'absence des QRH fermées avec le statut Acceptée dans la page Processus RH",
+          "Affichage des deux premiers statuts par ordre de priorité décroissant dans le widget Processus RH",
+          "Affichage d'une infobulle contenant tous les statuts avec nombre de demandes > 0 dans le widget Processus RH",
+          "Affichage du lien Accéder à tous les processus RH dans le widget Processus RH"
+        ],
+        "summary": "Les tests générés couvrent une partie significative des fonctionnalités des tests gold, mais plusieurs scénarios importants sont absents. La qualité des tests générés est bonne, mais leur alignement avec les objectifs métier pourrait être amélioré.",
+        "verdict": "PARTIAL"
+      }
+    },
+    {
+      "story_id": "YOU-9508",
+      "user_story_title": "DEM MES CONGES - Gestion de la saisie d'un congé en heure hors récurrence et l'ajout au panier.",
+      "priority": "P1-High",
+      "gold_tests_count": 1,
+      "generated_tests_count": 1,
+      "metric_1_cosine_similarity": 0.8152,
+      "metric_2_llm_judge": {
+        "coverage_score": 60,
+        "missing_tests_score": 50,
+        "qa_quality_score": 70,
+        "business_similarity": 75,
+        "final_score": 63.75,
+        "missing_scenarios": [
+          "Validation de la demande de congé par le manager.",
+          "Consultation du statut de la demande dans l'onglet 'historique' après validation.",
+          "Consultation du statut de la demande dans 'Mes demandes' après validation.",
+          "Consultation de la mise à jour Legacy par le gestionnaire.",
+          "Consultation des demandes de congé depuis la démarche 'le planning de mes collègues'."
+        ],
+        "summary": "Les tests générés couvrent partiellement les fonctionnalités des tests gold, mais plusieurs scénarios clés sont absents. La qualité des tests est correcte, mais ils manquent de précision sur certains aspects métier. Les objectifs métier sont globalement alignés, mais pas totalement exhaustifs.",
+        "verdict": "PARTIAL"
+      }
+    },
+    {
+      "story_id": "NUXEPM-2282",
+      "user_story_title": "PPBACKLOG-7656 - Enveloppe Macro - Démarche \"Mon changement de composition familiale\"",
+      "priority": "P1-High",
+      "gold_tests_count": 2,
+      "generated_tests_count": 5,
+      "metric_1_cosine_similarity": 0.621,
+      "metric_2_llm_judge": {
+        "coverage_score": 40,
+        "missing_tests_score": 30,
+        "qa_quality_score": 85,
+        "business_similarity": 70,
+        "final_score": 56.25,
+        "missing_scenarios": [
+          "Envoi d'une demande d'ajout d'un membre avec justificatif et commentaire, sans prise en charge",
+          "Consultation du statut de la demande dans 'Mes demandes' et dans l'onglet historique",
+          "Gestionnaire RH s'attribuant la demande, consultation en mode résumé et détail, validation ou refus avec commentaire",
+          "Consultation du statut de la demande sur le SYD avec indicateurs et statut mis à jour",
+          "Consultation du dossier numérique avec présence ou absence de justificatif",
+          "Réception des mails de notification de validation ou refus",
+          "Consultation du legacy de la composition familiale"
+        ],
+        "summary": "Les tests générés couvrent principalement la configuration de l'affichage de la case à cocher et la suppression des champs de dates, mais ne couvrent pas les scénarios métier clés liés à la gestion des demandes et leur validation/refus. La qualité des tests générés est bonne, avec des étapes claires et bien structurées. Cependant, ils ne testent pas les mêmes objectifs métier que les tests gold, qui sont centrés sur le processus complet de gestion des demandes.",
+        "verdict": "BAD"
+      }
+    },
+    {
+      "story_id": "YOU-13234",
+      "user_story_title": "ST15_RH de proximité - Popin Correction d'adresses : Présence du justificatif obligatoire ou facultatif - QA",
+      "priority": "P1-High",
+      "gold_tests_count": 1,
+      "generated_tests_count": 3,
+      "metric_1_cosine_similarity": 0.6765,
+      "metric_2_llm_judge": {
+        "coverage_score": 80,
+        "missing_tests_score": 70,
+        "qa_quality_score": 85,
+        "business_similarity": 90,
+        "final_score": 81.25,
+        "missing_scenarios": [
+          "Validation de la demande de changement d'adresse par un gestionnaire RH",
+          "Vérification de la présence du justificatif dans le dossier numérique du collaborateur par RRH et collaborateur",
+          "Correction d'adresse par RRH sans justificatif obligatoire (justificatif facultatif)",
+          "Correction d'adresse par collaborateur sans justificatif lorsque non obligatoire"
+        ],
+        "summary": "Les tests générés couvrent bien les cas principaux liés à l'obligation du justificatif pour le collaborateur et le RRH de proximité. Cependant, ils omettent certains scénarios clés comme la validation par le gestionnaire RH et la vérification du justificatif dans le dossier numérique. La qualité des tests est bonne, avec des étapes claires et cohérentes, et les objectifs métier sont globalement respectés.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "NUXEPM-1640",
+      "user_story_title": "ST05_RH de proximité - Inbox \"Activités\"_ Filtrer sur l'Acteur RH de proximité",
+      "priority": "P1-High",
+      "gold_tests_count": 2,
+      "generated_tests_count": 4,
+      "metric_1_cosine_similarity": 0.713,
+      "metric_2_llm_judge": {
+        "coverage_score": 80,
+        "missing_tests_score": 70,
+        "qa_quality_score": 85,
+        "business_similarity": 90,
+        "final_score": 81.25,
+        "missing_scenarios": [
+          "S'attribuer les demandes dans l'onglet Non attribuées",
+          "Consulter les demandes attribuées dans le widget Mes activités avec indicateurs détaillés",
+          "Créer une recherche avec filtre multiple sur Acteur (RRH, Gestionnaire RH, Gestionnaire Paie)",
+          "Validation des filtres 'Statut des demandes à traiter' et affichage des demandes selon statut"
+        ],
+        "summary": "Les tests générés couvrent bien la fonctionnalité principale de filtrage par acteur dans l'inbox d'activités et l'ouverture d'un nouvel onglet avec les résultats. Cependant, ils omettent certains scénarios clés comme l'attribution des demandes et les recherches multi-acteurs. La qualité des tests est bonne, clairs et bien structurés, et les objectifs métier sont globalement respectés. Une meilleure couverture des cas d'usage complexes améliorerait la complétude.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "NUXEPM-1842",
+      "user_story_title": "News - Capacité à mettre en forme le texte d'une News",
+      "priority": "P1-High",
+      "gold_tests_count": 1,
+      "generated_tests_count": 1,
+      "metric_1_cosine_similarity": 0.7834,
+      "metric_2_llm_judge": {
+        "coverage_score": 70,
+        "missing_tests_score": 60,
+        "qa_quality_score": 75,
+        "business_similarity": 85,
+        "final_score": 72.5,
+        "missing_scenarios": [
+          "Vérification des styles Titre 1 et Titre 2",
+          "Application des formats barré, indice, exposant",
+          "Insertion et vérification des listes à puces et numérotées séparément",
+          "Insertion et configuration détaillée du tableau (4 colonnes, 3 lignes, options entête)",
+          "Consultation de la News depuis le carrousel en tant que Manager/Collaborateur avec vérification de la mise en forme dans la popin"
+        ],
+        "summary": "Les tests générés couvrent globalement la création et la mise en forme d'une News, mais omettent plusieurs détails importants comme certains styles, formats spécifiques et la consultation depuis le carrousel. La qualité des tests est correcte mais manque de précision et d'exhaustivité. Les objectifs métier sont bien respectés, bien que partiellement couverts.",
+        "verdict": "PARTIAL"
+      }
+    },
+    {
+      "story_id": "NUXEPM-1721",
+      "user_story_title": "News - Lot1 Création d'une annonce par un auteur",
+      "priority": "P1-High",
+      "gold_tests_count": 4,
+      "generated_tests_count": 9,
+      "metric_1_cosine_similarity": 0.6297,
+      "metric_2_llm_judge": {
+        "coverage_score": 85,
+        "missing_tests_score": 70,
+        "qa_quality_score": 90,
+        "business_similarity": 95,
+        "final_score": 85.0,
+        "missing_scenarios": [
+          "Consultation de la page gestion des News à l'état vierge (DEMKNEWS_S1_ST1_CT1)",
+          "Consultation du volet 'je crée une News' à l'état vierge (DEMKNEWS_S1_ST1_CT2)",
+          "Gestion du message de confirmation lors de la sortie sans sauvegarde (DEMKNEWS_S1_ST1_CT9)",
+          "Affichage des boutons et états (actif/inactif) sur la page vierge",
+          "Affichage des volets (déplié/plié) lors de la consultation initiale"
+        ],
+        "summary": "Les tests générés couvrent la majorité des scénarios métier liés à la création et publication d'une annonce, avec une très bonne qualité rédactionnelle et une forte similarité business. Quelques scénarios de consultation initiale et de gestion de la sortie sans sauvegarde sont manquants. La couverture fonctionnelle est élevée, mais il manque certains contrôles d'affichage et de navigation à l'état vierge.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-12999",
+      "user_story_title": "[FRONT] Affichage dynamique de la légende",
+      "priority": "P1-High",
+      "gold_tests_count": 1,
+      "generated_tests_count": 5,
+      "metric_1_cosine_similarity": 0.6125,
+      "metric_2_llm_judge": {
+        "coverage_score": 85,
+        "missing_tests_score": 70,
+        "qa_quality_score": 90,
+        "business_similarity": 95,
+        "final_score": 85.0,
+        "missing_scenarios": [
+          "Validation de l'affichage des jours fériés travaillés et non travaillés avec les icônes et hachurages spécifiques.",
+          "Validation de la mise à jour automatique de la légende lors du rafraîchissement du planning.",
+          "Validation de l'affichage responsive et conformité RGAA."
+        ],
+        "summary": "Les tests générés couvrent la majorité des fonctionnalités décrites dans les tests gold, avec une bonne qualité et une forte correspondance aux objectifs métier. Cependant, certains scénarios spécifiques, comme les jours fériés et la conformité RGAA, sont absents.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-13030",
+      "user_story_title": "[FRONT] Visualisation du calendrier Collectif vide pour un collaborateur",
+      "priority": "P1-High",
+      "gold_tests_count": 1,
+      "generated_tests_count": 4,
+      "metric_1_cosine_similarity": 0.7233,
+      "metric_2_llm_judge": {
+        "coverage_score": 90,
+        "missing_tests_score": 80,
+        "qa_quality_score": 95,
+        "business_similarity": 95,
+        "final_score": 90.0,
+        "missing_scenarios": [
+          "Vérification détaillée de la barre de navigation (menu burger, logo, intitulé, loupe, bouton aide, bouton déconnexion)",
+          "Affichage de la phrase d'introduction ('Ici, vous pouvez consulter le planning de vos collègues.')",
+          "Présence et vérification de la nomenclature en bas du calendrier",
+          "Affichage du nombre total de collaborateurs dans l'entête du calendrier",
+          "Mise en valeur du jour actuel (trait et couleur violette)"
+        ],
+        "summary": "Les tests générés couvrent la majorité des fonctionnalités et objectifs métier des tests gold, avec une très bonne qualité rédactionnelle et structurelle. Quelques scénarios spécifiques d'affichage et de vérification de la barre de navigation, de la nomenclature et de la mise en valeur du jour actuel sont absents. Globalement, la couverture est élevée et les tests sont utilisables en production.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-13178",
+      "user_story_title": "ST02_RH de proximité - Widget population_Débranchement vers l'inbox des activités (nouvel onglet préfiltré) - QA",
+      "priority": "P1-High",
+      "gold_tests_count": 1,
+      "generated_tests_count": 2,
+      "metric_1_cosine_similarity": 0.7835,
+      "metric_2_llm_judge": {
+        "coverage_score": 95,
+        "missing_tests_score": 90,
+        "qa_quality_score": 92,
+        "business_similarity": 98,
+        "final_score": 93.75,
+        "missing_scenarios": [
+          "Vérification détaillée de l'affichage des vignettes de demande (photo, prénom, nom, matricule, numéro de demande, titre, description, dates, icônes spécifiques, statut, lien 'Voir toutes ses demandes', bouton 'Modifier la demande', boutons d'actions selon le statut)"
+        ],
+        "summary": "Les tests générés couvrent presque toutes les fonctionnalités et objectifs métier des tests gold, avec une structure claire et professionnelle. Un seul scénario détaillé d'affichage des vignettes de demande manque, ce qui réduit légèrement le score de couverture. La qualité des tests générés est élevée et ils sont très proches des attentes métier.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-8939",
+      "user_story_title": "Ajouter la date de naissance du collaborateur dans l'infobulle",
+      "priority": "P1-High",
+      "gold_tests_count": 1,
+      "generated_tests_count": 3,
+      "metric_1_cosine_similarity": 0.8584,
+      "metric_2_llm_judge": {
+        "coverage_score": 75,
+        "missing_tests_score": 70,
+        "qa_quality_score": 90,
+        "business_similarity": 90,
+        "final_score": 81.25,
+        "missing_scenarios": [
+          "Vérification de la date de naissance côté legacy (comparaison entre 4YOU et legacy)",
+          "Validation de l'absence de l'IF de connexion 'Vous vous êtes connecté(e) avec succès !' lors de la connexion"
+        ],
+        "summary": "Les tests générés couvrent la majorité des fonctionnalités attendues, notamment l'affichage de la date de naissance et le format de l'infobulle. Cependant, ils omettent la vérification côté legacy et certains détails de connexion. La qualité et la cohérence des tests sont bonnes, et les objectifs métier sont bien alignés avec les gold tests.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-8516",
+      "user_story_title": "CLONE - [MES QUESTION RH] - le statut d'une question RH répondue en attente d'acceptation est erroné après la suppression par le collaborateur",
+      "priority": "P1-High",
+      "gold_tests_count": 1,
+      "generated_tests_count": 2,
+      "metric_1_cosine_similarity": 0.6062,
+      "metric_2_llm_judge": {
+        "coverage_score": 70,
+        "missing_tests_score": 60,
+        "qa_quality_score": 85,
+        "business_similarity": 90,
+        "final_score": 76.25,
+        "missing_scenarios": [
+          "Consultation du statut de la demande supprimée dans la page 'Mes demandes' par le collaborateur",
+          "Consultation du statut de la demande supprimée par le gestionnaire RH",
+          "Vérification du débranchement du lien Legacy par le gestionnaire",
+          "Vérification de l'affichage des différents statuts intermédiaires dans plusieurs vues (Mes demandes, Mes activités gestionnaire)",
+          "Vérification de la phrase introductive et des boutons d'action dans le formulaire de la question RH"
+        ],
+        "summary": "Les tests générés couvrent l'essentiel du scénario métier, notamment la suppression et la vérification du statut 'Annulée'. Cependant, plusieurs vérifications secondaires et multi-vues présentes dans les gold tests sont absentes. La qualité des tests générés est bonne, mais la couverture reste partielle.",
+        "verdict": "PARTIAL"
+      }
+    },
+    {
+      "story_id": "YOU-9768",
+      "user_story_title": "NUXEPM-474-C Ter - Informer le bénéficiaire par mails lors de la suppression de la QRH par le manager ou le gestionnaire OnBehalf - Réalisation",
+      "priority": "P1-High",
+      "gold_tests_count": 2,
+      "generated_tests_count": 2,
+      "metric_1_cosine_similarity": 0.6902,
+      "metric_2_llm_judge": {
+        "coverage_score": 80,
+        "missing_tests_score": 70,
+        "qa_quality_score": 85,
+        "business_similarity": 90,
+        "final_score": 81.25,
+        "missing_scenarios": [
+          "Envoi de la notification mail lors de la création de la question RH",
+          "Suppression de la QRH par le gestionnaire OnBehalf (seulement manager testé)",
+          "Consultation du statut 'supprimée' dans l'espace gestionnaire après suppression",
+          "Consultation de la réception du mail de notification de création de la question RH"
+        ],
+        "summary": "Les tests générés couvrent bien les fonctionnalités principales de suppression et notification par mail, mais omettent certains scénarios clés comme la création de la question RH et la suppression par le gestionnaire OnBehalf. La qualité des tests est bonne, avec des étapes claires et cohérentes. Les objectifs métier sont globalement respectés, bien que certains cas d'usage ne soient pas testés.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "NUXEPM-474",
+      "user_story_title": "Questions RH pour le compte de : informer le bénéficiaire de la demande par mail",
+      "priority": "P2-Medium",
+      "gold_tests_count": 2,
+      "generated_tests_count": 6,
+      "metric_1_cosine_similarity": 0.8224,
+      "metric_2_llm_judge": {
+        "coverage_score": 85,
+        "missing_tests_score": 80,
+        "qa_quality_score": 90,
+        "business_similarity": 95,
+        "final_score": 87.5,
+        "missing_scenarios": [
+          "Scénarios détaillés de notification par mail pour chaque statut spécifique (ex : 'En attente d'acceptation', 'Répondue - en attente d'acceptation')",
+          "Validation du contenu exact des mails envoyés (titres, descriptions, réponses, format)",
+          "Scénarios de gestion multi-acteurs (ex : gestionnaire RH1 vs gestionnaire RH2)",
+          "Vérification de l'activation/inactivation du bouton 'Supprimer' selon le statut",
+          "Scénarios de consultation de l'historique et de la clôture de la demande par différents rôles"
+        ],
+        "summary": "Les tests générés couvrent la majorité des fonctionnalités métier et sont bien structurés, avec une très bonne qualité rédactionnelle. Quelques scénarios spécifiques et validations de contenu de mail manquent, notamment sur la granularité des statuts et la gestion multi-acteurs. L'objectif métier est bien respecté, mais une couverture complète nécessiterait plus de détails sur les notifications et l'historique.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-8821",
+      "user_story_title": "Ajouter un message de confirmation en sortie de démarche lorsqu'on passe par la loupe",
+      "priority": "P2-Medium",
+      "gold_tests_count": 2,
+      "generated_tests_count": 4,
+      "metric_1_cosine_similarity": 0.6497,
+      "metric_2_llm_judge": {
+        "coverage_score": 80,
+        "missing_tests_score": 70,
+        "qa_quality_score": 85,
+        "business_similarity": 90,
+        "final_score": 81.25,
+        "missing_scenarios": [
+          "Validation de la conservation des informations saisies après confirmation de sortie via la loupe",
+          "Validation de l'absence de pop-up de confirmation lors de la recherche dans un formulaire vierge",
+          "Validation du comportement lors du clic sur un élément proposé dans la recherche",
+          "Validation du comportement identique lors du clic sur le logo 4YOU"
+        ],
+        "summary": "Les tests générés couvrent la majorité des fonctionnalités et objectifs métier des tests gold, mais omettent certains scénarios spécifiques comme la conservation des données et le comportement lors du clic sur le logo 4YOU. La qualité des tests est bonne, avec une structure claire et des résultats attendus précis. Quelques scénarios importants restent à ajouter pour une couverture complète.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-10157",
+      "user_story_title": "RH de proximité - HRa4U_PLD4U_Afficher la population dans le widget - Front end_Part1",
+      "priority": "P1-High",
+      "gold_tests_count": 1,
+      "generated_tests_count": 1,
+      "metric_1_cosine_similarity": 0.8459,
+      "metric_2_llm_judge": {
+        "coverage_score": 100,
+        "missing_tests_score": 95,
+        "qa_quality_score": 95,
+        "business_similarity": 100,
+        "final_score": 97.5,
+        "missing_scenarios": [
+          "Dans l'étape de consultation de l'onglet 'Ses données individuelles', les generated tests ne détaillent pas explicitement l'affichage du bandeau d'entête, du pavé Informations générales, ni la phrase spécifique attendue, contrairement aux gold tests."
+        ],
+        "summary": "Les tests générés couvrent toutes les fonctionnalités principales des tests gold et sont très proches des objectifs métier. La qualité rédactionnelle et la structure sont professionnelles. Seul un détail sur le contenu précis de l'onglet 'Ses données individuelles' manque par rapport aux gold tests.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-11205",
+      "user_story_title": "RH de proximité - \"Démarche POSER UNE QUESTION RH\"",
+      "priority": "P1-High",
+      "gold_tests_count": 3,
+      "generated_tests_count": 6,
+      "metric_1_cosine_similarity": 0.7559,
+      "metric_2_llm_judge": {
+        "coverage_score": 85,
+        "missing_tests_score": 70,
+        "qa_quality_score": 90,
+        "business_similarity": 95,
+        "final_score": 85.0,
+        "missing_scenarios": [
+          "Notification par mail au collaborateur lors de la création de la question RH (scénario informé/non informé)",
+          "Traitement détaillé des demandes par le gestionnaire (actions spécifiques : réattribuer, demander plus d'informations, marquer comme répondue)",
+          "Acceptation de la réponse par le RH de proximité et envoi de la réponse au collaborateur",
+          "Consultation de l'historique détaillé des demandes (pop-up avec détails, fil de suivi, pièces jointes)",
+          "Accès à la démarche Poser une question RH depuis la page Profil collaborateur (via Déclarer un déménagement)",
+          "Vérification de la disparition des demandes de l'onglet en cours après acceptation"
+        ],
+        "summary": "Les tests générés couvrent la majorité des fonctionnalités métier et sont bien structurés, avec une très bonne qualité rédactionnelle. Cependant, certains scénarios spécifiques liés aux notifications, à l'historique, et à l'accès via le profil collaborateur sont absents. Les objectifs métier sont globalement respectés, mais quelques cas d'usage importants manquent pour une couverture complète.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-12094",
+      "user_story_title": "PLD - RH de proximité - 360 HRLocal - Profil : Débranchement et utilisation du DN du collaborateur (Front)",
+      "priority": "P1-High",
+      "gold_tests_count": 2,
+      "generated_tests_count": 4,
+      "metric_1_cosine_similarity": 0.7671,
+      "metric_2_llm_judge": {
+        "coverage_score": 85,
+        "missing_tests_score": 80,
+        "qa_quality_score": 90,
+        "business_similarity": 95,
+        "final_score": 87.5,
+        "missing_scenarios": [
+          "Vérification de l'affichage des onglets attendus pour différents profils (HRA, HRA4U, PLD4U, HRAFG, HRAFG4U, HRAFG4UT)",
+          "Vérification de l'absence de l'onglet Sa carrière sur certains profils",
+          "Affichage des infobulles pour chaque icône d'onglet",
+          "Affichage de la structure complète de la page d'accueil (widgets PROCESSUS RH, MES COLLABORATEURS, lien Accéder à tous mes collaborateurs)",
+          "Affichage de la vignette du collaborateur, zone de recherche et checkbox Masquer les emplacements vides sur la page Dossier Numérique"
+        ],
+        "summary": "Les tests générés couvrent la majorité des fonctionnalités métier essentielles, notamment l'accès au Dossier Numérique, l'affichage du nombre de documents et l'infobulle. Quelques scénarios spécifiques liés à l'affichage des onglets, à la structure de la page d'accueil et à certains éléments de la page Dossier Numérique sont manquants. La qualité des tests est élevée et les objectifs métier sont très bien respectés.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "NUXEPM-1786",
+      "user_story_title": "PLD - RH de proximité - 360 HRLocal - Ses données individuelles (FRONT) - Mise à jour directe via la démarche angularisée Déménagement & Situation familiale(M4)",
+      "priority": "P1-High",
+      "gold_tests_count": 2,
+      "generated_tests_count": 3,
+      "metric_1_cosine_similarity": 0.7185,
+      "metric_2_llm_judge": {
+        "coverage_score": 95,
+        "missing_tests_score": 90,
+        "qa_quality_score": 90,
+        "business_similarity": 100,
+        "final_score": 93.75,
+        "missing_scenarios": [
+          "Vérification détaillée de l'affichage des textes spécifiques ('Vous habitez l'adresse déclarée', 'Vous n'avez pas d'autre adresse déclarée.') et des liens associés dans l'onglet Ses données individuelles",
+          "Affichage du bandeau d'entête avec les informations collaborateur (prénom, nom, matricule, ancienneté, société, établissement, emploi, conditions de temps)",
+          "Affichage des boutons Corriger votre adresse, Son déménagement, Fermer dans la pop-up",
+          "Vérification de la coloration des champs obligatoires en vert"
+        ],
+        "summary": "Les tests générés couvrent presque tous les scénarios métier des tests gold, avec une très bonne qualité et une structure claire. Quelques vérifications d'affichage spécifiques et de détails UI sont absentes. Les objectifs métier sont parfaitement alignés, ce qui rend les tests générés très pertinents pour la validation fonctionnelle.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-12429",
+      "user_story_title": "CLONE - PLD - RH de proximité - Mise à jour directe de la Correction d'adresse (Front)",
+      "priority": "P1-High",
+      "gold_tests_count": 2,
+      "generated_tests_count": 3,
+      "metric_1_cosine_similarity": 0.825,
+      "metric_2_llm_judge": {
+        "coverage_score": 85,
+        "missing_tests_score": 70,
+        "qa_quality_score": 90,
+        "business_similarity": 95,
+        "final_score": 85.0,
+        "missing_scenarios": [
+          "Vérification de l'affichage de l'onglet 'Ses absences' lors de l'accès à la popin",
+          "Vérification de la coche verte devant le champ modifié et l'icône trombone",
+          "Vérification de l'apparition d'une IF de confirmation et fermeture de la popin",
+          "Consultation de la mise à jour de l'adresse côté legacy par un admin"
+        ],
+        "summary": "Les tests générés couvrent la majorité des fonctionnalités métier et sont bien structurés, mais omettent quelques scénarios spécifiques comme la vérification côté legacy et certains détails d'affichage. La qualité rédactionnelle est élevée et les objectifs métier sont très proches des gold tests. Quelques vérifications fines manquent pour atteindre une couverture parfaite.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-13246",
+      "user_story_title": "[FRONT] Zones Scolaires",
+      "priority": "P1-High",
+      "gold_tests_count": 1,
+      "generated_tests_count": 7,
+      "metric_1_cosine_similarity": 0.8183,
+      "metric_2_llm_judge": {
+        "coverage_score": 75,
+        "missing_tests_score": 70,
+        "qa_quality_score": 90,
+        "business_similarity": 90,
+        "final_score": 81.25,
+        "missing_scenarios": [
+          "Affichage du message d'information spécifique sur les zones scolaires",
+          "Comportement responsive du menu des zones scolaires (desktop et mobile)",
+          "Validation précise du motif coloré sur les jours de vacances concernés"
+        ],
+        "summary": "Les tests générés couvrent la majorité des fonctionnalités métier, notamment la sélection des zones et la limitation à trois zones. Cependant, certains scénarios importants comme le message d'information, le comportement responsive et la validation détaillée des motifs colorés sont absents. La qualité des tests est élevée et les objectifs métier sont bien alignés avec les gold tests.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-9443",
+      "user_story_title": "DEM MES CONGES - Récupération et affichage des motifs de congés et congés exceptionnels en heure",
+      "priority": "P1-High",
+      "gold_tests_count": 4,
+      "generated_tests_count": 3,
+      "metric_1_cosine_similarity": 0.7054,
+      "metric_2_llm_judge": {
+        "coverage_score": 70,
+        "missing_tests_score": 60,
+        "qa_quality_score": 85,
+        "business_similarity": 90,
+        "final_score": 76.25,
+        "missing_scenarios": [
+          "Validation de la demande de congé par le manager",
+          "Refus de la demande de congé par le manager",
+          "Consultation du statut dans l'onglet Historique après validation ou refus",
+          "Consultation du statut dans Mes demandes après validation ou refus",
+          "Consultation de la mise à jour Legacy par le gestionnaire",
+          "Consultation des demandes de congé depuis le planning des collègues"
+        ],
+        "summary": "Les tests générés couvrent bien les fonctionnalités principales liées à l'affichage des soldes et à la gestion des congés en heures, notamment l'icône pendule et la suppression. Cependant, ils omettent plusieurs scénarios clés de validation et refus par le manager ainsi que la consultation des statuts et mises à jour Legacy. La qualité des tests est bonne, clairs et structurés, et les objectifs métier sont globalement respectés.",
+        "verdict": "PARTIAL"
+      }
+    },
+    {
+      "story_id": "NUXEPM-1699",
+      "user_story_title": "RH de proximité : Rechercher un processus RH (Poser une question RH en V9)",
+      "priority": "P1-High",
+      "gold_tests_count": 2,
+      "generated_tests_count": 2,
+      "metric_1_cosine_similarity": 0.7271,
+      "metric_2_llm_judge": {
+        "coverage_score": 70,
+        "missing_tests_score": 60,
+        "qa_quality_score": 85,
+        "business_similarity": 80,
+        "final_score": 73.75,
+        "missing_scenarios": [
+          "Accéder à la démarche 'Poser une question RH' avec un RH de Proximité depuis la barre de recherche et vérifier l'affichage des widgets 'PROCESSUS RH' et 'MES COLLABORATEURS' avec la liste triée des collaborateurs",
+          "Accéder à la démarche 'Poser une question RH' avec un utilisateur RH de Proximité et Gestionnaire RH et vérifier l'affichage de la vignette 'ACTIVITES' avec ses sous-vignettes"
+        ],
+        "summary": "Les tests générés couvrent partiellement les fonctionnalités des tests gold, notamment la recherche et la sélection de processus RH et pages légacy. Cependant, ils omettent des scénarios clés liés à l'affichage détaillé des widgets et vignettes spécifiques. La qualité des tests générés est bonne, avec des étapes claires et exécutables, et les objectifs métier sont globalement respectés.",
+        "verdict": "PARTIAL"
+      }
+    },
+    {
+      "story_id": "YOU-12963",
+      "user_story_title": "[FRONT] Filtres (statut + motif + date \"Date début - Date Fin\")",
+      "priority": "P1-High",
+      "gold_tests_count": 4,
+      "generated_tests_count": 5,
+      "metric_1_cosine_similarity": 0.5993,
+      "metric_2_llm_judge": {
+        "coverage_score": 90,
+        "missing_tests_score": 80,
+        "qa_quality_score": 95,
+        "business_similarity": 100,
+        "final_score": 91.25,
+        "missing_scenarios": [
+          "Filtrage par motif avec sous-catégories (Congés, Congés exceptionnel, Télétravail)",
+          "Filtrage par type de demande (Demande de création / Demande d'annulation)",
+          "Affichage et interaction avec la pagination et la barre de configuration (éléments par page)",
+          "Vérification de la phrase d'accueil spécifique sur l'onglet Mes demandes"
+        ],
+        "summary": "Les tests générés couvrent la majorité des fonctionnalités métier et des scénarios de filtrage, avec une excellente qualité rédactionnelle et une forte similarité business. Quelques scénarios spécifiques liés à la granularité des motifs, au type de demande, à la pagination et à certains détails d'affichage manquent. Globalement, la couverture est très satisfaisante pour les objectifs principaux.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-9428",
+      "user_story_title": "[F] PC - MDC - Migration HRA - L’éligibilité au télétravail",
+      "priority": "P1-High",
+      "gold_tests_count": 4,
+      "generated_tests_count": 3,
+      "metric_1_cosine_similarity": 0.741,
+      "metric_2_llm_judge": {
+        "coverage_score": 90,
+        "missing_tests_score": 85,
+        "qa_quality_score": 80,
+        "business_similarity": 95,
+        "final_score": 87.5,
+        "missing_scenarios": [
+          "Accès à la démarche Mes jours de télétravail via la navigation spécifique (flèche sous la photo, onglet Mes données contractuelles, clic sur télétravail)",
+          "Vérification de l'absence du message d'information de connexion 'Vous vous êtes connecté(e) avec succès !'",
+          "Affichage dans la vue 360 (non explicitement couvert par les generated tests)"
+        ],
+        "summary": "Les tests générés couvrent bien les principaux cas d'éligibilité au télétravail, notamment les états actuel, futur et l'absence de date de fin. Cependant, ils manquent certains scénarios précis de navigation et de messages d'interface présents dans les tests gold. La qualité des tests générés est bonne mais pourrait être améliorée en termes de détails et d'exécution. Les objectifs métier sont bien respectés.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-13282",
+      "user_story_title": "[BACK] Récupérer les actions dans l'historique de mes demandes",
+      "priority": "P1-High",
+      "gold_tests_count": 4,
+      "generated_tests_count": 3,
+      "metric_1_cosine_similarity": 0.7161,
+      "metric_2_llm_judge": {
+        "coverage_score": 70,
+        "missing_tests_score": 60,
+        "qa_quality_score": 85,
+        "business_similarity": 90,
+        "final_score": 76.25,
+        "missing_scenarios": [
+          "Consulter les actions possibles sur une demande en attente de validation",
+          "Consulter les actions possibles sur une demande validée"
+        ],
+        "summary": "Les tests générés couvrent bien les cas des demandes refusées et annulées, ainsi que la présence des champs modifiable et supprimable. Cependant, ils omettent les scénarios spécifiques aux demandes en attente de validation et validées. La qualité des tests générés est bonne, avec des étapes claires et exécutables. Les objectifs métier restent proches de ceux des tests gold.",
+        "verdict": "PARTIAL"
+      }
+    },
+    {
+      "story_id": "YOU-8656",
+      "user_story_title": "4YOU GP : Transfert : Manager : Visualisation d'une tâche reçue par transfert",
+      "priority": "P1-High",
+      "gold_tests_count": 1,
+      "generated_tests_count": 2,
+      "metric_1_cosine_similarity": 0.4751,
+      "metric_2_llm_judge": {
+        "coverage_score": 80,
+        "missing_tests_score": 70,
+        "qa_quality_score": 85,
+        "business_similarity": 90,
+        "final_score": 81.25,
+        "missing_scenarios": [
+          "Envoyer une demande GP simple à destination du Manager 1",
+          "Transférer une demande GP simple par un Manager 1",
+          "Vérifier la présence d'une demande GP transférée dans la liste des tâches sur HRASPACE"
+        ],
+        "summary": "Les tests générés couvrent bien la visualisation et la validation d'une tâche reçue par transfert, avec une bonne qualité et une forte similarité métier. Cependant, ils omettent certains scénarios clés liés à l'envoi initial et au transfert de la demande. La couverture est donc partielle, mais les tests restent clairs et exploitables.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "NUXEPM-1223",
+      "user_story_title": "Mes questions RH - Mode Clôture par le collaborateur : Pouvoir relancer le collaborateur si pas d'acceptation de la réponse",
+      "priority": "P1-High",
+      "gold_tests_count": 1,
+      "generated_tests_count": 3,
+      "metric_1_cosine_similarity": 0.7765,
+      "metric_2_llm_judge": {
+        "coverage_score": 90,
+        "missing_tests_score": 80,
+        "qa_quality_score": 95,
+        "business_similarity": 95,
+        "final_score": 90.0,
+        "missing_scenarios": [
+          "Création initiale de la demande RH par le collaborateur (étape 1 du gold test)",
+          "Traitement de la demande par le gestionnaire RH (étape 2 du gold test)",
+          "Vérification détaillée des boutons d'action disponibles et du fil de suivi dans la démarche Mes Questions RH (étape 3 du gold test)"
+        ],
+        "summary": "Les tests générés couvrent très bien les alertes SYD et la relance par mail, ainsi que la gestion du compteur. Quelques scénarios initiaux de création et de traitement de la demande sont absents. La qualité et la cohérence des tests sont excellentes, et les objectifs métier sont très proches des gold tests.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-11798",
+      "user_story_title": "[F] PC - MC - Migration HRA FG - Types de carrières sur \"Ma carrière\"",
+      "priority": "P1-High",
+      "gold_tests_count": 4,
+      "generated_tests_count": 4,
+      "metric_1_cosine_similarity": 0.6581,
+      "metric_2_llm_judge": {
+        "coverage_score": 85,
+        "missing_tests_score": 80,
+        "qa_quality_score": 90,
+        "business_similarity": 95,
+        "final_score": 87.5,
+        "missing_scenarios": [
+          "Scénario de consultation de l'onglet Sa carrière par un manager pour chaque type de carrière (d'origine, fonctionnel, d'accueil)",
+          "Scénario de double carrière (affichage simultané de carrière d'origine et d'accueil)",
+          "Navigation spécifique via SYD manager ou collaborateur (gold tests détaillent la navigation par rôle et contexte)"
+        ],
+        "summary": "Les tests générés couvrent la majorité des fonctionnalités et objectifs métier des tests gold, avec une bonne qualité rédactionnelle. Quelques scénarios spécifiques liés à la navigation par rôle (manager/collaborateur) et la double carrière sont absents. La couverture reste élevée, mais une amélioration sur les cas de navigation et multi-carrière est nécessaire.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "YOU-9424",
+      "user_story_title": "[F] PC - MR - Migration HRA - Bonus et prime variable",
+      "priority": "P1-High",
+      "gold_tests_count": 4,
+      "generated_tests_count": 3,
+      "metric_1_cosine_similarity": 0.8421,
+      "metric_2_llm_judge": {
+        "coverage_score": 90,
+        "missing_tests_score": 80,
+        "qa_quality_score": 85,
+        "business_similarity": 95,
+        "final_score": 87.5,
+        "missing_scenarios": [
+          "Connexion explicite en tant que collaborateur ou manager",
+          "Vérification de l'absence du message de connexion 'Vous êtes connecté(e) avec succès !'",
+          "Positionnement par défaut sur la page SYD collaborateur ou manager",
+          "Consultation spécifique avec un collaborateur ayant un salaire + 13ème mois",
+          "Consultation spécifique avec un collaborateur ayant un salaire + 13ème + bonus + prime variable avec valeurs précises"
+        ],
+        "summary": "Les tests générés couvrent bien les fonctionnalités principales de consultation de la rémunération dans le profil collaborateur et la vue 360. Cependant, ils manquent certains scénarios précis liés aux rôles utilisateurs et aux détails d'affichage spécifiques. La qualité des tests est bonne, avec des étapes claires et des objectifs métier bien respectés. Quelques améliorations sont possibles pour atteindre la précision des tests gold.",
+        "verdict": "GOOD"
+      }
+    },
+    {
+      "story_id": "NUXEPM-1578",
+      "user_story_title": "PLD - RH de proximité - 360 HRLocal - Ses données contractuelles - (Front)",
+      "priority": "P1-High",
+      "gold_tests_count": 5,
+      "generated_tests_count": 5,
+      "metric_1_cosine_similarity": 0.7339,
+      "metric_2_llm_judge": {
+        "coverage_score": 85,
+        "missing_tests_score": 80,
+        "qa_quality_score": 90,
+        "business_similarity": 95,
+        "final_score": 87.5,
+        "missing_scenarios": [
+          "Consultation des données contractuelles pour un collaborateur avec un contrat et ancienneté inférieur à un mois",
+          "Consultation des données contractuelles pour un collaborateur avec un contrat et ancienneté entre un mois et un an",
+          "Consultation des données contractuelles pour un collaborateur avec un contrat et ancienneté supérieure à un an",
+          "Consultation des données contractuelles pour un collaborateur avec une date d'effet du temps contractuel égale à celle du contrat",
+          "Consultation des données contractuelles pour un collaborateur appartenant à une seule UO"
+        ],
+        "summary": "Les tests générés couvrent bien l'accès et la consultation des données contractuelles, ainsi que l'absence de la notion de télétravail, ce qui correspond aux objectifs métier. Cependant, ils ne couvrent pas certains scénarios spécifiques liés aux différentes durées d'ancienneté et configurations contractuelles présentes dans les tests gold. La qualité des tests générés est bonne, avec des étapes claires et cohérentes, mais un peu plus de diversité dans les cas testés serait bénéfique.",
         "verdict": "GOOD"
       }
     }

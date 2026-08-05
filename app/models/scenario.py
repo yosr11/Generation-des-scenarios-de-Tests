@@ -1,4 +1,4 @@
-# app/models/scenario.py
+﻿# app/models/scenario.py
 from pydantic import BaseModel, Field
 from typing import List, Literal
 

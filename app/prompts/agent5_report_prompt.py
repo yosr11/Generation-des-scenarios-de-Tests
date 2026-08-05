@@ -1,4 +1,4 @@
-"""Prompts pour Agent 5 - Génération de Rapports Finaux."""
+﻿"""Prompts pour Agent 5 - Génération de Rapports Finaux."""
 
 from typing import Any, Dict, List
 

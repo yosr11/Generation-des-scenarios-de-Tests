@@ -1,0 +1,92 @@
+[Image jointe : dateNaissance.PNG]
+── Textes détectés (OCR) ──
+| Lamis ZAMMALI | FRLFR4Y1209 Informations générales
+2 ans et 8 mois et 15 jours chez France Droit Privé (SHR) - Etablissement de Etablissement QA 4 (75) N'hésitez pas à parcourir votre dossier collaborateur pour le
+; - compléter ou le modifier.
+Employé non qualifié - DEP QA5
+Durée indéterminée | Tempsplein | Cycle normal (RTT semaine) | 35.00 heures
+œ @ =
+' Mes données individuelles
+Vous avez 34 ans et vous êtes veuf(ve).
+Vous habitez 1 Ma date de naissance : 04 janvier 1989 ’ NICE (75009) .
+Vous n'avez pas d'autre adresse déclarée.
+; Vous êtes joignable sur le mobile FRA H H +33 234 76 86 90
+Vous êtes payé(e) par chèque
+Vous pouvez compléter votre dossier :
+Lamis ZAMMALI |
+FRLFR4Y1209
+Informations générales
+2 ans et 8 mois et 15 jours chez France Droit Privé (SHR) - Etablissement de Etablissement QA 4 (75)
+N'hésitez pas à parcourir votre dossier collaborateur pour le
+compléter ou le modifier.
+Durée indéterminée
+Temps plein
+Cycle normal (RTT semaine)
+35.00 heures
+© @ © O
+Mes données individuelles
+Vous habitez WS NICE (75009)
+Vous êtes joignable sur le mobile FRA H H +33 2 34 76 86 90.
+── Analyse visuelle (VLM) ──
+<think>
+Here's a thinking process that leads to the suggested output:
+
+1.  **Analyze the Request:**
+    *   **Goal:** Describe the visual, non-textual elements of the provided screenshot/mockup.
+    *   **Input:** An image (screenshot of a mobile app interface) and OCR text.
+    *   **Constraint:** Do *not* repeat the OCR text unless necessary to identify an element. Focus on what the OCR *misses* (visuals, layout, annotations).
+    *   **Structure:** 5 specific sections (Context, Annotations, Native UI Elements, Icons, Layout/Relations).
+    *   **Tone:** Factual, neutral, structured.
+    *   **Language:** French.
+
+2.  **Analyze the Image (Visual Inspection):**
+    *   *Overall:* It looks like a mobile application interface, likely an HR or employee portal ("Sopra HR" mentioned in prompt). It has a dark header with a background image and a white content area below.
+    *   *Header:* Dark background with a landscape photo (mountains, wooden deck). Text is white.
+    *   *Navigation:* A row of circular icons below the header.
+    *   *Content:* A list of personal details ("Mes données individuelles").
+    *   *Annotations:* There is a distinct yellow highlight box around a specific line of text.
+
+3.  **Drafting Section 1: CONTEXTE**
+    *   *Observation:* It's a mobile screen showing employee profile details.
+    *   *Draft:* Il s'agit d'une capture d'écran d'une interface mobile (application ou site web responsive) présentant le profil d'un collaborateur. L'écran affiche des informations personnelles et des détails contractuels.
+
+4.  **Drafting Section 2: ANNOTATIONS AJOUTÉES PAR LE PO**
+    *   *Observation:* There is a yellow rectangular box.
+    *   *Target:* It surrounds the text "Ma date de naissance : 04 janvier 1989".
+    *   *Draft:*
+        *   Type : Encadré rectangulaire (surlignage).
+        *   Couleur : Jaune vif.
+        *   Élément désigné : Il entoure le texte "Ma date de naissance : 04 janvier 1989" situé dans la section "Mes données individuelles".
+
+5.  **Drafting Section 3: ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI**
+    *   *Observation:*
+        *   Top left: A circular avatar placeholder (blue silhouette).
+        *   Navigation bar: Four circular icons. The last one (person silhouette) is white with a black icon, indicating it's active/selected. The others are black with white icons.
+        *   Top right: A small icon that looks like a folder or document with the number "8".
+    *   *Draft:*
+        *   Avatar : Un cercle bleu clair contenant une silhouette blanche de profil (homme/femme générique) en haut à gauche.
+        *   Icônes de navigation : Une rangée de quatre cercles en bas de l'en-tête sombre. Le dernier cercle à droite est blanc avec une icône noire (silhouette de personne), indiquant l'état actif. Les trois autres sont noirs avec des icônes blanches.
+        *   Badge compteur : En haut à droite, un petit pictogramme blanc (dossier/fichier) accompagné du chiffre "8".
+
+6.  **Drafting Section 4: ICÔNES ET PICTOGRAMMES**
+    *   *Observation:*
+        *   Back arrow: Circle with a left arrow (top left of the dark section).
+        *   Nav icons: Palm tree (home?), Document (files?), People (team?), Person (profile - active).
+        *   Flag: A small French flag next to the phone number.
+    *   *Draft:*
+        *   Flèche retour : Un cercle contenant une flèche pointant vers la gauche, situé à gauche de l'en-tête sombre.
+        *   Icône Palmier : Premier cercle de la barre de navigation (fonction probable : Accueil).
+        *   Icône Document : Deuxième cercle de la barre de navigation (fonction probable : Documents).
+        *   Icône Groupe : Troisième cercle de la barre de navigation (fonction probable : Équipe/Contacts).
+        *   Drapeau : Un petit drapeau français (bleu, blanc, rouge) situé à côté du numéro de téléphone.
+
+7.  **Drafting Section 5: AGENCEMENT ET RELATIONS**
+    *   *Observation:*
+        *   Top section: Dark background image (mountains/deck). Text is overlaid.
+        *   Middle section: Navigation bar.
+        *   Bottom section: White background, list of text lines.
+        *   Hierarchy: "Mes données individuelles" is a title. The lines below are key-value pairs (implied).
+    *   *Draft:*
+        *   Structure : L'écran est divisé en deux zones principales : un en-tête sombre occupant le tiers supérieur avec une image de fond (paysage montagneux et planche de bois), et une zone de contenu blanche en dessous.
+        *   Hiérarchie : Le titre "Mes données individuelles" est en gras et plus grand que le reste du texte, marquant le début de la liste des informations.
+        *   Alignement : Les lignes de texte dans la section

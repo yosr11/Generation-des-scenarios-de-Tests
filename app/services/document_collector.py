@@ -1,4 +1,4 @@
-"""
+﻿"""
 app/services/document_collector.py
 ───────────────────────────────────
 Collecte les documents liés à une story Jira pour le RAG :

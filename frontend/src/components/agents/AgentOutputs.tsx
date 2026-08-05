@@ -141,7 +141,7 @@ const AgentResultHero: React.FC<{
   </div>
 )
 
-/** Unified numbered item card (Agent 1 lists + Agent 1.5 goals) */
+/** Unified numbered item card (Agent 1 lists + Agent 2 goals) */
 const AgentItemCard: React.FC<{
   index: number
   title: string
@@ -433,7 +433,7 @@ export const Agent1Result: React.FC<{ output: any }> = ({ output }) => {
 }
 
 // ════════════════════════════════════════════════════════════════════════════
-// AGENT 1.5 — Business Modeling
+// AGENT 2 — Business Modeling
 // ════════════════════════════════════════════════════════════════════════════
 
 const priorityAccent = (p: string): AccentColor =>
@@ -516,7 +516,7 @@ const WorkflowAccordion: React.FC<{ workflow: any; index: number }> = ({ workflo
   )
 }
 
-export const Agent15Result: React.FC<{ output: any }> = ({ output }) => {
+export const Agent2Result: React.FC<{ output: any }> = ({ output }) => {
   const bm        = output?.business_model || output || {}
   const goals     = bm.business_goals     || []
   const workflows = bm.business_workflows || []
@@ -591,9 +591,9 @@ export const Agent15Result: React.FC<{ output: any }> = ({ output }) => {
 }
 
 // ════════════════════════════════════════════════════════════════════════════
-// AGENT 3 — Validation
+// AGENT 4 — Validation
 // ════════════════════════════════════════════════════════════════════════════
-export const Agent3Result: React.FC<{ output: any }> = ({ output }) => {
+export const Agent4Result: React.FC<{ output: any }> = ({ output }) => {
   if (!output) return null
   const report           = output?.report || output
   const coverage         = report?.coverage_rate ?? report?.coverage_percentage ?? 0
@@ -1288,15 +1288,15 @@ export const Agent5Result: React.FC<{ output: any; storyId?: string }> = ({ outp
 }
 
 // ════════════════════════════════════════════════════════════════════════════
-// AGENT 2 — Internal wrapper (state + ManualTestsTable)
+// AGENT 3 — Internal wrapper (state + ManualTestsTable)
 // ════════════════════════════════════════════════════════════════════════════
-const Agent2ResultWrapper: React.FC<{
+const Agent3ResultWrapper: React.FC<{
   output: any
   storyId?: string
   onTestsChange?: (tests: any[]) => void
 }> = ({ output, storyId, onTestsChange }) => {
   const [tests, setTests] = useState<any[]>(
-    Array.isArray(output) ? output : output?.tests || output?.agent2_tests || []
+    Array.isArray(output) ? output : output?.tests || output?.agent3_tests || []
   )
   const handleChange = (next: any[]) => {
     setTests(next)
@@ -1326,11 +1326,11 @@ export const AgentRichOutput: React.FC<{
   onTestsChange?: (tests: any[]) => void
 }> = ({ agentKey, output, storyId, onTestsChange }) => {
   if (!output) return null
-  if (agentKey === 'Agent 1')   return <Agent1Result   output={output} />
-  if (agentKey === 'Agent 1.5') return <Agent15Result  output={output} />
-  if (agentKey === 'Agent 2')   return <Agent2ResultWrapper output={output} storyId={storyId} onTestsChange={onTestsChange} />
-  if (agentKey === 'Agent 3')   return <Agent3Result   output={output} />
-  if (agentKey === 'Agent 5')   return <Agent5Result   output={output} storyId={storyId} />
+  if (agentKey === 'Agent 1') return <Agent1Result   output={output} />
+  if (agentKey === 'Agent 2') return <Agent2Result  output={output} />
+  if (agentKey === 'Agent 3') return <Agent3ResultWrapper output={output} storyId={storyId} onTestsChange={onTestsChange} />
+  if (agentKey === 'Agent 4') return <Agent4Result   output={output} />
+  if (agentKey === 'Agent 5') return <Agent5Result   output={output} storyId={storyId} />
 
   // Fallback: key-value table for unknown agents
   if (typeof output === 'object') {

@@ -1,7 +1,7 @@
-"""
+﻿"""
 app/repositories/business_model_repository.py
 ───────────────────────────────────────────────
-CRUD pour la table story_business_models (résultats Agent 1.5) — PostgreSQL (SQLAlchemy ORM).
+CRUD pour la table story_business_models (résultats Agent 2) — PostgreSQL (SQLAlchemy ORM).
 """
 
 from __future__ import annotations

@@ -1,0 +1,80 @@
+[Image jointe : Profil 360 HRLocal - Dossier numérique du collaborateur.png]
+── Textes détectés (OCR) ──
+— Dossier numérique o ? O
+LYYW e Tl BASF DF CONNAISSANCE EN
+Q SUs Hm ARSOTA*
+*RLTET! "
+Dossier numenque
+, . P
+Dossier numérique
+BASF DE CONNAISSANCE EN
+xc m'm:ï ARSO AN
+*FRLTET
+1E
+Dossier numénque
+── Analyse visuelle (VLM) ──
+<think>
+The user wants me to analyze a screenshot of a UI mockup.
+I need to follow a specific structure:
+1.  **CONTEXTE**: Nature of the screen and intention.
+2.  **ANNOTATIONS AJOUTÉES PAR LE PO**: Any overlays (boxes, arrows, etc.).
+3.  **ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI**: Pills, badges, buttons, etc.
+4.  **ICÔNES ET PICTOGRAMMES**: Symbols without text.
+5.  **AGENCEMENT ET RELATIONS**: Layout, hierarchy, grouping.
+
+**Analysis of the image:**
+-   **Top Bar**: Black bar with a hamburger menu icon, a logo (looks like "4e" or similar), title "Dossier numérique", and three icons on the right (magnifying glass, question mark, power button).
+-   **Tabs**: Below the top bar, there are two tabs. One is active (blue background, white text "SALARIÉ 4YOU"), the other is inactive (grey text "BASE DE CONNAISSANCE EN...").
+-   **Alert Banner**: A yellow/beige banner with text "Aucun document à afficher. Veuillez sélectionner un type de document [icon] après avoir choisi un salarié."
+-   **Left Sidebar/Panel**:
+    -   User profile card: Photo, Name "Houssem ABSQUANI", ID "FRLTET011".
+    -   Search bar: "Filtre sur arborescence et mots-clés" with a funnel icon.
+    -   Checkbox: "Masquer les emplacements vides".
+    -   Tree structure: "Dossier numérique" (header), then an expandable item "5. Rémunération" with a folder icon.
+-   **Right Panel**: Mostly empty white space, likely where documents would appear.
+
+**OCR Text Check:**
+-   "Dossier numérique" (Top bar)
+-   "SALARIÉ 4YOU" (Active tab)
+-   "BASE DE CONNAISSANCE EN..." (Inactive tab)
+-   "Aucun document à afficher. Veuillez sélectionner un type de document [icon] après avoir choisi un salarié." (Alert text)
+-   "Houssem ABSQUANI" (User name)
+-   "FRLTET011" (User ID)
+-   "Filtre sur arborescence et mots-clés" (Search placeholder)
+-   "Masquer les emplacements vides" (Checkbox label)
+-   "Dossier numérique" (Sidebar header)
+-   "5. Rémunération" (Tree item)
+
+**Drafting the response:**
+
+1.  **CONTEXTE**: C'est une interface de gestion de "Dossier numérique" pour un salarié. L'écran semble être une vue de consultation ou de navigation dans les documents d'un employé spécifique.
+
+2.  **ANNOTATIONS**: Je ne vois aucune annotation ajoutée par-dessus (pas de cadres rouges, flèches, etc.). C'est une capture d'écran propre.
+
+3.  **ÉLÉMENTS GRAPHIQUES NATIFS**:
+    -   Onglet actif : Fond bleu, texte blanc "SALARIÉ 4YOU".
+    -   Onglet inactif : Fond blanc/gris, texte gris "BASE DE CONNAISSANCE EN...".
+    -   Carte utilisateur : Conteneur blanc avec bordure grise, contenant la photo et les infos du salarié.
+    -   Champ de recherche : Zone rectangulaire avec fond gris clair, icône d'entonnoir à droite.
+    -   Checkbox : Case à cocher vide à gauche du texte "Masquer les emplacements vides".
+    -   Item d'arborescence : Ligne avec icône de dossier et texte "5. Rémunération".
+    -   Bannière d'alerte : Bandeau jaune pâle en haut de la zone de contenu principal.
+
+4.  **ICÔNES ET PICTOGRAMMES**:
+    -   En haut à gauche : Menu hamburger (3 lignes horizontales).
+    -   En haut au centre : Logo circulaire (semblable à "4e").
+    -   En haut à droite : Loupe (recherche), Point d'interrogation (aide), Bouton d'alimentation (connexion/déconnexion).
+    -   Dans la bannière jaune : Icône de document/page.
+    -   Dans le champ de recherche : Entonnoir (filtre).
+    -   Dans l'arborescence : Flèche vers la droite (déroulant) et dossier noir.
+
+5.  **AGENCEMENT ET RELATIONS**:
+    -   Structure en deux colonnes principales : une barre latérale gauche (navigation/filtres) et une zone de contenu principale à droite (actuellement vide avec un message d'erreur/info).
+    -   Hiérarchie : Barre de navigation noire en haut -> Onglets de navigation -> Zone de contenu.
+    -   La carte utilisateur est en haut de la barre latérale gauche.
+    -   Le champ de recherche est juste en dessous de la carte utilisateur.
+    -   L'arborescence "Dossier numérique" est en bas de la barre latérale gauche.
+    -   Le message d'alerte jaune est positionné en haut de la zone de contenu droite, indiquant l'état actuel (aucun document sélectionné).
+
+**Refining based on strict rules:**
+-

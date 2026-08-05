@@ -1,0 +1,87 @@
+[Image jointe : image-2023-09-19-15-51-19-880.png]
+── Textes détectés (OCR) ──
+= @ Profil collaborateur O ? ©
+Rania Q11CONGEO1 | FRLFR4Y1314
+3 ans et 8 mois et 19 jours chez Société 4YOU - Ftablissement de Ftablissement QAT 0
+Mes données individuelles
+Vous êtes joignable sur le mobile F54 B H +3314567882.
+Vous avez 1 contact en cas d'urgence. En priorité nous préviendrons M. Thomas RUBENS (Conjoint) au =3~ B M-33 645455667.
+O,
+Profil collaborateur
+Rania Q11CONGEO1 | FRLFRAY1314
+3 ans et 8 mois et 19 jours chez Société 4YOU - Ftablissement de Ftablissement QAT ()
+> O
+B N -33 645455667.
+Vous avez 1 contact en cas d'urgence. En priorité nous préviendrons M. Thomas RUBENS (Conjoint) au
+── Analyse visuelle (VLM) ──
+<think>
+Here's a thinking process that leads to the suggested output:
+
+1.  **Analyze the Request:**
+    *   **Goal:** Describe the visual, non-textual elements of a UI screenshot/mockup.
+    *   **Input:** An image (which I need to analyze) and OCR text (which I must trust and not re-list).
+    *   **Output Format:** 5 specific sections (Context, Annotations, Native UI Elements, Icons/Pictograms, Layout/Relations).
+    *   **Language:** French.
+    *   **Constraints:** Be factual, neutral, avoid inventing text, avoid guessing functionality (unless obvious like a search icon), use generic terms if unsure.
+
+2.  **Analyze the Image:**
+    *   *Visuals:* It looks like a mobile app interface or a responsive web view.
+    *   *Header:* Dark background with a landscape photo (mountains, wooden deck).
+    *   *Top Bar:* Black bar with a menu icon (hamburger), a logo ("4YOU"), title "Profil collaborateur", and three icons on the right (magnifying glass, question mark, power button).
+    *   *Profile Section:* A circular avatar placeholder on the left. Text next to it (Name, ID, Tenure).
+    *   *Navigation/Action Buttons:* Below the header image, there are two circular buttons. One has a back arrow, the other has a user silhouette.
+    *   *Content Area:* White background. Title "Mes données individuelles". Text paragraphs below.
+    *   *Specific Visual Elements:*
+        *   Flags: Small French flags next to phone numbers.
+        *   Links: Blue underlined text (phone numbers).
+        *   Bold text: "1 contact en cas d'urgence".
+
+3.  **Drafting the Content - Section by Section:**
+
+    *   **1. CONTEXTE:**
+        *   *Observation:* It's a profile page. It has a header image, user details, and personal data.
+        *   *Draft:* Il s'agit d'une page de profil utilisateur ("Profil collaborateur") sur une interface mobile ou responsive, affichant les informations personnelles et de contact d'un employé.
+
+    *   **2. ANNOTATIONS AJOUTÉES PAR LE PO:**
+        *   *Observation:* I need to look for red boxes, arrows, circles drawn *over* the UI.
+        *   *Result:* I see none. The image looks like a clean screenshot or a high-fidelity mockup without markup.
+        *   *Draft:* Aucune annotation détectée.
+
+    *   **3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI:**
+        *   *Observation:*
+            *   Top left: Hamburger menu icon (lines).
+            *   Top center: Logo "4YOU" (looks like a stylized '4' and 'e' or similar).
+            *   Top right: Three icons (Search, Help, Logout).
+            *   Header image: A landscape photo (mountains, bench).
+            *   Avatar: A circular image on the left (looks like a screenshot of another screen inside the circle? Or just a generic placeholder). Let's call it a "cercle d'avatar".
+            *   Buttons: Two white circles with black icons below the header.
+            *   Flags: Small rectangular French flags.
+            *   Links: Blue text (phone numbers).
+        *   *Refining descriptions:*
+            *   *Logo:* Un logo circulaire blanc contenant le texte "4YOU" (ou similaire) en haut à gauche.
+            *   *Avatar:* Un cercle à gauche du bloc d'en-tête contenant une miniature d'écran.
+            *   *Boutons circulaires:* Deux boutons ronds blancs avec des icônoires noires situés sous l'image d'en-tête.
+            *   *Drapeaux:* De petits drapeaux français (bleu, blanc, rouge) placés à côté des numéros de téléphone.
+            *   *Liens hypertextes:* Les numéros de téléphone sont affichés en bleu et soulignés.
+
+    *   **4. ICÔNES ET PICTOGRAMMES:**
+        *   *Top Bar:*
+            *   Left: Hamburger menu (3 lines).
+            *   Right: Magnifying glass (search), Question mark (help), Power button (logout).
+        *   *Middle Buttons:*
+            *   Left button: Back arrow (return).
+            *   Right button: User silhouette (profile).
+        *   *Drafting:*
+            *   En haut à gauche : icône de menu (trois barres horizontales).
+            *   En haut à droite : loupe (recherche), point d'interrogation (aide), symbole d'alimentation (déconnexion).
+            *   Sous l'image d'en-tête à gauche : bouton circulaire avec une flèche retour.
+            *   Sous l'image d'en-tête au centre : bouton circulaire avec une silhouette d'utilisateur.
+
+    *   **5. AGENCEMENT ET RELATIONS:**
+        *   *Structure:*
+            *   Top black bar (navigation).
+            *   Header section (dark image background) containing the user's name and tenure info.
+            *   Floating action buttons (the two circles) overlapping the bottom of the header image.
+            *   Main content area (white background) starting with "Mes données individuelles".
+        *   *Details:*
+            *

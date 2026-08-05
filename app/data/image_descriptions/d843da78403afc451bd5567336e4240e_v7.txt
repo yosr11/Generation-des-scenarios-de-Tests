@@ -1,0 +1,85 @@
+[Image jointe : Pointage en attente dans le widget de pointage.png]
+── Textes détectés (OCR) ──
+Cupidon QRHGTAHRO1
+EMPLOYÉ QUALIFIÉ
+“ ©
+« |
+Ven 29/09/2023 entrée v
+11:12:56
+0mm
+Ven 29/09/2023
+entrée
+QS:CC
+102
+nn
+9:05
+- 13:CC12CC
+s027
+── Analyse visuelle (VLM) ──
+<think>
+Here's a thinking process that leads to the suggested output:
+
+1.  **Analyze the Request:**
+    *   **Goal:** Describe the visual, non-textual elements of the provided screenshots (mockups/UI).
+    *   **Input:** Three images (which appear to be variations or crops of the same interface) and an OCR text list.
+    *   **Constraint:** Do *not* re-list the text found in the OCR. Focus *only* on what the OCR misses (visuals, layout, icons, annotations).
+    *   **Format:** 5 specific sections (Context, Annotations, Native UI Elements, Icons, Layout/Relations).
+    *   **Language:** French.
+    *   **Tone:** Factual, neutral, structured.
+
+2.  **Analyze the Images:**
+    *   *Image 1 (Top):* Shows a mobile interface. Top section is black with a user profile icon. Middle section is white with a timeline visualization. Bottom has a link.
+    *   *Image 2 (Middle):* A zoomed-in crop of the timeline area.
+    *   *Image 3 (Bottom):* Another crop, focusing on the top right and the timeline.
+
+    *   *Key Visual Elements:*
+        *   **Header:** Black background. User avatar (blue silhouette).
+        *   **Timeline:** A horizontal bar chart representing time (00:00 to 00:00 next day). It has colored segments (blue, dark grey/black, teal).
+        *   **Specific Timeline Detail:** There's a specific marker at "9:05" with a small icon above it (looks like a wifi signal or a bell) and a downward arrow below it.
+        *   **Controls:** A dropdown menu (white box with arrow). A circular icon with a document/card symbol inside.
+        *   **Bottom Link:** A blue link with a small icon (looks like a document or list) next to it.
+        *   **Navigation:** A "chevron up" arrow at the very bottom.
+
+3.  **Drafting the Content - Section by Section:**
+
+    *   **1. CONTEXTE:**
+        *   *Observation:* It's a mobile app screen. It shows a user profile and a timeline of activity (likely time tracking/punching in/out).
+        *   *Draft:* Il s'agit d'une interface mobile (application) affichant le profil d'un utilisateur et une visualisation chronologique de ses pointages sur une journée.
+
+    *   **2. ANNOTATIONS AJOUTÉES PAR LE PO:**
+        *   *Observation:* I need to look closely for red boxes, arrows, circles added *on top* of the UI.
+        *   *Result:* Looking at the three images, they look like clean screenshots or crops. There are no red circles, yellow highlights, or arrows drawn by a human. The "9:05" box is part of the UI (a tooltip or label), not an annotation. The blue circle around the avatar is part of the design.
+        *   *Draft:* Aucune annotation détectée.
+
+    *   **3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI:**
+        *   *Observation:*
+            *   **Timeline:** A horizontal bar divided into segments. Colors: Light blue, dark grey/black, teal/cyan.
+            *   **Dropdown:** A white rectangular box with a downward arrow.
+            *   **Icon Button:** A circle with a document icon inside (teal outline).
+            *   **Link:** Text with a small icon to its left.
+            *   **Avatar:** A blue circle with a silhouette.
+        *   *Draft:*
+            *   Une barre chronologique horizontale divisée en segments de couleurs différentes (bleu clair, bleu foncé, gris foncé, cyan).
+            *   Un menu déroulant rectangulaire blanc avec une flèche vers le bas.
+            *   Un cercle contenant une icône de document (contour cyan).
+            *   Un lien hypertexte en bas accompagné d'une petite icône à gauche.
+            *   Un avatar circulaire bleu clair avec une silhouette humaine.
+
+    *   **4. ICÔNES ET PICTOGRAMMES:**
+        *   *Observation:*
+            *   **Top Right:** Arrow in a circle (navigation/next).
+            *   **Timeline:** Small vertical ticks (hours). A specific marker at 9:05 with a "signal/bell" icon above it and a triangle below it.
+            *   **Bottom:** Chevron up (scroll up).
+            *   **Link:** Small document/list icon.
+        *   *Draft:*
+            *   Flèche directionnelle droite dans un cercle (en haut à droite).
+            *   Icône de document à l'intérieur d'un cercle (au centre).
+            *   Symbole ressemblant à un signal wifi ou une cloche au-dessus de la marque "9:05".
+            *   Triangle pointant vers le bas sous la marque "9:05".
+            *   Flèche courbe vers le haut (chevron) en bas de l'écran.
+            *   Petite icône de document/liste à gauche du lien bleu.
+
+    *   **5. AGENCEMENT ET RELATIONS:**
+        *   *Observation:*
+            *   **Header:** Black background, white text. Avatar top right.
+            *   **Body:** White background. Date/Time on left

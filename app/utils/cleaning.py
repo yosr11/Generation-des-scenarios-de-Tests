@@ -1,4 +1,4 @@
-"""
+﻿"""
 app/utils/cleaning.py
 ─────────────────────────────────────────────────────────────────────
 Nettoyage des données brutes Jira / XRAY — Sopra HR Software.

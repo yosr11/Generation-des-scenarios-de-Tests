@@ -12,7 +12,6 @@ import { StoryDetailPage } from './pages/StoryDetailPage'
 import { AdminDashboardPage } from './pages/admin/AdminDashboardPage'
 import { UsersPage } from './pages/admin/UsersPage'
 import { PipelineHistoryPage } from './pages/admin/PipelineHistoryPage'
-import { AuditPage } from './pages/admin/AuditPage'
 import { ProfilePage } from './pages/ProfilePage'
 import { ResetPasswordPage } from './pages/ResetPasswordPage'
 
@@ -37,6 +36,14 @@ function App() {
 
             {/* Authenticated Routes */}
             <Route element={<AuthenticatedLayout />}>
+              <Route
+                path="/admin/pipelines"
+                element={
+                  <ProtectedRoute roles={["admin"]}>
+                    <PipelineHistoryPage />
+                  </ProtectedRoute>
+                }
+              />
 
               {/* ── Redirect /home to role-aware default ── */}
               <Route path="/home" element={<Navigate to="/pipeline" replace />} />
@@ -90,22 +97,6 @@ function App() {
                 element={
                   <ProtectedRoute roles={['admin']}>
                     <UsersPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/pipelines"
-                element={
-                  <ProtectedRoute roles={['admin']}>
-                    <PipelineHistoryPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/audit"
-                element={
-                  <ProtectedRoute roles={['admin']}>
-                    <AuditPage />
                   </ProtectedRoute>
                 }
               />

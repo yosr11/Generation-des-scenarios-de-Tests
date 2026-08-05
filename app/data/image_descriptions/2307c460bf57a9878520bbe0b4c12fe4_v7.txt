@@ -1,0 +1,96 @@
+[Image jointe : démenagement_collaborateur.png]
+── Textes détectés (OCR) ──
+= @ Mon déménagement o ? O
+Veuillez renseigner vos nouvelles coordonnées, attacher vos justificatifs et envoyer les informations a votre Gestionnaire Ressources Humaines. Créer
+Supprimer Sauvegarder Envoyer
+Historique
+v Mon adresse principale LÜJ. ËI.
+SUGGESTIONS
+Les champs indiqués par Lre * son: coligataires.
+' o % ; . % F) Mes congés
+Date d'effet du déménagement * i Type d'adresse
+A f Adresse domicile &
+Pays *
+France &
+Code postal * Commune * Lieu dit
+N° de voie BIS, TER... Nature de la voie
+Nom de la voie Complément d'adresse
+Justificatif * à
+Suivant
+}> Mon mode de transport ËI.
+O,
+Mon déménagement
+Veuillez renseigner vos nouvelles coordonnées, attacher vos justificatifs et envoyer les informations à votre Gestionnaire Ressources Humaines.
+Créer
+Supprimer
+Sauvegarder
+Envoyer
+v Mon adresse principale
+0, B
+4.
+Les champs indiqués par Lre * son: obligatoires
+F) Mes congés
+Date d'effet du déménagement * i
+Type d'adresse *
+Adresse domicile
+__
+France
+Code postal *
+Commune *
+Lieu dit
+N° de voie
+BIS, TER...
+Nature de la voie
+Nom de la voie
+Complément d'adresse
+Justificatif * i
+> Mon mode de transport
+── Analyse visuelle (VLM) ──
+<think>
+Here's a thinking process that leads to the suggested output:
+
+1.  **Analyze the Request:**
+    *   **Goal:** Describe the visual, non-textual elements of the provided screenshots (mockups/UI).
+    *   **Input:** Three images (screenshots of a "Mon déménagement" interface) and an OCR text list.
+    *   **Constraint:** Do *not* re-list the text from the OCR. Focus *only* on what the OCR misses (visuals, layout, icons, annotations).
+    *   **Structure:** 5 specific sections (Context, Annotations, Native UI Elements, Icons, Layout/Relations).
+    *   **Tone:** Factual, neutral, structured.
+    *   **Language:** French.
+
+2.  **Analyze the Images:**
+    *   *Image 1:* Shows the full interface. It's a form titled "Mon déménagement". There's a sidebar on the right.
+    *   *Image 2:* A zoomed-in crop of the top right area (sidebar).
+    *   *Image 3:* Another zoomed-in crop, focusing on the top right corner icons and the sidebar header.
+
+3.  **Drafting Section 1: CONTEXTE**
+    *   *Observation:* It's a web application interface, specifically a form for managing a move ("Mon déménagement"). It looks like an intranet or HR portal.
+    *   *Draft:* Il s'agit d'une interface web de type formulaire de saisie, probablement issue d'un portail RH ou intranet, dédiée à la gestion d'un déménagement. L'écran présente une structure en deux colonnes avec un formulaire principal à gauche et un panneau latéral à droite.
+
+4.  **Drafting Section 2: ANNOTATIONS AJOUTÉES PAR LE PO**
+    *   *Observation:* I need to look for red boxes, arrows, circles, etc.
+    *   *Scan:*
+        *   Image 1: There are small red triangles with exclamation marks next to the "Mon adresse principale" header and the "Mon mode de transport" header. Wait, looking closer at the high-res crop (Image 2), there are red triangles with exclamation marks next to the icons in the header bars.
+        *   *Correction:* Actually, looking very closely at the provided images, specifically the second and third crops, there are small red triangles with exclamation marks (warning icons) placed next to the icons in the dark blue headers ("Mon adresse principale" and "Mon mode de transport").
+        *   *Wait, let me re-evaluate.* Are these annotations added *by the PO* (Product Owner) on top of the screenshot, or are they part of the UI design?
+        *   *Analysis:* The prompt asks for "ANNOTATIONS AJOUTÉES PAR LE PO... PAR-DESSUS l'écran original".
+        *   *Visual Check:* The red triangles look like standard UI warning icons (often used for required fields or errors), but they are placed *outside* the main form area, next to the section headers. However, looking at the third image, there are icons in the top right corner (magnifying glass, question mark, power button).
+        *   *Crucial Check:* Are there *any* obvious "PO annotations" like red rectangles drawn with a mouse tool?
+        *   *Result:* No. There are no red boxes, arrows, or circles drawn *over* the interface to highlight specific areas. The red triangles next to the headers look like part of the UI design (perhaps indicating a warning or required section), not a post-it or a drawn box.
+        *   *Decision:* "Aucune annotation détectée" (No annotations detected). The red triangles are likely native UI elements (warnings), not PO markup.
+
+5.  **Drafting Section 3: ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI**
+    *   *Observation:*
+        *   Buttons: "Créer" (Blue background, white text), "Supprimer", "Sauvegarder", "Envoyer" (Grey/White background, grey text).
+        *   Sidebar: "Créer" (Blue tab), "Historique" (White tab), "SUGGESTIONS" (White section).
+        *   Pills/Tags: "Mes congés" (Blue text with a small icon).
+        *   Input fields: Standard rectangular boxes with grey borders.
+        *   Dropdowns: Indicated by small arrows on the right side of the box.
+        *   Checkmarks: A green checkmark next to the "Type d'adresse" field.
+    *   *Drafting:*
+        *   Bouton "Créer" : Fond bleu, texte blanc, situé en haut à droite dans le panneau latéral.
+        *   Boutons d'action ("Supprimer", "Sauvegarder", "Envoyer") : Fond blanc/gris clair, bordure grise, texte gris, alignés horizontalement sous le titre principal.
+        *   Champ "Type d'adresse" : Entouré d'une bordure verte fine avec une coche verte à droite, indiquant une validation ou un état actif.
+        *   Élément "Mes congés" : Texte bleu accompagné d'une petite icône de personne, situé dans la section "SUGGESTIONS".
+        *   Champs de saisie : Rectangles blancs avec bordure grise fine.
+
+6.  **Drafting Section 4: ICÔNES ET PICTOGRAMMES**

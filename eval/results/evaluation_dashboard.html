@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dashboard d'évaluation des tests générés</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #eef1f6;
+    --panel: #ffffff;
+    --panel-border: #dde3ee;
+    --text: #101828;
+    --muted: #64748b;
+    --muted-2: #98a2b3;
+    --accent: #4338ca;
+    --accent-soft: #eef0fd;
+    --teal: #0891b2;
+    --good: #16a34a;
+    --good-bg: #e9f9ee;
+    --warn: #d97706;
+    --warn-bg: #fdf3e3;
+    --bad: #dc2626;
+    --bad-bg: #fdecec;
+    --line: #e3e7ef;
+    --radius: 16px;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background:
+      radial-gradient(1200px 500px at 90% -10%, rgba(67,56,202,0.07), transparent 60%),
+      var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  .mono { font-family: 'IBM Plex Mono', monospace; }
+
+  .container { max-width: 1180px; margin: 0 auto; padding: 40px 28px 64px; }
+
+  header {
+    display: flex; justify-content: space-between; align-items: flex-end; gap: 20px;
+    margin-bottom: 28px; flex-wrap: wrap;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-soft);
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+
+  h1 {
+    margin: 0;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 1.85rem;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  .subtitle { color: var(--muted); margin-top: 8px; font-size: 0.94rem; }
+
+  .source-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    padding: 8px 12px;
+    border-radius: 10px;
+    white-space: nowrap;
+  }
+
+  /* ---- KPI cards ---- */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 22px;
+  }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    box-shadow: 0 1px 2px rgba(16,24,40,0.04);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 108px;
+  }
+
+  .card .label {
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .card .value {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 1.7rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  .card .value .unit {
+    font-size: 0.95rem;
+    color: var(--muted-2);
+    font-weight: 500;
+    margin-left: 3px;
+  }
+
+  /* verdict KPI card: compact chip row instead of stacked text (this was the bug) */
+  .verdict-chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 5px 10px;
+    border-radius: 999px;
+    line-height: 1;
+  }
+  .chip .dot { width: 6px; height: 6px; border-radius: 50%; }
+  .chip.good { background: var(--good-bg); color: var(--good); }
+  .chip.good .dot { background: var(--good); }
+  .chip.partial { background: var(--warn-bg); color: var(--warn); }
+  .chip.partial .dot { background: var(--warn); }
+  .chip.bad { background: var(--bad-bg); color: var(--bad); }
+  .chip.bad .dot { background: var(--bad); }
+
+  /* ---- panels ---- */
+  .grid {
+    display: grid;
+    grid-template-columns: 1.25fr 0.85fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius);
+    padding: 22px;
+    box-shadow: 0 1px 2px rgba(16,24,40,0.04);
+  }
+
+  .panel h2 {
+    margin: 0 0 18px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .bar-list { display: grid; gap: 16px; }
+  .metric-row { display: grid; grid-template-columns: 128px 1fr 64px; align-items: center; gap: 12px; }
+  .metric-label { font-size: 0.88rem; color: var(--text); font-weight: 500; }
+  .bar-track {
+    height: 8px; border-radius: 999px; background: #eef1f6; overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%; border-radius: inherit;
+    background: linear-gradient(90deg, var(--accent), var(--teal));
+    transition: width 0.6s ease;
+  }
+  .metric-value {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.85rem; text-align: right; color: var(--muted); font-weight: 500;
+  }
+
+  .legend { display: flex; gap: 18px; margin-top: 18px; padding-top: 14px; border-top: 1px dashed var(--line); color: var(--muted); font-size: 0.82rem; }
+  .legend span { display: flex; align-items: center; }
+  .dot-lg { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+
+  /* ---- table ---- */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { padding: 12px 14px; text-align: left; font-size: 0.88rem; }
+  th {
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--line);
+  }
+  td { border-bottom: 1px solid var(--line); }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: #f8fafc; }
+  td.score { font-family: 'IBM Plex Mono', monospace; font-weight: 600; }
+  td.pct { font-family: 'IBM Plex Mono', monospace; color: var(--muted); }
+
+  .pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    border-radius: 999px; padding: 4px 10px; font-size: 0.7rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  .pill.good { background: var(--good-bg); color: var(--good); }
+  .pill.partial { background: var(--warn-bg); color: var(--warn); }
+  .pill.bad { background: var(--bad-bg); color: var(--bad); }
+
+  .section-divider {
+    display: flex; align-items: center; gap: 10px;
+    margin: 4px 0 14px;
+  }
+  .section-divider .tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem; color: var(--muted-2); text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .section-divider .line { flex: 1; height: 1px; background: var(--line); }
+
+  .small { color: var(--muted); font-size: 0.86rem; }
+
+  @media (max-width: 980px) {
+    .cards { grid-template-columns: repeat(2, 1fr); }
+    .grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .cards { grid-template-columns: 1fr; }
+    .metric-row { grid-template-columns: 96px 1fr 52px; }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <div class="eyebrow">Rapport d'évaluation QA</div>
+        <h1>Dashboard d'évaluation des tests générés</h1>
+        <div class="subtitle" id="subtitle">Chargement des données…</div>
+      </div>
+      <div class="source-tag">generated_tests_evaluation_gpt_4.1.json</div>
+    </header>
+
+    <section class="cards">
+      <div class="card">
+        <div class="label">Stories évaluées</div>
+        <div class="value" id="stories-count">–</div>
+      </div>
+      <div class="card">
+        <div class="label">Score final moyen</div>
+        <div class="value" id="final-score">–</div>
+      </div>
+      <div class="card">
+        <div class="label">Business similarity</div>
+        <div class="value" id="business-score">–</div>
+      </div>
+      <div class="card">
+        <div class="label">Verdicts</div>
+        <div class="verdict-chips" id="verdict-chips"></div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="panel">
+        <h2>Métriques moyennes</h2>
+        <div id="metrics-chart" class="bar-list"></div>
+      </div>
+      <div class="panel">
+        <h2>Répartition des verdicts</h2>
+        <div id="verdict-chart" class="bar-list"></div>
+        <div class="legend">
+          <span><span class="dot-lg" style="background: var(--good)"></span>GOOD</span>
+          <span><span class="dot-lg" style="background: var(--warn)"></span>PARTIAL</span>
+          <span><span class="dot-lg" style="background: var(--bad)"></span>BAD</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-divider">
+        <span class="tag">Top &amp; bottom 10</span>
+        <span class="line"></span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Story</th>
+              <th>Score final</th>
+              <th>Verdict</th>
+              <th>Couverture</th>
+              <th>Qualité QA</th>
+            </tr>
+          </thead>
+          <tbody id="stories-table"></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    async function loadData() {
+      try {
+        const response = await fetch('./generated_tests_evaluation_gpt_4.1.json');
+        if (!response.ok) throw new Error('Fichier introuvable');
+        const data = await response.json();
+        render(data);
+      } catch (error) {
+        document.getElementById('subtitle').textContent = 'Erreur de chargement du fichier JSON.';
+        console.error(error);
+      }
+    }
+
+    function render(data) {
+      const summary = data.summary || {};
+      const averages = summary.averages || {};
+      const stories = summary.per_story_scores || [];
+
+      document.getElementById('subtitle').textContent =
+        `${summary.evaluated_stories || 0} stories analysées avec le modèle ${data.evaluation_model || 'n/a'}`;
+      document.getElementById('stories-count').textContent = summary.evaluated_stories || 0;
+      document.getElementById('final-score').innerHTML =
+        `${Number(averages.final_score || 0).toFixed(2)}<span class="unit">/100</span>`;
+      document.getElementById('business-score').innerHTML =
+        `${Number(averages.business_similarity || 0).toFixed(2)}<span class="unit">/100</span>`;
+
+      // Single source of truth for verdict counts (no duplicate declaration).
+      const verdicts = [
+        { label: 'GOOD', value: (summary.verdict_distribution && summary.verdict_distribution.GOOD) || 0, color: 'var(--good)' },
+        { label: 'PARTIAL', value: (summary.verdict_distribution && summary.verdict_distribution.PARTIAL) || 0, color: 'var(--warn)' },
+        { label: 'BAD', value: (summary.verdict_distribution && summary.verdict_distribution.BAD) || 0, color: 'var(--bad)' }
+      ];
+
+      // Compact chips instead of stacked full-size text — fixes the oversized "Verdicts" card.
+      renderVerdictChips(verdicts);
+
+      const metrics = [
+        { label: 'Cosine', value: (averages.cosine_similarity || 0) * 100, display: Number(averages.cosine_similarity || 0).toFixed(2) },
+        { label: 'Coverage', value: averages.coverage_score || 0, display: `${Number(averages.coverage_score || 0).toFixed(0)}%` },
+        { label: 'Missing tests', value: averages.missing_tests_score || 0, display: `${Number(averages.missing_tests_score || 0).toFixed(0)}%` },
+        { label: 'QA quality', value: averages.qa_quality_score || 0, display: `${Number(averages.qa_quality_score || 0).toFixed(0)}%` },
+        { label: 'Business similarity', value: averages.business_similarity || 0, display: `${Number(averages.business_similarity || 0).toFixed(0)}%` },
+        { label: 'Final score', value: averages.final_score || 0, display: `${Number(averages.final_score || 0).toFixed(0)}%` }
+      ];
+      renderMetricChart(metrics);
+      renderVerdictChart(verdicts);
+      renderStoriesTable(stories);
+    }
+
+    function renderVerdictChips(verdicts) {
+      const container = document.getElementById('verdict-chips');
+      container.innerHTML = verdicts.map(v => `
+        <span class="chip ${v.label.toLowerCase()}">
+          <span class="dot"></span>${v.value} ${v.label}
+        </span>`).join('');
+    }
+
+    function renderMetricChart(metrics) {
+      const container = document.getElementById('metrics-chart');
+      container.innerHTML = metrics.map((m) => {
+        const width = Math.max(4, Math.min(100, m.value));
+        return `
+          <div class="metric-row">
+            <div class="metric-label">${m.label}</div>
+            <div class="bar-track"><div class="bar-fill" style="width:${width}%"></div></div>
+            <div class="metric-value">${m.display}</div>
+          </div>`;
+      }).join('');
+    }
+
+    function renderVerdictChart(verdicts) {
+      const container = document.getElementById('verdict-chart');
+      const max = Math.max(...verdicts.map(v => v.value), 1);
+      container.innerHTML = verdicts.map(v => `
+        <div class="metric-row">
+          <div class="metric-label">${v.label}</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${(v.value / max) * 100}%; background:${v.color}"></div></div>
+          <div class="metric-value">${v.value}</div>
+        </div>`).join('');
+    }
+
+    function renderStoriesTable(stories) {
+      const rows = [...stories].sort((a, b) => b.final_score - a.final_score);
+      const top = rows.slice(0, 10);
+      const bottom = rows.slice(-10).reverse();
+      const combined = [...top, ...bottom.filter(story => !top.some(t => t.story_id === story.story_id))];
+      const tbody = document.getElementById('stories-table');
+      tbody.innerHTML = combined.map((story) => `
+        <tr>
+          <td>${story.user_story_title || story.story_id}</td>
+          <td class="score">${Number(story.final_score || 0).toFixed(2)}</td>
+          <td><span class="pill ${story.verdict ? story.verdict.toLowerCase() : ''}">${story.verdict || 'N/A'}</span></td>
+          <td class="pct">${Number(story.coverage_score || 0).toFixed(0)}%</td>
+          <td class="pct">${Number(story.qa_quality_score || 0).toFixed(0)}%</td>
+        </tr>`).join('');
+    }
+
+    loadData();
+  </script>
+</body>
+</html>

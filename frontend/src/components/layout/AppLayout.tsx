@@ -11,8 +11,6 @@ const PAGE_TITLES: Record<string, { title: string; subtitle: string }> = {
   '/projects':          { title: 'Mes projets Jira', subtitle: 'Projets accessibles — utilisés pour l\'intégration Xray' },
   '/admin/dashboard':   { title: 'Dashboard Admin', subtitle: 'Vue d\'ensemble de la plateforme' },
   '/admin/users':       { title: 'Gestion Utilisateurs', subtitle: 'Créer, modifier, activer/désactiver les comptes' },
-  '/admin/pipelines':   { title: 'Historique Pipelines', subtitle: 'Qui a lancé quoi, quand et avec quel résultat' },
-  '/admin/audit':       { title: 'Journal d\'Audit', subtitle: 'Traçabilité complète des actions utilisateurs' },
   '/profile':           { title: 'Mon Profil', subtitle: 'Gérez vos informations personnelles et mot de passe' },
 }
 
@@ -53,7 +51,7 @@ export const AppLayout: React.FC = () => {
 
       <div className="flex-1 flex flex-col min-w-0">
         {/* Top Header */}
-        <header className="h-16 bg-white border-b border-gray-100 flex items-center px-6 gap-4 shrink-0 shadow-sm">
+        <header className="relative z-[10000] h-16 bg-white border-b border-gray-100 flex items-center px-6 gap-4 shrink-0 shadow-sm">
           {/* Page info */}
           <div className="flex-1 min-w-0">
             <h2 className="text-base font-bold text-brand-navy leading-tight">{meta.title}</h2>

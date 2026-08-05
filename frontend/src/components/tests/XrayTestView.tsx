@@ -150,7 +150,7 @@ function buildEtapes(test: any): XrayEtape[] {
     })
   })
 
-  // 2) Étapes groupées (format normal Agent 2).
+  // 2) Étapes groupées (format normal Agent 3).
   const groupes: any[] = Array.isArray(test.étapes) && test.étapes.length ? test.étapes : []
   if (groupes.length) {
     groupes.forEach((g) => {
@@ -164,11 +164,12 @@ function buildEtapes(test: any): XrayEtape[] {
       const rawTitle = g.titre || (gSteps[0]?.action ?? '')
       const extracted = extractActor(rawTitle)
       const actorFromGroup = g.actor || extracted.actor || gSteps[0]?.actor || ''
+      const groupData = cleanText(g.data || '') || Array.from(new Set(datas)).join('\n')
       etapes.push({
         titre: extracted.text || '',
         actor: actorFromGroup,
         actions,
-        data: Array.from(new Set(datas)).join('\n'),
+        data: groupData,
         expected: expecteds.join('\n'),
         revision: revisions.join(' · '),
       })

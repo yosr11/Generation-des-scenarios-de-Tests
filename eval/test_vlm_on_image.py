@@ -1,4 +1,4 @@
-"""
+﻿"""
 Test rapide du VLM sur une image locale, sans passer par le pipeline complet.
 
 Usage :
@@ -63,12 +63,12 @@ def main() -> None:
 
     if args.compare:
         models = [
-            "meta-llama/llama-4-scout-17b-16e-instruct",
+            "qwen/qwen3.6-27b",
             "meta-llama/llama-4-maverick-17b-128e-instruct",
         ]
     else:
         models = [
-            os.environ.get("VISION_MODEL", "meta-llama/llama-4-scout-17b-16e-instruct")
+            os.environ.get("VISION_MODEL", "qwen/qwen3.6-27b")
         ]
 
     for model in models:

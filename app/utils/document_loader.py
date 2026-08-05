@@ -1,4 +1,4 @@
-"""
+﻿"""
 app/utils/document_loader.py
 ─────────────────────────────
 Extraction de texte depuis des fichiers binaires (PDF, Word, texte brut).

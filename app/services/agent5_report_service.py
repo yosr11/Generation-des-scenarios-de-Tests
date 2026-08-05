@@ -1,4 +1,4 @@
-"""
+﻿"""
 Agent 5 - Service de Génération de Rapports Finaux.
 
 Synthétise les résultats des agents 1-3 en un rapport structuré et lisible.
@@ -24,7 +24,7 @@ from app.models.agent5_report import (
 )
 from app.models.analysis import StoryAnalysisResult
 from app.models.test_manual import ManualTestGenerationResult
-from app.models.agent3_validation import Agent3ValidationResult
+from app.models.agent4_validation import Agent4ValidationResult
 from app.services.llm_client import call_llm
 from app.prompts.agent5_report_prompt import (
     build_agent5_report_system_prompt,
@@ -282,7 +282,7 @@ class Agent5ReportGeneratorService:
                 ReportRecommendation(
                     priority="critical",
                     action="Régénération / amélioration requise",
-                    rationale="Suite insuffisante. Relancer Agent 2 avec feedback ou affiner spécification.",
+                    rationale="Suite insuffisante. Relancer Agent 3 avec feedback ou affiner spécification.",
                 )
             )
 
@@ -376,7 +376,7 @@ class Agent5ReportGeneratorService:
         self,
         story_analysis: StoryAnalysisResult,
         test_generation: ManualTestGenerationResult,
-        validation_result: Agent3ValidationResult,
+        validation_result: Agent4ValidationResult,
         story_description: str = "",
         correction_iterations: int = 0,
         max_correction_iterations: int = 0,
@@ -633,7 +633,7 @@ class Agent5ReportGeneratorService:
         now = datetime.utcnow().isoformat() + "Z"
 
         agent_versions = {
-            "agent3_embedding": report.llm_quality_model_alias or "semantic",
+            "agent4_embedding": report.llm_quality_model_alias or "semantic",
             "agent5_model": self.model_alias,
         }
 
@@ -648,7 +648,7 @@ class Agent5ReportGeneratorService:
             )
         if correction_iterations > 0 or max_correction_iterations > 0:
             processing_notes.append(
-                f"Itérations de gap-fill (Agent 3 → Agent 2): {correction_iterations}"
+                f"Itérations de gap-fill (Agent 4 → Agent 3): {correction_iterations}"
                 + (
                     f" / {max_correction_iterations} max"
                     if max_correction_iterations

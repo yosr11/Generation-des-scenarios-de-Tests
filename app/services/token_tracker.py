@@ -1,13 +1,13 @@
-"""
+﻿"""
 Suivi de la consommation de tokens des appels LLM, par agent et par pipeline.
 
 Utilisation :
     with track_pipeline() as usage:
         with track_agent("agent1"):
             call_groq(...)        # enregistré automatiquement
-        with track_agent("agent2"):
+        with track_agent("agent3"):
             ...
-    print(usage)  # {"agent1": {...}, "agent2": {...}, "_totals": {...}}
+    print(usage)  # {"agent1": {...}, "agent3": {...}, "_totals": {...}}
 
 Les appels LLM (llm_client + manual_test_generator) appellent record_usage()
 après chaque réponse. Si aucun pipeline n'est actif, l'appel est ignoré.

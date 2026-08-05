@@ -1,4 +1,4 @@
-# app/services/llm_client.py
+﻿# app/services/llm_client.py
 import os
 import time
 import json
@@ -18,7 +18,7 @@ from app.services.token_tracker import record_from_response
 logger = logging.getLogger(__name__)
 
 
-load_dotenv(override=True)
+load_dotenv()
 
 GROQ_MODELS = {
     "qwen3": "qwen/qwen3-32b",
@@ -39,6 +39,7 @@ GITHUB_MODELS = {
     "gpt-4.1": "openai/gpt-4.1",
     "gpt-4.1-mini": "openai/gpt-4.1-mini",
     "gpt-4o": "openai/gpt-4o",
+    "gpt-5": "openai/gpt-5"
 }
 
 GITHUB_MODELS_ENDPOINT = "https://models.github.ai/inference"
@@ -47,7 +48,7 @@ ALL_MODELS = {**GROQ_MODELS, **BEDROCK_MODELS, **GITHUB_MODELS}
 
 # Modeles "thinking" pour lesquels on demande a Groq de masquer le raisonnement
 # (evite que <think>...</think> casse le mode JSON object).
-_REASONING_MODELS = {"qwen3"}
+_REASONING_MODELS = {"qwen3","qwen3.6",}
 
 
 def _build_client():

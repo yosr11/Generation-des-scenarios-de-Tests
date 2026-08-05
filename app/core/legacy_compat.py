@@ -1,4 +1,4 @@
-"""Helpers for legacy/experimental modules.
+﻿"""Helpers for legacy/experimental modules.
 
 This module centralizes the warning path for older integrations that are still
 kept for backward compatibility while the core product moves toward a more

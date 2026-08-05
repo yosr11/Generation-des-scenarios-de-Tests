@@ -1,0 +1,80 @@
+[Image jointe : image-2025-10-15-14-26-05-739.png]
+── Textes détectés (OCR) ──
+. - DO- e e s . . o s e
+- e - . P3 F o ] e
+= à ,20
+mtn e , °
+: » ". PR -
+- " = T .. »
+NN
+® dOL. 409 7LBUEG: Ou C S - e v UE
+oo
+se
+20
+mtn
+.-
+* CIN OEN
+. =
+x.
+JAL - FP 2L B UG Ou C6
+s- vuu
+── Analyse visuelle (VLM) ──
+<think>
+The user wants me to analyze a screenshot of a UI mockup.
+I need to follow a specific structure:
+1.  **CONTEXTE**: Describe the screen type and intent.
+2.  **ANNOTATIONS AJOUTÉES PAR LE PO**: Identify manual annotations (arrows, boxes, highlights).
+3.  **ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI**: Describe native UI elements (buttons, badges, pills).
+4.  **ICÔNES ET PICTOGRAMMES**: Describe icons.
+5.  **AGENCEMENT ET RELATIONS**: Describe layout and hierarchy.
+
+**Constraint Checklist & Confidence Score:**
+1. Context? Yes.
+2. Annotations? Yes.
+3. Native UI elements? Yes.
+4. Icons? Yes.
+5. Layout? Yes.
+6. No OCR text copying? Yes.
+7. No inventing text? Yes.
+8. No guessing functionality? Yes.
+9. Neutral vocabulary? Yes.
+
+Confidence Score: 5/5
+
+**Mental Sandbox Simulation:**
+*   **Image Analysis**: The image is a composite of several screenshots or a zoomed-in view of a dashboard. It looks like a Jira or similar project management tool interface.
+*   **OCR Text**: The OCR is very messy ("DO- e e s", "P3 F o ] e", "mtn e , °"). It's barely readable. I must rely heavily on visual inspection for the text content where OCR fails, but the prompt says "Tu n'as donc PAS à relire ni recopier ces textes. Fais-leur confiance." Wait, the prompt says "Fais-leur confiance" (Trust them) but also "N'invente jamais de texte qui n'est pas dans la liste OCR". This is a contradiction if the OCR is garbage.
+    *   *Correction*: The prompt says "un OCR a DÉJÀ extrait pour toi TOUS les textes visibles... Tu n'as donc PAS à relire ni recopier ces textes. Fais-leur confiance." This implies I should use the OCR text *if* it matches what I see, but if the OCR is garbage (which it looks like here, mostly gibberish), I have to be careful.
+    *   *Re-reading the prompt*: "N'invente jamais de texte qui n'est pas dans la liste OCR." This is a strict rule. If the OCR says "mtn e , °" but I see "25 min", I cannot write "25 min" if it's not in the OCR list.
+    *   *Wait, looking closer at the OCR*: The OCR provided is extremely poor. "mtn e , °" likely corresponds to "25 min". "P3 F o ] e" might be "P3".
+    *   *Crucial realization*: The prompt says "Fais-leur confiance" (Trust them). This usually means "Use these texts as the ground truth". However, the OCR provided is almost entirely illegible garbage characters.
+    *   *Strategy*: I will describe the visual elements. If I need to quote text, I will look for the closest match in the OCR list, even if it's garbled, OR I will describe the visual element without quoting if the OCR is too bad.
+    *   *Actually*, looking at the OCR again: "mtn e , °" is likely "25 min". "P3 F o ] e" is likely "P3". "NN" is likely "Non".
+    *   *Let's look at the image again*. The image shows a dashboard.
+        *   Top left: "MES ACTIVITÉS" (visible in the zoomed crop).
+        *   Sidebar: "Mes collaborateurs" (highlighted in yellow).
+        *   Main area: "Par échéance", "Par catégorie".
+        *   Blue buttons: "Activités à faire", "En cours, En attente".
+    *   *Problem*: The OCR provided in the prompt is:
+        `. - DO- e e s . . o s e`
+        `- e - . P3 F o ] e`
+        `= à ,20`
+        `mtn e , °`
+        `: » ". PR -`
+        `- " = T .. »`
+        `NN`
+        `® dOL. 409 7LBUEG: Ou C S - e v UE`
+        `oo`
+        `se`
+        `20`
+        `mtn`
+        `.-`
+        `* CIN OEN`
+        `. =`
+        `x.`
+        `JAL - FP 2L B UG Ou C6`
+        `s- vuu`
+    *   This OCR is terrible. It barely captures anything useful. "mtn" appears. "20" appears. "NN" appears.
+    *   *Instruction Check*: "N'invente jamais de texte qui n'est pas dans la liste OCR."
+    *   *Dilemma*: If I describe the button "Activités à faire", that text is NOT in the OCR list. The OCR list has "® dOL. 409 7LBUEG: Ou C S - e v UE". This looks like a bad scan of "Activités à faire".
+    *   *Resolution*: I must stick to the prompt's instruction: "N'invente jamais de texte qui n'est pas dans la liste OCR." This means I cannot write "Activités à faire" if it's not in the list.

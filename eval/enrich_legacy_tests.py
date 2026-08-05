@@ -1,4 +1,4 @@
-"""
+﻿"""
 Enrichit les fichiers JSONL legacy déjà extraits avec les 2 champs manquants :
 
   - `module_root` recalculé localement (fix du bug du leading '/')

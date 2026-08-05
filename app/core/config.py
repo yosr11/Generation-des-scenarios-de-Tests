@@ -1,4 +1,4 @@
-# Gère les variables d'environnement (.env).
+﻿# Gère les variables d'environnement (.env).
 # Centralise les chemins JSON, credentials API, seuils et paramètres agents.
 
 import os
@@ -36,7 +36,7 @@ class Settings:
     JWT_ALGORITHM = _get_optional_env("JWT_ALGORITHM", "HS256")
     JWT_EXPIRE_MINUTES = int(_get_optional_env("JWT_EXPIRE_MINUTES", "480"))
     COOKIE_NAME = _get_optional_env("COOKIE_NAME", "access_token")
-    COOKIE_SECURE = _get_bool_env("COOKIE_SECURE", False)
+    COOKIE_SECURE = _get_bool_env("COOKIE_SECURE", True)
     COOKIE_SAMESITE = _get_optional_env("COOKIE_SAMESITE", "lax")
 
     # ── Auth / admin bootstrap ───────────────────────────────
@@ -93,22 +93,28 @@ class Settings:
 
     # ── Agent defaults ───────────────────────────────────────
     AGENT1_DEFAULT_MODEL = _get_optional_env("AGENT1_DEFAULT_MODEL", "nova-lite-2")
-    AGENT2_DEFAULT_MODEL = _get_optional_env("AGENT2_DEFAULT_MODEL", "nova-lite-2")
-    AGENT3_COVERAGE_THRESHOLD = float(
-        _get_optional_env("AGENT3_COVERAGE_THRESHOLD", "0.70")
+    AGENT3_DEFAULT_MODEL = _get_optional_env("AGENT3_DEFAULT_MODEL", "nova-lite-2")
+    AGENT4_COVERAGE_THRESHOLD = float(
+        _get_optional_env("AGENT4_COVERAGE_THRESHOLD", "0.70")
     )
-    AGENT3_COVERAGE_SIMILARITY = float(
-        _get_optional_env("AGENT3_COVERAGE_SIMILARITY", "0.7")
+    AGENT4_COVERAGE_SIMILARITY = float(
+        _get_optional_env("AGENT4_COVERAGE_SIMILARITY", "0.7")
     )
-    AGENT3_DUPLICATE_THRESHOLD = float(
-        _get_optional_env("AGENT3_DUPLICATE_THRESHOLD", "0.8")
+    AGENT4_DUPLICATE_THRESHOLD = float(
+        _get_optional_env("AGENT4_DUPLICATE_THRESHOLD", "0.8")
     )
-    AGENT3_EMBEDDING_MODEL = _get_optional_env(
-        "AGENT3_EMBEDDING_MODEL", "paraphrase-multilingual-MiniLM-L12-v2"
+    AGENT4_EMBEDDING_MODEL = _get_optional_env(
+        "AGENT4_EMBEDDING_MODEL", "paraphrase-multilingual-MiniLM-L12-v2"
     )
-    AGENT3_QUALITY_MODEL = _get_optional_env("AGENT3_QUALITY_MODEL", "nova-lite-2")
+    AGENT4_QUALITY_MODEL = _get_optional_env("AGENT4_QUALITY_MODEL", "nova-lite-2")
     AGENT5_DEFAULT_MODEL = _get_optional_env("AGENT5_DEFAULT_MODEL", "nova-lite-2")
     ORCHESTRATOR_MAX_RETRIES = int(_get_optional_env("ORCHESTRATOR_MAX_RETRIES", "2"))
+
+    # ── CORS ─────────────────────────────────────────────────
+    ALLOWED_ORIGINS: list = _get_optional_env(
+        "ALLOWED_ORIGINS",
+        "http://localhost:3000,http://127.0.0.1:3000,http://localhost:5173,http://127.0.0.1:5173",
+    ).split(",")
 
 
 settings = Settings()

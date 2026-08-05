@@ -1,10 +1,11 @@
-"""
+﻿"""
 app/repositories/story_repository.py
 ─────────────────────────────────────
 CRUD pour la table stories — PostgreSQL (SQLAlchemy ORM).
 Les champs complexes sont stockés en JSONB natif (plus de sérialisation manuelle).
 """
 
+from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
 from sqlalchemy import select
@@ -44,6 +45,13 @@ def _row_to_dict(obj: Story) -> Dict[str, Any]:
 
 
 def save_story(story: Dict[str, Any]) -> str:
+    """
+    Upsert de la story. `created_at` est explicitement forcé à "maintenant"
+    à CHAQUE appel : sur un `session.merge()`, un attribut jamais assigné sur
+    l'objet transitoire n'écrase pas la valeur déjà en base, donc sans ce
+    `datetime.now(timezone.utc)` explicite, la date affichée dans l'historique
+    restait figée à la date du tout premier traitement de la story.
+    """
     session = get_sync_session()
     try:
         obj = Story(
@@ -68,6 +76,7 @@ def save_story(story: Dict[str, Any]) -> str:
             epic_summary=story.get("epic_summary", ""),
             epic_description=story.get("epic_description", ""),
             jira_updated=story.get("jira_updated", ""),
+            created_at=datetime.now(timezone.utc),
         )
         session.merge(obj)  # INSERT OR UPDATE (upsert via PK)
         session.commit()
@@ -79,6 +88,7 @@ def save_story(story: Dict[str, Any]) -> str:
 def save_stories_bulk(stories: List[Dict[str, Any]]) -> int:
     session = get_sync_session()
     try:
+        now = datetime.now(timezone.utc)
         for story in stories:
             obj = Story(
                 id=story.get("id", ""),
@@ -102,6 +112,7 @@ def save_stories_bulk(stories: List[Dict[str, Any]]) -> int:
                 epic_summary=story.get("epic_summary", ""),
                 epic_description=story.get("epic_description", ""),
                 jira_updated=story.get("jira_updated", ""),
+                created_at=now,
             )
             session.merge(obj)
         session.commit()

@@ -1,0 +1,115 @@
+[Image jointe : image-2023-09-18-15-38-33-987.png]
+── Textes détectés (OCR) ──
+o (NUXEPM-1273] Catégories X o comsoprahrfactoryservice X o 4YOU-Pro‘il col aoorateur X e Apache Karaf Web Console X o (YOU-8939] Ajouter la date X + “ - x
+€ C @ foryou-hra-develop.apps.shr-okd.marc.fr.ssg/app/crycu/#/syd # # # O 2 ¢
+= @ Profil collaborateur o ? ©
+777 Rania Q11CONGE01 | FRLFRAY1314 Informations générales
+3 ans et 8 mois et 18 jours chez Société 4YOU - Etablissement de Etablissement QAT () N'hésitez pas à parcourir votre dossier collaborateur pour le
+compléter ou le modifier.
+Employé qualifié - DEP QA1
+Temps plein | Cycle normal (RTT semaine) | 38.00 heures
+© © @ 0
+Mes données individuelles
+Vous avez 32 ans , êtes marié(e) etvous avez 6 enfants.
+vous habitez G{resse à PARIS Lieu dit (75019) .
+vous étes joignable sur le fixe professionnel FRA H H -330 1456 78 82..
+Vous avez 1 contact en cas d'urgence. En priorité nous préviendrons M. Rania TESSST (Parent) FRA H K +33222222222 ou null.
+Vous êtes payé(e) par chèque
+—s . - 15:38
+= O =5 M D 9 ; S oz PF @ @ 21°C Pluie N m ) g, F
+o (NUXEPh#-1273] Catégories
+com.soprahr.factoryservice
+o 4YOU - Pro‘il col aoorateur
+@ Apache Karaf Web Console
+o [YOU-2939] Ajouter la date
+@ foryou-hra-develop.apps.shr-okd.marc.frssgsappiforycus=
+yd
+@ % * O
+Profil collaborateur
+A ? 0
+FRLFR4Y1314
+Informations générales
+Rania Q11CONGE01 |
+3 ans et 8 mois et 18 jours chez Société 4YOU - Ftablissement de Ftablissement QAT ()
+N'hésitez pas à parcourir votre dossier collaborateur pour le
+38.00 heures
+Temps plein
+Cycle normal (RTT semaine)
+Owm
+© 06000
+Vous avez 32 ans, êtes marié(e) etvous avez 6 enfants.
+Vous habitez Gtî
+hla
+Caté OF 73 ssance
+cate
+r 1991 îdresse à PARIS Lieu dit (75019) .
+null.
+Vous avez 1 contact en cas d'urgence. En priorité nous préviendrons M. Rania TESSST (Parent) FRA H H +33 2 22 22 22 22 ou
+15:38
+Oj
+os
+P3
+@ 21°C Pluie
+7 #æ Q)
+18/09/2023
+── Analyse visuelle (VLM) ──
+<think>
+Here's a thinking process that leads to the suggested response:
+
+1.  **Analyze the Request:**
+    *   **Goal:** Describe the visual, non-textual elements of the provided screenshot/mockup.
+    *   **Input:** An image (screenshot of a web application) and OCR text.
+    *   **Constraint:** Do *not* repeat the OCR text. Focus on what the OCR misses (visuals, layout, annotations).
+    *   **Structure:** 5 specific sections (Context, Annotations, Native UI Elements, Icons, Layout/Relations).
+    *   **Tone:** Factual, neutral, structured.
+    *   **Language:** French.
+
+2.  **Analyze the Image (Visual Inspection):**
+    *   *Overall:* It's a browser window showing a web application called "Profil collaborateur". It looks like a dashboard or profile page.
+    *   *Top Bar:* Browser tabs (Chrome/Edge style), address bar.
+    *   *App Header:* Logo (4E), Title "Profil collaborateur", User info (Rania Q11CONGE01...), Action icons (Search, Help, Logout).
+    *   *Main Content Area:*
+        *   Left side: "Mes données individuelles" section with text paragraphs.
+        *   Right side: A dark banner/card titled "Informations générales" with a background image (mountains/landscape).
+    *   *Annotations:* There is a distinct grey box with a tooltip-like appearance. It says "Ma date de naissance : 04 février 1991". It's hovering over the text "64".
+    *   *Icons:* Hamburger menu, back arrow, palm tree, document, handshake, user profile (highlighted), search, question mark, power button, folder icon.
+    *   *Layout:* Two-column layout roughly. Top header, middle navigation bar (circular icons), content below.
+
+3.  **Drafting the Content - Section by Section:**
+
+    *   **1. CONTEXTE:**
+        *   *Observation:* It's a web application interface, specifically a "Collaborator Profile" page. It looks like a mockup or a development environment (given the URL and tabs).
+        *   *Draft:* Il s'agit d'une capture d'écran d'une interface web de type "Profil collaborateur", probablement un environnement de développement ou de test. L'écran présente les informations personnelles d'un utilisateur.
+
+    *   **2. ANNOTATIONS AJOUTÉES PAR LE PO:**
+        *   *Observation:* There is a grey rectangular box with a small triangle pointing down. It contains text "Ma date de naissance : 04 février 1991". It is positioned directly above the number "64" in the sentence "Vous avez 64 ans...".
+        *   *Draft:*
+            *   Type : Boîte d'information (tooltip) rectangulaire grise avec une petite pointe vers le bas.
+            *   Couleur : Fond gris clair, texte noir.
+            *   Élément désigné : Elle survole le chiffre "64" (dans la phrase "Vous avez 64 ans...").
+
+    *   **3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI:**
+        *   *Observation:*
+            *   Top left: Circular logo "4E".
+            *   Navigation bar: A row of 4 circular icons. The last one (user icon) is white with a black border, indicating it's active/selected. The others are black circles with white icons.
+            *   Right side: A large dark card/banner with a landscape background image.
+            *   Bottom right of the dark card: A folder icon with "0" next to it.
+            *   Links: Blue underlined text (e.g., "chèque", "null").
+        *   *Draft:*
+            *   Logo circulaire en haut à gauche contenant le texte "4E".
+            *   Barre de navigation horizontale composée de 4 icônes circulaires. L'icône la plus à droite (silhouette de personne) est en surbrillance (fond blanc, contour noir), indiquant la section active. Les trois autres sont en fond noir.
+            *   Grande carte ou bannière sombre à droite avec une image de fond (paysage montagneux).
+            *   Icône de dossier blanc accompagnée du chiffre "0" au centre de la bannière sombre.
+            *   Liens hypertextes soulignés en bleu (visibles sur les mots "chèque" et "null").
+
+    *   **4. ICÔNES ET PICTOGRAMMES:**
+        *   *Observation:*
+            *   Top left: Hamburger menu (3 lines).
+            *   Top right: Search (magnifying glass), Help (question mark), Logout (power symbol).
+            *   Navigation bar: Back arrow (left), Palm tree, Document/Clipboard, Handshake, User profile.
+            *   Browser: Standard browser icons (back, refresh, home, etc.).
+        *   *Draft:*
+            *   Menu hamburger (3 lignes horizontales) en haut à gauche.
+            *   Flèche retour (gauche) dans la barre de navigation circulaire.
+            *   Palmier, Document/Clip, Poignée de main, Silhouette utilisateur dans la barre de navigation.
+            *   Loupe (recherche), Point d'interrogation (aide), Symbole d'extinction (

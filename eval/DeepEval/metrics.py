@@ -1,4 +1,4 @@
-"""
+﻿"""
 Métriques déterministes d'évaluation du pipeline multi-agents.
 Version corrigée : comparaison sémantique (au lieu de mot-à-mot) et
 pondération des erreurs selon leur gravité (au lieu d'un poids fixe).
@@ -95,14 +95,14 @@ class Agent1Metrics:
 # ---------------------------------------------------------------------------
 # AGENT 1.5 — Cohérence du business model avec agent1
 # ---------------------------------------------------------------------------
-class Agent15Metrics:
+class Agent2Metrics:
     def score(
-        self, agent1_output: Dict[str, Any], agent15_output: Dict[str, Any]
+        self, agent1_output: Dict[str, Any], agent2_output: Dict[str, Any]
     ) -> Dict[str, Any]:
         issues: List[Dict[str, str]] = []
 
-        goals = agent15_output.get("business_goals", [])
-        workflows = agent15_output.get("business_workflows", [])
+        goals = agent2_output.get("business_goals", [])
+        workflows = agent2_output.get("business_workflows", [])
 
         if not goals:
             issues.append(_issue("aucun business_goal produit", "CRITIQUE"))
@@ -169,12 +169,12 @@ class Agent15Metrics:
 
 
 # ---------------------------------------------------------------------------
-# AGENT 2 — Qualité rédactionnelle des tests + couverture (via agent3)
+# AGENT 2 — Qualité rédactionnelle des tests + couverture (via agent4)
 # ---------------------------------------------------------------------------
-class Agent2Metrics:
-    def qa_quality(self, agent2_output: Dict[str, Any]) -> Dict[str, Any]:
+class Agent3Metrics:
+    def qa_quality(self, agent3_output: Dict[str, Any]) -> Dict[str, Any]:
         issues: List[Dict[str, str]] = []
-        tests = agent2_output.get("tests", [])
+        tests = agent3_output.get("tests", [])
 
         if not tests:
             return {"score": 0.0, "issues": [_issue("aucun test généré", "CRITIQUE")]}
@@ -216,30 +216,30 @@ class Agent2Metrics:
 
         return {"score": compute_score(issues), "issues": issues}
 
-    def coverage_from_agent3(self, agent3_output: Dict[str, Any]) -> Dict[str, Any]:
+    def coverage_from_agent4(self, agent4_output: Dict[str, Any]) -> Dict[str, Any]:
         return {
-            "coverage_rate": agent3_output.get("coverage_rate", 0.0),
+            "coverage_rate": agent4_output.get("coverage_rate", 0.0),
             "missing_tests_count": len(
-                agent3_output.get("uncovered_testable_points", [])
+                agent4_output.get("uncovered_testable_points", [])
             ),
-            "missing_tests": agent3_output.get("uncovered_testable_points", []),
-            "duplicate_count": len(agent3_output.get("duplicate_pairs", [])),
-            "validation_status": agent3_output.get("validation_status", "UNKNOWN"),
+            "missing_tests": agent4_output.get("uncovered_testable_points", []),
+            "duplicate_count": len(agent4_output.get("duplicate_pairs", [])),
+            "validation_status": agent4_output.get("validation_status", "UNKNOWN"),
         }
 
 
 # ---------------------------------------------------------------------------
 # AGENT 3 — Justesse interne de la validation
 # ---------------------------------------------------------------------------
-class Agent3Metrics:
+class Agent4Metrics:
     def score(
-        self, agent3_input: Dict[str, Any], agent3_output: Dict[str, Any]
+        self, agent4_input: Dict[str, Any], agent4_output: Dict[str, Any]
     ) -> Dict[str, Any]:
         issues: List[Dict[str, str]] = []
 
-        testable_points = agent3_input.get("testable_points", [])
-        uncovered = agent3_output.get("uncovered_testable_points", [])
-        coverage_rate = agent3_output.get("coverage_rate", 0.0)
+        testable_points = agent4_input.get("testable_points", [])
+        uncovered = agent4_output.get("uncovered_testable_points", [])
+        coverage_rate = agent4_output.get("coverage_rate", 0.0)
 
         for point in uncovered:
             if point not in testable_points:
@@ -263,8 +263,8 @@ class Agent3Metrics:
                     )
                 )
 
-        validation_status = agent3_output.get("validation_status", "")
-        has_ambiguities = len(agent3_output.get("ambiguity_findings", [])) > 0
+        validation_status = agent4_output.get("validation_status", "")
+        has_ambiguities = len(agent4_output.get("ambiguity_findings", [])) > 0
         has_uncovered = len(uncovered) > 0
         if validation_status == "VALID" and (has_ambiguities or has_uncovered):
             issues.append(
@@ -279,64 +279,64 @@ class Agent3Metrics:
 
 
 # ---------------------------------------------------------------------------
-# AGENT 5 — Fidélité du rapport final aux chiffres d'agent3
+# AGENT 5 — Fidélité du rapport final aux chiffres d'agent4
 # ---------------------------------------------------------------------------
 class Agent5Metrics:
     def score(
-        self, agent3_output: Dict[str, Any], agent5_output: Dict[str, Any]
+        self, agent4_output: Dict[str, Any], agent5_output: Dict[str, Any]
     ) -> Dict[str, Any]:
         issues: List[Dict[str, str]] = []
 
-        agent3_coverage_pct = round(agent3_output.get("coverage_rate", 0.0) * 100, 1)
+        agent4_coverage_pct = round(agent4_output.get("coverage_rate", 0.0) * 100, 1)
         agent5_coverage_pct = agent5_output.get("coverage_metrics", {}).get(
             "coverage_rate"
         )
 
         if (
             agent5_coverage_pct is not None
-            and abs(agent3_coverage_pct - agent5_coverage_pct) > 1.0
+            and abs(agent4_coverage_pct - agent5_coverage_pct) > 1.0
         ):
             issues.append(
                 _issue(
-                    f"coverage_rate divergent: agent3={agent3_coverage_pct}%, "
+                    f"coverage_rate divergent: agent4={agent4_coverage_pct}%, "
                     f"agent5={agent5_coverage_pct}%",
                     "CRITIQUE",
                 )
             )
 
-        agent3_ambiguity_count = len(agent3_output.get("ambiguity_findings", []))
+        agent4_ambiguity_count = len(agent4_output.get("ambiguity_findings", []))
         agent5_ambiguity_count = agent5_output.get("quality_assurance", {}).get(
             "ambiguity_count"
         )
         if (
             agent5_ambiguity_count is not None
-            and agent3_ambiguity_count != agent5_ambiguity_count
+            and agent4_ambiguity_count != agent5_ambiguity_count
         ):
             issues.append(
                 _issue(
-                    f"ambiguity_count divergent: agent3={agent3_ambiguity_count}, "
+                    f"ambiguity_count divergent: agent4={agent4_ambiguity_count}, "
                     f"agent5={agent5_ambiguity_count}",
                     "MAJEUR",
                 )
             )
 
-        agent3_dup = len(agent3_output.get("duplicate_pairs", []))
+        agent4_dup = len(agent4_output.get("duplicate_pairs", []))
         agent5_dup = agent5_output.get("quality_assurance", {}).get("duplicate_pairs")
-        if agent5_dup is not None and agent3_dup != agent5_dup:
+        if agent5_dup is not None and agent4_dup != agent5_dup:
             issues.append(
                 _issue(
-                    f"duplicate_pairs divergent: agent3={agent3_dup}, agent5={agent5_dup}",
+                    f"duplicate_pairs divergent: agent4={agent4_dup}, agent5={agent5_dup}",
                     "MAJEUR",
                 )
             )
 
-        agent3_uncovered = set(agent3_output.get("uncovered_testable_points", []))
+        agent4_uncovered = set(agent4_output.get("uncovered_testable_points", []))
         agent5_uncovered = set(
             agent5_output.get("coverage_metrics", {}).get("uncovered_points", [])
         )
-        if agent3_uncovered != agent5_uncovered:
+        if agent4_uncovered != agent5_uncovered:
             issues.append(
-                _issue("uncovered_points divergents entre agent3 et agent5", "CRITIQUE")
+                _issue("uncovered_points divergents entre agent4 et agent5", "CRITIQUE")
             )
 
         overall_status = agent5_output.get("executive_summary", {}).get(
@@ -357,8 +357,8 @@ class Agent5Metrics:
 def build_metric_suite() -> Dict[str, Any]:
     return {
         "agent1": Agent1Metrics(),
-        "agent1_5": Agent15Metrics(),
         "agent2": Agent2Metrics(),
         "agent3": Agent3Metrics(),
+        "agent4": Agent4Metrics(),
         "agent5": Agent5Metrics(),
     }

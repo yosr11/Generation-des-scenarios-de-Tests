@@ -1,4 +1,4 @@
-"""Modèles Pydantic pour les réponses Agent 5 (Rapport Final)."""
+﻿"""Modèles Pydantic pour les réponses Agent 5 (Rapport Final)."""
 
 from typing import List, Optional
 from pydantic import BaseModel, Field
@@ -145,7 +145,7 @@ class Agent5Report(BaseModel):
     # Métadonnées
     agent_versions: dict = Field(
         default_factory=dict,
-        description="Versions des agents utilisés (agent1_version, agent2_version, etc.)",
+        description="Versions des agents utilisés (agent1_version, agent3_version, etc.)",
     )
     processing_notes: List[str] = Field(
         default_factory=list, description="Notes techniques de traitement"

@@ -1,0 +1,81 @@
+[Image jointe : BonusEtPrime_360.png]
+── Textes détectés (OCR) ──
+Un bonus sur son salaire annuel de 40 %
+Une prime variable de 1200,00 €
+Un bonus sur son salaire annuel de
+40 %
+Une prime variable de
+1200,00 €
+── Analyse visuelle (VLM) ──
+<think>
+Here's a thinking process that leads to the suggested output:
+
+1.  **Analyze the Request:**
+    *   **Goal:** Describe the visual, non-textual elements of a provided screenshot/mockup.
+    *   **Input:** An image (which I need to analyze) and a list of OCR texts.
+    *   **Constraint:** Do *not* re-list the OCR text. Focus on what the OCR misses (visuals, layout, annotations).
+    *   **Format:** 5 specific sections (Context, Annotations, Native UI Elements, Icons, Layout/Relations).
+    *   **Language:** French.
+    *   **Tone:** Factual, neutral, structured.
+
+2.  **Analyze the Image:**
+    *   *Visual Inspection:* The image shows a very simple, clean interface. It looks like a detail view or a summary section of a document.
+    *   *Content:* There are two main lines of text.
+        *   Line 1: "Un bonus sur son salaire annuel de" followed by "40 %".
+        *   Line 2: "Une prime variable de" followed by "1 200,00 €".
+    *   *Layout:* It's a two-column layout. The labels are on the left, the values are on the right.
+    *   *Typography:* The labels are in a standard sans-serif font, regular weight. The values ("40 %" and "1 200,00 €") are in a bold font weight.
+    *   *Annotations:* I need to look closely for red boxes, arrows, circles, etc.
+        *   *Result:* There are absolutely no annotations. No red boxes, no arrows, no highlights. It's a clean screenshot.
+    *   *UI Elements:* Are there buttons? No. Badges? No. Pills? No. Just text.
+    *   *Icons:* Are there icons? No. Just text and numbers.
+    *   *Structure:* It's a list of two items.
+
+3.  **Drafting the Response (Section by Section):**
+
+    *   **1. CONTEXTE:**
+        *   *Observation:* It's a simple text display, likely part of a larger document or a summary card. It lists financial details.
+        *   *Draft (Internal Monologue):* C'est un écran simple qui affiche des infos financières. Probablement une partie d'un contrat ou d'une fiche de paie.
+        *   *Refinement (French):* Il s'agit d'une vue détaillée ou d'un extrait de document affichant des informations financières, probablement une section de résumé ou de détails d'un contrat.
+
+    *   **2. ANNOTATIONS AJOUTÉES PAR LE PO:**
+        *   *Observation:* I scanned the image. It's clean.
+        *   *Draft:* Aucune annotation.
+        *   *Refinement (French):* Aucune annotation détectée.
+
+    *   **3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI:**
+        *   *Observation:* There are no buttons, badges, or pills. Just text.
+        *   *Draft:* Pas d'éléments graphiques spéciaux.
+        *   *Refinement (French):* Aucun élément graphique natif (boutons, badges, pastilles) n'est visible dans cette capture. L'interface se compose uniquement de texte.
+
+    *   **4. ICÔNES ET PICTOGRAMMES:**
+        *   *Observation:* No icons.
+        *   *Draft:* Pas d'icônes.
+        *   *Refinement (French):* Aucune icône ou pictogramme n'est présent sur cet écran.
+
+    *   **5. AGENCEMENT ET RELATIONS:**
+        *   *Observation:* Two rows. Left side is the label, right side is the value. The values are bold.
+        *   *Draft:* Deux lignes. À gauche le texte, à droite le chiffre en gras.
+        *   *Refinement (French):*
+            *   Structure en deux lignes distinctes.
+            *   Chaque ligne suit un alignement en deux colonnes implicites : le libellé descriptif est aligné à gauche, tandis que la valeur numérique correspondante est alignée à droite.
+            *   Hiérarchie typographique : les valeurs numériques ("40 %" et "1 200,00 €") sont affichées en gras pour les distinguer des libellés qui sont en police normale.
+
+4.  **Final Review against Constraints:**
+    *   Did I use the OCR text? Yes, to identify what the bold parts were, but I didn't just copy-paste the whole list.
+    *   Did I invent text? No.
+    *   Is it factual? Yes.
+    *   Is it in French? Yes.
+    *   Are the 5 sections present? Yes.
+
+5.  **Final Output Generation** (This matches the provided good response).
+</think>
+
+1. CONTEXTE
+Il s'agit d'une vue détaillée ou d'un extrait de document affichant des informations financières, probablement une section de résumé ou de détails d'un contrat ou d'une offre d'emploi.
+
+2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+Aucun élément graphique natif (boutons, badges, pastilles) n'est visible dans cette capture. L'

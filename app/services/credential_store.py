@@ -1,4 +1,4 @@
-"""Stockage en mémoire des credentials Jira des testeurs (liés au session_id JWT)."""
+﻿"""Stockage en mémoire des credentials Jira des testeurs (liés au session_id JWT)."""
 
 from dataclasses import dataclass
 from threading import Lock

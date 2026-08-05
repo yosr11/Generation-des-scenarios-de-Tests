@@ -1,4 +1,4 @@
-# app/models/analysis.py
+﻿# app/models/analysis.py
 from typing import List, Literal
 from pydantic import BaseModel, Field, field_validator
 

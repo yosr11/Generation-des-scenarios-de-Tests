@@ -17,8 +17,7 @@ const TESTER_NAV = [
 const ADMIN_NAV = [
   { to: '/admin/dashboard', label: 'Dashboard',  icon: LayoutDashboard, color: 'text-brand-orange' },
   { to: '/admin/users',     label: 'Utilisateurs', icon: Users,          color: 'text-brand-rose' },
-  { to: '/admin/pipelines', label: 'Pipelines',   icon: BarChart3,       color: 'text-brand-violet' },
-  { to: '/admin/audit',     label: 'Audit',       icon: ClipboardList,   color: 'text-brand-pinklt' },
+  { to: '/admin/pipelines', label: 'Pipelines',    icon: GitBranch,      color: 'text-brand-rose' },
 ]
 
 export const Sidebar: React.FC = () => {
@@ -49,10 +48,10 @@ export const Sidebar: React.FC = () => {
 
       {/* Logo */}
       <div className="relative z-10 px-5 py-5 border-b border-white/08">
-        <div className="flex items-center gap-3 mb-3">
-          <img src="/logo_sopra.png" alt="Sopra HR" className="h-8 w-auto object-contain"
-            style={{ filter: 'brightness(0) invert(1)', opacity: 0.9 }} />
-          <div className="w-px h-6 bg-white/15" />
+        <div className="flex items-center gap-2 mb-3">
+          <img src="/synapTest1.png" alt="Synaptest" className="h-14 w-auto object-contain"
+            style={{ filter: 'grayscale(1) brightness(1.75)', opacity: 0.95 }} />
+          <div className="w-px h-8 bg-white/15" />
           <div>
             <h1 className="text-sm font-bold text-white leading-tight">
               Synap<span style={{ color: '#f43f5e' }}>test</span>

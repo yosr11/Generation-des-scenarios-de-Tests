@@ -1,4 +1,4 @@
-"""
+﻿"""
 Indexation des tests legacy (format pivot) dans ChromaDB pour le RAG few-shot.
 
 Lit les fichiers `eval/data/legacy_tests/*.enriched.jsonl`, calcule un
@@ -7,7 +7,7 @@ embedding (titre + description + étapes condensées) avec
 collection ChromaDB persistante `legacy_tests`.
 
 Le pivot JSON complet est conservé dans la metadata `pivot_json` pour
-pouvoir être ré-injecté tel quel dans le prompt few-shot d'Agent 2.
+pouvoir être ré-injecté tel quel dans le prompt few-shot d'Agent 3.
 
 Usage :
     python -m eval.index_legacy_tests                    # indexe tout
@@ -56,7 +56,7 @@ def build_embedding_text(pivot: Dict[str, Any]) -> str:
 
     On exclut volontairement `data` et `expected_result` du vecteur pour
     garder la requête focalisée sur le "scénario" du test, qui est ce
-    qu'Agent 2 doit retrouver par similarité.
+    qu'Agent 3 doit retrouver par similarité.
     """
     parts: List[str] = []
 

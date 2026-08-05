@@ -1,0 +1,86 @@
+[Image jointe : démenagement_RRh.png]
+── Textes détectés (OCR) ──
+= @ Déclarer un déménagement QO ? O
+RAFAEL ISABELLE Mise à jour
+FRLFR4Y001919
+Veuillez renseigner les nouvelles coordonnées et attacher les justificatifs.
+Supprimer Sauvegarder
+V Son adresse principale L[_l]| Ë||
+Les champs \ndiqués par Lre * son: cbligatoires.
+Date d'effet du déménagement * i Type d'adresse *
+A f Adresse domicile Z
+Pays #
+France &
+Code postal * Commune * Lieu dit
+N° de voie BIS, TER... Nature de la voie
+Nom de la voie Complément d'adresse
+Justificatif * à
+Suivant
+} Son mode de transport Ë||
+O,
+Déclarer un déménagement
+RAFAEL ISABELLE
+Mise a jour
+Supprimer
+Sauvegarder
+V Son adresse principale
+0, ë
+Eù
+Date d'effet du déménagement * i
+Type d'adresse *
+p e —
+Fl
+Adresse domicile
+France
+Code postal *
+Commune *
+Lieu dit
+N° de voie
+BIS, TER...
+Nature de la voie
+Nom de la voie
+Complément d'adresse
+Justificatif * i
+> Son mode de transport
+── Analyse visuelle (VLM) ──
+<think>
+Here's a thinking process that leads to the suggested output:
+
+1.  **Analyze the Request:**
+    *   **Goal:** Describe the visual, non-textual elements of a UI screenshot/mockup.
+    *   **Input:** An image (which I can see) and OCR text (which I must trust and not recite).
+    *   **Constraint:** Do *not* list the text itself (unless referencing it for context). Focus on layout, icons, colors, annotations, and structure.
+    *   **Format:** 5 specific sections (Context, Annotations, Native UI Elements, Icons, Layout/Relations).
+    *   **Language:** French.
+    *   **Tone:** Factual, neutral, descriptive.
+
+2.  **Analyze the Image (Visual Inspection):**
+    *   *Overall:* It's a web interface, likely a form for HR or employee management ("Déclarer un déménagement"). It looks like a standard enterprise application (Sopra HR mentioned in prompt).
+    *   *Header:* Dark blue bar with a logo (looks like "4E" or similar), title "Déclarer un déménagement", and user profile icons on the right.
+    *   *Top Section:* A card with a user avatar (blue circle), name "RAFAEL ISABELLE", ID "FRLFR4Y001919". Below that, a help text. Then three buttons: "Quitter", "Supprimer", "Sauvegarder".
+    *   *Main Content Area:* A section titled "Son adresse principale" with a chevron (down arrow).
+    *   *Form Fields:*
+        *   "Date d'effet du déménagement": Input field with a calendar icon.
+        *   "Type d'adresse": Dropdown (select) showing "Adresse domicile" with a green checkmark next to it.
+        *   "Pays": Dropdown showing "France" with a green checkmark.
+        *   "Code postal", "Commune", "Lieu dit": Text inputs.
+        *   "N° de voie", "BIS, TER...", "Nature de la voie": Text inputs/dropdowns.
+        *   "Nom de la voie", "Complément d'adresse": Text inputs.
+        *   "Justificatif": File upload area (icon of a document with a plus).
+    *   *Bottom Section:* A button "Suivant".
+    *   *Footer/Next Section:* A header "Son mode de transport" with a chevron (right arrow).
+    *   *Right Side:* A large grey overlay or panel covering the right half of the screen. It has a blue header "Mise à jour". This looks like a modal or a side panel overlaying the main content.
+    *   *Annotations:* I need to look closely for red boxes, arrows, etc.
+        *   *Observation:* There are small red triangles with exclamation marks (!) next to specific icons on the right edge of the main content area (next to the "Son adresse principale" header icons and the "Son mode de transport" header icon). These look like validation warnings or specific UI indicators, possibly added by the tool or the user to highlight issues. Wait, looking closer at the bottom right crop, there are red triangles with exclamation marks next to the icons in the dark blue headers. These look like "warning" indicators native to the UI or perhaps annotations. Let's look at the "Justificatif" field. There is a red circle around the upload icon? No, that's just the icon.
+        *   *Re-evaluating Annotations:* The prompt asks for annotations *added by the PO*. The red triangles with exclamation marks next to the icons in the dark blue bars (top right of "Son adresse principale" and top right of "Son mode de transport") look like UI validation warnings (indicating missing data or errors), not necessarily PO annotations like a red box drawn with a mouse. However, looking at the very specific crop images provided in the prompt (which are just zoomed-in parts of the main image), I see red triangles with exclamation marks next to the icons in the dark blue headers. These are likely UI elements indicating a warning state.
+        *   *Wait, looking at the full image again:* There are no obvious "red boxes drawn with a mouse" or "arrows drawn by hand". The red triangles with exclamation marks are part of the UI (validation errors).
+        *   *Correction:* Actually, looking at the very specific crop images provided in the prompt (the bottom two images), there are red triangles with exclamation marks next to the icons in the dark blue headers. These are likely UI elements indicating a warning state.
+        *   *Let's look for "PO Annotations" specifically:* Are there any red rectangles drawn *over* the UI? No. Are there arrows? No.
+        *   *Conclusion on Annotations:* "Aucune annotation détectée" (unless the red triangles are considered annotations, but they look like native UI validation icons). I will stick to "Aucune annotation détectée" to be safe, as they look like native validation warnings (red triangle + exclamation mark).
+
+3.  **Drafting the Content - Section by Section:**
+
+    *   **1. CONTEXTE:**
+        *   It's a form interface ("Déclarer un déménagement").
+        *   It's a "Mise à jour" (Update) screen, likely for an employee profile.
+        *   There is a large grey overlay on the right side titled "Mise à jour".

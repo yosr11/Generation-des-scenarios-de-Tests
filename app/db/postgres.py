@@ -1,4 +1,4 @@
-"""Connexion PostgreSQL async (SQLAlchemy 2.x) + session synchrone pour les repositories."""
+﻿"""Connexion PostgreSQL async (SQLAlchemy 2.x) + session synchrone pour les repositories."""
 
 from collections.abc import AsyncGenerator
 

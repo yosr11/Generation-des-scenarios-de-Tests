@@ -1,4 +1,4 @@
-"""FastAPI routes pour Agent 5 - Génération de Rapports."""
+﻿"""FastAPI routes pour Agent 5 - Génération de Rapports."""
 
 import logging
 import time
@@ -43,13 +43,13 @@ def _fetch_all_agent_data(story_id: str):
     generation = fetch_generation_by_story_id(story_id)
     if not generation:
         raise HTTPException(
-            status_code=404, detail=f"Tests (Agent 2) non trouvés pour {story_id}"
+            status_code=404, detail=f"Tests (Agent 3) non trouvés pour {story_id}"
         )
 
     validation = fetch_validation_by_story_id(story_id)
     if not validation:
         raise HTTPException(
-            status_code=404, detail=f"Validation (Agent 3) non trouvée pour {story_id}"
+            status_code=404, detail=f"Validation (Agent 4) non trouvée pour {story_id}"
         )
 
     return analysis, generation, validation

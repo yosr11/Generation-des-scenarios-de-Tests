@@ -1,4 +1,4 @@
-# app/api/routes_db.py
+﻿# app/api/routes_db.py
 from fastapi import APIRouter, HTTPException, Query
 from typing import List, Dict, Any
 from sqlalchemy import delete
@@ -7,9 +7,7 @@ from app.db.postgres import get_sync_session
 from app.models.pg_models import (
     Story,
     StoryAnalysis,
-    StoryManualTests,
-    Agent3Validation,
-    AutomationClassification,
+    Agent4Validation,
     GeneratedScenario,
     StoryBusinessModel,
 )
@@ -26,6 +24,7 @@ from app.repositories.scenario_repository import (
     get_scenarios_by_story,
     get_all_scenarios,
 )
+from app.repositories.manual_tests_repository import get_latest_manual_tests
 
 db_router = APIRouter(prefix="/db", tags=["Database"])
 
@@ -60,15 +59,7 @@ def delete_stored_story(story_id: str):
         # Supprimer toutes les dépendances liées à la story_id
         session.execute(delete(StoryAnalysis).where(StoryAnalysis.story_id == story_id))
         session.execute(
-            delete(StoryManualTests).where(StoryManualTests.story_id == story_id)
-        )
-        session.execute(
-            delete(Agent3Validation).where(Agent3Validation.story_id == story_id)
-        )
-        session.execute(
-            delete(AutomationClassification).where(
-                AutomationClassification.story_id == story_id
-            )
+            delete(Agent4Validation).where(Agent4Validation.story_id == story_id)
         )
         session.execute(
             delete(GeneratedScenario).where(GeneratedScenario.story_id == story_id)
@@ -131,13 +122,11 @@ def list_scenarios(story_id: str):
 
 @db_router.get("/stories/{story_id}/manual-tests")
 def get_manual_tests(story_id: str):
-    """Récupère les tests manuels enregistrés pour une story."""
-    from app.repositories.manual_tests_repository import get_latest_manual_tests
-
+    """Récupère les scénarios générés pour une story, utilisés comme source de tests manuels."""
     tests = get_latest_manual_tests(story_id)
     if not tests:
         raise HTTPException(
-            status_code=404, detail=f"Aucun test manuel trouvé pour {story_id}"
+            status_code=404, detail=f'Aucun jeu de tests trouvé pour {story_id}'
         )
     return {"story_id": story_id, "tests": tests}
 

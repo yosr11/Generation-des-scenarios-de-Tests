@@ -1,4 +1,4 @@
-# app/api/routes_documents.py
+﻿# app/api/routes_documents.py
 """
 Routes pour la collecte de documents liés à une story ou un epic.
 Permet de visualiser ce que le RAG aura comme contexte.

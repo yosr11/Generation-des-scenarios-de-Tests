@@ -1,0 +1,91 @@
+[Image jointe : CompFam_CaseACocher.png]
+── Textes détectés (OCR) ──
+— @ Mon changement de composition familiale
+v J'effectue le changement Ë
+Prénom * Nom *
+AMIRA ZITOUNI
+Sexe * Date de naissance *
+Féminin 13/12/2023 =
+Lien de parenté *
+Enfant Prise en charge sécurité sociale
+Date de début de prise en charge sociale Date de fin de prise en charge sociale
+07/03/2025 B =
+Justificatif * @
+lettre (1).pdf
+Mon changement de composition familiale
+Prénom *
+Nom *
+AMIRA
+ZITOUNI
+Sexe *
+Date de naissance *
+Féminin
+13/12/2023
+Enfant
+Date de début de prise en charge sociale
+Date de fin de prise en charge sociale
+07/03/2025
+── Analyse visuelle (VLM) ──
+<think>
+Here's a thinking process that leads to the suggested output:
+
+1.  **Analyze the Request:**
+    *   **Goal:** Describe the visual, non-textual elements of a UI screenshot/mockup.
+    *   **Input:** An image (which I can see) and OCR text (which I must trust and not recite).
+    *   **Output Format:** 5 specific sections (Context, Annotations, Native UI Elements, Icons, Layout/Relations).
+    *   **Language:** French.
+    *   **Constraints:** Be factual, neutral, avoid inventing text, avoid guessing functionality (unless obvious), use generic UI terms.
+
+2.  **Analyze the Image (Visual Inspection):**
+    *   *Overall:* It looks like a mobile or tablet interface (portrait orientation) for a form. The top bar is black.
+    *   *Top Bar:* Hamburger menu icon (left), Logo (center-ish), Title "Mon changement de composition familiale" (right).
+    *   *Action Bar:* Buttons "Quitter", "Supprimer", "Sauvegarder", "Envoyer". "Sauvegarder" and "Envoyer" look disabled (greyed out).
+    *   *Section Header:* Dark blue bar with a chevron (down arrow) and text "J'effectue le changement". On the right, there are two icons with green checkmarks.
+    *   *Form Fields:*
+        *   "Prénom *": Input field with "AMIRA".
+        *   "Nom *": Input field with "ZITOUNI".
+        *   "Sexe *": Dropdown/Select field showing "Féminin".
+        *   "Date de naissance *": Input field with "13/12/2023" and a calendar icon.
+        *   "Lien de parenté *": Dropdown/Select field showing "Enfant".
+        *   "Prise en charge sécurité sociale": Checkbox (checked). *Crucial:* This is surrounded by a red box.
+        *   "Date de début de prise en charge sociale": Input field with "07/03/2025" and a calendar icon.
+        *   "Date de fin de prise en charge sociale": Empty input field with a calendar icon.
+        *   "Justificatif *": Label with an info icon (i). Below it, a file attachment area showing "lettre (1).pdf".
+
+3.  **Drafting the Content - Section by Section:**
+
+    *   **1. CONTEXTE:**
+        *   It's a form interface, likely mobile/tablet.
+        *   Purpose: Updating family composition details.
+        *   *Draft (FR):* Il s'agit d'une interface de formulaire sur support mobile ou tablette, destinée à la saisie ou la modification d'informations relatives à un changement de composition familiale.
+
+    *   **2. ANNOTATIONS AJOUTÉES PAR LE PO:**
+        *   I see a red rectangle.
+        *   It surrounds the checkbox and label "Prise en charge sécurité sociale".
+        *   *Draft (FR):*
+            *   Type : Cadre rectangulaire.
+            *   Couleur : Rouge.
+            *   Élément désigné : Entoure la case à cocher et le libellé "Prise en charge sécurité sociale".
+
+    *   **3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI:**
+        *   *Buttons:* "Quitter" (outline), "Supprimer" (outline), "Sauvegarder" (greyed out/disabled), "Envoyer" (greyed out/disabled).
+        *   *Inputs:* Standard text fields.
+        *   *Dropdowns:* "Sexe" and "Lien de parenté" have arrows indicating dropdowns.
+        *   *Checkbox:* The one inside the red box is checked.
+        *   *File:* "lettre (1).pdf" is in a light grey box (chip/tag style).
+        *   *Draft (FR):*
+            *   Boutons : "Quitter" et "Supprimer" sont des boutons à contour (outline). "Sauvegarder" et "Envoyer" apparaissent grisés (état désactivé).
+            *   Cases à cocher (checkbox) : Une case cochée est visible à côté du texte "Prise en charge sécurité sociale".
+            *   Sélecteurs (Dropdowns) : Les champs "Sexe" et "Lien de parenté" possèdent une flèche vers le bas indiquant un menu déroulant.
+            *   Zone de fichier : Le texte "lettre (1).pdf" est contenu dans un rectangle gris clair, suggérant une pièce jointe.
+
+    *   **4. ICÔNES ET PICTOGRAMMES:**
+        *   *Top Left:* Hamburger menu (3 lines).
+        *   *Top Center:* Logo (circle with "4" and "HR").
+        *   *Section Header Right:* Two icons with green checkmarks (looks like a paperclip and a clipboard/document).
+        *   *Date Fields:* Calendar icon inside the input fields.
+        *   *Justificatif Label:* Info icon (circle with 'i').
+        *   *Draft (FR):*
+            *   Menu hamburger (trois lignes horizontales) en haut à gauche.
+            *   Logo circulaire (contenant "4" et "HR") en haut au centre.
+            *   Deux icônes avec des

@@ -1,4 +1,4 @@
-"""JWT et hachage de mots de passe."""
+﻿"""JWT et hachage de mots de passe."""
 
 from datetime import datetime, timedelta, timezone
 from typing import Any, Optional

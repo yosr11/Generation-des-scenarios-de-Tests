@@ -1,4 +1,4 @@
-import logging
+﻿import logging
 from typing import List, Dict, Any
 from fastapi import APIRouter, HTTPException, Query
 
@@ -17,6 +17,7 @@ from app.services.story_analysis_service import (
 from app.repositories.story_repository import save_story
 from app.repositories.analysis_repository import save_analysis
 from app.repositories.manual_tests_repository import save_manual_tests_snapshot
+from app.services.document_collector import collect_story_attachments_only
 
 logger = logging.getLogger(__name__)
 
@@ -84,8 +85,8 @@ def generate_manual_tests_for_story_data(
     legacy_examples: list = None,
 ) -> ManualTestGenerationResult:
     """
-    Génère les tests Agent 2 à partir d'une story et d'une analyse déjà chargées (pas d'accès HTTP).
-    Réutilisé par POST /manual-tests/generate/{story_id} et par Agent 3 (dashboard).
+    Génère les tests Agent 3 à partir d'une story et d'une analyse déjà chargées (pas d'accès HTTP).
+    Réutilisé par POST /manual-tests/generate/{story_id} et par Agent 4 (dashboard).
     """
     story_id = story.get("id", "")
 
@@ -143,9 +144,7 @@ def generate_manual_tests_for_story_data(
     )
     if result.tests and story_id:
         save_manual_tests_snapshot(
-            story_id,
-            [t.model_dump() for t in result.tests],
-            generation_model=model_alias,
+            story_id, [t.model_dump() for t in result.tests], generation_model=model_alias
         )
     return result
 
@@ -159,7 +158,7 @@ def generate_manual_tests(
     use_legacy_rag: bool = Query(
         True,
         description=(
-            "Active le RAG des tests Xray legacy Sopra HR (few-shot Agent 2). "
+            "Active le RAG des tests Xray legacy Sopra HR (few-shot Agent 3). "
             "Recherche sémantique dans la collection Chroma `legacy_tests` (~5900 tests) "
             "et injecte les top-5 (score >= 0.55) comme exemples dans le prompt. "
             "Fallback graceful : si rien ne matche, génération normale sans exemples."
@@ -184,6 +183,12 @@ def generate_manual_tests(
         raise HTTPException(
             status_code=404,
             detail=f"Aucune analyse trouvée pour {story_id}. Lancez d'abord l'analyse via /analysis/{story_id}.",
+        )
+
+    story_attachments = collect_story_attachments_only(story_id, vlm_enabled=True)
+    if story_attachments:
+        logger.info(
+            f"[/manual-tests/generate/{story_id}] {len(story_attachments)} pièces jointes story traitées pour Agent 3 (OCR/VLM)."
         )
 
     legacy_examples = None
@@ -211,7 +216,11 @@ def generate_manual_tests(
             legacy_examples = None
 
     return generate_manual_tests_for_story_data(
-        story, analysis, model_alias, legacy_examples=legacy_examples
+        story,
+        analysis,
+        model_alias,
+        rag_context=story_attachments,
+        legacy_examples=legacy_examples,
     )
 
 
@@ -229,12 +238,12 @@ def generate_manual_tests_for_epic(
     ),
     generation_model: str = Query(
         "nova-lite-2",
-        description=f"Modèle pour l'Agent 2 (génération tests). Allowed: {list(ALL_MODELS.keys())}",
+        description=f"Modèle pour l'Agent 3 (génération tests). Allowed: {list(ALL_MODELS.keys())}",
     ),
     use_legacy_rag: bool = Query(
         True,
         description=(
-            "Active le RAG des tests Xray legacy Sopra HR (few-shot Agent 2) "
+            "Active le RAG des tests Xray legacy Sopra HR (few-shot Agent 3) "
             "pour chaque story de l'epic. Fallback graceful par story."
         ),
     ),
@@ -242,7 +251,7 @@ def generate_manual_tests_for_epic(
     """
     Pipeline complet pour un Epic :
       1. Récupère toutes les stories de l'epic depuis Jira
-      2. Pour chaque story : nettoie → analyse (Agent 1) → génère les tests (Agent 2)
+      2. Pour chaque story : nettoie → analyse (Agent 1) → génère les tests (Agent 3)
       3. Retourne un résumé global avec tous les résultats
     """
     if analysis_model not in ALLOWED_MODELS:
@@ -328,7 +337,7 @@ def generate_manual_tests_for_epic(
                 )
                 continue
 
-            # Agent 2 : Génération des tests
+            # Agent 3 : Génération des tests
             legacy_examples = None
             if use_legacy_rag:
                 try:
@@ -357,9 +366,7 @@ def generate_manual_tests_for_epic(
             )
             if test_result.tests and story_id:
                 save_manual_tests_snapshot(
-                    story_id,
-                    [t.model_dump() for t in test_result.tests],
-                    generation_model=generation_model,
+                    story_id, [t.model_dump() for t in test_result.tests], generation_model=generation_model
                 )
 
             results.append(

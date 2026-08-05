@@ -1,4 +1,4 @@
-"""
+﻿"""
 Utilitaire partagé pour comparer deux textes par le SENS et non par les mots.
 Utilisé par metrics.py à la place du matching mot-à-mot (trop fragile en français).
 

@@ -1,5 +1,5 @@
-"""
-Repository pour sauvegarder/récupérer résultats de validation Agent 3 — PostgreSQL (SQLAlchemy ORM).
+﻿"""
+Repository pour sauvegarder/récupérer résultats de validation Agent 4 — PostgreSQL (SQLAlchemy ORM).
 """
 
 from typing import Optional
@@ -7,15 +7,15 @@ from typing import Optional
 from sqlalchemy import select
 
 from app.db.postgres import get_sync_session
-from app.models.agent3_validation import Agent3ValidationReport, Agent3ValidationResult
-from app.models.pg_models import Agent3Validation
+from app.models.agent4_validation import Agent4ValidationReport, Agent4ValidationResult
+from app.models.pg_models import Agent4Validation
 
 
 def save_validation_result(
-    story_id: str, validation_result: Agent3ValidationResult
+    story_id: str, validation_result: Agent4ValidationResult
 ) -> bool:
     """
-    Sauvegarde les résultats de validation Agent 3 en base (idempotent par story_id).
+    Sauvegarde les résultats de validation Agent 4 en base (idempotent par story_id).
     """
     try:
         session = get_sync_session()
@@ -24,7 +24,7 @@ def save_validation_result(
         # Supprimer l'ancien enregistrement pour cette story
         existing = (
             session.execute(
-                select(Agent3Validation).where(Agent3Validation.story_id == story_id)
+                select(Agent4Validation).where(Agent4Validation.story_id == story_id)
             )
             .scalars()
             .all()
@@ -52,7 +52,7 @@ def save_validation_result(
             else []
         )
 
-        obj = Agent3Validation(
+        obj = Agent4Validation(
             story_id=story_id,
             coverage_rate=report.coverage_rate,
             uncovered_testable_points=report.uncovered_testable_points or [],
@@ -73,14 +73,14 @@ def save_validation_result(
         session.close()
 
 
-def fetch_validation_by_story_id(story_id: str) -> Optional[Agent3ValidationResult]:
+def fetch_validation_by_story_id(story_id: str) -> Optional[Agent4ValidationResult]:
     """Récupère les résultats de validation pour une story."""
     try:
         session = get_sync_session()
         obj = session.execute(
-            select(Agent3Validation)
-            .where(Agent3Validation.story_id == story_id)
-            .order_by(Agent3Validation.created_at.desc())
+            select(Agent4Validation)
+            .where(Agent4Validation.story_id == story_id)
+            .order_by(Agent4Validation.created_at.desc())
             .limit(1)
         ).scalar_one_or_none()
 
@@ -88,7 +88,7 @@ def fetch_validation_by_story_id(story_id: str) -> Optional[Agent3ValidationResu
             return None
 
         # Reconstruire les modèles Pydantic
-        from app.models.agent3_validation import DuplicatePairReport, LLMQualityFeedback
+        from app.models.agent4_validation import DuplicatePairReport, LLMQualityFeedback
 
         duplicate_pairs = []
         for dup in obj.duplicate_pairs or []:
@@ -117,7 +117,7 @@ def fetch_validation_by_story_id(story_id: str) -> Optional[Agent3ValidationResu
                 except Exception:
                     pass
 
-        report = Agent3ValidationReport(
+        report = Agent4ValidationReport(
             coverage_rate=obj.coverage_rate or 0.0,
             uncovered_testable_points=obj.uncovered_testable_points or [],
             duplicate_pairs=duplicate_pairs,
@@ -128,7 +128,7 @@ def fetch_validation_by_story_id(story_id: str) -> Optional[Agent3ValidationResu
             llm_quality_model_alias=obj.llm_quality_model_alias,
         )
 
-        return Agent3ValidationResult(story_id=story_id, tests=tests, report=report)
+        return Agent4ValidationResult(story_id=story_id, tests=tests, report=report)
 
     except Exception as e:
         print(f"Error fetching validation result: {e}")
@@ -143,7 +143,7 @@ def delete_validation_by_story_id(story_id: str) -> bool:
         session = get_sync_session()
         rows = (
             session.execute(
-                select(Agent3Validation).where(Agent3Validation.story_id == story_id)
+                select(Agent4Validation).where(Agent4Validation.story_id == story_id)
             )
             .scalars()
             .all()

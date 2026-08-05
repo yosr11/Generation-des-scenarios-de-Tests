@@ -1,0 +1,77 @@
+[Image jointe : emploi_Fonctionnel.png]
+── Textes détectés (OCR) ──
+Ma carrière
+Vous êtes arrivé(e) dans Etablissement QA1 depuis le 01 janvier 2020.
+Vous êtes depuis le 01 janvier 2020, Affecté dans l'admin(ACTIVITE) à Temps plein depuis le 01 janvier 2020.
+Votre service d'affectation est DEPARTEMENT QA1.
+Votre carrière d'origine est ADJ ADM JUSTICE, au grade AD] ADM 1C JUSTICE, 2ème échelon.
+Vous êtes dans le groupe ADMI EDUC NATI ENSE SUPE RECH, à l'emploi fonctionnel ADMI EDUC ENSE SUPE RECH SANS ECHE SPEC, 4¢™* échelon.
+Votre carrière d'origine est ADJ ADM JUSTICE, au grade AD] ADM 1C JUSTICE, 2éme écheion.
+Vous êtes dans le groupe ADMI EDUC NATI ENSE SUPE RECH, à l‘emploi fonctionnel ADMI EDUC ENSE SUPE RECH SANS ECHE SPEC, 4¢™* échelon.
+── Analyse visuelle (VLM) ──
+<think>
+Here's a thinking process that leads to the suggested output:
+
+1.  **Analyze the Request:**
+    *   **Goal:** Describe the visual, non-textual elements of a UI screenshot/mockup.
+    *   **Input:** An image (which I can see) and OCR text (which I must trust and not recite).
+    *   **Constraint:** Do *not* recite the text. Focus on layout, annotations, icons, and structure.
+    *   **Format:** 5 specific sections (Context, Annotations, Native UI Elements, Icons, Layout/Relations).
+    *   **Language:** French.
+    *   **Tone:** Factual, neutral, descriptive.
+
+2.  **Analyze the Image:**
+    *   *Visual Content:* It's a clean, white interface.
+    *   *Top:* A title "Ma carrière" (bold).
+    *   *Body:* Several lines of text describing career details (dates, departments, grades).
+    *   *Bottom Left:* A button labeled "Voir +".
+    *   *Annotations:* I need to look closely for red boxes, arrows, circles, etc.
+        *   *Observation:* The image looks like a clean screenshot or a very clean mockup. There are *no* visible red boxes, arrows, or scribbles added by a PO on top of the UI. It looks like a standard UI state.
+    *   *UI Elements:*
+        *   The "Voir +" button is a pill-shaped button with a thin border.
+    *   *Icons:* None visible.
+    *   *Layout:* Vertical list of text blocks.
+
+3.  **Drafting the Response (Section by Section):**
+
+    *   **1. CONTEXTE:**
+        *   *Observation:* It's a detail view or a summary card. It lists career history.
+        *   *Draft:* Il s'agit d'une vue de détail ou d'une fiche récapitulative présentant les informations de carrière d'un utilisateur. L'intention est d'afficher un résumé chronologique ou statutaire de l'employé.
+
+    *   **2. ANNOTATIONS AJOUTÉES PAR LE PO:**
+        *   *Observation:* I am scanning the image again. Is there anything drawn on top? No. The text is clean. The button is clean.
+        *   *Draft:* Aucune annotation détectée.
+
+    *   **3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI:**
+        *   *Observation:* There is one distinct interactive element.
+        *   *Element:* The button at the bottom left.
+        *   *Description:* It's a button with rounded corners (pill shape), a thin black outline, and a white background.
+        *   *Text:* "Voir +" (from OCR).
+        *   *Draft:* Un bouton de forme arrondie (pill shape) avec une bordure fine noire et un fond blanc, contenant le texte "Voir +".
+
+    *   **4. ICÔNES ET PICTOGRAMMES:**
+        *   *Observation:* I see no gears, trash cans, or magnifying glasses.
+        *   *Draft:* Aucune icône ou pictogramme visible.
+
+    *   **5. AGENCEMENT ET RELATIONS:**
+        *   *Observation:*
+            *   Title at the top left.
+            *   Text blocks are stacked vertically.
+            *   There is significant whitespace below the text.
+            *   The button is aligned to the left, below the text blocks.
+            *   Some text is bolded (e.g., "Etablissement QA1", "DEPARTEMENT QA1", "ADJ ADM JUSTICE", "ADMI EDUC NATI ENSE SUPE RECH"). This indicates emphasis on specific values.
+        *   *Draft:*
+            *   Structure verticale : Un titre principal en haut à gauche, suivi d'une liste de paragraphes de texte alignés à gauche.
+            *   Espacement : Il y a un grand espace blanc vide en bas de l'écran, sous le dernier paragraphe de texte.
+            *   Hiérarchie textuelle : Le titre est en gras et plus grand. Dans le corps du texte, certains termes (noms d'établissements, départements, grades) sont mis en gras pour les distinguer du texte courant.
+            *   Position du bouton : Le bouton "Voir +" est situé en bas à gauche, sous le dernier bloc de texte.
+
+4.  **Review and Refine:**
+    *   *Check against constraints:* Did I recite text? No. Did I invent features? No. Is it in French? Yes.
+    *   *Refinement on Section 3:* Ensure I mention the button shape clearly.
+    *   *Refinement on Section 5:* Mention the bolding specifically as a visual hierarchy element.
+
+5.  **Final Polish (producing the actual output):**
+    (Self-Correction during drafting): Wait, looking closer at the provided image, there are actually *three* images stitched together or just one long scroll? No, it looks like one main image and maybe a crop? Ah, looking at the raw input, it's a single image file provided. The image shows the top part, then a middle part, then a bottom part. It looks like a single continuous view.
+    *   *Correction:* The image provided is actually a composite or a long screenshot showing the top, middle, and bottom.
+    *   *Re-evaluating Annotations:* Still no annotations.

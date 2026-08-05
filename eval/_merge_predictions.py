@@ -1,4 +1,4 @@
-"""Merge des entrées d'analyse complétées manuellement dans agent1 prediction.json."""
+﻿"""Merge des entrées d'analyse complétées manuellement dans agent1 prediction.json."""
 
 import json
 from pathlib import Path

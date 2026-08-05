@@ -1,0 +1,137 @@
+[Image jointe : image-2024-12-13-11-01-29-673.png]
+── Textes détectés (OCR) ──
+4 = = x [
+° Representatlon gra phlque a la connexion
+= ® 9 ?0
+Thierry Cabannes reçoit les acteurs Aar  Breaking News: Brest la magie es Breaxing News ! Brest.la magie ( GroupMA relance Back To News pour neWS
+< de l'info du jour. des expeits et nos s #1150 peut-elle fonctionner 7 - 13/09 ‘;-“ peut-elle fonctionner 7 - 13/09 ffF" soutenir le pluralisme des médias >
+> Journahstes dans SMIdINEvSVVE. - g d
+Affichage des
+2a5
+Nicolas QMAN12
+INGÉNIEUR NIV.1
+om >
+- Absentéisme de mon équipe Micro-absentéisme de mon
+Mes tâches (0) Entité organisationnelle équipe Entité
+niveau 2 QA DEP2 organisationnelle niveau 2 Q...
+lemandes de mon équipe (0 0; 01
+Les demandes de mon équipe (0) 1_ 1_ ’\{\ Mes congés
+pers. pers. RN
+’:&},\1 Mes questions RH
+o Le planning de mes collégues
+@- je gère le planning de mon équipe
+L7
+\ v /
+33 Carte d'identité Sopra HR Software 2020
+- Représentation graphique à la connexion
+[V
+Th
+ry Cabann
+o1t
+urs
+Kir
+s:8r
+t.la
+a2
+elan
+kToN
+pour
+10 news
+tnos
+lle fon
+Ay, «
+ell
+actonner
+\\ Grou
+o dujour. d
+we
+soutenir le pluralisme des me
+q.
+Journ
+=M
+Ne:
+0000000000
+news 2 a 5
+ou
+Absentéisme de mon équipe
+Micro-absentéisme de mon
+Mes tâches (0)
+Entité organisationnelle
+équipe Entité
+niveau 2 QA DEP2
+organisationnelle niveau 2 Q.
+0j
+Les demandes de mon équipe (0)
+Mes congés
+1 pers.
+1 pers
+1e
+Mes questions RH
+Le planning de mes collègues
+je gère le planning de mon équipe
+2/
+33
+Carte d'identité Sopra HR Software 2020
+── Analyse visuelle (VLM) ──
+<think>
+Here's a thinking process that leads to the suggested response:
+
+1.  **Analyze the Request:**
+    *   **Goal:** Describe the visual, non-textual elements of the provided screenshot/mockup.
+    *   **Input:** An image (mockup of a mobile app interface) and OCR text.
+    *   **Constraint:** Do *not* repeat the OCR text unless necessary to identify an element. Focus on what the OCR *misses* (visuals, layout, annotations).
+    *   **Structure:** 5 specific sections (Context, Annotations, Native UI Elements, Icons, Layout/Relations).
+    *   **Tone:** Factual, neutral, structured.
+    *   **Language:** French.
+
+2.  **Analyze the Image (Visual Inspection):**
+    *   *Overall:* It's a presentation slide (likely PowerPoint) showing a mobile app mockup. The slide has a title at the top and some explanatory text on the right. The mockup itself is a dark-themed mobile interface.
+    *   *Annotations:* There is a distinct blue circle highlighting a specific area on the right side of the screen. There is also a black arrow pointing downwards at the bottom.
+    *   *UI Elements:*
+        *   Top bar: Hamburger menu, back arrow, search icon, help icon, settings icon.
+        *   Carousel: Images with text overlays (news items). Dots indicating pagination.
+        *   User Profile: Avatar, Name, Job Title, Notification badge (folder icon).
+        *   Search Bar: "Rechercher" placeholder.
+        *   List Items: Icons + Text (Congés, Questions RH, Planning, etc.).
+        *   Cards/Widgets: Four square-ish cards with numbers (Absentéisme, Micro-absentéisme, Solde de congés, Autres absences).
+        *   Bottom Link: "Accéder à toutes mes démarches" with a checkmark icon.
+    *   *Colors:* Dark background (black/dark grey) for the top section, white background for the bottom list section. Teal/Blue accents for cards and icons.
+
+3.  **Drafting the Content - Section by Section:**
+
+    *   **1. CONTEXTE:**
+        *   *Observation:* It's a slide presentation showing a mobile app interface. The title suggests it's about the "graphical representation at connection" (login/home screen).
+        *   *Draft:* Il s'agit d'une diapositive de présentation montrant une maquette d'interface mobile (application). L'écran représente probablement la page d'accueil ou le tableau de bord utilisateur après connexion.
+
+    *   **2. ANNOTATIONS AJOUTÉES PAR LE PO:**
+        *   *Observation:*
+            *   A light blue circle on the right side, highlighting the user profile area (avatar/name).
+            *   A black curved arrow at the very bottom, pointing down (likely indicating scrolling or a hidden menu).
+            *   Text on the right side of the slide (outside the phone frame): "10 news Affichage des news 2 à 5". This is an annotation explaining the carousel behavior.
+        *   *Draft:*
+            *   Cercle bleu clair : Entoure la zone de profil utilisateur (avatar et nom "Nicolas QMAN12").
+            *   Flèche noire courbe : Située en bas de l'écran, pointant vers le bas, suggérant un défilement ou un menu caché.
+            *   Texte explicatif à droite : "10 news Affichage des news 2 à 5" (texte ajouté sur la diapositive, pas dans l'app).
+
+    *   **3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI:**
+        *   *Observation:*
+            *   *Carousel:* Images with text. Pagination dots (white dots on black background).
+            *   *Cards:* Four distinct blocks. Two dark blue/grey, two teal/green.
+            *   *List Items:* Icons on the left of text.
+            *   *Search Bar:* Rounded rectangle with grey background.
+        *   *Draft:*
+            *   Carrousel d'images : En haut, une série d'images horizontales avec des points de pagination blancs en dessous.
+            *   Cartes de statistiques : Quatre blocs rectangulaires. Deux sont de couleur bleu foncé/gris ("Absentéisme...", "Micro-absentéisme..."), deux sont de couleur turquoise/vert d'eau ("Mon solde...", "Mes autres...").
+            *   Barre de recherche : Un rectangle arrondi gris clair avec le texte "Rechercher" en filigrane.
+            *   Icônes de liste : Des cercles colorés (bleu, vert) contenant des pictogrammes blancs à gauche de chaque ligne de menu.
+
+    *   **4. ICÔNES ET PICTOGRAMMES:**
+        *   *Observation:*
+            *   Top left: Hamburger menu (3 lines), Back arrow.
+            *   Top right: Magnifying glass (search), Question mark (help), Gear (settings).
+            *   Carousel: Right arrow (next).
+            *   Profile: Folder icon with "0" badge.
+            *   List items: Calendar, Question mark, People/Group, Calendar with pencil.
+            *   Bottom: Checkmark.
+        *   *Draft:*
+            *   En-tête : Menu hamburger (gauche), flèche retour (gauche), loupe, point d'interrogation

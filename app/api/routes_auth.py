@@ -1,4 +1,4 @@
-"""Routes d'authentification — endpoint unique POST /auth/login."""
+﻿"""Routes d'authentification — endpoint unique POST /auth/login."""
 
 from __future__ import annotations
 

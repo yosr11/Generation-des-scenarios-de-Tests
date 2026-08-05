@@ -117,9 +117,8 @@ if (resp.dev_reset_url) {
         {/* Logo */}
         <div className="relative z-10 animate-fade-in">
           <div className="flex items-center gap-3">
-            <img src="/logo_sopra.png" alt="Sopra HR"
-              className="h-9 w-auto object-contain"
-              style={{ filter: 'brightness(0) invert(1)', opacity: 0.9 }} />
+            <img src="/synapTest1.png" alt="Synaptest"
+              className="h-12 w-auto object-contain" />
             <div className="w-px h-6 bg-white/20" />
             <span className="text-2xl font-bold text-white">
               Synap<span style={{ color: '#f43f5e' }}>test</span>
@@ -178,7 +177,7 @@ if (resp.dev_reset_url) {
 
           {/* Mobile Logo */}
           <div className="lg:hidden flex items-center gap-3 mb-8">
-            <img src="/logo_sopra.png" alt="Sopra HR" className="h-7 w-auto object-contain opacity-90" />
+            <img src="/synapTest1.png" alt="Synaptest" className="h-10 w-auto object-contain" />
             <div className="w-px h-5 bg-gray-300" />
             <span className="text-xl font-bold text-brand-navy">
               Synap<span style={{ color: '#f43f5e' }}>test</span>
@@ -187,7 +186,7 @@ if (resp.dev_reset_url) {
 
           {/* Header */}
           <div className="mb-6">
-            <h2 className="text-3xl font-extrabold text-brand-navy mb-2">Bienvenue 👋</h2>
+            <h2 className="text-3xl font-extrabold text-brand-navy mb-2">Bienvenue </h2>
             <p className="text-brand-muted">Connectez-vous pour continuer</p>
           </div>
 
@@ -195,7 +194,7 @@ if (resp.dev_reset_url) {
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label className="block text-xs font-bold text-brand-navy/70 uppercase tracking-widest mb-2">
-                Identifiant Jira ou Email Admin
+                Username ou Email
               </label>
               <div className="relative">
                 <User size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-muted" />

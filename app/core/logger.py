@@ -1,4 +1,4 @@
-# Configure le logging structuré avec correlation ID.
+﻿# Configure le logging structuré avec correlation ID.
 # Utile pour le debug + traçabilité pipeline multi-agents.
 
 import logging

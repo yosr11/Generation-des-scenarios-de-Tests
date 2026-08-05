@@ -1,4 +1,4 @@
-import json
+﻿import json
 from pathlib import Path
 from typing import Any, Dict, List
 
@@ -29,7 +29,7 @@ def load_eval_stories(input_path: str | Path) -> List[Dict[str, Any]]:
 
 def normalize_story(story: Dict[str, Any]) -> Dict[str, Any]:
     normalized = dict(story)
-    for key in ["agent1", "agent1_5", "agent2", "agent3", "agent5"]:
+    for key in ["agent1", "agent2", "agent3", "agent4", "agent5"]:
         value = normalized.get(key, {})
         if not isinstance(value, dict):
             normalized[key] = {"output": value}
@@ -46,7 +46,7 @@ def serialize_payload(value: Any) -> str:
 
 def collect_agent_payloads(story: Dict[str, Any]) -> Dict[str, str]:
     output: Dict[str, str] = {}
-    for key in ["agent1", "agent1_5", "agent2", "agent3", "agent5"]:
+    for key in ["agent1", "agent2", "agent3", "agent4", "agent5"]:
         agent = story.get(key, {})
         if isinstance(agent, dict):
             output[key] = serialize_payload(agent.get("output", {}))

@@ -1,4 +1,4 @@
-from app.core.config import settings
+﻿from app.core.config import settings
 
 
 def test_required_settings_are_available_in_test_environment():

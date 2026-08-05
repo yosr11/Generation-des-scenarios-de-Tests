@@ -1,4 +1,4 @@
-# app/services/story_analysis_service.py
+﻿# app/services/story_analysis_service.py
 import json
 import re
 import logging
@@ -212,6 +212,17 @@ def extract_json_object(text: str) -> Dict[str, Any]:
     # fallback: extract first {...}
     match = re.search(r"\{.*\}", text, re.DOTALL)
     if not match:
+        # Le texte ne contient même pas d'accolade fermante : réponse tronquée
+        # dès le début du JSON. On tente quand même une réparation avant d'abandonner.
+        open_match = re.search(r"\{.*", text, re.DOTALL)
+        if open_match:
+            repaired = _repair_truncated_json(open_match.group(0))
+            if repaired is not None:
+                logger.warning(
+                    "JSON tronqué détecté (aucune accolade fermante) et réparé automatiquement "
+                    "— probable dépassement de max_tokens sur l'appel LLM."
+                )
+                return repaired
         raise StoryAnalysisError(
             f"No JSON object found in LLM response. Raw: {text[:500]}"
         )
@@ -221,7 +232,47 @@ def extract_json_object(text: str) -> Dict[str, Any]:
     try:
         return json.loads(json_candidate)
     except json.JSONDecodeError as e:
+        # Fallback : tente de réparer un JSON tronqué (réponse LLM coupée par max_tokens)
+        repaired = _repair_truncated_json(json_candidate)
+        if repaired is not None:
+            logger.warning(
+                "JSON tronqué détecté et réparé automatiquement (probable dépassement de max_tokens)."
+            )
+            return repaired
         raise StoryAnalysisError(f"Invalid JSON returned by LLM: {e}")
+
+
+def _repair_truncated_json(text: str) -> Optional[Dict[str, Any]]:
+    """
+    Tente de réparer un objet JSON tronqué en fin de chaîne (cas typique :
+    coupure par la limite max_tokens du LLM en plein milieu d'une string ou
+    d'une structure imbriquée). Retourne None si la réparation échoue.
+    """
+    try:
+        from json_repair import repair_json
+
+        repaired_str = repair_json(text)
+        return json.loads(repaired_str)
+    except Exception:
+        pass
+
+    # Fallback manuel si json_repair n'est pas installé : ferme la string
+    # ouverte et rééquilibre les crochets/accolades restants.
+    try:
+        candidate = text
+        # Si le nombre de guillemets non échappés est impair, une string est ouverte
+        unescaped_quotes = len(re.findall(r'(?<!\\)"', candidate))
+        if unescaped_quotes % 2 == 1:
+            candidate += '"'
+
+        open_braces = candidate.count("{") - candidate.count("}")
+        open_brackets = candidate.count("[") - candidate.count("]")
+        candidate += "]" * max(open_brackets, 0)
+        candidate += "}" * max(open_braces, 0)
+
+        return json.loads(candidate)
+    except Exception:
+        return None
 
 
 def merge_story_analysis(
@@ -548,7 +599,7 @@ def classify_story_with_adaptive_llm(
                 user_prompt=user_prompt,
                 model_alias=model_alias,
                 temperature=0.0,
-                max_tokens=2000,
+                max_tokens=4096,
             )
 
         return classify_story_with_llm(
@@ -563,7 +614,7 @@ def classify_story_with_adaptive_llm(
             user_prompt=user_prompt,
             model_alias=model_alias,
             temperature=0.0,
-            max_tokens=2000,
+            max_tokens=4096,
         )
 
     return classify_story_with_llm(
@@ -587,7 +638,7 @@ def extract_story_analysis_with_adaptive_llm(
                 user_prompt=user_prompt,
                 model_alias=model_alias,
                 temperature=0.0,
-                max_tokens=2000,
+                max_tokens=4096,
             )
 
         return extract_story_analysis_with_llm(
@@ -602,7 +653,7 @@ def extract_story_analysis_with_adaptive_llm(
             user_prompt=user_prompt,
             model_alias=model_alias,
             temperature=0.0,
-            max_tokens=2000,
+            max_tokens=4096,
         )
 
     return extract_story_analysis_with_llm(
@@ -637,7 +688,7 @@ def analyze_story_with_adaptive_llm(
                 user_prompt=user_prompt,
                 model_alias=model_alias,
                 temperature=0.0,
-                max_tokens=2000,
+                max_tokens=4096,
             )
 
         return analyze_story_with_llm(
@@ -654,7 +705,7 @@ def analyze_story_with_adaptive_llm(
                 user_prompt=user_prompt,
                 model_alias=model_alias,
                 temperature=0.0,
-                max_tokens=2000,
+                max_tokens=4096,
             )
 
         return analyze_story_with_llm(

@@ -1,4 +1,4 @@
-"""Dépendances FastAPI : utilisateur courant et protection par rôle."""
+﻿"""Dépendances FastAPI : utilisateur courant et protection par rôle."""
 
 from __future__ import annotations
 

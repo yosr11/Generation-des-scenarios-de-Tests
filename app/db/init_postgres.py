@@ -1,4 +1,4 @@
-"""Initialisation PostgreSQL et seed admin."""
+﻿"""Initialisation PostgreSQL et seed admin."""
 
 from sqlalchemy import text
 

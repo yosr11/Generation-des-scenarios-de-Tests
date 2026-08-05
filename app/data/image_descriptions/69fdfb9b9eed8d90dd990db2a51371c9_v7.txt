@@ -1,0 +1,82 @@
+[Image jointe : image-Changer une situation familiale.png]
+── Textes détectés (OCR) ──
+— @ Changer une situation familiale QO ? D
+RAFAEL ISABELLE Mise a jour
+FRLFR4Y001919
+Le changement de situation familiale (mariage, divorce, pacs, etc.) nécessite la mise à jour de certaines données personnelles comme : Situation familiale, nom, contact en cas d'urgence,
+personnes à charge. Joignez-y un justificatif (si nécessaire).
+Supprimer Sauvegarder
+V Sa situation familiale ËlL
+Les champs ;ndiqués par Lre * son: ctligatoires.
+Pour changer la situation familiale, remplissez le formulaire ci-dessous et joignez-y un justificatif (si nécessaire) .
+La situation familiale actuelle est Concubin.
+La nouvelle situation familiale *
+Date d'effet de la situation familiale * à
+i ]
+Suivant
+} Son congé familial
+} Ses contacts en cas d'urgence
+> Sa composition familiale
+Changer une situation familiale
+O,
+RAFAEL ISABELLE
+Mise a jour
+Sauvegarder
+Supprimer
+V Sa situation familiale
+Date d'effet de la situation familiale *
+o)
+── Analyse visuelle (VLM) ──
+<think>
+Here's a thinking process that leads to the suggested response:
+
+1.  **Analyze the Request:**
+    *   **Goal:** Describe the visual, non-textual elements of a UI screenshot/mockup.
+    *   **Input:** An image (which I can see) and OCR text (which I must trust and not recite).
+    *   **Output Format:** 5 specific sections (Context, Annotations, Native UI Elements, Icons, Layout/Relations).
+    *   **Language:** French.
+    *   **Constraints:** Be factual, neutral, avoid inventing text, avoid guessing functionality (unless obvious like a search bar), use generic terms if unsure.
+
+2.  **Analyze the Image (Visual Inspection):**
+    *   *Image 1 (Top Left):* Shows a form titled "Changer une situation familiale". There's a user profile card at the top left. Below that, a text block explaining the process. Then three buttons: "Quitter", "Supprimer", "Sauvegarder". Below that, a section header "Sa situation familiale" with a small icon on the right. Inside the section, there are form fields.
+    *   *Image 2 (Bottom Left):* A zoomed-in or slightly different version of the same form. It shows the user card more clearly (avatar circle). It shows the dropdown menu for "La nouvelle situation familiale". It shows a date picker field "Date d'effet...". It shows a "Suivant" button. Below that, a list of expandable sections (accordion style) with arrows.
+    *   *Image 3 (Right):* A large grey area with a blue header "Mise à jour". This looks like a placeholder or a separate panel.
+    *   *Annotations:* I need to look closely for red boxes, arrows, circles, etc.
+        *   In the top-left image, there is a small red arrow pointing to a small icon (looks like a document or attachment icon) next to the "Sa situation familiale" header.
+        *   Wait, let me look closer at the provided images.
+        *   *Correction:* The prompt provides *three* images stitched together or presented as a sequence.
+            *   *Top Left:* Shows the top part of the form. There is a red arrow pointing to a small icon (looks like a document with a red corner) next to the "Sa situation familiale" header.
+            *   *Bottom Left:* Shows the middle part of the form.
+            *   *Right:* Shows a large grey area with a blue header "Mise à jour".
+    *   *Let's re-evaluate the "Annotations" based on the specific crop provided in the prompt.*
+        *   The prompt shows a composite image.
+        *   Top left crop: Shows "Changer une situation familiale", user card, text, buttons.
+        *   Bottom left crop: Shows "Sa situation familiale" section, dropdown, date field, "Suivant" button, and the accordion list below.
+        *   Right crop: Shows a large grey area with a blue header "Mise à jour".
+        *   *Crucial Detail:* In the top-left crop, next to the header "Sa situation familiale", there is a small icon (looks like a document) with a tiny red arrow pointing at it. This is an annotation.
+
+3.  **Drafting the Content - Section by Section:**
+
+    *   **1. CONTEXTE:**
+        *   It's a web interface, likely an HR portal (Sopra HR mentioned in prompt).
+        *   It's a form for updating family status ("Changer une situation familiale").
+        *   It includes a user profile summary and a step-by-step form.
+
+    *   **2. ANNOTATIONS AJOUTÉES PAR LE PO:**
+        *   I see a small red arrow in the top-left image.
+        *   It points to a small icon (looks like a document/attachment icon) located to the right of the section header "Sa situation familiale".
+        *   *Self-Correction:* Looking very closely at the top-left image, there is a red arrow pointing to a small icon that looks like a document with a folded corner. This icon is next to the "Sa situation familiale" header.
+
+    *   **3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI:**
+        *   *User Card:* Top left. Contains an avatar (circle with initials or image), name "RAFAEL ISABELLE", ID "FRLFR4Y001919".
+        *   *Buttons:* "Quitter", "Supprimer", "Sauvegarder" (pill-shaped, outlined). "Suivant" (pill-shaped, outlined).
+        *   *Section Headers:* Dark blue bars with white text ("Sa situation familiale", "Son congé familial", etc.).
+        *   *Form Fields:*
+            *   Dropdown menu ("La nouvelle situation familiale *").
+            *   Date input field ("Date d'effet...") with a calendar icon inside.
+        *   *Accordion/Expandable List:* The bottom section has dark blue bars with arrows pointing right (indicating expandable content).
+        *   *Status Badge:* In the top right of the right-hand image, there is a blue bar "Mise à jour".
+
+    *   **4. ICÔNES ET PICTOGRAMMES:**
+        *   *Top Right:* Search (magnifying glass), Help (question mark), Power/Logout (circle with line).
+        *   *User Card:* Circular avatar

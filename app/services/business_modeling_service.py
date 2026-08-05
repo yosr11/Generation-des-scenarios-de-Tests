@@ -1,10 +1,10 @@
-"""
+﻿"""
 app/services/business_modeling_service.py
 ──────────────────────────────────────────
-Service Agent 1.5 — QA Business Modeling.
+Service Agent 2 — QA Business Modeling.
 
 Transforme l'output structuré d'Agent 1 (acteurs, actions, règles, user_flows)
-en business_goals et business_workflows exploitables par Agent 2.
+en business_goals et business_workflows exploitables par Agent 3.
 """
 
 from __future__ import annotations
@@ -82,7 +82,7 @@ def build_business_model(
     max_retries: int = 2,
 ) -> BusinessModelingResult:
     """
-    Appelle l'Agent 1.5 pour modéliser les business goals et workflows d'une story.
+    Appelle l'Agent 2 pour modéliser les business goals et workflows d'une story.
 
     Args:
         analysis   : analysis_dict produit par Agent 1 (résultat de model_dump()).
@@ -98,7 +98,7 @@ def build_business_model(
     # Court-circuit pour stories non fonctionnelles
     if story_type != "functional":
         logger.info(
-            f"[Agent 1.5] Story {story_id} type='{story_type}' → non fonctionnelle, modélisation ignorée"
+            f"[Agent 2] Story {story_id} type='{story_type}' → non fonctionnelle, modélisation ignorée"
         )
         return _empty_result(
             story_id,
@@ -109,7 +109,7 @@ def build_business_model(
     actions = analysis.get("actions") or []
     if not actions:
         logger.info(
-            f"[Agent 1.5] Story {story_id} — aucune action extraite, modélisation vide"
+            f"[Agent 2] Story {story_id} — aucune action extraite, modélisation vide"
         )
         return _empty_result(story_id, note="Aucune action extraite par Agent 1.")
 
@@ -121,7 +121,7 @@ def build_business_model(
     for attempt in range(1, max_retries + 1):
         try:
             logger.info(
-                f"[Agent 1.5] Modélisation de {story_id} (modèle={model_alias}, tentative={attempt})"
+                f"[Agent 2] Modélisation de {story_id} (modèle={model_alias}, tentative={attempt})"
             )
             raw = call_llm(
                 system_prompt=system_prompt,
@@ -140,7 +140,7 @@ def build_business_model(
             result = BusinessModelingResult(**data)
 
             logger.info(
-                f"[Agent 1.5] {story_id} → {len(result.business_goals)} goals, "
+                f"[Agent 2] {story_id} → {len(result.business_goals)} goals, "
                 f"{len(result.business_workflows)} workflows"
             )
             return result
@@ -148,12 +148,12 @@ def build_business_model(
         except (BusinessModelingError, ValidationError, Exception) as exc:
             last_error = exc
             logger.warning(
-                f"[Agent 1.5] Tentative {attempt}/{max_retries} échouée pour {story_id}: {exc}"
+                f"[Agent 2] Tentative {attempt}/{max_retries} échouée pour {story_id}: {exc}"
             )
 
     # Toutes les tentatives ont échoué — retourner un résultat vide (non bloquant)
     logger.error(
-        f"[Agent 1.5] Impossible de modéliser {story_id} après {max_retries} tentatives : {last_error}"
+        f"[Agent 2] Impossible de modéliser {story_id} après {max_retries} tentatives : {last_error}"
     )
     return _empty_result(
         story_id,
