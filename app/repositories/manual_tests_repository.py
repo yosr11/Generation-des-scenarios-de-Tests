@@ -20,8 +20,6 @@ def _test_dict_to_scenario(test_dict: Dict[str, Any], story_id: str) -> Dict[str
         "preconditions": test_dict.get("preconditions", []),
         "steps": test_dict.get("steps", []),
         "expected_result": test_dict.get("expected_result", ""),
-        "source_ustype": test_dict.get("source_ustype", ""),
-        "model": test_dict.get("model", ""),
     }
 
 
@@ -32,8 +30,6 @@ def _scenario_to_test_dict(scenario: Dict[str, Any]) -> Dict[str, Any]:
         "steps": scenario.get("steps", []) or [],
         "expected_result": scenario.get("expected_result", ""),
         "priority": scenario.get("priority", ""),
-        "source_ustype": scenario.get("source_ustype", ""),
-        "model": scenario.get("model", ""),
     }
 
 
@@ -53,7 +49,7 @@ def save_manual_tests_snapshot(
         for test in tests
         if isinstance(test, dict)
     ]
-    return save_scenarios_bulk(scenarios, model=generation_model)
+    return save_scenarios_bulk(scenarios)
 
 
 def get_latest_manual_tests(story_id: str) -> Optional[List[Dict[str, Any]]]:

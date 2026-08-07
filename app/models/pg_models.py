@@ -57,10 +57,6 @@ class PipelineRun(Base):
     story_id: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
     launched_by: Mapped[str] = mapped_column(String(255), nullable=False, index=True)
     status: Mapped[str] = mapped_column(String(50), nullable=False, default="running")
-    # Options used
-    use_rag: Mapped[bool] = mapped_column(Boolean, default=True)
-    use_legacy_rag: Mapped[bool] = mapped_column(Boolean, default=False)
-    run_agent4: Mapped[bool] = mapped_column(Boolean, default=True)
     # Timing
     started_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
@@ -70,10 +66,24 @@ class PipelineRun(Base):
     )
     # Result summary
     tests_count: Mapped[int] = mapped_column(Integer, default=0)
-    error_message: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
-    # Full outputs (JSON) persisted for history/debugging
-    agent3_tests: Mapped[Optional[list]] = mapped_column(PortableJSONB, nullable=True, default=list)
-    agent5_report: Mapped[Optional[dict]] = mapped_column(PortableJSONB, nullable=True)
+
+
+class Report(Base):
+    """Rapports finaux générés par Agent 5."""
+
+    __tablename__ = "reports"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    story_id: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
+    report_title: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    report_version: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
+    generated_timestamp: Mapped[Optional[str]] = mapped_column(
+        String(100), nullable=True
+    )
+    report_data: Mapped[Optional[dict]] = mapped_column(PortableJSONB, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
 
 
 # ── Modèles métier (migrés depuis SQLite) ────────────────────────────────────
@@ -86,10 +96,7 @@ class Story(Base):
 
     id: Mapped[str] = mapped_column(String(100), primary_key=True)
     summary: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
-    description_raw: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     description_clean: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
-    description_llm: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
-    acceptance_criteria_raw: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     acceptance_criteria_clean: Mapped[Optional[str]] = mapped_column(
         Text, nullable=True
     )
@@ -104,18 +111,6 @@ class Story(Base):
     )
     priority: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
     status: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
-    fix_versions: Mapped[Optional[list]] = mapped_column(
-        PortableJSONB, nullable=True, default=list
-    )
-    requirement_status: Mapped[Optional[dict]] = mapped_column(
-        PortableJSONB, nullable=True, default=dict
-    )
-    references_json: Mapped[Optional[dict]] = mapped_column(
-        PortableJSONB, nullable=True, default=dict
-    )
-    flags: Mapped[Optional[dict]] = mapped_column(
-        PortableJSONB, nullable=True, default=dict
-    )
     story_context_llm: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     epic_key: Mapped[Optional[str]] = mapped_column(
         String(100), nullable=True, index=True
@@ -138,9 +133,6 @@ class StoryAnalysis(Base):
     model: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
     story_title: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     story_type: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
-    recommended_test_type: Mapped[Optional[str]] = mapped_column(
-        String(100), nullable=True
-    )
     actors: Mapped[Optional[list]] = mapped_column(
         PortableJSONB, nullable=True, default=list
     )
@@ -162,16 +154,10 @@ class StoryAnalysis(Base):
     acceptance_criteria_inferred: Mapped[Optional[list]] = mapped_column(
         PortableJSONB, nullable=True, default=list
     )
-    clarification_questions: Mapped[Optional[list]] = mapped_column(
-        PortableJSONB, nullable=True, default=list
-    )
     analysis_reason: Mapped[Optional[list]] = mapped_column(
         PortableJSONB, nullable=True, default=list
     )
     user_flows: Mapped[Optional[list]] = mapped_column(
-        PortableJSONB, nullable=True, default=list
-    )
-    resolved_from_references: Mapped[Optional[list]] = mapped_column(
         PortableJSONB, nullable=True, default=list
     )
     created_at: Mapped[datetime] = mapped_column(
@@ -182,7 +168,7 @@ class StoryAnalysis(Base):
 class Agent4Validation(Base):
     """Résultats de validation Agent 4 par story."""
 
-    __tablename__ = "agent4_validations"
+    __tablename__ = "validation_story"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     story_id: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
@@ -202,12 +188,6 @@ class Agent4Validation(Base):
     llm_quality_feedback: Mapped[Optional[dict]] = mapped_column(
         PortableJSONB, nullable=True
     )
-    llm_quality_model_alias: Mapped[Optional[str]] = mapped_column(
-        String(100), nullable=True
-    )
-    correction_instructions: Mapped[Optional[list]] = mapped_column(
-        PortableJSONB, nullable=True, default=list
-    )
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
@@ -220,14 +200,12 @@ class StoryBusinessModel(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     story_id: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
-    model: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
     business_goals: Mapped[Optional[list]] = mapped_column(
         PortableJSONB, nullable=True, default=list
     )
     business_workflows: Mapped[Optional[list]] = mapped_column(
         PortableJSONB, nullable=True, default=list
     )
-    modeling_notes: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
@@ -250,8 +228,6 @@ class GeneratedScenario(Base):
         PortableJSONB, nullable=True, default=list
     )
     expected_result: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
-    source_ustype: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
-    model: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )

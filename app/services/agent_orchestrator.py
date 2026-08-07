@@ -414,7 +414,6 @@ def node_agent2_business_model(state: PipelineState) -> dict:
             result = build_business_model(analysis=analysis_dict, model_alias=model)
 
         result_dict = result.model_dump()
-        result_dict["model"] = model
         save_business_model(result_dict)
 
         bm_out = result_dict
@@ -692,6 +691,7 @@ def node_agent3_gap_fill(state: PipelineState) -> dict:
 def node_agent5_report(state: PipelineState) -> dict:
     """Agent 5 : génération du rapport final."""
     from app.services.agent5_report_service import Agent5ReportGeneratorService
+    from app.repositories.report_repository import save_report
 
     story_id = state["story_id"]
     check_pipeline_cancelled(story_id)
@@ -718,6 +718,7 @@ def node_agent5_report(state: PipelineState) -> dict:
                 max_correction_iterations=state.get("max_correction_iterations", 0),
             )
         rep_out = report.model_dump() if hasattr(report, "model_dump") else dict(report)
+        save_report(rep_out)
         _safe_update_step(
             story_id, "Agent 5", "completed", output=rep_out, progress=100
         )

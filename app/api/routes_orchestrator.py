@@ -24,13 +24,8 @@ async def _log_pipeline_run(
     story_id: str,
     launched_by: str,
     status: str,
-    use_rag: bool,
-    use_legacy_rag: bool,
     tests_count: int = 0,
-    error_message: Optional[str] = None,
     started_at: Optional[datetime] = None,
-    agent3_tests: Optional[list] = None,
-    agent5_report: Optional[dict] = None,
 ) -> None:
     """Persist a PipelineRun record to PostgreSQL (fire-and-forget)."""
     try:
@@ -55,14 +50,9 @@ async def _log_pipeline_run(
                 story_id=story_id,
                 launched_by=launched_by,
                 status=status,
-                use_rag=use_rag,
-                use_legacy_rag=use_legacy_rag,
                 tests_count=tests_count,
-                error_message=error_message,
                 started_at=started_at or datetime.now(timezone.utc),
                 finished_at=datetime.now(timezone.utc),
-                agent3_tests=agent3_tests,
-                agent5_report=agent5_report,
             )
             db.add(run)
             await db.commit()
@@ -344,8 +334,6 @@ async def run_story_pipeline(
         status = "failed"
         tests_count = 0
         error_msg = None
-        agent3_tests = None
-        agent5_report = None
 
         try:
             import anyio
@@ -368,9 +356,6 @@ async def run_story_pipeline(
             result = _state_to_result(final_state, include_markdown=False)
             status = result.status
             tests_count = result.tests_count
-            # persist full outputs for history
-            agent3_tests = result.agent3_tests if hasattr(result, "agent3_tests") else None
-            agent5_report = result.agent5_report if hasattr(result, "agent5_report") else None
 
             if sid in jobs_db:
                 jobs_db[sid]["status"] = (
@@ -406,13 +391,8 @@ async def run_story_pipeline(
                         story_id=sid,
                         launched_by=launched_by,
                         status=status,
-                        use_rag=params.use_rag,
-                        use_legacy_rag=params.use_legacy_rag,
                         tests_count=tests_count,
-                        error_message=error_msg,
                         started_at=started_at,
-                        agent3_tests=agent3_tests,
-                        agent5_report=agent5_report,
                     )
                 )
             except Exception as exc:

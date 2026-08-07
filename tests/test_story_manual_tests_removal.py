@@ -20,8 +20,6 @@ def test_manual_tests_repository_reads_from_scenarios(monkeypatch):
                 "preconditions": [],
                 "steps": [],
                 "expected_result": "",
-                "source_ustype": "",
-                "model": "",
                 "created_at": "",
             }
         ]
@@ -46,8 +44,8 @@ def test_save_manual_tests_snapshot_replaces_existing(monkeypatch):
         calls.append(("delete", story_id))
         return True
 
-    def fake_save_bulk(scenarios, model=""):
-        calls.append(("save", scenarios, model))
+    def fake_save_bulk(scenarios):
+        calls.append(("save", scenarios))
         return len(scenarios)
 
     monkeypatch.setattr(
@@ -68,8 +66,6 @@ def test_save_manual_tests_snapshot_replaces_existing(monkeypatch):
                 "steps": ["step1"],
                 "expected_result": "result",
                 "priority": "high",
-                "source_ustype": "auto",
-                "model": "nova-lite-2",
             }
         ],
         generation_model="nova-lite-2",
@@ -78,7 +74,6 @@ def test_save_manual_tests_snapshot_replaces_existing(monkeypatch):
     assert count == 1
     assert calls[0] == ("delete", "story-123")
     assert calls[1][0] == "save"
-    assert calls[1][2] == "nova-lite-2"
     assert calls[1][1][0]["title"] == "Scenario 1"
 
 

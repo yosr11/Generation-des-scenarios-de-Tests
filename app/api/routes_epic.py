@@ -123,8 +123,6 @@ def list_cleaned_stories_by_epic(epic_key: str):
                 "title": enriched.get("title", ""),
                 "summary": enriched.get("summary", ""),
                 "description_clean": enriched.get("description_clean", ""),
-                "description_llm": enriched.get("description_llm", ""),
-                "acceptance_criteria_raw": enriched.get("acceptance_criteria_raw", ""),
                 "acceptance_criteria_clean": enriched.get(
                     "acceptance_criteria_clean", ""
                 ),
@@ -132,13 +130,9 @@ def list_cleaned_stories_by_epic(epic_key: str):
                 "components": enriched.get("components", []),
                 "priority": enriched.get("priority", ""),
                 "status": enriched.get("status", ""),
-                "fixVersions": enriched.get("fixVersions", []),
-                "requirement_status": enriched.get("requirement_status", ""),
                 "issuelinks": enriched.get("issuelinks", []),
                 "linked_keys_clean": enriched.get("linked_keys_clean", []),
                 "linked_summaries_clean": enriched.get("linked_summaries_clean", []),
-                "references": enriched.get("references", {}),
-                "flags": enriched.get("flags", {}),
             }
         )
 

@@ -159,7 +159,6 @@ def _build_response(
         "business_model": {
             "business_goals": goals,
             "business_workflows": workflows,
-            "modeling_notes": bm_dict.get("modeling_notes", ""),
         },
         "source_analysis": (
             {

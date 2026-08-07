@@ -22,8 +22,6 @@ def _row_to_dict(obj: GeneratedScenario) -> Dict[str, Any]:
         "preconditions": obj.preconditions or [],
         "steps": obj.steps or [],
         "expected_result": obj.expected_result or "",
-        "source_ustype": obj.source_ustype or "",
-        "model": obj.model or "",
         "created_at": str(obj.created_at) if obj.created_at else "",
     }
 
@@ -42,8 +40,6 @@ def save_scenario(scenario: Dict[str, Any]) -> int:
             preconditions=scenario.get("preconditions", []),
             steps=scenario.get("steps", []),
             expected_result=scenario.get("expected_result", ""),
-            source_ustype=scenario.get("source_ustype", ""),
-            model=scenario.get("model", ""),
         )
         session.add(obj)
         session.commit()
@@ -53,7 +49,7 @@ def save_scenario(scenario: Dict[str, Any]) -> int:
         session.close()
 
 
-def save_scenarios_bulk(scenarios: List[Dict[str, Any]], model: str = "") -> int:
+def save_scenarios_bulk(scenarios: List[Dict[str, Any]]) -> int:
     session = get_sync_session()
     try:
         for s in scenarios:
@@ -65,8 +61,6 @@ def save_scenarios_bulk(scenarios: List[Dict[str, Any]], model: str = "") -> int
                 preconditions=s.get("preconditions", []),
                 steps=s.get("steps", []),
                 expected_result=s.get("expected_result", ""),
-                source_ustype=s.get("source_ustype", ""),
-                model=model or s.get("model", ""),
             )
             session.add(obj)
         session.commit()

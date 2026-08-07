@@ -338,11 +338,7 @@ def enrich_issuelinks_with_description(
             continue
         db_story = db_by_key.get(key)
         if db_story:
-            desc = (
-                db_story.get("description_clean")
-                or db_story.get("description_llm")
-                or clean_text(db_story.get("description_raw") or "")
-            )
+            desc = db_story.get("description_clean") or ""
             if desc.strip():
                 enriched_links[idx]["description"] = desc
                 continue

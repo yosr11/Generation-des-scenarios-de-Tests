@@ -232,15 +232,9 @@ async def admin_pipeline_history(
                 "story_id": r.story_id,
                 "launched_by": r.launched_by,
                 "status": r.status,
-                "use_rag": r.use_rag,
-                "use_legacy_rag": r.use_legacy_rag,
-                "run_agent4": r.run_agent4,
                 "started_at": r.started_at.isoformat() if r.started_at else None,
                 "finished_at": r.finished_at.isoformat() if r.finished_at else None,
                 "tests_count": r.tests_count,
-                "error_message": r.error_message,
-                "agent3_tests": r.agent3_tests,
-                "agent5_report": r.agent5_report,
             }
         )
     return {"runs": out}

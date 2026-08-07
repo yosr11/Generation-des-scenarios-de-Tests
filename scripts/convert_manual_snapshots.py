@@ -58,8 +58,6 @@ def main():
                     preconditions=t.get("preconditions", []),
                     steps=t.get("steps", []),
                     expected_result=t.get("expected_result", ""),
-                    source_ustype=t.get("source_ustype", ""),
-                    model=t.get("model") or generation_model or "",
                 )
                 session.add(obj)
                 inserted += 1

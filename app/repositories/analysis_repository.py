@@ -29,10 +29,8 @@ def _row_to_dict(obj: StoryAnalysis) -> Dict[str, Any]:
         "testable_points": obj.testable_points or [],
         "acceptance_criteria_explicit": obj.acceptance_criteria_explicit or [],
         "acceptance_criteria_inferred": obj.acceptance_criteria_inferred or [],
-        "clarification_questions": obj.clarification_questions or [],
         "analysis_reason": obj.analysis_reason or [],
         "user_flows": obj.user_flows or [],
-        "resolved_from_references": obj.resolved_from_references or [],
         "created_at": str(obj.created_at) if obj.created_at else "",
     }
 
@@ -61,10 +59,8 @@ def save_analysis(analysis: Dict[str, Any]) -> int:
             acceptance_criteria_inferred=analysis.get(
                 "acceptance_criteria_inferred", []
             ),
-            clarification_questions=analysis.get("clarification_questions", []),
             analysis_reason=analysis.get("analysis_reason", []),
             user_flows=analysis.get("user_flows", []),
-            resolved_from_references=analysis.get("resolved_from_references", []),
         )
         session.add(obj)
         session.commit()
@@ -95,10 +91,8 @@ def save_analyses_bulk(analyses: List[Dict[str, Any]]) -> int:
                 testable_points=a.get("testable_points", []),
                 acceptance_criteria_explicit=a.get("acceptance_criteria_explicit", []),
                 acceptance_criteria_inferred=a.get("acceptance_criteria_inferred", []),
-                clarification_questions=a.get("clarification_questions", []),
                 analysis_reason=a.get("analysis_reason", []),
                 user_flows=a.get("user_flows", []),
-                resolved_from_references=a.get("resolved_from_references", []),
             )
             session.add(obj)
         session.commit()
@@ -199,9 +193,7 @@ def get_latest_analysis_as_pydantic(story_id: str, model: Optional[str] = None):
             user_flows=data.get("user_flows", []),
             acceptance_criteria_explicit=data.get("acceptance_criteria_explicit", []),
             acceptance_criteria_inferred=data.get("acceptance_criteria_inferred", []),
-            clarification_questions=data.get("clarification_questions", []),
             analysis_reason=data.get("analysis_reason", []),
-            resolved_from_references=data.get("resolved_from_references", []),
         )
         logger.info(
             "[Agent5] Successfully converted analysis to Pydantic for %s", story_id

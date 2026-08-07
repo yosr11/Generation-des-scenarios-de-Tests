@@ -406,20 +406,15 @@ def build_flags(text: str, labels: Optional[List[str]] = None) -> Dict[str, Any]
 # ══════════════════════════════════════════════════════════════
 
 
-def build_description_llm(
-    description_clean: str, references: Dict[str, List[str]]
-) -> str:
+def optimize_description_for_llm(text: str) -> str:
     """
-    Construit une version plus propre pour le LLM :
+    Optimise une description déjà nettoyée pour le LLM :
       - remplace les URLs longues par [URL]
-      - garde le sens des références importantes
-      - normalise certains marqueurs
+      - normalise certains marqueurs (Ticket:, Story:, RQ:, User:…)
       - retire un peu de bruit sans inventer
     """
-    if not description_clean:
+    if not text:
         return ""
-
-    text = description_clean
 
     # Remplacement des URLs brutes par un marqueur
     text = URL_RE.sub("[URL]", text)
@@ -568,7 +563,7 @@ def clean_story_dict(story: Dict[str, Any]) -> Dict[str, Any]:
       - requirement_status
     """
     desc_raw = story.get("description") or ""
-    desc_clean = clean_text(desc_raw)
+    desc_clean = optimize_description_for_llm(clean_text(desc_raw))
 
     # Acceptance Criteria (champ personnalisé Jira)
     ac_raw = story.get("acceptance_criteria_raw") or ""
@@ -580,30 +575,20 @@ def clean_story_dict(story: Dict[str, Any]) -> Dict[str, Any]:
 
     labels_clean = clean_string_list(story.get("labels") or [])
     components_clean = clean_string_list(story.get("components") or [])
-    fix_versions_clean = clean_string_list(story.get("fixVersions") or [])
 
     issuelinks_clean = clean_issuelinks(story.get("issuelinks") or [])
-    requirement_status_clean = clean_requirement_status(
-        story.get("requirement_status") or []
-    )
 
     return {
         "id": clean_scalar_text(story.get("id", "")),
-        # on garde brut + nettoyé
-        "summary_raw": summary_raw,
         "summary": summary_clean,
         "title": summary_clean,  # alias pratique si le reste du pipeline utilise title
-        "description_raw": desc_raw,
         "description_clean": desc_clean,
-        "acceptance_criteria_raw": ac_raw,
         "acceptance_criteria_clean": ac_clean,
         "labels": labels_clean,
         "components": components_clean,
         "issuelinks": issuelinks_clean,
         "priority": clean_scalar_text(story.get("priority") or ""),
         "status": clean_scalar_text(story.get("status") or ""),
-        "fixVersions": fix_versions_clean,
-        "requirement_status": requirement_status_clean,
     }
 
 
@@ -678,9 +663,6 @@ def enrich_story_for_llm(story: Dict[str, Any]) -> Dict[str, Any]:
     """
     Enrichit une story déjà nettoyée avec :
       - summary/title propre
-      - description_llm
-      - references
-      - flags
       - linked_summaries_clean
       - linked_keys_clean
       - story_context_llm
@@ -692,11 +674,9 @@ def enrich_story_for_llm(story: Dict[str, Any]) -> Dict[str, Any]:
     )
 
     # 2) Nettoyage / normalisation de la description
-    description_clean = story.get("description_clean") or clean_text(
-        story.get("description_raw") or story.get("description") or ""
+    description_clean = story.get("description_clean") or optimize_description_for_llm(
+        clean_text(story.get("description_raw") or story.get("description") or "")
     )
-
-    labels = story.get("labels") or []
 
     # 3) Récupération + nettoyage des résumés des tickets liés
     linked_summaries = [
@@ -714,36 +694,17 @@ def enrich_story_for_llm(story: Dict[str, Any]) -> Dict[str, Any]:
     ]
     linked_keys_clean = _unique_keep_order([k for k in linked_keys if k])
 
-    # 5) Construire un texte de référence plus riche
-    ac_clean = story.get("acceptance_criteria_clean") or ""
-    reference_text_parts = (
-        [summary_clean, description_clean, ac_clean]
-        + linked_summaries_clean
-        + linked_keys_clean
-    )
-    reference_text = "\n".join([part for part in reference_text_parts if part]).strip()
-
-    # 6) Extraction des références + flags
-    references = extract_references(reference_text)
-    flags = build_flags(reference_text, labels=labels)
-
-    # 7) Construction d’une description optimisée pour le LLM
-    description_llm = build_description_llm(description_clean, references)
-
-    # 8) Story enrichie
+    # 5) Story enrichie
     enriched = {
         **story,
         "summary": summary_clean,
         "title": summary_clean,  # alias pratique
         "description_clean": description_clean,
-        "description_llm": description_llm,
         "linked_summaries_clean": linked_summaries_clean,
         "linked_keys_clean": linked_keys_clean,
-        "references": references,
-        "flags": flags,
     }
 
-    # 9) Contexte final pour le LLM
+    # 6) Contexte final pour le LLM
     enriched["story_context_llm"] = build_story_context_for_llm(enriched)
 
     return enriched

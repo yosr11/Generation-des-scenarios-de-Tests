@@ -32,10 +32,8 @@ def save_business_model(result_dict: Dict[str, Any]) -> int:
     try:
         obj = StoryBusinessModel(
             story_id=story_id,
-            model=result_dict.get("model", ""),
             business_goals=result_dict.get("business_goals", []),
             business_workflows=result_dict.get("business_workflows", []),
-            modeling_notes=result_dict.get("modeling_notes", "") or "",
         )
         session.add(obj)
         session.commit()
@@ -56,23 +54,12 @@ def save_business_model(result_dict: Dict[str, Any]) -> int:
 
 
 def get_latest_business_model(
-    story_id: str, model: Optional[str] = None
+    story_id: str,
 ) -> Optional[Dict[str, Any]]:
-    """
-    Retourne le dernier business model persisté pour une story.
-
-    Args:
-        story_id : identifiant Jira de la story.
-        model    : filtre optionnel sur l'alias modèle.
-
-    Returns:
-        Dict ou None si absent.
-    """
+    """Retourne le dernier business model persisté pour une story."""
     session = get_sync_session()
     try:
         stmt = select(StoryBusinessModel).where(StoryBusinessModel.story_id == story_id)
-        if model:
-            stmt = stmt.where(StoryBusinessModel.model == model)
         stmt = stmt.order_by(StoryBusinessModel.created_at.desc()).limit(1)
         obj = session.execute(stmt).scalar_one_or_none()
         return _row_to_dict(obj) if obj else None
@@ -121,9 +108,7 @@ def _row_to_dict(obj: StoryBusinessModel) -> Dict[str, Any]:
     return {
         "id": obj.id,
         "story_id": obj.story_id,
-        "model": obj.model or "",
         "business_goals": obj.business_goals or [],
         "business_workflows": obj.business_workflows or [],
-        "modeling_notes": obj.modeling_notes or "",
         "created_at": str(obj.created_at) if obj.created_at else "",
     }

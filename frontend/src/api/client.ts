@@ -531,6 +531,17 @@ export const apiClient = {
 
   // ── Agent5 Report ─────────────────────────────────────────────
   agent5: {
+    async getStoredReport(storyId: string): Promise<Agent5ReportResponse> {
+      try {
+        const response = await axiosInstance.get<Agent5ReportResponse>(
+          `/agent5/story/${encodeURIComponent(storyId)}/report`
+        )
+        return response.data
+      } catch (error) {
+        throw handleError(error)
+      }
+    },
+
     async generateReport(storyId: string, options: Agent5ReportRequest): Promise<Agent5ReportResponse> {
       try {
         const response = await axiosInstance.post<Agent5ReportResponse>(

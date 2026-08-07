@@ -172,12 +172,7 @@ export const StoryDetailPage: React.FC = () => {
     try { const bm    = await apiClient.agent2.getLatest(storyId);           setAgent2Output(bm)    } catch {}
     try { const tests = await apiClient.db.getManualTests(storyId);           setAgent3Output(tests) } catch {}
     try { const val   = await apiClient.db.getValidations(storyId);           setAgent4Output(val)   } catch {}
-    try {
-      const reportResponse = await apiClient.agent5.generateReport(storyId, { output_format: 'json' })
-      setAgent5Output(reportResponse.report)
-    } catch (err) {
-      console.warn('Agent5 report generation failed:', err)
-    }
+    try { const r5 = await apiClient.agent5.getStoredReport(storyId); setAgent5Output(r5.report) } catch {}
   }, [storyId])
 
   useEffect(() => { fetchHistoricalOutputs() }, [fetchHistoricalOutputs])

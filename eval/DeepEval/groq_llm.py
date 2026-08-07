@@ -1,11 +1,11 @@
-﻿# eval/DeepEval/groq_llm.py
+# eval/DeepEval/groq_llm.py
 
 from deepeval.models.base_model import DeepEvalBaseLLM
 from app.services.llm_client import call_groq
 
 
 class GroqLLM(DeepEvalBaseLLM):
-    def __init__(self, model_alias="qwen3.6"):
+    def __init__(self, model_alias="gptoss120b"):
         self.model_alias = model_alias
         super().__init__()
 

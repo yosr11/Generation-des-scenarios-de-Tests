@@ -43,14 +43,6 @@ def save_validation_result(
             if report.llm_quality_feedback
             else None
         )
-        correction_instructions = (
-            [
-                ci.model_dump() if hasattr(ci, "model_dump") else ci
-                for ci in report.correction_instructions
-            ]
-            if report.correction_instructions
-            else []
-        )
 
         obj = Agent4Validation(
             story_id=story_id,
@@ -60,8 +52,6 @@ def save_validation_result(
             ambiguity_findings=report.ambiguity_findings or [],
             validation_status=report.validation_status,
             llm_quality_feedback=llm_quality_feedback,
-            llm_quality_model_alias=report.llm_quality_model_alias or "",
-            correction_instructions=correction_instructions,
         )
         session.add(obj)
         session.commit()
@@ -123,9 +113,7 @@ def fetch_validation_by_story_id(story_id: str) -> Optional[Agent4ValidationResu
             duplicate_pairs=duplicate_pairs,
             ambiguity_findings=obj.ambiguity_findings or [],
             validation_status=obj.validation_status or "UNKNOWN",
-            correction_instructions=[],
             llm_quality_feedback=llm_quality_feedback,
-            llm_quality_model_alias=obj.llm_quality_model_alias,
         )
 
         return Agent4ValidationResult(story_id=story_id, tests=tests, report=report)

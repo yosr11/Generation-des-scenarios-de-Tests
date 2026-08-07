@@ -55,6 +55,30 @@ def _fetch_all_agent_data(story_id: str):
     return analysis, generation, validation
 
 
+@router.get("/story/{story_id}/report", response_model=Agent5ReportResponse)
+def get_stored_report(story_id: str):
+    """Retourne le dernier rapport persisté en base (sans appel LLM)."""
+    from app.repositories.report_repository import get_latest_report
+    from app.models.agent5_report import Agent5Report
+
+    stored = get_latest_report(story_id)
+    if not stored or not stored.get("report_data"):
+        raise HTTPException(
+            status_code=404, detail=f"Aucun rapport trouvé pour {story_id}"
+        )
+    try:
+        report = Agent5Report(**stored["report_data"])
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Rapport invalide : {e}")
+    return Agent5ReportResponse(
+        status="success",
+        report=report,
+        report_markdown=None,
+        error_message=None,
+        generation_duration_ms=0,
+    )
+
+
 @router.post("/story/{story_id}/report", response_model=Agent5ReportResponse)
 def generate_story_report(story_id: str, body: Agent5ReportRequest = None):
     """
