@@ -47,14 +47,26 @@ class _HTMLStripper(HTMLParser):
         # trailing data when the input ends mid-entity.
         super().__init__(convert_charrefs=False)
         self._parts: List[str] = []
+        self._link_hrefs: List[str] = []
 
     def handle_starttag(self, tag, attrs):
-        if tag.lower() in _BLOCK_TAGS:
+        tag = tag.lower()
+        if tag in _BLOCK_TAGS:
             self._parts.append("\n")
+        if tag == "a":
+            attrs_dict = dict(attrs or [])
+            href = attrs_dict.get("href")
+            if href:
+                self._link_hrefs.append(href)
 
     def handle_endtag(self, tag):
-        if tag.lower() in _BLOCK_TAGS:
+        tag = tag.lower()
+        if tag in _BLOCK_TAGS:
             self._parts.append("\n")
+        if tag == "a" and self._link_hrefs:
+            href = self._link_hrefs.pop()
+            if href:
+                self._parts.append(f" ({href})")
 
     def handle_data(self, data: str):
         self._parts.append(data)
@@ -143,6 +155,12 @@ def strip_jira_wiki(text: str) -> str:
 # ══════════════════════════════════════════════════════════════
 
 
+def _normalize_escaped_newlines(text: Optional[str]) -> str:
+    if not text:
+        return ""
+    return text.replace("\\r\\n", "\n").replace("\\n", "\n").replace("\\r", "\n")
+
+
 def clean_text(raw: Optional[str]) -> str:
     """
     Nettoyage de base :
@@ -159,6 +177,7 @@ def clean_text(raw: Optional[str]) -> str:
     text = strip_html(text)
     text = html.unescape(text)
     text = strip_jira_wiki(text)
+    text = _normalize_escaped_newlines(text)
 
     # Normalisation sauts de ligne
     text = text.replace("\r\n", "\n").replace("\r", "\n")
@@ -409,15 +428,17 @@ def build_flags(text: str, labels: Optional[List[str]] = None) -> Dict[str, Any]
 def optimize_description_for_llm(text: str) -> str:
     """
     Optimise une description déjà nettoyée pour le LLM :
-      - remplace les URLs longues par [URL]
+      - conserve les URLs sous forme de texte simple, non cliquable
       - normalise certains marqueurs (Ticket:, Story:, RQ:, User:…)
       - retire un peu de bruit sans inventer
     """
     if not text:
         return ""
 
-    # Remplacement des URLs brutes par un marqueur
-    text = URL_RE.sub("[URL]", text)
+    # Conserve les URLs telles quelles pour préserver la traçabilité.
+    # Elles restent en texte simple, non cliquables, et ne sont pas remplacées
+    # par un marqueur générique comme [URL].
+    text = _normalize_escaped_newlines(text)
 
     # Normalisation légère des marqueurs fréquents
     text = re.sub(

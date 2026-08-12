@@ -1,0 +1,32 @@
+[Image jointe : image.png]
+── Textes détectés (OCR) ──
+© 000
+Ses données contractuelles
+Dans l'entreprise depuis 4 ans et 4 mois, en contrat à Durée indéterminée depuis le 01 janvier 2020 et à Temps plein depuis le 01 janvier 2020.
+Affecté(e) dans le service DEP QA1.
+Il était éligible au télétravail à partir du 01 janvier 2023 jusqu'au 01 janvier 2024.
+© 08090
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+Il s'agit d'une capture d'écran d'une interface mobile ou tablette, présentant une fiche de détails ou un profil utilisateur. L'écran affiche des informations textuelles relatives au contrat de travail d'une personne, sur fond blanc avec une barre de navigation supérieure.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+*   **Barre de navigation supérieure :** Une bande noire en haut de l'écran contenant une rangée de 5 icônes circulaires.
+*   **Indicateur d'onglet actif :** L'icône centrale (document) est sur fond blanc, contrairement aux autres qui sont sur fond noir. Un petit triangle blanc pointe vers le bas juste sous cette icône, indiquant qu'elle est sélectionnée.
+*   **Séparateur :** Une fine ligne horizontale noire sépare la zone d'image supérieure de la zone de contenu blanche.
+
+## 4. ICÔNES ET PICTOGRAMMES
+*   **Flèche retour :** Située à l'extrême gauche de la barre de navigation (flèche courbe pointant vers la gauche).
+*   **Palmier :** Deuxième icône à gauche (silhouette d'un palmier).
+*   **Document avec loupe :** Icône centrale (feuille de papier avec une loupe en bas à droite), indiquant l'onglet actif.
+*   **Groupe de personnes :** Quatrième icône (silhouette de trois personnes).
+*   **Profil utilisateur :** Cinquième icône à droite (silhouette d'une tête et épaules).
+
+## 5. AGENCEMENT ET RELATIONS
+*   **Structure verticale :** L'écran est divisé en deux parties principales : une zone supérieure sombre avec une image de fond (un banc sur une terrasse en bois) et une zone inférieure blanche pour le contenu textuel.
+*   **Hiérarchie du texte :** Le titre "Ses données contractuelles" est affiché en gras et en plus grand que le reste du texte, situé juste en dessous de la barre de navigation.
+*   **Alignement :** Tout le contenu textuel est aligné à gauche.
+*   **Regroupement :** Les informations sont présentées sous forme de paragraphes courts, les uns en dessous des autres.

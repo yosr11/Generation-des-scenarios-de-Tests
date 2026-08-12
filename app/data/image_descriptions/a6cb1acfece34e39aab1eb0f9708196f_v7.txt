@@ -1,4 +1,4 @@
-[Image jointe : 2026-04-27_15h28_34.png]
+[Image jointe : formulaire.png]
 ── Textes détectés (OCR) ──
 ——
 Menu v Recherche
@@ -53,55 +53,61 @@ Réf. du salarié chez l'OPS (*) |
 Nombre de personnes [:
 Contrat |
 ── Analyse visuelle (VLM) ──
-## 1. CONTEXTE
-L'écran semble être une page de gestion des données de personnes dans un système de paie ou de ressources humaines, plus précisément dans la section des caisses et mutuelles. Il s'agit probablement d'un formulaire ou d'une fiche individuelle de gestion des informations liées aux caisses de prévoyance.
+<think>
+Here's a thinking process that leads to the suggested response:
 
-## 2. ANNOTATIONS AJOUTÉES PAR LE PO
-- Un cadre rouge entoure deux champs : 
-  - Type : cadre
-  - Couleur : rouge
-  - Eléments désignés : 
-    - "Caisse de prévoyance"
-    - "Options contractuelles"
+1.  **Analyze the Request:**
+    *   **Goal:** Describe the visual, non-textual elements of a UI screenshot/mockup.
+    *   **Input:** An image (which I can see) and OCR text (which I must trust and not recite).
+    *   **Output Format:** 5 specific sections (Context, Annotations, Native UI Elements, Icons, Layout/Relations).
+    *   **Language:** French.
+    *   **Constraints:** Be factual, neutral, avoid inventing text, avoid guessing functionality (e.g., don't say "search tab" if it's just a tab), and strictly follow the provided structure.
 
-## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
-- Un onglet actif :
-  - Forme : rectangle avec un fond coloré
-  - Couleur de fond : bleu
-  - Texte OCR : "Prévoyances"
-- Des onglets :
-  - Forme : rectangles
-  - Couleur de fond : gris clair ou blanc
-  - Textes OCR : 
-    - "Populations"
-    - "Caisses de retraite"
-    - "Mutuelles et assurances"
-    - "MSA"
-    - "CFE"
-    - "Autres caisses"
-- Des boutons :
-  - Forme : rectangles avec des bords arrondis
-  - Couleur de fond : gris
-  - Textes OCR : 
-    - "Soumettre"
-    - "Annuler"
-- Des champs de saisie :
-  - Plusieurs champs de texte pour saisir des informations.
+2.  **Analyze the Image (Visual Inspection):**
+    *   *Overall:* It's a desktop application interface, likely a web app or thick client for HR/Payroll management. It looks like a "Sopra HR" interface based on the prompt context.
+    *   *Top Bar:* Dark grey header with "Menu", breadcrumbs ("Accueil > Paie > Mettre à jour > Caisses et mutuelles"), and a search bar.
+    *   *Main Content Area:* Divided into sections.
+        *   Section 1: "Rechercher une personne" (Search fields).
+        *   Section 2: "Gérer les données..." (Tabs for "Entrée", "Sortie", "Fiche individuelle", "Synthèse").
+        *   Toolbar: Icons for navigation, printing, settings, etc.
+        *   Tabs: "Mutuelles et assurances", "Prévoyances" (active), "MSA", "CFE", "Autres caisses".
+        *   Left Panel: A list/grid view with columns "Nom", "Matricule".
+        *   Right Panel: A form area.
+    *   *Annotations:* There is a distinct red rectangle drawn around two specific fields in the "Prévoyances" section.
+    *   *Icons:* Lots of standard UI icons (magnifying glass, calendar, printer, gear, arrows, etc.).
 
-## 4. ICÔNES ET PICTOGRAMMES
-- Une icône de calendrier :
-  - Fonction probable : permet de sélectionner des dates
-  - Position : à côté des champs pour les dates.
-- Une icône de loupe :
-  - Fonction probable : recherche ou vérification d'informations
-  - Position : à côté de certains champs de saisie.
+3.  **Drafting the Content - Section by Section:**
 
-## 5. AGENCEMENT ET RELATIONS
-- L'écran est divisé en sections :
-  - Une section pour rechercher une personne
-  - Une section pour gérer les données de la personne sélectionnée
-  - Une section pour les informations de caisse de prévoyance
-- Les champs sont organisés en lignes et en colonnes, facilitant la saisie et la lecture des informations.
-- Des titres et sous-titres sont présents pour hiérarchiser les informations :
-  - "Prévoyances" comme onglet actif
-  - "Caisse de prévoyance" et "Options contractuelles" dans une section dédiée.
+    *   **1. CONTEXTE:**
+        *   *Observation:* It's a management screen for "Caisses et mutuelles" (Funds and Mutuals). It has a search area at the top and a detailed form area below.
+        *   *Draft:* Il s'agit d'une interface de gestion administrative (probablement RH ou paie) dédiée à la gestion des "Caisses et mutuelles". L'écran combine une zone de recherche en haut et un formulaire de saisie détaillé en bas, divisé en onglets.
+
+    *   **2. ANNOTATIONS AJOUTÉES PAR LE PO:**
+        *   *Observation:* I see a red box.
+        *   *Location:* It surrounds the fields "Caisse de prévoyance" and "Options contractuelles".
+        *   *Draft:*
+            *   Type : Cadre rectangulaire.
+            *   Couleur : Rouge.
+            *   Élément désigné : Il entoure les deux champs de saisie situés sous l'onglet "Prévoyances", correspondant aux libellés OCR "Caisse de prévoyance" et "Options contractuelles".
+
+    *   **3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI:**
+        *   *Observation:*
+            *   Tabs: "Prévoyances" is highlighted in blue. Others are white/grey.
+            *   Buttons: "Rechercher" (dark blue pill), "Soumettre" / "Annuler" (grey pills).
+            *   Badges/Tags: "Population favorite" (dropdown), "Populations" (dark blue pill).
+            *   Grid headers: "Nom", "Matricule" with 'x' icons.
+        *   *Draft:*
+            *   Onglet actif : Un onglet rectangulaire de couleur bleue foncée contient le texte "Prévoyances". Les onglets adjacents ("Mutuelles et assurances", "MSA", "CFE", "Autres caisses") sont de couleur blanche/grise.
+            *   Bouton principal : Un bouton arrondi de couleur bleu foncé contient le texte "Rechercher".
+            *   Boutons d'action : Deux boutons gris arrondés contiennent les textes "Soumettre" et "Annuler".
+            *   Pastille/Badge : Une pastille bleu foncé contient le texte "Populations".
+            *   En-têtes de colonnes : Dans la grille à gauche, les en-têtes "Nom" et "Matricule" sont sur fond gris clair.
+
+    *   **4. ICÔNES ET PICTOGRAMMES:**
+        *   *Observation:*
+            *   Top right: Search icon (magnifying glass).
+            *   Toolbar: Refresh, arrows (prev/next), page number "0/0", magnifying glass, pen/edit, lightbulp, gear, printer, export.
+            *   Form fields: Magnifying glass (search), three dots (menu/options), calendar (date picker).
+            *   Grid: 'x' (close/filter), arrows (sort).
+        *   *Draft:*
+            *   Loupe : Présente à droite des champs de saisie (ex: "Caisse de prévoyance", "Options contractuelles", "Dossier de paie", "Motif d'entrée",

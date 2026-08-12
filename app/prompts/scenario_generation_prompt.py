@@ -135,25 +135,29 @@ def _format_legacy_examples_block(
         blocks.append("\n".join(lines))
 
     intro = (
-        "EXEMPLES DE TESTS EXISTANTS SOPRA HR — RÉFÉRENCE DE STYLE\n"
-        "Ces tests proviennent du référentiel Xray legacy et couvrent un sujet proche.\n"
-        "Les étapes ont été éclatées en sous-étapes atomiques (1 action = 1 interaction).\n"
+        "EXEMPLES DE TESTS EXISTANTS SOPRA HR — INSPIRATION SÉMANTIQUE\n"
+        "Ces tests proviennent du référentiel Xray legacy. Chaque exemple affiche un score\n"
+        "de similarité (0 à 1) avec la story courante. Les étapes ont été éclatées en\n"
+        "sous-étapes atomiques (1 action = 1 interaction).\n"
         "\n"
         "RÈGLES :\n"
-        "1. PRIORITÉ ABSOLUE : la description de la story et les testable_points. Les exemples\n"
-        "   ne servent QUE de référence de style/granularité. Ne génère JAMAIS d'étapes qui ne\n"
-        "   correspondent à rien dans la story.\n"
-        "2. Si la story décrit un comportement UI (clics, saisies, écrans), inspire-toi des exemples\n"
-        '   pour formuler des actions concrètes ("Cliquer sur le bouton X", "Saisir Y dans le champ Z")\n'
-        "   et réutilise le vocabulaire métier (noms de boutons, libellés, intitulés) UNIQUEMENT s'ils\n"
-        "   apparaissent dans la story analysée.\n"
-        "3. Si la story décrit du backend / config / règles métier sans UI, NE FORCE PAS de l'UI.\n"
+        "1. PRIORITÉ ABSOLUE : la description de la story et les testable_points restent la\n"
+        "   seule source de vérité du périmètre. Ne génère JAMAIS un test dont l'objectif est\n"
+        "   absent de la story.\n"
+        "2. UTILISE LE SCORE DE SIMILARITÉ pour calibrer ton inspiration :\n"
+        "   • score ≥ 0.75 (même fonctionnalité) : l'exemple décrit le même besoin que la\n"
+        "     story. Tu peux t'appuyer sur sa logique de couverture (cas nominaux, cas d'erreur,\n"
+        "     préconditions), sa granularité ET réutiliser son vocabulaire métier, ses libellés\n"
+        "     UI et ses données lorsqu'ils sont cohérents avec la story.\n"
+        "   • score 0.55–0.75 (domaine proche, fonctionnalité différente) : inspire-toi\n"
+        "     UNIQUEMENT de la décomposition, de la logique de test et de la granularité des\n"
+        "     étapes. N'importe PAS les données, libellés ou éléments UI spécifiques de l'exemple.\n"
+        "3. Si la story décrit du backend / config / règles métier sans UI, NE FORCE PAS de l'UI\n"
+        "   même si l'exemple legacy en contient.\n"
         "4. Préfère des actions précises (verbe + objet + complément) mais une action courte ou un\n"
         "   champ data vide est ACCEPTABLE — le QA complétera après génération.\n"
         "5. Nombre d'étapes : adapte-le à la complexité réelle du scénario décrit dans la story.\n"
-        "6. Ton des expected_result : reprends les tournures legacy quand pertinent UNIQUEMENT si\n"
-        "   la story parle d'éléments d'écran.\n"
-        "7. NE COPIE PAS le contenu d'un exemple.\n"
+        "6. NE RECOPIE JAMAIS un exemple à l'identique : inspire-toi de sa logique, ne le duplique pas.\n"
     )
     return intro + "\n" + "\n\n".join(blocks)
 
@@ -678,14 +682,16 @@ Do NOT use this RAG context to:
     legacy_block = ""
     if legacy_examples:
         try:
-            sample_examples = legacy_examples[:2]
+            sample_examples = legacy_examples[:3]
             legacy_block = _format_legacy_examples_block(sample_examples)
             if legacy_block:
                 legacy_block = legacy_block.replace(
                     "RÈGLES :\n",
-                    "IMPORTANT:\nLegacy examples are NOT authoritative for business scope.\n"
-                    "They must NEVER add a test objective, UI element, business data, or verification point absent from the current story.\n"
-                    "They only illustrate test writing style, action granularity, and expected result phrasing.\n\nRÈGLES :\n",
+                    "IMPORTANT:\nThe current story is the only source of truth for the test scope.\n"
+                    "Use the similarity score of each example to decide how far to reuse it:\n"
+                    "- score >= 0.75: same feature -> you may reuse its coverage logic, UI vocabulary and data when consistent with the story.\n"
+                    "- score 0.55-0.75: adjacent domain -> reuse only its decomposition and granularity, not its specific data or UI labels.\n"
+                    "Never introduce a test objective that is absent from the current story.\n\nRÈGLES :\n",
                 )
         except Exception:
             legacy_block = ""

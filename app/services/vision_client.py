@@ -15,6 +15,7 @@ import hashlib
 import io
 import logging
 import os
+import re
 import time
 from pathlib import Path
 from typing import Optional
@@ -33,8 +34,8 @@ logger = logging.getLogger(__name__)
 #                               Groq spécifique (sinon 404 model_not_found).
 #                               meta-llama/llama-4-maverick-17b-128e-instruct
 VISION_MODEL = os.getenv("VISION_MODEL", "qwen/qwen3.6-27b")
-# 1200 tokens : évite la troncature des descriptions sur les écrans riches (vignettes 15+ éléments).
-VISION_MAX_TOKENS = int(os.getenv("VISION_MAX_TOKENS", "1200"))
+# 1200 tokens : laisse à Qwen assez de budget pour produire les 5 sections détaillées.
+VISION_MAX_TOKENS = int(os.getenv("VISION_MAX_TOKENS", "2800"))
 
 # v5 : ajout pré-traitement OCR (grayscale, upscale x2, auto-inversion fond
 #      sombre, binarisation Otsu) + double passe PSM 6/11 pour mieux capter
@@ -42,7 +43,8 @@ VISION_MAX_TOKENS = int(os.getenv("VISION_MAX_TOKENS", "1200"))
 # v6 : passage au VLM maverick + budget tokens 1200 → invalide l'ancien cache scout.
 # v7 : durcissement anti-hallucination du prompt VLM (interdit de nommer un pattern UI
 #      incertain : « champ de recherche » et non « onglet de recherche personnalisée », etc.).
-_PROMPT_VERSION = "v7"
+# v9 : masque le raisonnement Qwen côté Groq et réserve assez de tokens à la réponse finale.
+_PROMPT_VERSION = "v9"
 
 # Configuration Tesseract (Windows). Si tesseract.exe n'est pas dans le PATH,
 # pointe vers son emplacement via la variable d'env `TESSERACT_CMD`.
@@ -114,7 +116,17 @@ _VISION_PROMPT = (
     "- N'attribue PAS de fonctionnalités à un élément (création, filtrage, tri, application de "
     "filtres…) : décris uniquement sa forme et son libellé OCR, pas ce qu'il est censé faire.\n"
     "- En cas de doute sur le nom d'un composant, préfère TOUJOURS la description générique la "
-    "plus prudente plutôt qu'un terme précis potentiellement inventé."
+    "plus prudente plutôt qu'un terme précis potentiellement inventé.\n"
+    "- Retourne uniquement les cinq sections finales, sans raisonnement ni étapes d'analyse.\n"
+    "- N'affiche jamais les balises <think> ou leur contenu.\n"
+    "- Commence directement par le titre Markdown ## 1. CONTEXTE.\n"
+    "- Utilise exactement ces titres, dans cet ordre :\n"
+    "  ## 1. CONTEXTE\n"
+    "  ## 2. ANNOTATIONS AJOUTÉES PAR LE PO\n"
+    "  ## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI\n"
+    "  ## 4. ICÔNES ET PICTOGRAMMES\n"
+    "  ## 5. AGENCEMENT ET RELATIONS\n"
+    "- Utilise des listes à puces pour les éléments détaillés."
 )
 
 
@@ -280,6 +292,26 @@ def _write_cache(content_hash: str, text: str) -> None:
         logger.warning("Impossible d'écrire le cache vision %s : %s", content_hash, exc)
 
 
+def _remove_thinking_block(text: str) -> str:
+    """Retire le raisonnement éventuellement exposé par le modèle."""
+    # Keep only the requested answer when the model adds an English preamble.
+    section_markers = (
+        "## 1. CONTEXTE",
+        "1. CONTEXTE",
+    )
+    positions = [text.find(marker) for marker in section_markers]
+    positions = [position for position in positions if position >= 0]
+    if positions:
+        cleaned = text[min(positions):]
+    else:
+        cleaned = text
+
+    cleaned = re.sub(r"<think>.*?</think>", "", cleaned, flags=re.DOTALL | re.IGNORECASE)
+    cleaned = re.sub(r"<think>.*$", "", cleaned, flags=re.DOTALL | re.IGNORECASE)
+
+    return cleaned.strip()
+
+
 def _prepare_image_data_url(content: bytes, filename: str) -> Optional[str]:
     """
     Redimensionne si nécessaire et encode en data URL base64 (JPEG).
@@ -391,6 +423,7 @@ def describe_image(
                 model=VISION_MODEL,
                 temperature=0.0,
                 max_tokens=VISION_MAX_TOKENS,
+                reasoning_format="hidden",
                 messages=[
                     {
                         "role": "user",
@@ -401,7 +434,9 @@ def describe_image(
                     }
                 ],
             )
-            description = (response.choices[0].message.content or "").strip()
+            description = _remove_thinking_block(
+                response.choices[0].message.content or ""
+            )
             if not description:
                 return None
 

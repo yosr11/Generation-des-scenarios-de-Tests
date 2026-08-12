@@ -1,0 +1,112 @@
+[Image jointe : formulaire.png]
+── Textes détectés (OCR) ──
+——
+Menu v Recherche
+; ; D - Caisses et mutuelles
+1. Rechercher une personne
+Nom [7| Matricule || Société | Plus de critères
+2. Gérer les données de la personne sélectionnée
+Entrée 0/0 / ç @ %
+Sortie L .
+Fiche individuelle Synthèse Paie :
+Population favorite = Populations Caisses de retraite Mutuelles et assurances _ MSA CFE Autres caisses
+0 W Prévoyances (=[] oo [~]x][+]-["]
+Nom * Matricule *
+Options contractuelles [: s.
+Réf. du salarié chez l'OPS (*) [: Nombre de personnes [:
+(*) OPS = Organisme de Protection Sociale
+Description du dossier de paie
+Dossier de paie D P
+Contrat [} —
+Saisie manuelle
+Motifs de changement de caisse
+Motif d'entrée D .…
+Motif de sortie D s…
+Menu
+Recherche
+Caisses et mutuelles
+Nom |
+Matricule _|
+Société [:l
+Plus de critères
+Entrée
+0/0
+#9%8
+Sortie
+Fiche individuelle
+Synthèse
+Paie :
+Population favorite
+Mutuelles et assurances
+CFE
+Autres caisses
+n Caisses de retraite
+(=[] oo [+]=]+]-]e
+D H Prévoyances
+Nom
+Matricule
+Caisse de prévoyance :] .…
+||
+w 5
+P —i
+Réf. du salarié chez l'OPS (*) |
+Nombre de personnes [:
+Contrat |
+── Analyse visuelle (VLM) ──
+<think>
+Here's a thinking process that leads to the desired output:
+
+1.  **Analyze the Request:**
+    *   **Goal:** Analyze a screenshot/mockup of a UI interface (Sopra HR user story).
+    *   **Input:** An image (provided in the prompt) and OCR text (provided in `<OCR_TEXTS>`).
+    *   **Constraint:** Do *not* re-list OCR text. Focus *only* on non-textual visual elements.
+    *   **Output Format:** 5 specific sections (Context, Annotations, Native UI Elements, Icons, Layout/Relations).
+    *   **Language:** French.
+    *   **Tone:** Factual, neutral, structured.
+    *   **Strict Rules:** No inventing text, no guessing functionality beyond visual cues, use generic terms if unsure, no "thinking" tags in output.
+
+2.  **Analyze the Image & OCR:**
+
+    *   *Image Overview:* It's a desktop application interface, likely a web app or thick client. It looks like a data entry or management screen for HR/Payroll ("Caisses et mutuelles").
+    *   *OCR Check:* The OCR captures most labels ("Menu", "Recherche", "Caisses et mutuelles", "Rechercher une personne", "Gérer les données...", "Prévoyances", "Caisse de prévoyance", "Options contractuelles", etc.).
+
+    *   *Section 1: Context:*
+        *   It's a management screen ("Gérer les données...").
+        *   It has a search area at the top and a detailed form below.
+        *   It looks like a mockup or a screenshot of a functional prototype.
+
+    *   *Section 2: Annotations (PO additions):*
+        *   I see a red rectangle.
+        *   It surrounds two fields: "Caisse de prévoyance" and "Options contractuelles".
+        *   Wait, looking closely at the bottom right crop, there is a red box around "Caisse de prévoyance" and "Options contractuelles".
+        *   Looking at the main image, there is a red box around the same fields.
+        *   *Correction:* The prompt says "ANNOTATIONS AJOUTÉES PAR LE PO". The red box is clearly an annotation added to highlight specific fields.
+        *   *Details:* Red rectangle. Surrounds "Caisse de prévoyance" and "Options contractuelles".
+
+    *   *Section 3: Native UI Elements:*
+        *   *Tabs:* There's a row of tabs: "Mutuelles et assurances", "Prévoyances" (active/highlighted in blue), "MSA", "CFE", "Autres caisses".
+        *   *Buttons:* "Rechercher" (dark blue pill), "Soumettre" (grey pill), "Annuler" (grey pill).
+        *   *Dropdowns/Selectors:* "Population favorite" (dropdown arrow), "Contrat" (dropdown arrow), "Motif d'entrée" (dropdown arrow), "Motif de sortie" (dropdown arrow).
+        *   *Input Fields:* "Nom", "Matricule", "Société", "Réf. du salarié chez l'OPS", "Nombre de personnes", "Dossier de paie", "Caisse de prévoyance", "Options contractuelles".
+        *   *Date Pickers:* "Du" and "Au" fields have calendar icons.
+        *   *Table/Grid:* On the left, there's a list view with headers "Nom" and "Matricule" and striped rows.
+        *   *Pagination:* "0/0" with arrows.
+
+    *   *Section 4: Icons & Pictograms:*
+        *   *Top Bar:* Home icon (Accueil), Search icon (magnifying glass).
+        *   *Toolbar (middle):* Refresh (circular arrows), Navigation arrows (first, prev, next, last), Search (magnifying glass), Edit (pencil), Info (bulb), Settings (gear), Print (printer), Export/Download (arrow down).
+        *   *Toolbar (left grid):* Arrows (left/right), Pie chart, Bar chart, Grid view, Undo/Redo arrows.
+        *   *Form fields:* Magnifying glass (search/lookup) next to "Caisse de prévoyance", "Options contractuelles", "Dossier de paie", "Contrat", "Motif d'entrée", "Motif de sortie".
+        *   *Three dots (ellipsis):* Next to the search fields mentioned above (likely "more options" or "advanced search").
+        *   *Calendar icon:* Next to "Du" and "Au".
+        *   *Calculator/List icon:* Next to "Paie :".
+        *   *Plus/Minus icons:* In the grid toolbar (add/remove rows).
+
+    *   *Section 5: Layout & Relations:*
+        *   *Header:* Breadcrumb navigation ("Accueil > Paie > Mettre à jour > Caisses et mutuelles").
+        *   *Top Section:* Search form ("1. Rechercher une personne").
+        *   *Middle Section:* Action buttons ("Soumettre", "Annuler") and a "Paie" selector.
+        *   *Tabs:* Horizontal navigation for different fund types.
+        *   *Main Content Area:* Split into two main zones.
+            *   *Left:* A list/grid view (partially visible, greyed out/placeholder style).
+            *   *Right:*

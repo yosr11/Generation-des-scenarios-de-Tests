@@ -26,7 +26,7 @@ EMBED_MODEL_NAME = "paraphrase-multilingual-MiniLM-L12-v2"
 MAX_EMBED_CHARS = 1500
 
 DEFAULT_K = 5
-DEFAULT_MIN_SCORE = 0.55
+DEFAULT_MIN_SCORE = 0.60
 # Filtres qualité pour écarter les tests legacy trop pauvres / mal renseignés :
 # ils dégradent la génération Agent 3 en poussant le LLM à imiter une concision excessive
 # (ex: action "Accéder" seule au lieu de "Accéder à la démarche X").

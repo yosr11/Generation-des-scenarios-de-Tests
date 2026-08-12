@@ -1,0 +1,97 @@
+[Image jointe : exemple_image.png]
+── Textes détectés (OCR) ──
+Nouvelles fonctions présentées sur la page Profil
+Dossier numérique, Demandes en cours, Suggestions SES DOCUMENTS 20 8
+- Widget « Ses documents » pour accéder aux documents du DN du collaborateur SES DEMANDES
+- Nombre de documents devant l’icône Documents. Si aucun document dans le DN alors Congés exceptionnels 24
+afficher le O devant l'icône Documents
+z ; ; \ ë 4
+« _ Confidentialité du DN : ajouter l‘acteur RH de proximité pour gérer l’accès aux Données contractuelles !
+documents du DN (ex : ne peut pas voir le bulletin mais peut voir les justificatifs de
+transports) SUGGESTIONS
+-  Widget « Ses demandes »
+Démarche XXX
+« Afficher les catégories du CSP ayant des demandes en cours m
+« S'il y a présence de demandes en cours, afficher par ordre de priorité de traitement : Démarche YYY
+- le nombre de demandes « En retard » avec son icône triangle rouge SES DEMANDES
+* Si zéro demande « En retard », afficher le nombre de demandes « À échéance » Aucune demande en cours
+avec son icone triangle gris
+- Sizéro demande « A échéance », afficher le nombre de demandes en cours qui
+ne sont ni en retard, ni a échéance, sans icone
+- Sizéro demande en cours dans aucune catégorie, afficher le message « Aucune
+demande en cours »
+-  Widget « Suggestions »
+«  Être en capacité d'afficher les démarches suggérées et accessibles depuis I'onglet
+mc Ses Jonnées individuelles » (configurable) … ……
+32 | Pied de page H
+Dossier numérique, Demandes en cours, Suggestions
+Widget « Ses documents » pour accéder aux documents du DN du collaborateur
+SES DEMANDES
+Nombre de documents devant l’icône Documents. Si aucun document dans le DN alors
+Congés exceptionnels
+24
+afficher le 0 devant l'icone Documents
+Données contractuelles
+14
+Confidentialité du DN : ajouter l’acteur RH de proximité pour gérer l’accès aux
+transports)
+SUGGESTIONS
+Widget « Ses demandes »
+Afficher les catégories du CSP ayant des demandes en cours
+S'il y a présence de demandes en cours, afficher par ordre de priorité de traitement :
+Démarche YYY
+le nombre de demandes « En retard » avec son icône triangle rouge
+Aucune demande en cours.
+Si zéro demande « En retard », afficher le nombre de demandes « À échéance »
+avec son icône triangle gris
+Si zéro demande « A échéance », afficher le nombre de demandes en cours qui
+ne sont ni en retard, ni à échéance, sans icone
+Si zéro demande en cours dans aucune catégorie, afficher le message « Aucune
+Widget « Suggestions »
+Être en capacité d'afficher les démarches suggérées et accessibles depuis l’onglet
+..
+32 | Pied de page
+_____________________________________ «.Ses données individuelles » (configurable)
+── Analyse visuelle (VLM) ──
+<think>
+Here's a thinking process that leads to the suggested output:
+
+1.  **Analyze the Request:**
+    *   **Goal:** Describe the visual, non-textual elements of a provided screenshot/mockup.
+    *   **Input:** An image (mockup of a UI) and OCR text.
+    *   **Constraint:** Do *not* repeat the OCR text. Focus on what the OCR misses (visuals, layout, annotations).
+    *   **Structure:** 5 specific sections (Context, Annotations, Native UI Elements, Icons, Layout/Relations).
+    *   **Tone:** Factual, neutral, structured.
+    *   **Language:** French.
+
+2.  **Analyze the Image:**
+    *   **Overall View:** It looks like a presentation slide or a documentation page. On the left, there's a list of bullet points describing features. On the right, there are two overlapping mockups of a mobile or tablet interface (widgets).
+    *   **Left Side (Text):** This is mostly text, which the OCR has handled. I need to look for visual cues *around* the text.
+        *   There's a title "Nouvelles fonctions présentées sur la page Profil".
+        *   There's a subtitle "Dossier numérique, Demandes en cours, Suggestions" in orange.
+        *   There are bullet points (dots).
+        *   There are bolded terms like "Widget « Ses documents »".
+    *   **Right Side (Mockups):**
+        *   There are two distinct rectangular frames representing screens or widgets.
+        *   **Top/Back Mockup:** Shows three sections: "SES DOCUMENTS", "SES DEMANDES", "SUGGESTIONS".
+            *   "SES DOCUMENTS" has a number "10" and a folder icon.
+            *   "SES DEMANDES" lists "Congés exceptionnels" (with a red triangle and number 2) and "Données contractuelles" (with a grey triangle and number 1).
+            *   "SUGGESTIONS" lists "Démarche XXX" and "Démarche YYY".
+        *   **Bottom/Front Mockup:** Overlaps the bottom right of the first one. It shows a "cleaner" or "empty" state.
+            *   "SES DOCUMENTS" shows "0" and a folder icon.
+            *   "SES DEMANDES" shows "Aucune demande en cours."
+    *   **Annotations:**
+        *   I need to look for things added *on top* of the original design.
+        *   Looking closely at the image provided... wait. The image provided *is* the documentation slide itself. It contains text on the left and mockups on the right.
+        *   *Correction/Refinement:* The prompt asks to analyze a screenshot/mockup provided as an attachment. The image provided *is* a slide containing text and mockups.
+        *   *Crucial Check:* Are there annotations *added by a PO* on top of the UI?
+            *   Looking at the mockups on the right: They look like standard wireframes/mockups. There are no red circles, arrows, or sticky notes drawn *over* the UI elements in the image itself. The text on the left describes the logic, but it's part of the slide content, not an annotation on the UI.
+            *   *Wait, looking closer at the prompt's provided image:* The image is a slide. The text on the left explains the features. The images on the right are the visual representation.
+            *   *Is there anything else?* The prompt says "Tu analyses une capture d'écran ou un mockup d'interface fournie en pièce jointe". The image provided is a slide *about* the interface.
+            *   *Re-evaluating "Annotations":* The prompt asks for "ANNOTATIONS AJOUTÉES PAR LE PO (section CRITIQUE)". Usually, this means red circles/arrows. In this specific image, there are *no* red circles or arrows drawn over the mockups. The text on the left is the slide content, not an annotation on the UI.
+            *   *However*, looking at the very bottom right of the slide, there is a dotted line box around "« Ses données individuelles » (configurable)". This looks like a visual grouping or emphasis added to the text, but it's part of the slide layout.
+            *   *Let's look at the mockups again.* The mockups have grey backgrounds. The text inside is black. The numbers "10", "2", "1", "0" are distinct. The triangles are red and grey.
+            *   *Conclusion on Annotations:* There are no "PO annotations" (like red circles/arrows) drawn *over* the UI mockups in this image. The image is a clean slide. I must state "Aucune annotation détectée" regarding the UI mockups specifically, or clarify that the image is a slide containing text and mockups.
+            *   *Self-Correction:* The prompt implies the image *is* the UI or a mockup of it. Here, the image is a *slide* containing a mockup. I will treat the right-hand side as the "UI" and the left-hand side as context.
+            *   *Wait, looking at the OCR text provided:* The OCR text includes the slide text ("Nouvelles fonctions...", "Widget...", etc.).
+            *   *Decision:* I will treat the image as a whole. The "Annotations" section usually refers to markup. Since there

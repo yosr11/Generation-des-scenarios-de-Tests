@@ -1,0 +1,97 @@
+[Image jointe : formulaire.png]
+── Textes détectés (OCR) ──
+——
+Menu v Recherche
+; ; D - Caisses et mutuelles
+1. Rechercher une personne
+Nom [7| Matricule || Société | Plus de critères
+2. Gérer les données de la personne sélectionnée
+Entrée 0/0 / ç @ %
+Sortie L .
+Fiche individuelle Synthèse Paie :
+Population favorite = Populations Caisses de retraite Mutuelles et assurances _ MSA CFE Autres caisses
+0 W Prévoyances (=[] oo [~]x][+]-["]
+Nom * Matricule *
+Options contractuelles [: s.
+Réf. du salarié chez l'OPS (*) [: Nombre de personnes [:
+(*) OPS = Organisme de Protection Sociale
+Description du dossier de paie
+Dossier de paie D P
+Contrat [} —
+Saisie manuelle
+Motifs de changement de caisse
+Motif d'entrée D .…
+Motif de sortie D s…
+Menu
+Recherche
+Caisses et mutuelles
+Nom |
+Matricule _|
+Société [:l
+Plus de critères
+Entrée
+0/0
+#9%8
+Sortie
+Fiche individuelle
+Synthèse
+Paie :
+Population favorite
+Mutuelles et assurances
+CFE
+Autres caisses
+n Caisses de retraite
+(=[] oo [+]=]+]-]e
+D H Prévoyances
+Nom
+Matricule
+Caisse de prévoyance :] .…
+||
+w 5
+P —i
+Réf. du salarié chez l'OPS (*) |
+Nombre de personnes [:
+Contrat |
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+Il s'agit d'une interface de gestion de données (probablement une application web ou un client lourd) dédiée à la gestion des caisses et mutuelles pour un salarié. L'écran combine une zone de recherche en haut et un formulaire de saisie détaillé en bas, structuré par des onglets.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+*   **Cadre rouge :** Entoure les deux premiers champs du formulaire de l'onglet actif, à savoir les zones de saisie associées aux libellés "Caisse de prévoyance" et "Options contractuelles".
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+*   **Onglets (Tabs) :** Une rangée d'onglets horizontaux est visible sous la barre d'outils centrale. L'onglet "Prévoyances" est actif (fond bleu foncé, texte blanc), tandis que "Mutuelles et assurances", "MSA", "CFE" et "Autres caisses" sont inactifs (fond blanc, bordure grise).
+*   **Boutons :**
+    *   Un bouton "Rechercher" (fond bleu foncé, texte blanc) situé à droite de la zone de recherche supérieure.
+    *   Deux boutons gris clair "Soumettre" et "Annuler" centrés au milieu de l'écran.
+    *   Un bouton "Populations" (fond bleu foncé) à droite du menu déroulant "Population favorite".
+*   **Champs de saisie :** De multiples zones rectangulaires à bordure grise pour la saisie de texte (ex: "Nom", "Matricule", "Société").
+*   **Menus déroulants (Dropdowns) :** Indiqués par une petite flèche vers le bas à droite du champ (ex: "Population favorite", "Contrat", "Motif d'entrée", "Motif de sortie").
+*   **Sélecteurs de date :** Les champs "Du" et "Au" possèdent une icône de calendrier intégrée à droite.
+*   **Grille/Tableau :** Sur la partie gauche de l'écran, une structure de tableau est visible avec des en-têtes gris ("Nom", "Matricule") et des lignes alternées (gris clair/blanc) suggérant une liste de résultats.
+*   **Pagination :** Un compteur "0/0" entouré de flèches de navigation est présent au-dessus de la grille de gauche et dans la barre d'outils centrale.
+
+## 4. ICÔNES ET PICTOGRAMMES
+*   **Barre de navigation supérieure :** Icône de maison (Accueil), flèches de navigation (chevrons), loupe (Recherche).
+*   **Barre d'outils centrale (sous la recherche) :**
+    *   Flèches circulaires (Actualiser).
+    *   Flèches de navigation (Premier, Précédent, Suivant, Dernier).
+    *   Loupe (Rechercher dans la liste).
+    *   Crayon (Modifier).
+    *   Ampoule (Aide/Info).
+    *   Engrenage (Paramètres).
+    *   Imprimante (Imprimer).
+    *   Flèche vers le bas sur un carré (Exporter/Télécharger).
+*   **Barre d'outils de la grille (gauche) :** Flèches gauche/droite, graphiques (camembert, histogramme), grille, flèches retour/avance.
+*   **Dans le formulaire (droite) :**
+    *   Loupes grises à l'intérieur des champs "Caisse de prévoyance", "Options contractuelles", "Dossier de paie", "Contrat", "Motif d'entrée", "Motif de sortie".
+    *   Trois points horizontaux (menu contextuel/options) à droite des champs mentionnés ci-dessus.
+    *   Icônes de calculatrice et de liste à puces à côté du label "Paie :".
+    *   Signe plus (+) et moins (-) dans la barre d'outils de la grille (ajout/suppression de lignes).
+
+## 5. AGENCEMENT ET RELATIONS
+*   **En-tête :** Une barre de fil d'Ariane (breadcrumb) indique la hiérarchie : Accueil > Paie > Mettre à jour > Caisses et mutuelles.
+*   **Zone de recherche (Haut) :** Structurée en deux parties : "1. Rechercher une personne" (champs Nom, Matricule, Société) et "2. Gérer les données..." (boutons Entrée/Sortie).
+*   **Zone de filtrage (Milieu) :** Le menu "Population favorite" est placé au-dessus des onglets. Les boutons "Soumettre" et "Annuler" sont centrés juste au-dessus de la rangée d'onglets.
+*   **Zone de contenu principal (Bas) :** L'écran est divisé verticalement.
+    *   **Gauche :** Une liste de résultats (gr
