@@ -1,5 +1,6 @@
 ﻿# app/api/routes_stories.py
-from fastapi import APIRouter, HTTPException, Query, Body
+from fastapi import APIRouter, Body, Depends, HTTPException, Query
+from app.core.deps import CurrentUser, require_admin
 from app.services.jira_service import (
     get_story_byID,
     find_stories_with_linked_tests,
@@ -140,7 +141,10 @@ def get_story_raw_simplified(issue_key: str):
 
 
 @router.get("/{issue_key}/debug")
-def debug_story(issue_key: str):
+def debug_story(
+    issue_key: str,
+    _admin: CurrentUser = Depends(require_admin),
+):
     """
     Retourne la story au format brut ET nettoyé.
     """

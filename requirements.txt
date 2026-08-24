@@ -37,6 +37,7 @@ markdown>=3.6
 requests>=2.32.0
 Pillow>=10.4.0
 pytesseract>=0.3.10
+pdfplumber>=0.11.0
 
 # PDF & Office
 xhtml2pdf>=0.2.16

@@ -55,7 +55,7 @@ ST_MODEL_NAME = "paraphrase-multilingual-MiniLM-L12-v2"
 
 # ── LLM Judge model ─────────────────────────────────────────────────────────
 JUDGE_MODEL = "gpt-4.1-mini"  # GitHub Models — contexte 128k, pas de limite TPM stricte
-JUDGE_MAX_CHARS = 12000  # limite conservatrice pour éviter les dépassements de payload
+JUDGE_MAX_CHARS = 12000  # taille maximale totale des blocs gold + generated
 
 
 # ────────────────────────────────────────────────────────────────────────────
@@ -203,8 +203,11 @@ def _truncate(text: str, max_chars: int) -> str:
 
 
 def call_llm_judge(user_story: dict, gold_text: str, gen_text: str) -> dict:
-    gold_trunc = _truncate(gold_text, JUDGE_MAX_CHARS)
-    gen_trunc = _truncate(gen_text, JUDGE_MAX_CHARS)
+    # Répartir le budget global entre les deux corpus pour éviter un prompt
+    # disproportionné lorsque gold et generated sont tous deux volumineux.
+    block_limit = JUDGE_MAX_CHARS // 2
+    gold_trunc = _truncate(gold_text, block_limit)
+    gen_trunc = _truncate(gen_text, block_limit)
     user_prompt = build_judge_user_prompt(user_story, gold_trunc, gen_trunc)
     # Log the size of the blocks sent to the LLM for diagnostics
     try:

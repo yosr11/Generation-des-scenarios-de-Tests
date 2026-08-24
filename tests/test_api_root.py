@@ -9,4 +9,8 @@ def test_root_endpoint_returns_ok():
     response = client.get("/")
 
     assert response.status_code == 200
-    assert response.json() == {"status": "ok", "docs": "/docs"}
+    assert response.json() == {
+        "status": "ok",
+        "docs": "/docs",
+        "graph": "/pipeline/graph/diagram",
+    }

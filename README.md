@@ -50,9 +50,23 @@ Agent Test est une application FastAPI orientée orchestration d’agents pour l
 
 ## Lancer l’application
 
+L’application se lance indépendamment de `start.ps1`, avec deux processus séparés.
+
+Terminal 1 — backend :
+
 ```powershell
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+.\.venv\Scripts\python.exe -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
+
+Terminal 2 — frontend :
+
+```powershell
+cd frontend
+npm run dev
+```
+
+L’interface est accessible sur `http://localhost:3000` et l’API sur
+`http://localhost:8000/docs`. Le script `start.ps1` est optionnel.
 
 ## Migrations de base de données
 

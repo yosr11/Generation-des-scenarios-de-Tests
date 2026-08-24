@@ -1,5 +1,6 @@
 ﻿# app/api/routes_epic.py
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query
+from app.core.deps import CurrentUser, require_admin
 from app.services.epic_service import (
     get_epics,
     get_stories_by_epic,
@@ -20,7 +21,8 @@ router = APIRouter(prefix="/epics", tags=["Epics"])
 # -------- DEBUG : voir la réponse brute Jira --------
 @router.get("/debug")
 def debug_epics(
-    project_key: str = Query(..., description="Clé du projet Jira (ex: YOUQA)")
+    project_key: str = Query(..., description="Clé du projet Jira (ex: YOUQA)"),
+    _admin: CurrentUser = Depends(require_admin),
 ):
     """
     Retourne la réponse brute de Jira pour diagnostiquer les problèmes.
