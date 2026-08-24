@@ -55,8 +55,13 @@ def save_business_model(result_dict: Dict[str, Any]) -> int:
 
 def get_latest_business_model(
     story_id: str,
+    model: Optional[str] = None,
 ) -> Optional[Dict[str, Any]]:
-    """Retourne le dernier business model persisté pour une story."""
+    """Retourne le dernier business model persisté pour une story.
+    
+    Note: Le paramètre 'model' est accepté pour compatibilité API mais non utilisé
+    (la colonne generation_model n'existe pas encore dans le modèle).
+    """
     session = get_sync_session()
     try:
         stmt = select(StoryBusinessModel).where(StoryBusinessModel.story_id == story_id)

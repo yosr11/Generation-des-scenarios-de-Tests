@@ -10,7 +10,8 @@ import json
 import logging
 from typing import Any, Dict, List, Optional
 
-from app.services.llm_client import call_llm
+from app.services.llm_client import BEDROCK_MODELS, call_llm
+from app.utils.json_utils import extract_json_from_llm_response
 
 logger = logging.getLogger(__name__)
 
@@ -46,7 +47,7 @@ def llm_quality_feedback(
     testable_points: List[str],
     tests: List[Dict[str, Any]],
     metrics: Dict[str, Any],
-    model_alias: str = "qwen3",
+    model_alias: str = "nova-lite-2",
 ) -> Optional[Dict[str, Any]]:
     system = (
         "You are a senior QA reviewer. "
@@ -89,11 +90,20 @@ def llm_quality_feedback(
             model_alias=model_alias,
             temperature=0.2,
             max_tokens=900,
+            provider="bedrock" if model_alias in BEDROCK_MODELS else None,
         )
-        data = json.loads(raw)
-        # basic validation
-        if not isinstance(data, dict) or "score" not in data or "summary" not in data:
+        data = extract_json_from_llm_response(raw)
+        if (
+            not isinstance(data, dict)
+            or not isinstance(data.get("score"), (int, float))
+            or not 0 <= float(data["score"]) <= 10
+            or not isinstance(data.get("summary"), str)
+        ):
             return None
+        data["score"] = int(round(float(data["score"])))
+        for field in ("strengths", "weaknesses", "recommendations"):
+            if not isinstance(data.get(field), list):
+                data[field] = []
         return data
     except Exception as e:
         logger.warning("llm_quality_feedback failed: %s", e)

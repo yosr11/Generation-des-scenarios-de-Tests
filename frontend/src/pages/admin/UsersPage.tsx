@@ -62,7 +62,7 @@ const UserModal: React.FC<{
       } else {
         await apiClient.admin.createUser({
           email: form.email,
-          role: 'tester',
+          role: form.role,
           display_name: form.display_name || undefined,
           jira_username: form.jira_username || undefined,
         })
@@ -126,9 +126,17 @@ const UserModal: React.FC<{
     className="w-full px-4 py-3 border-2 border-gray-100 rounded-xl text-sm font-mono text-brand-navy focus:border-brand-orange transition-all" />
 </div>
 )}
-          {/* Role */}
 
-          
+          {/* Role */}
+          <div>
+            <label className="block text-xs font-bold text-brand-navy/60 uppercase tracking-widest mb-2">Rôle *</label>
+            <select value={form.role} onChange={e => set('role', e.target.value)}
+              className="w-full px-4 py-3 border-2 border-gray-100 rounded-xl text-sm text-brand-navy focus:border-brand-rose transition-all bg-white">
+              <option value="tester">Testeur (QA)</option>
+              <option value="admin">Administrateur</option>
+            </select>
+          </div>
+
           {/* Password */}
          {/* Password — uniquement en modification (reset admin) */}
 {/* Password — uniquement en modification ET pour un compte admin */}
@@ -173,6 +181,7 @@ const UserModal: React.FC<{
 /* ── Main Page ── */
 export const UsersPage: React.FC = () => {
   const toast = useToast()
+  const { user: currentUser } = useAuth()
   
   const [users, setUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
@@ -316,7 +325,7 @@ export const UsersPage: React.FC = () => {
                       <td className="py-3.5 px-4">
                         <div className="flex items-center gap-1.5">
                           {/* Edit */}
-                          {u.role === 'admin' && (
+                          {u.role === 'admin' && currentUser?.id === u.id && (
                             <button type="button" onClick={() => setModalUser(u)}
                               className="p-2 rounded-xl text-brand-muted hover:text-brand-violet hover:bg-brand-violet/08 transition-all"
                               title="Modifier">

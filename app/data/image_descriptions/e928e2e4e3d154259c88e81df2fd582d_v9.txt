@@ -1,0 +1,49 @@
+[Image jointe : Maquette_FiltreTableau.png]
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+Il s'agit d'une interface de liste/tableau d'administration pour la gestion des "News". L'écran permet de visualiser et gérer des publications (annonces et actualités), avec des filtres, des indicateurs d'état et des actions disponibles.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- **Pastilles** : 
+  - Forme circulaire, fond vert, texte "en cours" pour indiquer l'état de publication
+- **Étiquettes (chips)** : 
+  - Forme rectangulaire avec coins arrondis, fond bleu clair, texte "Formation", "Recrutement", "Échéance 08/09/2025" pour les filtres appliqués
+- **Boutons** : 
+  - Forme rectangulaire avec coins arrondis, fond gris clair, texte "Quitter" et "Sauvegarder"
+  - Forme rectangulaire avec coins arrondis, fond gris foncé, texte "Supprimer"
+- **Boutons radio** : 
+  - Forme circulaire, fond blanc avec bordure grise, entourés d'un cercle bleu quand sélectionnés pour les filtres "TOUTES", "ANNONCES", "ACTUALITÉS"
+- **Champ de sélection** : 
+  - Forme rectangulaire avec coins arrondis, fond blanc, texte "Éléments par page" et valeur "5"
+
+## 4. ICÔNES ET PICTOGRAMMES
+- **Icône d'engrenage** : probablement pour accéder aux paramètres, située à gauche des filtres
+- **Icône de loupe** : probablement pour la recherche, située dans la barre de titre
+- **Icône d'information (i)** : probablement pour afficher des informations supplémentaires, située après le texte descriptif
+- **Icône de croix (X)** : probablement pour supprimer un filtre, située à droite de chaque étiquette de filtre
+- **Icône de poubelle** : probablement pour supprimer une publication, située dans la colonne "ACTION" pour chaque ligne
+- **Icône de flèche gauche/droite** : probablement pour la navigation entre les pages, située à droite de l'indicateur de pagination
+- **Icône de menu (≡)** : probablement pour ouvrir un menu latéral, située à gauche de la barre de titre
+- **Icône d'interrogation (?)** : probablement pour afficher de l'aide, située à droite de la barre de titre
+- **Icône de bouton d'alimentation (⚡)** : probablement pour actualiser la page, située à droite de la barre de titre
+
+## 5. AGENCEMENT ET RELATIONS
+- **Structure en colonnes** : L'écran est organisé en colonnes pour les filtres en haut, et un tableau pour les données en dessous
+- **Hiérarchie visuelle** : 
+  - Le titre "Administration des News" est en gros caractères en haut
+  - Les filtres sont regroupés dans une ligne sous le titre
+  - Le tableau des données occupe la majeure partie de l'écran
+  - Les boutons "Quitter" et "Sauvegarder" sont alignés en haut à droite
+- **États** : 
+  - Les publications ont un indicateur d'état "en cours" avec une pastille verte
+  - Les filtres appliqués sont affichés comme des étiquettes avec une croix pour les supprimer
+- **Relations spatiales** : 
+  - Les colonnes du tableau sont alignées pour une lecture facile
+  - Les boutons d'action (poubelle) sont alignés à droite de chaque ligne
+  - Les filtres sont placés au-dessus du tableau pour indiquer qu'ils affectent l'affichage des données
+- **Pagination** : 
+  - Un sélecteur de nombre d'éléments par page et des boutons de navigation sont placés en bas à droite
+  - L'indicateur "1-2/2" montre la page actuelle et le nombre total de pages

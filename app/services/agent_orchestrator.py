@@ -576,7 +576,6 @@ def node_agent4_validate(state: PipelineState) -> dict:
                 tests=tests,
                 story_summary=story_summary,
                 coverage_threshold=coverage_threshold,
-                run_llm_ambiguity_detection=True,
                 quality_model_alias=quality_model,
             )
 

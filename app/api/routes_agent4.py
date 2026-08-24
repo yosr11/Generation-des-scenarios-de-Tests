@@ -38,18 +38,12 @@ class Agent4ThresholdsBody(BaseModel):
 
     # Optionnel : feedback LLM (narratif)
     run_llm_quality_feedback: bool = Field(
-        default=False,
+        default=True,
         description="Si true : génère un feedback qualitatif via LLM (ne change pas la décision).",
     )
     quality_model_alias: str = Field(
         default="nova-lite-2",
         description="Alias modèle Bedrock pour feedback qualitatif.",
-    )
-
-    # Optionnel : détection d'ambiguïtés sémantiques via LLM
-    run_llm_ambiguity_detection: bool = Field(
-        default=True,
-        description="Si true : complète la détection regex par une analyse LLM des ambiguïtés.",
     )
 
 
@@ -123,7 +117,6 @@ def post_agent4_story_dashboard(story_id: str, body: Agent4ThresholdsBody):
         embedding_model=body.embedding_model,
         run_llm_quality_feedback=body.run_llm_quality_feedback,
         quality_model_alias=body.quality_model_alias,
-        run_llm_ambiguity_detection=body.run_llm_ambiguity_detection,
     )
 
     # Save validation result to database
@@ -163,7 +156,6 @@ def post_validate_and_improve(body: Agent4ValidateFromDbRequest):
         embedding_model=body.embedding_model,
         run_llm_quality_feedback=body.run_llm_quality_feedback,
         quality_model_alias=body.quality_model_alias,
-        run_llm_ambiguity_detection=body.run_llm_ambiguity_detection,
     )
 
     # Save validation result to database
@@ -191,7 +183,6 @@ def post_validate_and_improve_by_story(story_id: str, body: Agent4ThresholdsBody
         embedding_model=body.embedding_model,
         run_llm_quality_feedback=body.run_llm_quality_feedback,
         quality_model_alias=body.quality_model_alias,
-        run_llm_ambiguity_detection=body.run_llm_ambiguity_detection,
     )
 
     # Save validation result to database
@@ -270,7 +261,6 @@ def post_validate_and_correct(story_id: str, body: Agent4CorrectBody):
             embedding_model=body.embedding_model,
             run_llm_quality_feedback=body.run_llm_quality_feedback,
             quality_model_alias=body.quality_model_alias,
-            run_llm_ambiguity_detection=body.run_llm_ambiguity_detection,
         )
 
         # Keep best result (highest coverage)

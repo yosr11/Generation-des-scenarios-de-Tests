@@ -22,11 +22,13 @@ from app.api.routes_test_editing import router as test_editing_router
 from app.api.routes_auth import router as auth_router
 from app.api.routes_admin import router as admin_router
 from app.api.routes_agent2 import router as agent2_router
+from app.api.routes_graph_visualizer import router as graph_visualizer_router
 from app.core.config import settings
 from app.core.legacy_compat import warn_legacy_module
+from app.logging_filter import NoiseFilter
 
 logger = logging.getLogger(__name__)
-
+logging.getLogger("uvicorn.access").addFilter(NoiseFilter())
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -62,7 +64,18 @@ async def global_exception_handler(request: Request, exc: Exception):
         request.url,
         traceback.format_exc(),
     )
-    return JSONResponse(status_code=500, content={"detail": str(exc)})
+    response = JSONResponse(status_code=500, content={"detail": str(exc)})
+
+    # ServerErrorMiddleware (qui gère ce handler) est situé EN DEHORS de
+    # CORSMiddleware dans la pile Starlette : les headers CORS ne sont donc
+    # jamais ajoutés automatiquement sur les 500. On les ajoute ici à la main
+    # pour que le frontend voie la vraie erreur au lieu d'un faux blocage CORS.
+    origin = request.headers.get("origin")
+    if origin and origin in settings.ALLOWED_ORIGINS:
+        response.headers["Access-Control-Allow-Origin"] = origin
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+
+    return response
 
 
 app.include_router(auth_router)
@@ -80,8 +93,9 @@ app.include_router(legacy_tests_router)
 app.include_router(integration_router)
 app.include_router(test_editing_router)
 app.include_router(agent2_router)
+app.include_router(graph_visualizer_router)
 
 
 @app.get("/")
 def root():
-    return {"status": "ok", "docs": "/docs"}
+    return {"status": "ok", "docs": "/docs", "graph": "/pipeline/graph/diagram"}

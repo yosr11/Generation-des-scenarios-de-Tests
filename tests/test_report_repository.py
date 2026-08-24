@@ -1,18 +1,10 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-
-from app.db.postgres import Base
+from app.db.postgres import Base, SyncSessionLocal, sync_engine
 from app.repositories import report_repository
 
 
-def test_save_and_fetch_report(monkeypatch, tmp_path):
-    engine = create_engine(
-        f"sqlite:///{tmp_path / 'reports.db'}",
-        connect_args={"check_same_thread": False},
-    )
-    session_local = sessionmaker(bind=engine)
-    Base.metadata.create_all(bind=engine)
-    monkeypatch.setattr(report_repository, "get_sync_session", session_local)
+def test_save_and_fetch_report(monkeypatch):
+    Base.metadata.create_all(bind=sync_engine)
+    monkeypatch.setattr(report_repository, "get_sync_session", SyncSessionLocal)
 
     report_data = {
         "story_id": "ABC-123",

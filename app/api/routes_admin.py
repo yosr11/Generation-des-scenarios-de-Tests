@@ -37,6 +37,15 @@ def _require_admin(user: CurrentUser) -> None:
         raise HTTPException(status_code=403, detail="Réservé aux administrateurs.")
 
 
+def _require_own_admin_account(user_id: int, current_user: CurrentUser) -> None:
+    """Empêche un admin de modifier le compte d'un autre utilisateur."""
+    if current_user.user_id_int is None or user_id != current_user.user_id_int:
+        raise HTTPException(
+            status_code=403,
+            detail="Un administrateur ne peut modifier que son propre compte.",
+        )
+
+
 # ──────────────────────────────────────────────────────────
 #  Schemas
 # ──────────────────────────────────────────────────────────
@@ -138,12 +147,10 @@ async def admin_update_user(
     db: AsyncSession = Depends(get_db),
 ):
     _require_admin(current_user)
+    _require_own_admin_account(user_id, current_user)
     target_user = await get_user_by_id(db, user_id)
-    if target_user and target_user["role"] == "tester":
-        raise HTTPException(
-            status_code=403,
-            detail="Modification des comptes testeur non autorisée depuis cet écran.",
-        )
+    if not target_user:
+        raise HTTPException(status_code=404, detail="Utilisateur introuvable.")
 
     result = await update_user(
         db,

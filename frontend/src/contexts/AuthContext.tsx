@@ -3,6 +3,7 @@ import React, { createContext, useCallback, useContext, useMemo, useState } from
 export type UserRole = 'admin' | 'tester'
 
 export interface AuthUser {
+  id?: number
   email: string
   role: UserRole
   display_name?: string
@@ -62,6 +63,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const { apiClient } = await import('../api/client')
       const me = await apiClient.auth.me()
       const authUser: AuthUser = {
+        id: Number(me.user_id ?? me.id),
         email: me.email,
         role: me.role as UserRole,
         display_name: me.display_name,

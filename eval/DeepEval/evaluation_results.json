@@ -1,31 +1,31 @@
 {
   "meta": {
     "input_file": "C:\\Users\\yomahfoudh\\Desktop\\Agent_Test\\eval\\DeepEval\\evalAgents.json",
-    "case_count": 38
+    "case_count": 39
   },
   "summary": {
     "agent1": {
-      "score_moyen": 99.211,
-      "score_min": 85.0,
+      "score_moyen": 95.385,
+      "score_min": 70.0,
       "score_max": 100.0,
       "taux_sous_0_7": 0.0,
       "pires_stories": [
         [
           "NUXEPM-1582",
-          85.0
+          70.0
         ],
         [
           "NUXEPM-1842",
-          85.0
+          70.0
         ],
         [
           "NUXEPM-1412",
-          100.0
+          85.0
         ]
       ]
     },
-    "agent1_5": {
-      "score_moyen": 99.868,
+    "agent2": {
+      "score_moyen": 99.872,
       "score_min": 95.0,
       "score_max": 100.0,
       "taux_sous_0_7": 0.0,
@@ -44,7 +44,7 @@
         ]
       ]
     },
-    "agent2_qa_quality": {
+    "agent3_qa_quality": {
       "score_moyen": 100.0,
       "score_min": 100.0,
       "score_max": 100.0,
@@ -64,8 +64,8 @@
         ]
       ]
     },
-    "agent3": {
-      "score_moyen": 96.842,
+    "agent4": {
+      "score_moyen": 96.154,
       "score_min": 70.0,
       "score_max": 100.0,
       "taux_sous_0_7": 0.0,
@@ -104,24 +104,29 @@
         ]
       ]
     },
-    "couverture_moyenne_tests": 93.397
+    "couverture_moyenne_tests": 92.926
   },
   "results": [
     {
       "story_id": "NUXEPM-1412",
       "agent1": {
+        "score": 85.0,
+        "issues": [
+          {
+            "message": "3/4 testable_points sémantiquement déconnectés de toute action/règle métier",
+            "severity": "MAJEUR"
+          }
+        ]
+      },
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent1_5": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
-        "score": 100.0,
-        "issues": []
-      },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 75.0,
         "missing_tests_count": 1,
         "missing_tests": [
@@ -130,7 +135,7 @@
         "duplicate_count": 0,
         "validation_status": "PARTIALLY_VALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 100.0,
         "issues": []
       },
@@ -145,15 +150,15 @@
         "score": 100.0,
         "issues": []
       },
-      "agent1_5": {
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 92.3,
         "missing_tests_count": 1,
         "missing_tests": [
@@ -162,7 +167,7 @@
         "duplicate_count": 0,
         "validation_status": "PARTIALLY_VALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 100.0,
         "issues": []
       },
@@ -177,22 +182,22 @@
         "score": 100.0,
         "issues": []
       },
-      "agent1_5": {
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 100,
         "missing_tests_count": 0,
         "missing_tests": [],
         "duplicate_count": 0,
         "validation_status": "PARTIALLY_VALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 100.0,
         "issues": []
       },
@@ -207,22 +212,22 @@
         "score": 100.0,
         "issues": []
       },
-      "agent1_5": {
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 100,
         "missing_tests_count": 0,
         "missing_tests": [],
         "duplicate_count": 0,
         "validation_status": "PARTIALLY_VALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 100.0,
         "issues": []
       },
@@ -237,22 +242,22 @@
         "score": 100.0,
         "issues": []
       },
-      "agent1_5": {
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 100,
         "missing_tests_count": 0,
         "missing_tests": [],
         "duplicate_count": 0,
         "validation_status": "PARTIALLY_VALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 100.0,
         "issues": []
       },
@@ -267,7 +272,7 @@
         "score": 100.0,
         "issues": []
       },
-      "agent1_5": {
+      "agent2": {
         "score": 95.0,
         "issues": [
           {
@@ -276,18 +281,18 @@
           }
         ]
       },
-      "agent2_qa_quality": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 100,
         "missing_tests_count": 0,
         "missing_tests": [],
         "duplicate_count": 0,
         "validation_status": "PARTIALLY_VALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 100.0,
         "issues": []
       },
@@ -302,22 +307,22 @@
         "score": 100.0,
         "issues": []
       },
-      "agent1_5": {
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 100.0,
         "missing_tests_count": 0,
         "missing_tests": [],
         "duplicate_count": 0,
         "validation_status": "PARTIALLY_VALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 100.0,
         "issues": []
       },
@@ -332,15 +337,15 @@
         "score": 100.0,
         "issues": []
       },
-      "agent1_5": {
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 66.7,
         "missing_tests_count": 1,
         "missing_tests": [
@@ -349,7 +354,7 @@
         "duplicate_count": 0,
         "validation_status": "INVALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 100.0,
         "issues": []
       },
@@ -364,22 +369,22 @@
         "score": 100.0,
         "issues": []
       },
-      "agent1_5": {
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 100.0,
         "missing_tests_count": 0,
         "missing_tests": [],
         "duplicate_count": 0,
         "validation_status": "PARTIALLY_VALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 100.0,
         "issues": []
       },
@@ -394,22 +399,22 @@
         "score": 100.0,
         "issues": []
       },
-      "agent1_5": {
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 100.0,
         "missing_tests_count": 0,
         "missing_tests": [],
         "duplicate_count": 0,
         "validation_status": "PARTIALLY_VALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 100.0,
         "issues": []
       },
@@ -424,22 +429,22 @@
         "score": 100.0,
         "issues": []
       },
-      "agent1_5": {
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 100.0,
         "missing_tests_count": 0,
         "missing_tests": [],
         "duplicate_count": 0,
         "validation_status": "PARTIALLY_VALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 100.0,
         "issues": []
       },
@@ -454,22 +459,22 @@
         "score": 100.0,
         "issues": []
       },
-      "agent1_5": {
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 100,
         "missing_tests_count": 0,
         "missing_tests": [],
         "duplicate_count": 0,
         "validation_status": "PARTIALLY_VALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 100.0,
         "issues": []
       },
@@ -484,22 +489,22 @@
         "score": 100.0,
         "issues": []
       },
-      "agent1_5": {
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 100,
         "missing_tests_count": 0,
         "missing_tests": [],
         "duplicate_count": 0,
         "validation_status": "PARTIALLY_VALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 100.0,
         "issues": []
       },
@@ -514,22 +519,22 @@
         "score": 100.0,
         "issues": []
       },
-      "agent1_5": {
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 100,
         "missing_tests_count": 0,
         "missing_tests": [],
         "duplicate_count": 0,
         "validation_status": "PARTIALLY_VALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 100.0,
         "issues": []
       },
@@ -541,18 +546,23 @@
     {
       "story_id": "NUXEPM-2324",
       "agent1": {
+        "score": 85.0,
+        "issues": [
+          {
+            "message": "5/9 testable_points sémantiquement déconnectés de toute action/règle métier",
+            "severity": "MAJEUR"
+          }
+        ]
+      },
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent1_5": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
-        "score": 100.0,
-        "issues": []
-      },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 88.9,
         "missing_tests_count": 1,
         "missing_tests": [
@@ -561,7 +571,7 @@
         "duplicate_count": 0,
         "validation_status": "PARTIALLY_VALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 100.0,
         "issues": []
       },
@@ -573,25 +583,30 @@
     {
       "story_id": "NUXEPM-1772",
       "agent1": {
+        "score": 85.0,
+        "issues": [
+          {
+            "message": "5/9 testable_points sémantiquement déconnectés de toute action/règle métier",
+            "severity": "MAJEUR"
+          }
+        ]
+      },
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent1_5": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
-        "score": 100.0,
-        "issues": []
-      },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 100,
         "missing_tests_count": 0,
         "missing_tests": [],
         "duplicate_count": 0,
         "validation_status": "PARTIALLY_VALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 100.0,
         "issues": []
       },
@@ -606,15 +621,15 @@
         "score": 100.0,
         "issues": []
       },
-      "agent1_5": {
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 84.6,
         "missing_tests_count": 2,
         "missing_tests": [
@@ -624,7 +639,7 @@
         "duplicate_count": 0,
         "validation_status": "PARTIALLY_VALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 100.0,
         "issues": []
       },
@@ -639,22 +654,22 @@
         "score": 100.0,
         "issues": []
       },
-      "agent1_5": {
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 100,
         "missing_tests_count": 0,
         "missing_tests": [],
         "duplicate_count": 0,
         "validation_status": "PARTIALLY_VALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 100.0,
         "issues": []
       },
@@ -666,18 +681,23 @@
     {
       "story_id": "NUXEPM-1592",
       "agent1": {
+        "score": 85.0,
+        "issues": [
+          {
+            "message": "4/4 testable_points sémantiquement déconnectés de toute action/règle métier",
+            "severity": "MAJEUR"
+          }
+        ]
+      },
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent1_5": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
-        "score": 100.0,
-        "issues": []
-      },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 75.0,
         "missing_tests_count": 1,
         "missing_tests": [
@@ -686,7 +706,7 @@
         "duplicate_count": 0,
         "validation_status": "PARTIALLY_VALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 100.0,
         "issues": []
       },
@@ -701,22 +721,22 @@
         "score": 100.0,
         "issues": []
       },
-      "agent1_5": {
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 100,
         "missing_tests_count": 0,
         "missing_tests": [],
         "duplicate_count": 0,
         "validation_status": "PARTIALLY_VALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 100.0,
         "issues": []
       },
@@ -731,22 +751,22 @@
         "score": 100.0,
         "issues": []
       },
-      "agent1_5": {
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 100,
         "missing_tests_count": 0,
         "missing_tests": [],
         "duplicate_count": 0,
         "validation_status": "PARTIALLY_VALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 100.0,
         "issues": []
       },
@@ -758,23 +778,27 @@
     {
       "story_id": "NUXEPM-1582",
       "agent1": {
-        "score": 85.0,
+        "score": 70.0,
         "issues": [
           {
             "message": "acceptance_criteria_explicit non vide mais business_rules vide (règle métier potentiellement perdue)",
             "severity": "MAJEUR"
+          },
+          {
+            "message": "5/6 testable_points sémantiquement déconnectés de toute action/règle métier",
+            "severity": "MAJEUR"
           }
         ]
       },
-      "agent1_5": {
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 83.3,
         "missing_tests_count": 1,
         "missing_tests": [
@@ -783,7 +807,7 @@
         "duplicate_count": 0,
         "validation_status": "PARTIALLY_VALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 100.0,
         "issues": []
       },
@@ -798,22 +822,22 @@
         "score": 100.0,
         "issues": []
       },
-      "agent1_5": {
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 100,
         "missing_tests_count": 0,
         "missing_tests": [],
         "duplicate_count": 0,
         "validation_status": "PARTIALLY_VALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 100.0,
         "issues": []
       },
@@ -825,18 +849,23 @@
     {
       "story_id": "NUXEPM-1223",
       "agent1": {
+        "score": 85.0,
+        "issues": [
+          {
+            "message": "5/6 testable_points sémantiquement déconnectés de toute action/règle métier",
+            "severity": "MAJEUR"
+          }
+        ]
+      },
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent1_5": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
-        "score": 100.0,
-        "issues": []
-      },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 83.3,
         "missing_tests_count": 1,
         "missing_tests": [
@@ -845,7 +874,7 @@
         "duplicate_count": 0,
         "validation_status": "VALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 70.0,
         "issues": [
           {
@@ -865,22 +894,22 @@
         "score": 100.0,
         "issues": []
       },
-      "agent1_5": {
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 100,
         "missing_tests_count": 0,
         "missing_tests": [],
         "duplicate_count": 0,
         "validation_status": "VALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 100.0,
         "issues": []
       },
@@ -892,25 +921,30 @@
     {
       "story_id": "NUXEPM-1578",
       "agent1": {
+        "score": 85.0,
+        "issues": [
+          {
+            "message": "4/4 testable_points sémantiquement déconnectés de toute action/règle métier",
+            "severity": "MAJEUR"
+          }
+        ]
+      },
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent1_5": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
-        "score": 100.0,
-        "issues": []
-      },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 100,
         "missing_tests_count": 0,
         "missing_tests": [],
         "duplicate_count": 0,
         "validation_status": "VALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 100.0,
         "issues": []
       },
@@ -925,22 +959,22 @@
         "score": 100.0,
         "issues": []
       },
-      "agent1_5": {
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 100,
         "missing_tests_count": 0,
         "missing_tests": [],
         "duplicate_count": 0,
         "validation_status": "VALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 100.0,
         "issues": []
       },
@@ -952,25 +986,30 @@
     {
       "story_id": "NUXEPM-1786",
       "agent1": {
+        "score": 85.0,
+        "issues": [
+          {
+            "message": "4/4 testable_points sémantiquement déconnectés de toute action/règle métier",
+            "severity": "MAJEUR"
+          }
+        ]
+      },
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent1_5": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
-        "score": 100.0,
-        "issues": []
-      },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 100,
         "missing_tests_count": 0,
         "missing_tests": [],
         "duplicate_count": 0,
         "validation_status": "VALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 100.0,
         "issues": []
       },
@@ -985,22 +1024,22 @@
         "score": 100.0,
         "issues": []
       },
-      "agent1_5": {
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 100,
         "missing_tests_count": 0,
         "missing_tests": [],
         "duplicate_count": 0,
         "validation_status": "PARTIALLY_VALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 100.0,
         "issues": []
       },
@@ -1012,23 +1051,27 @@
     {
       "story_id": "NUXEPM-1842",
       "agent1": {
-        "score": 85.0,
+        "score": 70.0,
         "issues": [
           {
             "message": "acceptance_criteria_explicit non vide mais business_rules vide (règle métier potentiellement perdue)",
             "severity": "MAJEUR"
+          },
+          {
+            "message": "7/7 testable_points sémantiquement déconnectés de toute action/règle métier",
+            "severity": "MAJEUR"
           }
         ]
       },
-      "agent1_5": {
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 85.7,
         "missing_tests_count": 1,
         "missing_tests": [
@@ -1037,7 +1080,7 @@
         "duplicate_count": 0,
         "validation_status": "VALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 70.0,
         "issues": [
           {
@@ -1057,15 +1100,15 @@
         "score": 100.0,
         "issues": []
       },
-      "agent1_5": {
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 71.4,
         "missing_tests_count": 2,
         "missing_tests": [
@@ -1075,7 +1118,7 @@
         "duplicate_count": 0,
         "validation_status": "VALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 70.0,
         "issues": [
           {
@@ -1092,18 +1135,23 @@
     {
       "story_id": "NUXEPM-1893",
       "agent1": {
+        "score": 85.0,
+        "issues": [
+          {
+            "message": "2/2 testable_points sémantiquement déconnectés de toute action/règle métier",
+            "severity": "MAJEUR"
+          }
+        ]
+      },
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent1_5": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
-        "score": 100.0,
-        "issues": []
-      },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 50.0,
         "missing_tests_count": 1,
         "missing_tests": [
@@ -1112,7 +1160,7 @@
         "duplicate_count": 0,
         "validation_status": "INVALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 100.0,
         "issues": []
       },
@@ -1127,22 +1175,22 @@
         "score": 100.0,
         "issues": []
       },
-      "agent1_5": {
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 100,
         "missing_tests_count": 0,
         "missing_tests": [],
         "duplicate_count": 0,
         "validation_status": "VALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 100.0,
         "issues": []
       },
@@ -1157,22 +1205,22 @@
         "score": 100.0,
         "issues": []
       },
-      "agent1_5": {
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 100,
         "missing_tests_count": 0,
         "missing_tests": [],
         "duplicate_count": 0,
         "validation_status": "VALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 100.0,
         "issues": []
       },
@@ -1187,22 +1235,22 @@
         "score": 100.0,
         "issues": []
       },
-      "agent1_5": {
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 100,
         "missing_tests_count": 0,
         "missing_tests": [],
         "duplicate_count": 0,
         "validation_status": "VALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 100.0,
         "issues": []
       },
@@ -1217,15 +1265,15 @@
         "score": 100.0,
         "issues": []
       },
-      "agent1_5": {
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 92.9,
         "missing_tests_count": 1,
         "missing_tests": [
@@ -1234,7 +1282,7 @@
         "duplicate_count": 0,
         "validation_status": "PARTIALLY_VALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 70.0,
         "issues": [
           {
@@ -1254,22 +1302,22 @@
         "score": 100.0,
         "issues": []
       },
-      "agent1_5": {
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 100,
         "missing_tests_count": 0,
         "missing_tests": [],
         "duplicate_count": 0,
         "validation_status": "PARTIALLY_VALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 100.0,
         "issues": []
       },
@@ -1284,24 +1332,62 @@
         "score": 100.0,
         "issues": []
       },
-      "agent1_5": {
+      "agent2": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_qa_quality": {
+      "agent3_qa_quality": {
         "score": 100.0,
         "issues": []
       },
-      "agent2_coverage": {
+      "agent3_coverage": {
         "coverage_rate": 100,
         "missing_tests_count": 0,
         "missing_tests": [],
         "duplicate_count": 0,
         "validation_status": "VALID"
       },
-      "agent3": {
+      "agent4": {
         "score": 100.0,
         "issues": []
+      },
+      "agent5": {
+        "score": 100.0,
+        "issues": []
+      }
+    },
+    {
+      "story_id": "NUXEPM-1733",
+      "agent1": {
+        "score": 100.0,
+        "issues": []
+      },
+      "agent2": {
+        "score": 100.0,
+        "issues": []
+      },
+      "agent3_qa_quality": {
+        "score": 100.0,
+        "issues": []
+      },
+      "agent3_coverage": {
+        "coverage_rate": 75.0,
+        "missing_tests_count": 2,
+        "missing_tests": [
+          "Vérifier que les mots-clés s'affichent uniquement sur la première ligne",
+          "Vérifier que le bandeau reste consultable sans téléchargement"
+        ],
+        "duplicate_count": 0,
+        "validation_status": "VALID"
+      },
+      "agent4": {
+        "score": 70.0,
+        "issues": [
+          {
+            "message": "validation_status=VALID alors que des ambiguïtés ou des points non couverts existent",
+            "severity": "CRITIQUE"
+          }
+        ]
       },
       "agent5": {
         "score": 100.0,

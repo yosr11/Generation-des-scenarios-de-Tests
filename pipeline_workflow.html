@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pipeline Orchestrator — LangGraph Workflow</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 30px;
+        }
+        h1 {
+            color: #1e3c72;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        .diagram {
+            display: flex;
+            justify-content: center;
+            overflow-x: auto;
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+        }
+        .mermaid {
+            display: flex;
+            justify-content: center;
+        }
+        .legend {
+            margin-top: 30px;
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #1e3c72;
+        }
+        .legend h3 {
+            margin-top: 0;
+            color: #1e3c72;
+        }
+        .legend-item {
+            display: inline-block;
+            margin-right: 30px;
+            margin-bottom: 10px;
+        }
+        .legend-color {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        .info {
+            background: #e8f4f8;
+            border-left: 4px solid #00bcd4;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 4px;
+            line-height: 1.6;
+        }
+        .info strong {
+            color: #00838f;
+        }
+        code {
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        .tab-btn {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            color: #1e3c72;
+            border-bottom-color: #1e3c72;
+            font-weight: bold;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Pipeline Orchestrator</h1>
+        <p class="subtitle">Multi-Agent LangGraph Workflow Visualization</p>
+        
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('diagram')">📊 Diagram</button>
+            <button class="tab-btn" onclick="switchTab('info')">ℹ️ Information</button>
+            <button class="tab-btn" onclick="switchTab('ascii')">📝 ASCII</button>
+        </div>
+        
+        <div id="diagram" class="tab-content active">
+            <div class="diagram">
+                <div class="mermaid">
+graph LR
+    START([START]) --> ENRICH["1. Enrich<br/>Jira + Cache"]
+    ENRICH --> CLASSIFY["2. Classify<br/>Agent 1"]
+    
+    CLASSIFY -->|invalid| SKIP["SKIP"]
+    CLASSIFY -->|functional| ANALYSIS["3. Analysis<br/>Agent 1"]
+    CLASSIFY -->|not_func| NOT_FUNC["NOT_FUNC"]
+    
+    ANALYSIS --> BIZ["4. Business<br/>Model<br/>Agent 2"]
+    BIZ --> GEN["5. Generate<br/>Tests<br/>Agent 3"]
+    
+    GEN -->|no tests| NO_TESTS["NO_TESTS"]
+    GEN -->|tests| VALIDATE["6. Validate<br/>Agent 4"]
+    
+    VALIDATE -->|cov>=70%| REPORT["7. Report<br/>Agent 5"]
+    VALIDATE -->|cov<70%| GAPFILL["8. Gap-Fill<br/>Agent 3"]
+    
+    GAPFILL --> REVALIDATE["Re-Validate<br/>Agent 4"]
+    REVALIDATE -->|issues| GAPFILL
+    REVALIDATE -->|valid| REPORT
+    
+    SKIP --> END([END])
+    NO_TESTS --> END
+    NOT_FUNC --> END
+    REPORT --> END
+    
+    style START fill:#90EE90
+    style END fill:#FFB6C6
+    style SKIP fill:#FFD700
+    style NO_TESTS fill:#FFD700
+    style NOT_FUNC fill:#FFD700
+    style VALIDATE fill:#87CEEB
+    style GAPFILL fill:#DDA0DD
+    style REVALIDATE fill:#DDA0DD
+    style REPORT fill:#FFB347
+                </div>
+            </div>
+        </div>
+        
+        <div id="info" class="tab-content">
+            <div class="legend">
+                <h3>📊 Node Types</h3>
+                <div class="legend-item">
+                    <span class="legend-color" style="background: #90EE90;"></span>
+                    <strong>Start</strong> — Pipeline entry point
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background: #FFB347;"></span>
+                    <strong>Agents</strong> — LLM-driven analysis & generation
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background: #87CEEB;"></span>
+                    <strong>Validation</strong> — Quality checks & coverage
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background: #DDA0DD;"></span>
+                    <strong>Gap-Fill</strong> — Correction loop
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background: #FFD700;"></span>
+                    <strong>Terminal</strong> — End states (skip/no tests)
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background: #FFB6C6;"></span>
+                    <strong>End</strong> — Pipeline completion
+                </div>
+            </div>
+            
+            <div class="info">
+                <strong>📌 Key Features:</strong><br>
+                • <strong>Conditional Routing</strong>: Dynamic path selection based on story type & validation results<br>
+                • <strong>Feedback Loop</strong>: Gap-fill (Agent 3) + Re-validation (Agent 4) for coverage improvement<br>
+                • <strong>Max Iterations</strong>: Prevents infinite loops with configurable correction limits<br>
+                • <strong>Graceful Degradation</strong>: Non-blocking agents (e.g., Agent 2) don't fail the pipeline<br>
+                • <strong>State Persistence</strong>: PipelineState carries all data through the workflow
+            </div>
+            
+            <div class="info" style="background: #f0f8ff; border-left-color: #1976d2;">
+                <strong>🔄 Feedback Loop Details:</strong><br>
+                When Agent 4 detects issues (coverage < 70%, duplicates, ambiguities):<br>
+                ① Agent 3 generates gap-fill tests for uncovered points<br>
+                ② Tests are merged and deduplicated<br>
+                ③ Agent 4 re-validates the expanded test suite<br>
+                ④ Loop repeats until coverage ≥ 70% or max iterations reached<br>
+                ⑤ Agent 5 generates final report with correction history
+            </div>
+            
+            <div class="info" style="background: #fff3e0; border-left-color: #ff6f00;">
+                <strong>🔗 State Transmission (Left-to-Right Flow):</strong><br>
+                <code>START → ENRICH → CLASSIFY → ANALYSIS → BUSINESS MODEL → GENERATE → VALIDATE → [REPORT or GAP-FILL]</code><br>
+                <br>
+                <code>PipelineState</code> contains:<br>
+                • story_id, story (enriched from Jira)<br>
+                • analysis (Agent 1), business_model (Agent 2)<br>
+                • tests (Agent 3), validation (Agent 4), report (Agent 5)<br>
+                • correction_iteration, coverage_rate, token_usage<br>
+                All agents read and update this shared state ➜
+            </div>
+        </div>
+        
+        <div id="ascii" class="tab-content">
+            <pre style="background: #f5f5f5; padding: 20px; border-radius: 8px; overflow-x: auto; line-height: 1.2;">
+╔══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+║                                 PIPELINE ORCHESTRATOR — HORIZONTAL WORKFLOW                                     ║
+╚══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+
+START ──► ENRICH ──► CLASSIFY ┬─→ invalid ──► SKIP ──┐
+                          │                         │
+                     functional                      ▼
+                          │                        END
+                          ▼
+                      ANALYSIS ──► BUSINESS ──► GENERATE ┬─→ no tests ──► NO_TESTS ──┐
+                                    MODEL      TESTS                                   │
+                                   Agent 2     Agent 3                                 │
+                                   (Opt)     +RAG/Legacy                              │
+                                                     │                                 │
+                                               tests │                                 │
+                                                     ▼                                 │
+                                              VALIDATE ─────────────────────────────────┤
+                                              Agent 4                                  │
+                                           Coverage Check                              │
+                                                     │                                 │
+                                  ┌──────────────────┴──────────────────┐              │
+                                  │                                     │              │
+                           ✓ cov >= 70%                    ✗ cov < 70% OR issues     │
+                                  │                                     │              │
+                                  ▼                                     ▼              │
+                              REPORT ◄─────────────────────────── GAP-FILL            │
+                              Agent 5                            + Re-Validate        │
+                                  │                                    ▲              │
+                                  │              iteration < MAX ──────┘              │
+                                  │                                                   │
+                                  ▼                                                   ▼
+                                 END ◄─────────────────────────────────────────────────
+
+╔══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+║                                          ROUTING DECISIONS                                                       ║
+╠══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣
+║                                                                                                                  ║
+║ CLASSIFY                                                                                                        ║
+║   ├─ invalid/weak        ──► SKIP ──► END                                                                     ║
+║   ├─ not_functional      ──► NOT_FUNC ──► END                                                                 ║
+║   └─ functional          ──► ANALYSIS ──► BUSINESS MODEL ──► GENERATE                                         ║
+║                                                                                                                  ║
+║ GENERATE                                                                                                        ║
+║   ├─ no tests generated  ──► NO_TESTS ──► END                                                                 ║
+║   └─ tests generated     ──► VALIDATE                                                                         ║
+║                                                                                                                  ║
+║ VALIDATE (Coverage Check)                                                                                      ║
+║   ├─ coverage >= 70%     ──► REPORT ──► END                                                                  ║
+║   ├─ coverage < 70%      ──► GAP-FILL (if iterations < MAX)                                                 ║
+║   │   └─ GAP-FILL ──────────► Re-Validate                                                                   ║
+║   │                           ├─ Issues ──► Back to GAP-FILL (loop)                                        ║
+║   │                           └─ Valid ──► REPORT ──► END                                                   ║
+║   └─ MAX iterations      ──► REPORT ──► END (force completion)                                              ║
+║                                                                                                                  ║
+║ Terminal States:                                                                                               ║
+║   • SKIP            : Invalid/weak stories                                                                    ║
+║   • NOT_FUNC        : Non-functional stories                                                                 ║
+║   • NO_TESTS        : No tests could be generated                                                            ║
+║   • END (from REPORT): Success with final report                                                             ║
+║                                                                                                                  ║
+╚══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+
+LEGEND:
+  ► = Forward flow
+  ┬ = Branch decision
+  ▼ = Output
+  ◄ = Feedback loop
+  ✓ = Success condition
+  ✗ = Failure/issue condition
+            </pre>
+        </div>
+    </div>
+    
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
+        mermaid.contentLoaded();
+        
+        function switchTab(tabName) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Remove active class from all buttons
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            // Show selected tab and activate button
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

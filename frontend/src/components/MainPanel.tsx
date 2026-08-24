@@ -47,7 +47,7 @@ export default function MainPanel() {
             use_legacy_rag: options.useLegacyRag,
             model_agent1: options.modelAgent1,
             model_agent2: options.modelAgent2,
-            model_agent3_quality: options.modelAgent3,
+            model_agent4_quality: options.modelAgent4,
             model_agent5: options.modelAgent5,
             coverage_threshold: options.coverageThreshold,
             max_correction_iterations: options.maxCorrectionIterations,

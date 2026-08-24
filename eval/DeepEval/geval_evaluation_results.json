@@ -5,7 +5,7 @@
   },
   "summary": {
     "agent1_faithfulness": {
-      "score_moyen": 89.524,
+      "score_moyen": 89.048,
       "taux_sous_seuil": 0.05,
       "pires_stories": [
         [
@@ -23,18 +23,33 @@
       ]
     },
     "agent1_hallucination": {
-      "score_moyen": 84.286,
-      "taux_sous_seuil": 0.12,
+      "score_moyen": 86.762,
+      "taux_sous_seuil": 0.1,
       "pires_stories": [
-        
+        [
+          "NUXEPM-1736",
+          2.0
+        ],
+        [
+          "NUXEPM-2284",
+          2.0
+        ],
+        [
+          "NUXEPM-1733",
+          20.0
+        ]
       ]
     },
     "agent1_factual_accuracy": {
-      "score_moyen": 75.0,
+      "score_moyen": 74.762,
       "taux_sous_seuil": 0.21,
       "pires_stories": [
         [
           "NUXEPM-1733",
+          10.0
+        ],
+        [
+          "NUXEPM-1736",
           10.0
         ],
         [
@@ -44,10 +59,10 @@
       ]
     },
     "agent2_hallucination": {
-      "score_moyen": 96.19,
-      "taux_sous_seuil": 0.05,
+      "score_moyen": 97.619,
+      "taux_sous_seuil": 0.02,
       "pires_stories": [
-        
+       
         [
           "NUXEPM-1412",
           90.0
@@ -66,6 +81,7 @@
       "taux_sous_seuil": 0.14,
       "pires_stories": [
         
+        
       ]
     },
     "independent_coverage": {
@@ -76,7 +92,7 @@
       ]
     },
     "agent5_fidelity": {
-      "score_moyen": 88.333,
+      "score_moyen": 88.81,
       "taux_sous_seuil": 0.05,
       "pires_stories": [
        
@@ -1967,5 +1983,6 @@
         "reason": "The test case accurately follows the logical sequence of the input workflow (BW-1), preserving all four steps in the correct order without omissions or reordering. The actor 'COLLABORATEUR' is consistently referenced in the test data and objective, aligning with the input's actors_involved. Furthermore, the expected results explicitly validate both success criteria: step 3 confirms the banner's visibility and correct scrolling, while step 4 verifies that only role-specific announcements are displayed. There are no contradictions or significant divergences, demonstrating strong alignment with the evaluation steps."
       }
     }
+    
   ]
 }

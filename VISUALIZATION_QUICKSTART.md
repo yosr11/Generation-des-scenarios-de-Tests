@@ -1,0 +1,285 @@
+# 📂 LangGraph Visualization Files Location Guide
+
+## 🎯 Key Files to Know About
+
+### 1. **MAIN VISUALIZATION FILE** ⭐
+```
+📄 pipeline_workflow.html
+   Location: c:\Users\yomahfoudh\Desktop\Agent_Test\
+   
+   👉 DOUBLE-CLICK THIS FILE TO VIEW THE DIAGRAM!
+   
+   Includes:
+   • Interactive Mermaid flowchart
+   • Information & legend
+   • ASCII representation
+   • Fully self-contained (no internet required after load)
+```
+
+---
+
+### 2. **Visualization Module** (for developers)
+```
+📄 app/utils/graph_visualizer.py
+   Location: c:\Users\yomahfoudh\Desktop\Agent_Test\app\utils\
+   
+   Functions:
+   • visualize_pipeline_graph()     → Generate PNG
+   • generate_ascii_diagram()        → ASCII text
+   • get_mermaid_definition()        → Mermaid code
+   • save_mermaid_html(output_path) → HTML file
+   
+   Usage in code:
+   from app.utils.graph_visualizer import save_mermaid_html
+   html_path = save_mermaid_html()
+```
+
+---
+
+### 3. **API Endpoints** (for web service)
+```
+📄 app/api/routes_graph_visualizer.py
+   Location: c:\Users\yomahfoudh\Desktop\Agent_Test\app\api\
+   
+   Endpoints:
+   GET /pipeline/graph/diagram  → HTML (interactive)
+   GET /pipeline/graph/ascii    → JSON (ASCII)
+   GET /pipeline/graph/mermaid  → JSON (Mermaid raw)
+   GET /pipeline/graph/png      → PNG image
+   GET /pipeline/info           → JSON (structure info)
+   
+   To use:
+   1. Start FastAPI server
+   2. Visit http://localhost:8000/pipeline/graph/diagram
+   3. Other endpoints available on same prefix
+```
+
+---
+
+### 4. **CLI Script** (for command-line)
+```
+📄 scripts/visualize_pipeline.py
+   Location: c:\Users\yomahfoudh\Desktop\Agent_Test\scripts\
+   
+   Commands:
+   python scripts/visualize_pipeline.py           # Generate HTML
+   python scripts/visualize_pipeline.py --ascii   # Show ASCII
+   python scripts/visualize_pipeline.py --mermaid # Show Mermaid
+   python scripts/visualize_pipeline.py --open    # Open in browser
+   python scripts/visualize_pipeline.py --output my_graph.html
+```
+
+---
+
+### 5. **Documentation Files**
+```
+📄 LANGRAPH_VISUALIZATION.md
+   Full usage guide with all options and examples
+   
+📄 VISUALIZATION_SUMMARY.md
+   Quick reference and file modifications summary
+   
+📄 VISUALIZATION_QUICKSTART.md  ← This file
+   Location guide (you are here)
+```
+
+---
+
+### 6. **Modified Files**
+```
+📄 app/main.py
+   Changes:
+   • Added import: from app.api.routes_graph_visualizer import router
+   • Registered: app.include_router(graph_visualizer_router)
+   • Updated root endpoint with graph URL
+   
+📄 test_visualization.py (optional)
+   Test script to verify installation
+```
+
+---
+
+## 🗂️ Complete Directory Structure
+
+```
+c:\Users\yomahfoudh\Desktop\Agent_Test\
+│
+├── 📄 pipeline_workflow.html          ← ⭐ OPEN THIS FILE
+├── 📄 LANGRAPH_VISUALIZATION.md       ← Full guide
+├── 📄 VISUALIZATION_SUMMARY.md        ← Quick summary
+├── 📄 VISUALIZATION_QUICKSTART.md     ← This file
+│
+├── app/
+│   ├── api/
+│   │   └── 📄 routes_graph_visualizer.py     ← API endpoints
+│   │
+│   ├── utils/
+│   │   └── 📄 graph_visualizer.py            ← Core module
+│   │
+│   └── 📄 main.py                            ← Modified
+│
+├── scripts/
+│   └── 📄 visualize_pipeline.py              ← CLI script
+│
+└── app/
+    └── services/
+        └── 📄 agent_orchestrator.py          ← Source graph definition
+```
+
+---
+
+## ⚡ Quick Access Paths
+
+### For Users (Non-technical)
+```
+1. Open this file: c:\Users\yomahfoudh\Desktop\Agent_Test\pipeline_workflow.html
+   → Double-click → View diagram
+   
+2. Read this file: LANGRAPH_VISUALIZATION.md
+   → Understanding the workflow
+```
+
+### For Developers
+```
+1. Import the module:
+   from app.utils.graph_visualizer import save_mermaid_html
+   
+2. Generate HTML:
+   html_path = save_mermaid_html()
+   
+3. Use API endpoints:
+   http://localhost:8000/pipeline/graph/diagram
+```
+
+### For DevOps / Automation
+```
+1. CLI command:
+   python scripts/visualize_pipeline.py --output docs/workflow.html
+   
+2. API endpoint:
+   curl http://localhost:8000/pipeline/graph/mermaid
+```
+
+---
+
+## 🔍 Find Files Using Windows Explorer
+
+### Method 1: Direct Path
+```
+Copy-paste to address bar:
+c:\Users\yomahfoudh\Desktop\Agent_Test
+```
+
+### Method 2: Search in Explorer
+```
+Find "pipeline_workflow.html" in Explorer
+Find "graph_visualizer.py" in Explorer
+Find "routes_graph_visualizer.py" in Explorer
+```
+
+### Method 3: VS Code
+```
+Ctrl+P → pipeline_workflow.html
+Ctrl+P → graph_visualizer.py
+Ctrl+P → routes_graph_visualizer.py
+```
+
+---
+
+## 🎬 3-Step Quick Start
+
+### Step 1: View Diagram
+```
+📍 Double-click:
+   c:\Users\yomahfoudh\Desktop\Agent_Test\pipeline_workflow.html
+```
+
+### Step 2: Explore Tabs
+```
+🔄 Click on tabs at top:
+   • 📊 Diagram (interactive flowchart)
+   • ℹ️ Information (legend & details)
+   • 📝 ASCII (text representation)
+```
+
+### Step 3: Use for Your Mémoire
+```
+📸 Screenshot the diagram
+📋 Copy the HTML file
+📤 Share with team
+```
+
+---
+
+## 🧭 File Dependency Map
+
+```
+pipeline_workflow.html
+    ↓ (uses Mermaid.js from CDN)
+    └─ Mermaid diagram definition
+           ↑ (generated by)
+           └─ app/utils/graph_visualizer.py
+                  ↓ (called from)
+                  ├─ app/api/routes_graph_visualizer.py (API endpoints)
+                  └─ scripts/visualize_pipeline.py (CLI)
+
+Source graph definition:
+    app/services/agent_orchestrator.py
+        ↓ (compiled graph)
+        └─ StateGraph(PipelineState)
+```
+
+---
+
+## 📞 Common Tasks
+
+### Task: View the diagram
+→ File: `pipeline_workflow.html`
+
+### Task: Use visualization in Python code
+→ File: `app/utils/graph_visualizer.py`
+
+### Task: Call via REST API
+→ File: `app/api/routes_graph_visualizer.py`
+
+### Task: Generate from command-line
+→ File: `scripts/visualize_pipeline.py`
+
+### Task: Understand the workflow
+→ File: `LANGRAPH_VISUALIZATION.md`
+
+### Task: Get quick reference
+→ File: `VISUALIZATION_SUMMARY.md`
+
+---
+
+## 🐛 File Locations at a Glance
+
+| Task | File | Path |
+|------|------|------|
+| View diagram | pipeline_workflow.html | Root folder |
+| Core module | graph_visualizer.py | `app/utils/` |
+| API routes | routes_graph_visualizer.py | `app/api/` |
+| CLI tool | visualize_pipeline.py | `scripts/` |
+| Full guide | LANGRAPH_VISUALIZATION.md | Root folder |
+| Quick ref | VISUALIZATION_SUMMARY.md | Root folder |
+| Source graph | agent_orchestrator.py | `app/services/` |
+
+---
+
+## ✅ Status Check
+
+- ✅ HTML visualization generated
+- ✅ API endpoints created
+- ✅ CLI script ready
+- ✅ Documentation complete
+- ✅ Integration with main.py done
+- ✅ No additional dependencies required
+
+**Ready to use!** 🎉
+
+---
+
+**Created**: 2026-08-13
+**Status**: Production Ready
+**Format**: Self-contained HTML + Python modules + CLI

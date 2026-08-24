@@ -4,8 +4,8 @@ Test rapide du VLM sur une image locale, sans passer par le pipeline complet.
 Usage :
   py eval/test_vlm_on_image.py <chemin_image>
 
-Compare scout (défaut) et maverick côte à côte si --compare est passé :
-  py eval/test_vlm_on_image.py <chemin_image> --compare
+Le mode --compare correspond à l'ancien test Groq et n'est plus disponible
+depuis le passage du VLM à Amazon Bedrock.
 """
 
 import argparse
@@ -53,7 +53,7 @@ def main() -> None:
     parser.add_argument(
         "--compare",
         action="store_true",
-        help="Compare scout vs maverick",
+        help="Option historique Groq, non disponible avec le VLM Bedrock",
     )
     args = parser.parse_args()
 
@@ -62,14 +62,9 @@ def main() -> None:
         sys.exit(1)
 
     if args.compare:
-        models = [
-            "qwen/qwen3.6-27b",
-            "meta-llama/llama-4-maverick-17b-128e-instruct",
-        ]
+        parser.error("--compare n'est plus disponible : le VLM utilise Amazon Bedrock.")
     else:
-        models = [
-            os.environ.get("VISION_MODEL", "qwen/qwen3.6-27b")
-        ]
+        models = [os.environ.get("VISION_MODEL", "nova-lite-2")]
 
     for model in models:
         desc, elapsed = run_one(args.image, model)

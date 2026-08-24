@@ -1,0 +1,49 @@
+[Image jointe : Maquette_PopineFiltres.png]
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+Il s'agit d'une fenêtre modale intitulée « MODIFIER LES FILTRES », probablement utilisée pour affiner une recherche ou une sélection de données. L'écran présente plusieurs champs de saisie, sélecteurs et options de filtrage organisés en sections.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée. L'écran semble être présenté tel quel sans surcouche d'annotations supplémentaires.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- **Pastilles (pills) actives** : 
+  - « Annonce » et « Actualité » en bleu clair
+  - « Formation » et « Recrutement » en bleu clair avec une croix pour les retirer
+- **Boutons radio** :
+  - « Toutes », « Oui », « Non » pour « Publiée »
+  - « Toutes », « Avec », « Sans » pour « Pièce(s) jointe(s) »
+  - « Toutes », « Avec », « Avatar » pour « Illustration »
+- **Boutons** :
+  - « Annuler » en gris clair
+  - « Effacer les filtres » en gris clair
+  - « Appliquer les filtres » en bleu foncé
+
+## 4. ICÔNES ET PICTOGRAMMES
+- **Icônes de calendrier** : présentes à droite des champs de date « à partir du » et « jusqu'au » pour chaque date (création, début de publication, fin de publication)
+- **Icône de croix** : à droite des pastilles « Formation » et « Recrutement » pour indiquer leur retrait possible
+- **Icône de fermeture** : en haut à droite de la fenêtre modale pour fermer la fenêtre
+
+## 5. AGENCEMENT ET RELATIONS
+- **Structure générale** : 
+  - En-tête avec titre « MODIFIER LES FILTRES » et bouton de fermeture
+  - Corps divisé en plusieurs sections horizontales avec étiquettes de champ
+  - Pied avec boutons d'action
+- **Groupements visuels** :
+  - Champs de recherche en haut
+  - Sélecteurs de type et de mot-clé en ligne
+  - Options de date organisées en lignes avec champs de date et icônes de calendrier
+  - Options radio regroupées sous des libellés clairs
+  - Champs de saisie pour « Société », « Etablissement » et « Acteur » en bas
+- **Hiérarchie** :
+  - Titres de section en gras et plus grands
+  - Libellés de champ en texte normal
+  - Options radio alignées horizontalement sous leur libellé
+- **États** :
+  - Pastilles actives en bleu clair
+  - Boutons radio sélectionnés avec un cercle rempli
+  - Champs de date avec icônes de calendrier pour la sélection
+- **Relations spatiales** :
+  - Les champs « à partir du » et « jusqu'au » sont alignés horizontalement pour chaque date
+  - Les boutons radio sont alignés horizontalement sous leur étiquette correspondante
+  - Les boutons en bas sont alignés à gauche (« Annuler ») et à droite (« Effacer les filtres », « Appliquer les filtres »)

@@ -55,6 +55,7 @@ export interface ProjectInfo {
 
 export interface UserInfo {
   id?:            number
+  user_id?:       string | number
   email:          string
   role:           'admin' | 'tester'
   display_name?:  string
@@ -742,7 +743,12 @@ export const apiClient = {
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.error('API Error:', error)
+    const isAuthCheck =
+      error.config?.url?.includes('/auth/me') && error.response?.status === 401
+
+    if (!isAuthCheck) {
+      console.error('API Error:', error)
+    }
     return Promise.reject(error)
   }
 )

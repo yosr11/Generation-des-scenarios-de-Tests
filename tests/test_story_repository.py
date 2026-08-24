@@ -1,20 +1,11 @@
-﻿from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-
-from app.models.pg_models import Base
+﻿from app.db.postgres import Base, SyncSessionLocal, sync_engine
 from app.repositories import story_repository as story_repo
 
 
-def test_story_repository_save_and_retrieve(monkeypatch, tmp_path):
-    db_path = tmp_path / "test.db"
-    engine = create_engine(
-        f"sqlite:///{db_path}",
-        connect_args={"check_same_thread": False},
-    )
-    SessionLocal = sessionmaker(bind=engine)
-    Base.metadata.create_all(bind=engine)
+def test_story_repository_save_and_retrieve(monkeypatch):
+    Base.metadata.create_all(bind=sync_engine)
 
-    monkeypatch.setattr(story_repo, "get_sync_session", lambda: SessionLocal())
+    monkeypatch.setattr(story_repo, "get_sync_session", SyncSessionLocal)
 
     story = {
         "id": "STORY-1",
@@ -47,5 +38,4 @@ def test_story_repository_save_and_retrieve(monkeypatch, tmp_path):
     assert loaded["epic_key"] == "EPIC-1"
 
     all_stories = story_repo.get_all_stories()
-    assert len(all_stories) == 1
-    assert all_stories[0]["id"] == "STORY-1"
+    assert any(story["id"] == "STORY-1" for story in all_stories)

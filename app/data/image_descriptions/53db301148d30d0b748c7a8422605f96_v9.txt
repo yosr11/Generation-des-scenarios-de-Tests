@@ -1,0 +1,79 @@
+[Image jointe : Traduction.png]
+── Textes détectés (OCR) ──
+= 6B Gestion des News o ? O
+PUBLICATION TITRE AUTEUR DATE DE CREATION DATE DE DEBUT DE PUBLICATION DATE DE FIN DE PUBLICATION VALIDE ACTIONS
+Éléments par page 5 - 0/0
+Les champs indigués par Lre * son: coligataires.
+Type de News * Publication 7}
+[] valide
+Langue * ; —
+Date de début de publication * Cil
+[Engisn (o X]
+Titre dans le carrousel English * —
+! ! ! ng Date de fin de publication * (i}
+Texte English *
+La localisation de la News est France secteur privé.
+La langue de publication de la News est e Français.
+-  Confidentialité (
+Société *
+Titre dans le carrousel Français *
+Etablissement
+Texte Français *
+Acteur autorisé à voir la News *
+Gestion des News
+O,
+PUBLICATION
+TITRE
+AUTEUR
+DATE DE CREATION
+DATE DE DEBUT DE PUBLICATION
+DATE DE FIN DE PUBLICATION
+VALIDE
+ACTIONS
+070
+Éléments par page
+V Je crée une News
+Type de News *
+Publication (i)
+Langue *
+Date de début de publication * i)
+Engish } Famcas X [ raïano X ]
+A —
+Titre dans le carrousel English *
+Date de fin de publication * i}
+— 40
+La langue de publication de la News est le Français.
+ÀÆ
+Confidentialité (i)
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+Il s'agit d'un formulaire de création de News dans une interface d'administration, probablement une application web. L'intention est de permettre à l'utilisateur de saisir les informations nécessaires pour publier une nouvelle annonce ou actualité.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- **Pastilles (pills)** : 
+  - "English", "Français", "Italiano" dans le champ "Langue *", couleur de fond bleu clair.
+- **Boutons** :
+  - "Je crée une News" en haut à gauche, probablement un bouton de soumission ou d'action.
+  - "Éléments par page" avec un menu déroulant, probablement pour la pagination.
+- **Étoiles** :
+  - "* " à côté de "Type de News *", "Langue *", "Date de début de publication *", "Date de fin de publication *", "Titre dans le carrousel English *", "Texte English *", "Titre dans le carrousel Français *", "Texte Français *", "Société *", "Acteur autorisé à voir la News *", indiquant des champs obligatoires.
+
+## 4. ICÔNES ET PICTOGRAMMES
+- **Icône d'information** : à côté de "Publication", "Date de début de publication", "Date de fin de publication", "Confidentialité", probablement pour des tooltips ou aides contextuelles.
+- **Icônes de calendrier** : à côté des champs de date "Date de début de publication *" et "Date de fin de publication *", pour ouvrir un sélecteur de date.
+- **Icône de validation** : à côté du champ "Société *", probablement pour confirmer le choix.
+- **Icônes de flèche** : dans les menus déroulants pour "Type de News *", "Langue *", "Société *", "Etablissement", "Acteur autorisé à voir la News *", indiquant qu'il s'agit de listes déroulantes.
+
+## 5. AGENCEMENT ET RELATIONS
+- **Structure générale** : Le formulaire est divisé en deux colonnes principales.
+  - **Colonne gauche** : Contient les champs liés au contenu de la News ("Type de News *", "Langue *", "Titre dans le carrousel English *", "Texte English *", "Titre dans le carrousel Français *", "Texte Français *").
+  - **Colonne droite** : Contient les champs liés à la publication et à la confidentialité ("Publication", "Date de début de publication *", "Date de fin de publication *", "Confidentialité", "Société *", "Etablissement", "Acteur autorisé à voir la News *").
+- **Hiérarchie** : 
+  - En-tête "Gestion des News" en haut, suivi du titre "Je crée une News".
+  - Les champs sont organisés en sections logiques avec des libellés clairs.
+- **Champs obligatoires** : Indiqués par une étoile "*".
+- **États** : Les champs "Langue *" affichent des pastilles sélectionnées ("English", "Français", "Italiano").
+- **Relations spatiales** : Les champs liés sont groupés visuellement, par exemple les champs de date sont regroupés sous le titre "Publication".

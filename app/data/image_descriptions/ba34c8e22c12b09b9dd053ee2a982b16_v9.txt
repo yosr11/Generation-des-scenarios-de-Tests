@@ -1,0 +1,116 @@
+[Image jointe : Formulaire_Multi langue.jpg]
+── Textes détectés (OCR) ──
+= @ Gestion des News o ? O
+Vous gérez it vos News, vous pouvez creer des annonces et des actualités !5)
++ Créer une actualité Sauvégarde
+> Liste des News
+V Je crée une News ﬂl, t]'
+Les champs TH:Icé5 DICUTE * SOR CHROIGIES
+Type de News *
+Actualités - $
+Publication /i) Confidentialité (i}
+Société “
+(O vande
+Etablissement *
+Date de fin de publication * 15}
+Acteur autorisé à voir 1a News *
+— = :]
+La locahisation de la News est France secteur privé
+La langue de publication de ta News est l Anglais. Illustration dans le carrousel
+Veurilez sélectionner une image
+_ 1 © 2on2 w
+Contenu ) Lena %
+Langue * « - "
+Liste des unités déclaratives
+Campagne 04 52014 ourects an mode st Aperçu de l'llustration
+m uc ms ccs [
+P R i et be e u
+v Je rédige en English ﬂjl Ën
+English - Titre dans le carrousel * English - Aperçu du contenu
+éneisn - Tente ” -
+English - Mots-clés *
+English - Veuillez sélectionner un Document d'actualité * ‘Îjl
+> Je rédige en Français ﬂ]! Ê]|
+> Je réaige en Italiano ÛI Ëll
+Gestion des News
+ce
+V Je crée une News
+o,
+Les champs - TH:acé5 D37 L ™€ * SOR TDLRATGIE!
+Actualités
+Publication i)
+Confidentialité (i
+Date de début de pubhcation * 15)
+P e
+/!
+=]
+—E
+ff
+La langue de publication de la News est i Anglais.
+Ilustration dans le carrousel
+1 © 2prz W
+Contenu i)
+Langue “
+\@mmm
+Campagne €u 57014 ouracts en made
+Aperçu de l'Hlustration
+"~
+[——
+oo
+cec
+ompoutsass
+An T
+et =
+—c ce
+vt e s
+.…
+se
+ms
+v Je rédige en English
+UE
+English - Aperçu du contenu
+English - Titre dans le carrousel *
+English - Texte *
+[6]
+> Je rédige en Français
+88
+> Je réaige en Italiano
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+Il s'agit d'un formulaire de création de News dans une interface d'administration. L'écran permet de saisir les informations nécessaires pour publier une actualité ou une annonce, avec des sections pour les détails de publication, le contenu multilingue et une illustration.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- Pastille "English" avec fond bleu clair
+- Pastille "Français" avec fond bleu clair
+- Pastille "Italiano" avec fond bleu clair
+- Bouton "Quitter" avec fond gris foncé
+- Bouton "+ Créer une annonce" avec fond bleu
+- Bouton "+ Créer une actualité" avec fond bleu
+- Bouton "Sauvegarder" avec fond bleu
+- Bouton "Voir le fichier" avec fond gris
+- Bouton "Corriger le fichier" avec fond gris
+- Bouton "Annuler" avec fond gris
+
+## 4. ICÔNES ET PICTOGRAMMES
+- Icône d'engrenage (paramètres) à droite de la barre de titre
+- Icône de recherche (loupe) à droite de la barre de titre
+- Icône d'aide (point d'interrogation dans un cercle) à droite de la barre de titre
+- Icône de mise à jour (flèche de recyclage) dans la section d'aperçu d'illustration
+- Icône de document (page) à côté de "Veuillez sélectionner un Document d'actualité"
+- Icône de calendrier à côté des champs de date
+- Icône d'information (i) à côté des champs avec astérisque
+
+## 5. AGENCEMENT ET RELATIONS
+- Structure en deux colonnes principales : gauche pour les champs de saisie, droite pour les aperçus et listes
+- Section supérieure avec barre de titre et boutons d'action
+- Section "Je crée une News" contenant tous les champs de saisie
+- Trois sections langues distinctes ("Je rédige en English", "Je rédige en Français", "Je rédige en Italiano") chacune avec ses propres champs
+- Champ obligatoire marqué par un astérisque (*)
+- Aperçu de l'illustration affiché à droite de la section "Illustration dans le carrousel"
+- Liste des unités déclaratives dans un tableau à droite de la section de contenu
+- Hiérarchie claire avec titres de sections en gras et sous-titres en italique
+- Champs de date avec icônes de calendrier pour la sélection
+- Groupement visuel des champs liés par des bordures et espacement

@@ -14,7 +14,7 @@ from app.db.postgres import get_db
 from app.repositories.manual_tests_repository import save_manual_tests_snapshot
 from app.services.audit_service import log_action
 from app.services.llm_client import ALL_MODELS, build_llm_client
-from app.services.test_refinement_service import TestRefinementService
+from app.services.test_refinement_service import TestRefinementError, TestRefinementService
 from app.utils.test_steps_utils import finalize_edited_test
 
 logger = logging.getLogger(__name__)
@@ -34,7 +34,7 @@ class RefineChatRequest(BaseModel):
     story_id: str = ""
     story_summary: str = ""
     story_actors: List[str] = Field(default_factory=list)
-    model_alias: str = "llama33"
+    model_alias: str = "nova-lite-2"
 
 
 class RefineChatResponse(BaseModel):
@@ -84,6 +84,8 @@ async def refine_test_chat(
             ip_address=get_client_ip(request),
         )
         return RefineChatResponse(**result)
+    except TestRefinementError as exc:
+        raise HTTPException(status_code=413, detail=str(exc)) from exc
     except Exception as exc:
         logger.exception("refine-chat failed")
         raise HTTPException(status_code=500, detail=str(exc)) from exc

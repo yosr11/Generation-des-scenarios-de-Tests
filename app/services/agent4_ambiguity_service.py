@@ -1,6 +1,4 @@
-﻿"""
-Détection d'étapes ambiguës (heuristiques regex + LLM sémantique). Agent 4 ne réécrit pas le contenu des tests.
-"""
+﻿"""Détection déterministe d'étapes ambiguës et de contradictions dans les tests."""
 
 from __future__ import annotations
 
@@ -64,18 +62,6 @@ def detect_ambiguous_steps(test: ManualTestCase) -> List[AmbiguityFinding]:
                 )
 
     return out
-
-
-def detect_ambiguous_steps_with_llm(
-    tests: List[ManualTestCase],
-    model_alias: str = "nova-lite-2",
-) -> List[AmbiguityFinding]:
-    """
-    Désactivé : la seule ambiguïté reconnue est « vérifier », déjà détectée par regex.
-    Toute autre « vagueur » (résultat non chiffré, action générique) provient de la
-    user story et n'est pas une ambiguïté de test → pas de détection LLM (faux positifs).
-    """
-    return []
 
 
 # ── Contradiction entre testable_points ──────────────────────────────────────

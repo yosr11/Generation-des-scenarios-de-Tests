@@ -93,6 +93,90 @@ async def send_reset_email(to_email: str, reset_url: str) -> bool:
         return False
 
 
+async def send_admin_account_created_email(
+    to_email: str, temporary_password: str, display_name: str | None = None
+) -> bool:
+    """
+    Envoie un email de bienvenue lors de la création d'un compte administrateur.
+    Contient le mot de passe temporaire que l'admin peut garder ou modifier.
+    """
+    smtp_host = getattr(settings, "SMTP_HOST", None)
+    smtp_port = getattr(settings, "SMTP_PORT", 587)
+    smtp_user = getattr(settings, "SMTP_USER", None)
+    smtp_password = getattr(settings, "SMTP_PASSWORD", None)
+    smtp_from = getattr(settings, "SMTP_FROM", smtp_user or "no-reply@soprahr.com")
+
+    if not smtp_host or not smtp_user or not smtp_password:
+        logger.warning(
+            "[EmailService] SMTP non configuré. Email admin non envoyé à %s",
+            to_email,
+        )
+        return False
+
+    msg = MIMEMultipart("alternative")
+    msg["Subject"] = "Synaptest — Votre compte administrateur a été créé"
+    msg["From"] = smtp_from
+    msg["To"] = to_email
+
+    text_content = (
+        f"Bonjour {display_name or ''},\n\n"
+        f"Un compte administrateur a été créé pour vous sur Synaptest.\n"
+        f"Vos identifiants sont :\n"
+        f"Email : {to_email}\n"
+        f"Mot de passe temporaire : {temporary_password}\n\n"
+        f"Vous pouvez utiliser ce mot de passe pour vous connecter ou le modifier ultérieurement.\n\n"
+        f"L'équipe Synaptest"
+    )
+
+    html_content = f"""
+    <html>
+      <body style="font-family: Arial, sans-serif; color: #1e293b; line-height: 1.6;">
+        <div style="max-w: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff;">
+          <div style="text-align: center; border-bottom: 2px solid #f43f5e; padding-bottom: 15px; margin-bottom: 20px;">
+            <h2 style="color: #0a0f2e; margin: 0;">Synap<span style="color: #f43f5e;">test</span></h2>
+            <p style="font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin: 5px 0 0 0;">Plateforme de tests QA</p>
+          </div>
+          <p>Bonjour {display_name or ''},</p>
+          <p><strong>Un compte administrateur a été créé pour vous sur Synaptest.</strong></p>
+          <p>Vos identifiants de connexion sont :</p>
+          <div style="background-color: #f8fafc; padding: 15px; border-left: 4px solid #6366f1; border-radius: 4px; margin: 20px 0;">
+            <p style="margin: 5px 0;"><strong>Email :</strong> <code style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px;">{to_email}</code></p>
+            <p style="margin: 5px 0;"><strong>Mot de passe temporaire :</strong> <code style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px;">{temporary_password}</code></p>
+          </div>
+          <p>Vous pouvez utiliser ce mot de passe pour vous connecter ou le modifier ultérieurement dans vos paramètres de profil.</p>
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="{settings.FRONTEND_BASE_URL.rstrip('/')}/login" style="background: linear-gradient(135deg, #ef4444, #f43f5e); color: #ffffff; text-decoration: none; padding: 12px 24px; font-weight: bold; border-radius: 8px; box-shadow: 0 4px 12px rgba(244,63,94,0.3); display: inline-block;">
+              Accéder à Synaptest
+            </a>
+          </div>
+          <p style="font-size: 12px; color: #94a3b8; border-top: 1px solid #f1f5f9; padding-top: 15px; margin-top: 25px;">
+            Si vous n'êtes pas à l'origine de cette demande, contactez votre administrateur système.
+          </p>
+        </div>
+      </body>
+    </html>
+    """
+
+    msg.attach(MIMEText(text_content, "plain"))
+    msg.attach(MIMEText(html_content, "html"))
+
+    try:
+        server = smtplib.SMTP(smtp_host, smtp_port)
+        if server.has_extn("STARTTLS"):
+            server.starttls()
+        if smtp_user and smtp_password and smtp_user.lower() != "test":
+            server.login(smtp_user, smtp_password)
+        server.sendmail(smtp_from, to_email, msg.as_string())
+        server.quit()
+        logger.info("[EmailService] Email admin envoyé avec succès à %s", to_email)
+        return True
+    except Exception as exc:
+        logger.error(
+            "[EmailService] Échec de l'envoi de l'email admin à %s: %s", to_email, str(exc)
+        )
+        return False
+
+
 async def send_account_created_email(
     to_email: str, jira_username: str, display_name: str | None = None
 ) -> bool:

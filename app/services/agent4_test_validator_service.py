@@ -1,7 +1,4 @@
-﻿"""
-Agent 4 — validateur pur : couverture sémantique, doublons (rapport), ambiguïtés (regex + LLM), instructions.
-Les tests en entrée sont renvoyés inchangés. Aucune boucle de régénération.
-"""
+﻿"""Agent 4 — validation QA déterministe avec feedback qualitatif LLM optionnel."""
 
 from __future__ import annotations
 
@@ -13,7 +10,6 @@ from app.services.agent4_coverage_service import analyze_coverage
 from app.services.agent4_prescriptive_service import build_validation_envelope
 from app.services.agent4_quality_llm_service import llm_quality_feedback
 from app.services.agent4_ambiguity_service import (
-    detect_ambiguous_steps_with_llm,
     detect_testable_point_contradictions,
 )
 
@@ -28,9 +24,8 @@ def validate_and_improve_tests(
     coverage_similarity_threshold: float = 0.7,
     duplicate_similarity_threshold: float = 0.8,
     embedding_model: str = "paraphrase-multilingual-MiniLM-L12-v2",
-    run_llm_quality_feedback: bool = False,
+    run_llm_quality_feedback: bool = True,
     quality_model_alias: str = "nova-lite-2",
-    run_llm_ambiguity_detection: bool = True,
 ) -> Agent4ValidationResult:
 
     cov = analyze_coverage(
@@ -62,42 +57,6 @@ def validate_and_improve_tests(
                 key = (c["test_name"], c["step_index"], c["field"], c["original_text"])
                 if key not in existing_keys:
                     env["ambiguity_findings"].append(c)
-            from app.services.agent4_prescriptive_service import (
-                compute_validation_status,
-            )
-
-            env["validation_status"] = compute_validation_status(
-                float(cov.coverage_rate),
-                coverage_threshold,
-                len(env["duplicate_pairs"]),
-                len(env["ambiguity_findings"]),
-            )
-
-    # ── Enrichir les ambiguïTés avec la détection sémantique LLM ──
-    if run_llm_ambiguity_detection and tests:
-        llm_ambiguities = detect_ambiguous_steps_with_llm(
-            tests, model_alias=quality_model_alias
-        )
-        if llm_ambiguities:
-            # Fusionner sans doublons (même test + même step_index + même field)
-            existing_keys = {
-                (a.get("test_name", ""), a.get("step_index", 0), a.get("field", ""))
-                for a in env["ambiguity_findings"]
-            }
-            for llm_a in llm_ambiguities:
-                key = (llm_a.test_name, llm_a.step_index, llm_a.field)
-                if key not in existing_keys:
-                    env["ambiguity_findings"].append(
-                        {
-                            "test_name": llm_a.test_name,
-                            "step_index": llm_a.step_index,
-                            "field": llm_a.field,
-                            "reason": llm_a.reason,
-                            "original_text": llm_a.original_text or "",
-                            "source": "llm",
-                        }
-                    )
-            # Recalculer le statut avec les nouvelles ambiguïtés
             from app.services.agent4_prescriptive_service import (
                 compute_validation_status,
             )

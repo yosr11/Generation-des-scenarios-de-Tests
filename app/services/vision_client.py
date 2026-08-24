@@ -2,7 +2,7 @@
 app/services/vision_client.py
 ─────────────────────────────
 Extraction de texte/sémantique depuis les images (mockups, captures d'écran,
-schémas) jointes aux user stories Jira, via le VLM Groq (llama-4-scout).
+schémas) jointes aux user stories Jira, via Amazon Bedrock Nova 2 Lite.
 
 Sortie : description textuelle en français qui peut s'injecter dans le RAG
 documents comme n'importe quel autre extrait PDF/DOCX.
@@ -10,7 +10,6 @@ documents comme n'importe quel autre extrait PDF/DOCX.
 Cache disque par MD5 du contenu binaire → on ne re-VLMise jamais la même image.
 """
 
-import base64
 import hashlib
 import io
 import logging
@@ -20,20 +19,22 @@ import time
 from pathlib import Path
 from typing import Optional
 
-import httpx
+import boto3
 from dotenv import load_dotenv
-from groq import Groq, RateLimitError, APIStatusError
 
 load_dotenv(override=True)
 logger = logging.getLogger(__name__)
 
-# Modèle VLM. Surchargeable via env var `VISION_MODEL`.
-# - qwen3.6-27b (défaut)     : multimodal Vision-Language Model, image+texte, généralement plus performant
-#                               pour les captures d'écran et les interfaces visuelles plus complexes.
-# - llama-4-maverick         : plus précis sur badges/couleurs/encadrés MAIS nécessite un accès
-#                               Groq spécifique (sinon 404 model_not_found).
-#                               meta-llama/llama-4-maverick-17b-128e-instruct
-VISION_MODEL = os.getenv("VISION_MODEL", "qwen/qwen3.6-27b")
+# Modèle VLM Bedrock. Surchargeable via env var `VISION_MODEL` ou
+# `BEDROCK_MODEL_ID` pour conserver une configuration compatible avec le reste du projet.
+VISION_MODEL = os.getenv("VISION_MODEL", "nova-lite-2")
+BEDROCK_VISION_MODEL_ID = os.getenv(
+    "BEDROCK_MODEL_ID",
+    "eu.amazon.nova-2-lite-v1:0"
+    if VISION_MODEL == "nova-lite-2"
+    else VISION_MODEL,
+)
+AWS_REGION = os.getenv("AWS_REGION", "eu-west-3")
 # 1200 tokens : laisse à Qwen assez de budget pour produire les 5 sections détaillées.
 VISION_MAX_TOKENS = int(os.getenv("VISION_MAX_TOKENS", "2800"))
 
@@ -43,7 +44,7 @@ VISION_MAX_TOKENS = int(os.getenv("VISION_MAX_TOKENS", "2800"))
 # v6 : passage au VLM maverick + budget tokens 1200 → invalide l'ancien cache scout.
 # v7 : durcissement anti-hallucination du prompt VLM (interdit de nommer un pattern UI
 #      incertain : « champ de recherche » et non « onglet de recherche personnalisée », etc.).
-# v9 : masque le raisonnement Qwen côté Groq et réserve assez de tokens à la réponse finale.
+# v9 : version du prompt vision utilisée pour invalider automatiquement le cache.
 _PROMPT_VERSION = "v9"
 
 # Configuration Tesseract (Windows). Si tesseract.exe n'est pas dans le PATH,
@@ -53,7 +54,7 @@ _TESSERACT_CMD_ENV = os.getenv("TESSERACT_CMD")
 # Langues OCR (français + anglais par défaut pour gérer les libellés mixtes).
 _OCR_LANGS = os.getenv("OCR_LANGS", "fra+eng")
 
-# Limites Groq vision : ~4 Mo en base64. On redimensionne au-dessous.
+# Limiter la taille des images envoyées au modèle vision.
 MAX_IMAGE_DIM = 1568  # px sur le plus grand côté
 JPEG_QUALITY = 85
 MIN_IMAGE_BYTES = 4 * 1024  # < 4 Ko = icône, on skip
@@ -312,9 +313,9 @@ def _remove_thinking_block(text: str) -> str:
     return cleaned.strip()
 
 
-def _prepare_image_data_url(content: bytes, filename: str) -> Optional[str]:
+def _prepare_image_bytes(content: bytes, filename: str) -> Optional[bytes]:
     """
-    Redimensionne si nécessaire et encode en data URL base64 (JPEG).
+    Redimensionne si nécessaire et encode l'image en JPEG pour Bedrock.
     Retourne None si Pillow ne peut pas ouvrir l'image.
     """
     try:
@@ -346,19 +347,14 @@ def _prepare_image_data_url(content: bytes, filename: str) -> Optional[str]:
 
         buf = io.BytesIO()
         img.save(buf, format="JPEG", quality=JPEG_QUALITY, optimize=True)
-        b64 = base64.b64encode(buf.getvalue()).decode("ascii")
-        return f"data:image/jpeg;base64,{b64}"
+        return buf.getvalue()
     except Exception as exc:
         logger.warning("Pillow n'a pas pu ouvrir %s : %s", filename, exc)
         return None
 
 
-def _build_client() -> Groq:
-    transport = httpx.HTTPTransport(verify=False)
-    return Groq(
-        api_key=os.getenv("GROQ_API_KEY"),
-        http_client=httpx.Client(transport=transport, timeout=45.0),
-    )
+def _build_client():
+    return boto3.client("bedrock-runtime", region_name=AWS_REGION)
 
 
 def describe_image(
@@ -390,8 +386,8 @@ def describe_image(
         logger.debug("Cache hit vision pour %s (%s)", filename, content_hash[:8])
         return cached
 
-    data_url = _prepare_image_data_url(content, filename)
-    if not data_url:
+    image_bytes = _prepare_image_bytes(content, filename)
+    if not image_bytes:
         return None
 
     # ── 1) OCR Tesseract (rapide, local) ──────────────────────────────────
@@ -419,23 +415,26 @@ def describe_image(
 
     for attempt in range(max_retries):
         try:
-            response = client.chat.completions.create(
-                model=VISION_MODEL,
-                temperature=0.0,
-                max_tokens=VISION_MAX_TOKENS,
-                reasoning_format="hidden",
+            response = client.converse(
+                modelId=BEDROCK_VISION_MODEL_ID,
                 messages=[
                     {
                         "role": "user",
                         "content": [
-                            {"type": "text", "text": user_text},
-                            {"type": "image_url", "image_url": {"url": data_url}},
+                            {"text": user_text},
+                            {"image": {"format": "jpeg", "source": {"bytes": image_bytes}}},
                         ],
                     }
                 ],
+                inferenceConfig={
+                    "temperature": 0.0,
+                    "maxTokens": min(VISION_MAX_TOKENS, 5120),
+                },
             )
+            output_message = response.get("output", {}).get("message", {})
+            output_content = output_message.get("content", [])
             description = _remove_thinking_block(
-                response.choices[0].message.content or ""
+                next((item.get("text", "") for item in output_content if item.get("text")), "")
             )
             if not description:
                 return None
@@ -459,34 +458,21 @@ def describe_image(
             )
             return full_text
 
-        except RateLimitError as exc:
+        except Exception as exc:
             last_error = exc
-            sleep_for = 2.0 * (attempt + 1)
-            logger.warning(
-                "Vision rate-limited sur %s (tentative %d/%d), pause %.1fs",
-                filename,
-                attempt + 1,
-                max_retries,
-                sleep_for,
-            )
-            time.sleep(sleep_for)
-        except APIStatusError as exc:
-            last_error = exc
-            status = getattr(exc, "status_code", None)
-            if status in (502, 503, 504):
+            if attempt < max_retries - 1:
                 sleep_for = 2.0 * (attempt + 1)
                 logger.warning(
-                    "Vision %s indispo pour %s, retry dans %.1fs",
-                    status,
+                    "Vision Bedrock indisponible pour %s (tentative %d/%d), retry dans %.1fs : %s",
                     filename,
+                    attempt + 1,
+                    max_retries,
                     sleep_for,
+                    exc,
                 )
                 time.sleep(sleep_for)
                 continue
-            logger.error("Vision erreur API %s sur %s : %s", status, filename, exc)
-            return None
-        except Exception as exc:
-            logger.error("Vision erreur inattendue sur %s : %s", filename, exc)
+            logger.error("Vision Bedrock échouée sur %s : %s", filename, exc)
             return None
 
     logger.error(

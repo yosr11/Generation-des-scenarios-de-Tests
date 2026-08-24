@@ -12,7 +12,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.security import hash_password
 from app.models.pg_models import User, PipelineRun
 import secrets
-from app.services.email_service import send_account_created_email
+from app.services.email_service import send_account_created_email, send_admin_account_created_email
 
 # ──────────────────────────────────────────────────────────
 #  Helpers
@@ -132,7 +132,13 @@ async def create_user(
 
     # Envoi de l'email de bienvenue (best-effort, ne bloque pas la création)
     email_sent = False
-    if jira_username:
+    if role == "admin":
+        # Pour les admins, envoyer le mot de passe temporaire
+        email_sent = await send_admin_account_created_email(
+            email, placeholder_password, display_name
+        )
+    elif jira_username:
+        # Pour les testeurs, envoyer l'email avec infos Jira
         email_sent = await send_account_created_email(
             email, jira_username, display_name
         )
@@ -206,8 +212,6 @@ async def set_user_active(
     user = result.scalar_one_or_none()
     if not user:
         return {"ok": False, "error": "Utilisateur introuvable."}
-    if user.role == "admin" and not is_active:
-        return {"ok": False, "error": "Impossible de désactiver un compte admin."}
 
     user.is_active = is_active
     await db.commit()

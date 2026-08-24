@@ -11,7 +11,7 @@ from eval.DeepEval.semantic_similarity import best_semantic_match
 
 # Seuil de similarité sémantique en dessous duquel on considère qu'un
 # testable_point n'est "rattaché" à rien. À ajuster via calibration_tests.py
-SEMANTIC_ORPHAN_THRESHOLD = 0.40
+SEMANTIC_ORPHAN_THRESHOLD = 0.70
 
 
 class Severity(Enum):
@@ -93,7 +93,7 @@ class Agent1Metrics:
 
 
 # ---------------------------------------------------------------------------
-# AGENT 1.5 — Cohérence du business model avec agent1
+# AGENT 2 — Cohérence du business model avec agent1
 # ---------------------------------------------------------------------------
 class Agent2Metrics:
     def score(
@@ -169,7 +169,7 @@ class Agent2Metrics:
 
 
 # ---------------------------------------------------------------------------
-# AGENT 2 — Qualité rédactionnelle des tests + couverture (via agent4)
+# AGENT 3— Qualité rédactionnelle des tests + couverture (via agent4)
 # ---------------------------------------------------------------------------
 class Agent3Metrics:
     def qa_quality(self, agent3_output: Dict[str, Any]) -> Dict[str, Any]:
@@ -229,7 +229,7 @@ class Agent3Metrics:
 
 
 # ---------------------------------------------------------------------------
-# AGENT 3 — Justesse interne de la validation
+# AGENT 4 — Justesse interne de la validation
 # ---------------------------------------------------------------------------
 class Agent4Metrics:
     def score(

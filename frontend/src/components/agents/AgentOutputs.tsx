@@ -595,12 +595,13 @@ export const Agent2Result: React.FC<{ output: any }> = ({ output }) => {
 // ════════════════════════════════════════════════════════════════════════════
 export const Agent4Result: React.FC<{ output: any }> = ({ output }) => {
   if (!output) return null
-  const report           = output?.report || output
+  const report           = output?.report || output?.validation?.report || output
   const coverage         = report?.coverage_rate ?? report?.coverage_percentage ?? 0
   const validationStatus = report?.validation_status
   const ambiguities      = report?.ambiguity_findings || report?.ambiguities || []
   const uncoveredPoints  = report?.uncovered_testable_points || []
   const duplicates       = report?.duplicate_pairs || report?.duplicate_tests || report?.duplicates || []
+  const qualityFeedback  = report?.llm_quality_feedback || output?.validation?.report?.llm_quality_feedback
   const covPct           = Math.round((coverage || 0) * 100)
 
   const coverageAccent: AccentColor =
@@ -672,6 +673,49 @@ export const Agent4Result: React.FC<{ output: any }> = ({ output }) => {
             Statut de Validation
           </span>
           <AgentStatusBadge status={validationStatus} />
+        </div>
+      )}
+
+      {/* Qualitative LLM feedback */}
+      {qualityFeedback && (
+        <div
+          className="rounded-xl p-4"
+          style={{ background: `${T.violet}08`, border: `1px solid ${T.violet}22` }}
+        >
+          <div className="flex items-center justify-between gap-3 mb-3">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-violet-600">
+              Feedback qualité LLM
+            </span>
+            {qualityFeedback.score !== undefined && (
+              <span className="text-lg font-bold text-violet-700">
+                {qualityFeedback.score}/10
+              </span>
+            )}
+          </div>
+          {qualityFeedback.summary && (
+            <p className="text-sm text-slate-700 leading-relaxed mb-3">
+              {qualityFeedback.summary}
+            </p>
+          )}
+          {[
+            ['Points forts', qualityFeedback.strengths],
+            ['Points faibles', qualityFeedback.weaknesses],
+            ['Recommandations', qualityFeedback.recommendations],
+          ].map(([label, items]) => Array.isArray(items) && items.length > 0 && (
+            <div key={label as string} className="mt-3">
+              <p className="text-xs font-semibold text-slate-600 mb-1">{label}</p>
+              <ul className="list-disc pl-5 space-y-1 text-sm text-slate-700">
+                {(items as string[]).map((item, index) => (
+                  <li key={index}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+          {report?.llm_quality_model_alias && (
+            <p className="text-[11px] text-slate-400 mt-3">
+              Modèle : {report.llm_quality_model_alias}
+            </p>
+          )}
         </div>
       )}
 

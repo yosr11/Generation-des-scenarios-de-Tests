@@ -34,7 +34,7 @@ SECTIONS À GÉNÉRER :
    - rationale : justification basée sur les données (1-2 phrases, citer les métriques)
 
    Règles de priorité :
-   - critical : couverture <50%, INVALID, >5 doublons avec sim >0.9
+   - critical : couverture <50%, INVALID, >5 doublons avec sim >0.8
    - high : couverture 50-70%, ambiguïtés non clarifiées, review requis
    - medium : clarifier quelques étapes, merger 1-2 tests similaires
    - low : perfectionnements (améliorer objectifs, revoir labels)

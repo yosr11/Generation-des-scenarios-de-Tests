@@ -25,7 +25,7 @@ const defaultValues: StoryFormValues = {
   modelAgent1: 'llama4',
   modelAgent2: 'llama4',
   modelAgent3: 'nova-lite-2',
-  modelAgent4: 'qwen3',
+  modelAgent4: 'nova-lite-2',
   modelAgent5: 'nova-lite-2',
   useRag: false,
   useLegacyRag: true,
@@ -107,6 +107,7 @@ export default function StoryForm({ onAnalyze, isLoading }: StoryFormProps) {
                     className="w-full px-4 py-3 border border-slate-300 rounded-2xl bg-white focus:ring-2 focus:ring-slate-400 transition"
                   >
                     <option value="llama4">llama4</option>
+                    <option value="nova-lite-2">nova-lite-2</option>
                     <option value="qwen3">qwen3</option>
                     <option value="gptoss">gptoss</option>
                   </select>

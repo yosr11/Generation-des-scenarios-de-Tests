@@ -1,0 +1,230 @@
+[Image jointe : Formulaire_Mono langue.jpg]
+── Textes détectés (OCR) ──
+= @ Gestion des News Q ? 0
+VOuS gerez 101 vos News, vous pouvez créer des annonces et des actualités rÎ
+Quitter + Créer une actualité Savvugatan
+> Liste des News
+v je crée une News
+Lesinamos CI LS AT LTe * SCTTIO! 28I 2S
+Type de Nèves *
+Actualités - #
+Publication i Confidentialité «i:
+ociète *
+[ vaice Soce
+Date de cétut de publication * cis : ]
+Etablissement *
+Date de fin de pubiication * i)
+i ACTEUT autonse à VOI 1a News *
+La localisation de la News est France secteur privé
+talangue de publication de ta News est l Anglais. IHlustration dans le carrousel
+veulliez sélectionner une image
+Contenu " u
+Langue * . . “
+English - Titre dans le carrousel *
+| r Liste des unités déclaratives
+Vg % NN crcette ot e 4 Aperçu de Hllustration
+English - Mors.cles * SRE -F — E
+English - Aperçu du contenu
+- . . .
+English - Vewliez seiectionner un Document dactualte * É lﬁ
+[6 |
+Gestion des News
+ut
+Vous gerez cI vos News, vous pouvez créer des annonce
+et des actualités 1-
+Lescmamos “Doesparure*sc
+cecssi
+281z 85
+iype de News *
+Actualités
+Publication &
+Confidentialité i
+Sociète
+( vaice
+Date de cétut de publication * (i1
+PR G S—
+Acteur autorisé à voir !a N
+PE SR .
+La locahisation de la News est France secteur privé
+La langue de publication de la News est l’ Anglais.
+lilustration dans le carrousel
+Contenu i}
+Languë
+e b
+Liste des unités déclaratives
+en
+Aperçu de Hllustration
+Englsh - Texte *
+rrs
+Ry
+oo
+u.
+PRTSERS
+.…
+".
+English - Mots-cles *
+English - Veuille,
+eiectionner un Document dactualté " 151
+"B
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+Il s'agit d'un formulaire de création d'une actualité dans une interface d'administration. L'écran permet de saisir les informations nécessaires pour publier une actualité, avec des champs obligatoires marqués par une étoile.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- **Bouton "Quitter"**: forme rectangulaire, couleur grise.
+- **Bouton "Créer une annonce"**: forme rectangulaire, couleur verte avec un symbole plus blanc.
+- **Bouton "Créer une actualité"**: forme rectangulaire, couleur verte avec un symbole plus blanc.
+- **Bouton "Sauvegarder"**: forme rectangulaire, couleur grise.
+- **Champ de sélection "Type de News"**: forme rectangulaire, couleur blanche avec bordure grise.
+- **Champ de sélection "Société"**: forme rectangulaire, couleur blanche avec bordure grise.
+- **Champ de sélection "Etablissement"**: forme rectangulaire, couleur blanche avec bordure grise.
+- **Champ de sélection "Acteur autorisé à voir la News"**: forme rectangulaire, couleur blanche avec bordure grise.
+- **Champ de sélection "Langue"**: forme rectangulaire, couleur blanche avec bordure grise.
+- **Champ de sélection "English - Titre dans le carrousel"**: forme rectangulaire, couleur blanche avec bordure grise.
+- **Champ de sélection "English - Mots-clés"**: forme rectangulaire, couleur blanche avec bordure grise.
+- **Champ de sélection "English - Veuillez sélectionner un Document d'actualité"**: forme rectangulaire, couleur blanche avec bordure grise.
+- **Case à cocher "Valide"**: forme rectangulaire, couleur grise.
+- **Bouton d'icône calendrier**: forme circulaire, couleur grise.
+- **Bouton d'icône calendrier**: forme circulaire, couleur grise.
+- **Bouton d'icône image**: forme circulaire, couleur grise.
+- **Bouton d'icône fichier**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**: forme circulaire, couleur grise.
+- **Bouton d'icône liste**:

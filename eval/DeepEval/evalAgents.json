@@ -173,7 +173,7 @@
         "resolved_from_references": []
       }
     },
-    "agent1_5": {
+    "agent2": {
       "input": {
         "summary": "Accès direct au 360 Collaborateur pour le manager",
         "agent1_analysis": {
@@ -272,7 +272,7 @@
         "modeling_notes": ""
       }
     },
-    "agent2": {
+    "agent3": {
       "input": {
         "summary": "Accès direct au 360 Collaborateur pour le manager",
         "description": [
@@ -419,7 +419,7 @@
         "_normalized": true
       }
     },
-    "agent3": {
+    "agent4": {
       "input": {
         "story_summary": "Accès direct au 360 Collaborateur pour le manager",
         "coverage_threshold": 0.7,
@@ -489,8 +489,8 @@
             "Le manager peut accéder au 360 à partir de différentes sections de l'application"
           ]
         },
-        "agent2_tests_count": 2,
-        "agent3_validation": {
+        "agent3_tests_count": 2,
+        "agent4_validation": {
           "coverage_rate": 0.75,
           "validation_status": "PARTIALLY_VALID",
           "ambiguity_count": 1,
@@ -733,7 +733,7 @@
         ]
       }
     },
-    "agent1_5": {
+    "agent2": {
       "input": {
         "summary": "News - Lot2 Aperçu du carrousel lors de la création d'une News",
         "description": [
@@ -807,7 +807,7 @@
         "modeling_notes": ""
       }
     },
-    "agent2": {
+    "agent3": {
       "input": {
         "summary": "News - Lot2 Aperçu du carrousel lors de la création d'une News",
         "description": [
@@ -1140,7 +1140,7 @@
         "_normalized": true
       }
     },
-    "agent3": {
+    "agent4": {
       "input": {
         "story_summary": "News - Lot2 Aperçu du carrousel lors de la création d'une News",
         "coverage_threshold": 0.7,
@@ -1320,8 +1320,8 @@
             "Un mot-clef ne pouvant pas apparaître entier en fin de ligne est retiré"
           ]
         },
-        "agent2_tests_count": 7,
-        "agent3_validation": {
+        "agent3_tests_count": 7,
+        "agent4_validation": {
           "coverage_rate": 0.9231,
           "validation_status": "PARTIALLY_VALID",
           "ambiguity_count": 9,
@@ -1512,7 +1512,7 @@
         ]
       }
     },
-    "agent1_5": {
+    "agent2": {
       "input": {
         "summary": "News - Capacité à consulter une News dans le tableau des News (Auteur)",
         "agent1_analysis": {
@@ -1575,7 +1575,7 @@
         "modeling_notes": ""
       }
     },
-    "agent2": {
+    "agent3": {
       "input": {
         "summary": "News - Capacité à consulter une News dans le tableau des News (Auteur)",
         "description": [
@@ -1676,7 +1676,7 @@
         "_normalized": true
       }
     },
-    "agent3": {
+    "agent4": {
       "input": {
         "story_summary": "News - Capacité à consulter une News dans le tableau des News (Auteur)",
         "coverage_threshold": 0.7,
@@ -1737,8 +1737,8 @@
             "Le document attaché ne doit pas être visible"
           ]
         },
-        "agent2_tests_count": 1,
-        "agent3_validation": {
+        "agent3_tests_count": 1,
+        "agent4_validation": {
           "coverage_rate": 1,
           "validation_status": "PARTIALLY_VALID",
           "ambiguity_count": 1,
@@ -1903,7 +1903,7 @@
         ]
       }
     },
-    "agent1_5": {
+    "agent2": {
       "input": {
         "summary": "DN - Consultation d'un doc sur Arkhinéo",
         "agent1_analysis": {
@@ -1981,7 +1981,7 @@
         "modeling_notes": ""
       }
     },
-    "agent2": {
+    "agent3": {
       "input": {
         "summary": "DN - Consultation d'un doc sur Arkhinéo",
         "description": [
@@ -2210,7 +2210,7 @@
         "_normalized": true
       }
     },
-    "agent3": {
+    "agent4": {
       "input": {
         "story_summary": "DN - Consultation d'un doc sur Arkhinéo",
         "coverage_threshold": 0.7,
@@ -2289,8 +2289,8 @@
             "Il est interdit de télécharger un document depuis un coffre-fort salarié."
           ]
         },
-        "agent2_tests_count": 6,
-        "agent3_validation": {
+        "agent3_tests_count": 6,
+        "agent4_validation": {
           "coverage_rate": 1,
           "validation_status": "PARTIALLY_VALID",
           "ambiguity_count": 1,
@@ -2456,7 +2456,7 @@
         ]
       }
     },
-    "agent1_5": {
+    "agent2": {
       "input": {
         "summary": "RH de proximité - Rendre configurable l'affichage du valideur dans l'origine d'un document du DN",
         "agent1_analysis": {
@@ -2579,7 +2579,7 @@
         "modeling_notes": ""
       }
     },
-    "agent2": {
+    "agent3": {
       "input": {
         "summary": "RH de proximité - Rendre configurable l'affichage du valideur dans l'origine d'un document du DN",
         "description": [
@@ -2881,7 +2881,7 @@
         "_normalized": true
       }
     },
-    "agent3": {
+    "agent4": {
       "input": {
         "story_summary": "RH de proximité - Rendre configurable l'affichage du valideur dans l'origine d'un document du DN",
         "coverage_threshold": 0.7,
@@ -3009,8 +3009,8 @@
             "L'identité du valideur n'est pas exposée aux acteurs Collaborateur et Manager"
           ]
         },
-        "agent2_tests_count": 6,
-        "agent3_validation": {
+        "agent3_tests_count": 6,
+        "agent4_validation": {
           "coverage_rate": 1,
           "validation_status": "PARTIALLY_VALID",
           "ambiguity_count": 6,
@@ -3174,7 +3174,7 @@
         ]
       }
     },
-    "agent1_5": {
+    "agent2": {
       "input": {
         "summary": "RGPD - Capacité à supprimer un document du DN à l'issue de sa durée de conservation",
         "agent1_analysis": {
@@ -3270,7 +3270,7 @@
         "modeling_notes": ""
       }
     },
-    "agent2": {
+    "agent3": {
       "input": {
         "summary": "RGPD - Capacité à supprimer un document du DN à l'issue de sa durée de conservation",
         "description": [
@@ -3414,7 +3414,7 @@
         "_normalized": true
       }
     },
-    "agent3": {
+    "agent4": {
       "input": {
         "story_summary": "RGPD - Capacité à supprimer un document du DN à l'issue de sa durée de conservation",
         "coverage_threshold": 0.7,
@@ -3481,8 +3481,8 @@
             "Le fichier physique ne peut être supprimé que si le stockage le permet."
           ]
         },
-        "agent2_tests_count": 5,
-        "agent3_validation": {
+        "agent3_tests_count": 5,
+        "agent4_validation": {
           "coverage_rate": 1,
           "validation_status": "PARTIALLY_VALID",
           "ambiguity_count": 2,
@@ -3629,7 +3629,7 @@
         "resolved_from_references": []
       }
     },
-    "agent1_5": {
+    "agent2": {
       "input": {
         "summary": "Mes questions RH - envoi mail au collaborateur pour le statut Demander plus d'informations",
         "agent1_analysis": {
@@ -3691,7 +3691,7 @@
         "modeling_notes": ""
       }
     },
-    "agent2": {
+    "agent3": {
       "input": {
         "summary": "Mes questions RH - envoi mail au collaborateur pour le statut Demander plus d'informations",
         "description": [
@@ -3824,7 +3824,7 @@
         "_normalized": true
       }
     },
-    "agent3": {
+    "agent4": {
       "input": {
         "story_summary": "Mes questions RH - envoi mail au collaborateur pour le statut Demander plus d'informations",
         "coverage_threshold": 0.7,
@@ -3898,8 +3898,8 @@
             "Le collaborateur ne doit pas recevoir de mail lorsqu'il accepte lui-même une réponse du gestionnaire."
           ]
         },
-        "agent2_tests_count": 4,
-        "agent3_validation": {
+        "agent3_tests_count": 4,
+        "agent4_validation": {
           "coverage_rate": 1.0,
           "validation_status": "PARTIALLY_VALID",
           "ambiguity_count": 2,
@@ -4037,7 +4037,7 @@
         "resolved_from_references": []
       }
     },
-    "agent1_5": {
+    "agent2": {
       "input": {
         "summary": "4YOU - ordre du menu à récupérer de l'AGL",
         "agent1_analysis": {
@@ -4086,7 +4086,7 @@
         "modeling_notes": ""
       }
     },
-    "agent2": {
+    "agent3": {
       "input": {
         "summary": "4YOU - ordre du menu à récupérer de l'AGL",
         "description": [
@@ -4165,7 +4165,7 @@
         "_normalized": true
       }
     },
-    "agent3": {
+    "agent4": {
       "input": {
         "story_summary": "4YOU - ordre du menu à récupérer de l'AGL",
         "coverage_threshold": 0.7,
@@ -4242,8 +4242,8 @@
             "L'ordre alphabétique actuel doit être remplacé par l'ordre défini dans l'AGL"
           ]
         },
-        "agent2_tests_count": 2,
-        "agent3_validation": {
+        "agent3_tests_count": 2,
+        "agent4_validation": {
           "coverage_rate": 0.6667,
           "validation_status": "INVALID",
           "ambiguity_count": 2,
@@ -4426,7 +4426,7 @@
         ]
       }
     },
-    "agent1_5": {
+    "agent2": {
       "input": {
         "summary": "PPBACKLOG-7778 - Intégration eDSN&4YOU : Ajout d'un nouvel Acteur \"Gestionnaire Déclaratif\"",
         "agent1_analysis": {
@@ -4510,7 +4510,7 @@
         "modeling_notes": ""
       }
     },
-    "agent2": {
+    "agent3": {
       "input": {
         "summary": "PPBACKLOG-7778 - Intégration eDSN&4YOU : Ajout d'un nouvel Acteur \"Gestionnaire Déclaratif\"",
         "description": [
@@ -4649,7 +4649,7 @@
         "_normalized": true
       }
     },
-    "agent3": {
+    "agent4": {
       "input": {
         "story_summary": "PPBACKLOG-7778 - Intégration eDSN&4YOU : Ajout d'un nouvel Acteur \"Gestionnaire Déclaratif\"",
         "coverage_threshold": 0.7,
@@ -4745,8 +4745,8 @@
             "La fonctionnalité doit être disponible en version 8 et 9"
           ]
         },
-        "agent2_tests_count": 4,
-        "agent3_validation": {
+        "agent3_tests_count": 4,
+        "agent4_validation": {
           "coverage_rate": 1.0,
           "validation_status": "PARTIALLY_VALID",
           "ambiguity_count": 4,
@@ -4942,7 +4942,7 @@
         ]
       }
     },
-    "agent1_5": {
+    "agent2": {
       "input": {
         "summary": "Harmonisation de l'accès 360",
         "agent1_analysis": {
@@ -5034,7 +5034,7 @@
         "modeling_notes": ""
       }
     },
-    "agent2": {
+    "agent3": {
       "input": {
         "summary": "Harmonisation de l'accès 360",
         "description": [
@@ -5190,7 +5190,7 @@
         "_normalized": true
       }
     },
-    "agent3": {
+    "agent4": {
       "input": {
         "story_summary": "Harmonisation de l'accès 360",
         "coverage_threshold": 0.7,
@@ -5286,8 +5286,8 @@
             "La fonctionnalité doit répondre aux normes d'accessibilité, notamment en terme de hover et de focus sur la photo du collaborateur"
           ]
         },
-        "agent2_tests_count": 4,
-        "agent3_validation": {
+        "agent3_tests_count": 4,
+        "agent4_validation": {
           "coverage_rate": 1.0,
           "validation_status": "PARTIALLY_VALID",
           "ambiguity_count": 4,
@@ -5443,7 +5443,7 @@
         "resolved_from_references": []
       }
     },
-    "agent1_5": {
+    "agent2": {
       "input": {
         "summary": "Configuration Connecteurs CONTRALIA et ARKHINEO",
         "agent1_analysis": {
@@ -5518,7 +5518,7 @@
         "modeling_notes": ""
       }
     },
-    "agent2": {
+    "agent3": {
       "input": {
         "summary": "Configuration Connecteurs CONTRALIA et ARKHINEO",
         "description": [
@@ -5658,7 +5658,7 @@
         "_normalized": true
       }
     },
-    "agent3": {
+    "agent4": {
       "input": {
         "story_summary": "Configuration Connecteurs CONTRALIA et ARKHINEO",
         "coverage_threshold": 0.7,
@@ -5735,8 +5735,8 @@
             "La configuration doit pouvoir être modifiée sans toucher au code"
           ]
         },
-        "agent2_tests_count": 4,
-        "agent3_validation": {
+        "agent3_tests_count": 4,
+        "agent4_validation": {
           "coverage_rate": 1.0,
           "validation_status": "PARTIALLY_VALID",
           "ambiguity_count": 3,
@@ -5948,7 +5948,7 @@
         "resolved_from_references": []
       }
     },
-    "agent1_5": {
+    "agent2": {
       "input": {
         "summary": "Recherche centralisée/multi-critères - Réalisation",
         "agent1_analysis": {
@@ -6050,7 +6050,7 @@
         "modeling_notes": ""
       }
     },
-    "agent2": {
+    "agent3": {
       "input": {
         "summary": "Recherche centralisée/multi-critères - Réalisation",
         "description": [
@@ -6311,7 +6311,7 @@
         "_normalized": true
       }
     },
-    "agent3": {
+    "agent4": {
       "input": {
         "story_summary": "Recherche centralisée/multi-critères - Réalisation",
         "coverage_threshold": 0.7,
@@ -6407,8 +6407,8 @@
           ],
           "resolved_from_references": []
         },
-        "agent2_tests_count": 6,
-        "agent3_validation": {
+        "agent3_tests_count": 6,
+        "agent4_validation": {
           "coverage_rate": 1,
           "validation_status": "PARTIALLY_VALID",
           "ambiguity_count": 1,
@@ -6570,7 +6570,7 @@
         ]
       }
     },
-    "agent1_5": {
+    "agent2": {
       "input": {
         "summary": "ST18_RH de proximité : Fonction de recherche sur la nouvelle vue \"Par collaborateur \" de l'inbox CSP",
         "agent1_analysis": {
@@ -6651,7 +6651,7 @@
         "modeling_notes": ""
       }
     },
-    "agent2": {
+    "agent3": {
       "input": {
         "summary": "ST18_RH de proximité : Fonction de recherche sur la nouvelle vue \"Par collaborateur \" de l'inbox CSP",
         "description": [
@@ -7046,7 +7046,7 @@
         "_normalized": true
       }
     },
-    "agent3": {
+    "agent4": {
       "input": {
         "story_summary": "ST18_RH de proximité : Fonction de recherche sur la nouvelle vue \"Par collaborateur \" de l'inbox CSP",
         "coverage_threshold": 0.7,
@@ -7121,8 +7121,8 @@
           ],
           "resolved_from_references": []
         },
-        "agent2_tests_count": 2,
-        "agent3_validation": {
+        "agent3_tests_count": 2,
+        "agent4_validation": {
           "coverage_rate": 1,
           "uncovered_testable_points": [],
           "duplicate_pairs": [],
@@ -7250,7 +7250,7 @@
           }
         ],
         "agent_versions": {
-          "agent3_embedding": "semantic",
+          "agent4_embedding": "semantic",
           "agent5_model": "llama4"
         },
         "processing_notes": [
@@ -7343,7 +7343,7 @@
         "resolved_from_references": []
       }
     },
-    "agent1_5": {
+    "agent2": {
       "input": {
         "summary": "News - Capacité à afficher le mot-clé sur une News dans le carrousel",
         "agent1_analysis": {
@@ -7405,7 +7405,7 @@
         "modeling_notes": ""
       }
     },
-    "agent2": {
+    "agent3": {
       "input": {
         "summary": "News - Capacité à afficher le mot-clé sur une News dans le carrousel",
         "description": [
@@ -7541,7 +7541,7 @@
         "_normalized": true
       }
     },
-    "agent3": {
+    "agent4": {
       "input": {
         "story_summary": "News - Capacité à afficher le mot-clé sur une News dans le carrousel",
         "coverage_threshold": 0.7,
@@ -7593,8 +7593,8 @@
             "Un ou plusieurs mots-clés peuvent être affichés sur une News du carrousel."
           ]
         },
-        "agent2_tests_count": 2,
-        "agent3_validation": {
+        "agent3_tests_count": 2,
+        "agent4_validation": {
           "coverage_rate": 1,
           "validation_status": "PARTIALLY_VALID",
           "ambiguity_count": 1,
@@ -7764,7 +7764,7 @@
         "resolved_from_references": []
       }
     },
-    "agent1_5": {
+    "agent2": {
       "input": {
         "summary": "News - Prévisualisation du document de l'actualité",
         "agent1_analysis": {
@@ -7830,7 +7830,7 @@
         "modeling_notes": ""
       }
     },
-    "agent2": {
+    "agent3": {
       "input": {
         "summary": "News - Prévisualisation du document de l'actualité",
         "description": [
@@ -8022,7 +8022,7 @@
         "_normalized": true
       }
     },
-    "agent3": {
+    "agent4": {
       "input": {
         "story_summary": "News - Prévisualisation du document de l'actualité",
         "coverage_threshold": 0.7,
@@ -8113,8 +8113,8 @@
             "lorsque l'auteur joint une image, le texte suivant lui est affiché derrière l'icone d'information \"i\" : \"Vous avez ajouté une image comme document d'actualité, si cette image est porteuse d'information et pour respecter les normes d'accessibilité numérique, veuillez saisir le texte correspondant.\""
           ]
         },
-        "agent2_tests_count": 3,
-        "agent3_validation": {
+        "agent3_tests_count": 3,
+        "agent4_validation": {
           "coverage_rate": 0.8889,
           "validation_status": "PARTIALLY_VALID",
           "ambiguity_count": 3,
@@ -8373,7 +8373,7 @@
         ]
       }
     },
-    "agent1_5": {
+    "agent2": {
       "input": {
         "summary": "PLD- RH de proximité - 360 HRLocal - Ses données individuelles (FRONT) - Mise à jour directe des fonctionnalités POP IN (M4)",
         "agent1_analysis": {
@@ -8444,7 +8444,7 @@
         "modeling_notes": ""
       }
     },
-    "agent2": {
+    "agent3": {
       "input": {
         "summary": "PLD- RH de proximité - 360 HRLocal - Ses données individuelles (FRONT) - Mise à jour directe des fonctionnalités POP IN (M4)",
         "description": [
@@ -8728,7 +8728,7 @@
         "_normalized": true
       }
     },
-    "agent3": {
+    "agent4": {
       "input": {
         "story_summary": "PLD- RH de proximité - 360 HRLocal - Ses données individuelles (FRONT) - Mise à jour directe des fonctionnalités POP IN (M4)",
         "coverage_threshold": 0.7,
@@ -8839,8 +8839,8 @@
             "En mise à jour avec workflow de validation, le bouton d'action « Envoyer » est conservé"
           ]
         },
-        "agent2_tests_count": 7,
-        "agent3_validation": {
+        "agent3_tests_count": 7,
+        "agent4_validation": {
           "coverage_rate": 1,
           "validation_status": "PARTIALLY_VALID",
           "ambiguity_count": 5,
@@ -9199,7 +9199,7 @@
         "resolved_from_references": []
       }
     },
-    "agent1_5": {
+    "agent2": {
       "input": {
         "summary": "RH de proximité - Menu 4U-Page Mes collaborateurs et Processus RH - Liste des Collaborateurs/ Profil du collaborateur (Front)(Partie M4)",
         "agent1_analysis": {
@@ -9351,7 +9351,7 @@
         "modeling_notes": ""
       }
     },
-    "agent2": {
+    "agent3": {
       "input": {
         "summary": "RH de proximité - Menu 4U-Page Mes collaborateurs et Processus RH - Liste des Collaborateurs/ Profil du collaborateur (Front)(Partie M4)",
         "description": [
@@ -9588,7 +9588,7 @@
         "_normalized": true
       }
     },
-    "agent3": {
+    "agent4": {
       "input": {
         "story_summary": "RH de proximité - Menu 4U-Page Mes collaborateurs et Processus RH - Liste des Collaborateurs/ Profil du collaborateur (Front)(Partie M4)",
         "coverage_threshold": 0.7,
@@ -9721,8 +9721,8 @@
             "La zone Recherche permet de rechercher un processus à partir de 2 caractères saisis par l'utilisateur"
           ]
         },
-        "agent2_tests_count": 6,
-        "agent3_validation": {
+        "agent3_tests_count": 6,
+        "agent4_validation": {
           "coverage_rate": 0.8462,
           "validation_status": "PARTIALLY_VALID",
           "ambiguity_count": 5,
@@ -9948,7 +9948,7 @@
         ]
       }
     },
-    "agent1_5": {
+    "agent2": {
       "input": {
         "summary": "[?] DN - Confidentialité sur le plan de classement entreprise (fct DMS)",
         "agent1_analysis": {
@@ -10099,7 +10099,7 @@
         "modeling_notes": ""
       }
     },
-    "agent2": {
+    "agent3": {
       "input": {
         "summary": "[?] DN - Confidentialité sur le plan de classement entreprise (fct DMS)",
         "description": [
@@ -10332,7 +10332,7 @@
         "_normalized": true
       }
     },
-    "agent3": {
+    "agent4": {
       "input": {
         "story_summary": "[?] DN - Confidentialité sur le plan de classement entreprise (fct DMS)",
         "coverage_threshold": 0.7,
@@ -10385,8 +10385,8 @@
             "Les permissions d'accès dépendent du rôle de l'utilisateur (manager, gestionnaire)"
           ]
         },
-        "agent2_tests_count": 2,
-        "agent3_validation": {
+        "agent3_tests_count": 2,
+        "agent4_validation": {
           "coverage_rate": 1,
           "validation_status": "PARTIALLY_VALID",
           "ambiguity_count": 1,
@@ -10567,7 +10567,7 @@
         "resolved_from_references": []
       }
     },
-    "agent1_5": {
+    "agent2": {
       "input": {
         "summary": "HRA - RH de proximité - 360 HRLocal - Ses absences - écran récapitulatif des soldes (Front)",
         "agent1_analysis": {
@@ -10619,7 +10619,7 @@
         "modeling_notes": ""
       }
     },
-    "agent2": {
+    "agent3": {
       "input": {
         "summary": "HRA - RH de proximité - 360 HRLocal - Ses absences - écran récapitulatif des soldes (Front)",
         "description": [
@@ -10729,7 +10729,7 @@
         "_normalized": true
       }
     },
-    "agent3": {
+    "agent4": {
       "input": {
         "story_summary": "HRA - RH de proximité - 360 HRLocal - Ses absences - écran récapitulatif des soldes (Front)",
         "coverage_threshold": 0.7,
@@ -10783,8 +10783,8 @@
           ],
           "business_rules": []
         },
-        "agent2_tests_count": 2,
-        "agent3_validation": {
+        "agent3_tests_count": 2,
+        "agent4_validation": {
           "coverage_rate": 0.75,
           "validation_status": "PARTIALLY_VALID",
           "ambiguity_count": 1,
@@ -10952,7 +10952,7 @@
         "resolved_from_references": []
       }
     },
-    "agent1_5": {
+    "agent2": {
       "input": {
         "summary": "RH de proximité - Espace de gestion « configurable »",
         "agent1_analysis": {
@@ -11016,7 +11016,7 @@
         "modeling_notes": ""
       }
     },
-    "agent2": {
+    "agent3": {
       "input": {
         "summary": "RH de proximité - Espace de gestion « configurable »",
         "description": [
@@ -11256,7 +11256,7 @@
         "_normalized": true
       }
     },
-    "agent3": {
+    "agent4": {
       "input": {
         "story_summary": "RH de proximité - Espace de gestion « configurable »",
         "coverage_threshold": 0.7,
@@ -11337,8 +11337,8 @@
             "nombre de widgets min et max (1 à 9)"
           ]
         },
-        "agent2_tests_count": 5,
-        "agent3_validation": {
+        "agent3_tests_count": 5,
+        "agent4_validation": {
           "coverage_rate": 1,
           "validation_status": "PARTIALLY_VALID",
           "ambiguity_count": 3,
@@ -11501,7 +11501,7 @@
         "resolved_from_references": []
       }
     },
-    "agent1_5": {
+    "agent2": {
       "input": {
         "summary": "Délégation - transfert des mails",
         "agent1_analysis": {
@@ -11584,7 +11584,7 @@
         "modeling_notes": ""
       }
     },
-    "agent2": {
+    "agent3": {
       "input": {
         "summary": "Délégation - transfert des mails",
         "description": [
@@ -11751,7 +11751,7 @@
         "_normalized": true
       }
     },
-    "agent3": {
+    "agent4": {
       "input": {
         "story_summary": "Délégation - transfert des mails",
         "coverage_threshold": 0.7,
@@ -11847,8 +11847,8 @@
             "Le transfert des mails de validation de congé n'est valable que pour les absences demandées après la délégation"
           ]
         },
-        "agent2_tests_count": 2,
-        "agent3_validation": {
+        "agent3_tests_count": 2,
+        "agent4_validation": {
           "coverage_rate": 1,
           "validation_status": "PARTIALLY_VALID",
           "ambiguity_count": 4,
@@ -12063,7 +12063,7 @@
         "resolved_from_references": []
       }
     },
-    "agent1_5": {
+    "agent2": {
       "input": {
         "summary": "HRA - RH de proximité - 360 HRLocal - Changement de photo (Back)",
         "agent1_analysis": {
@@ -12119,7 +12119,7 @@
         "modeling_notes": ""
       }
     },
-    "agent2": {
+    "agent3": {
       "input": {
         "summary": "HRA - RH de proximité - 360 HRLocal - Changement de photo (Back)",
         "description": [
@@ -12236,7 +12236,7 @@
         "_normalized": true
       }
     },
-    "agent3": {
+    "agent4": {
       "input": {
         "story_summary": "HRA - RH de proximité - 360 HRLocal - Changement de photo (Back)",
         "coverage_threshold": 0.7,
@@ -12292,8 +12292,8 @@
           ],
           "business_rules": []
         },
-        "agent2_tests_count": 1,
-        "agent3_validation": {
+        "agent3_tests_count": 1,
+        "agent4_validation": {
           "coverage_rate": 0.8333,
           "validation_status": "PARTIALLY_VALID",
           "ambiguity_count": 1,
@@ -12540,7 +12540,7 @@
       "resolved_from_references": []
     }
   },
-  "agent1_5": {
+  "agent2": {
     "input": {
       "summary": "News - Lot1 Création d'une annonce par un auteur",
       "agent1_analysis": {
@@ -12601,7 +12601,7 @@
       "modeling_notes": ""
     }
   },
-  "agent2": {
+  "agent3": {
     "input": {
       "summary": "News - Lot1 Création d'une annonce par un auteur",
       "description": [
@@ -12779,7 +12779,7 @@
       "_normalized": true
     }
   },
-  "agent3": {
+  "agent4": {
     "input": {
       "story_summary": "News - Lot1 Création d'une annonce par un auteur",
       "coverage_threshold": 0.7,
@@ -12889,8 +12889,8 @@
           "Pour les annonces, le document d'actualité n'est pas affiché"
         ]
       },
-      "agent2_tests_count": 11,
-      "agent3_validation": {
+      "agent3_tests_count": 11,
+      "agent4_validation": {
         "coverage_rate": 1,
         "validation_status": "PARTIALLY_VALID",
         "ambiguity_count": 3,
@@ -13057,7 +13057,7 @@
       "resolved_from_references": ["YOUQA-12632", "YOU-8395", "YOU-8643", "YOU-8471", "YOU-8931", "YOU-9146"]
     }
   },
-  "agent1_5": {
+  "agent2": {
     "input": {
       "summary": "Mes questions RH - Mode Clôture par le collaborateur : Pouvoir relancer le collaborateur si pas d'acceptation de la réponse",
       "agent1_analysis": {
@@ -13110,7 +13110,7 @@
       "modeling_notes": ""
     }
   },
-  "agent2": {
+  "agent3": {
     "input": {
       "summary": "Mes questions RH - Mode Clôture par le collaborateur : Pouvoir relancer le collaborateur si pas d'acceptation de la réponse",
       "description": [
@@ -13180,7 +13180,7 @@
       "_normalized": true
     }
   },
-  "agent3": {
+  "agent4": {
     "input": {
       "story_summary": "Mes questions RH - Mode Clôture par le collaborateur : Pouvoir relancer le collaborateur si pas d'acceptation de la réponse",
       "coverage_threshold": 0.7,
@@ -13226,8 +13226,8 @@
           "mail de relance envoyé avec objet spécifique et contenu prédéfini"
         ]
       },
-      "agent2_tests_count": 2,
-      "agent3_validation": {
+      "agent3_tests_count": 2,
+      "agent4_validation": {
         "coverage_rate": 0.8333,
         "validation_status": "VALID",
         "ambiguity_count": 0,
@@ -13440,7 +13440,7 @@
       "resolved_from_references": []
     }
   },
-  "agent1_5": {
+  "agent2": {
     "input": {
       "summary": "News - Capacité à traduire une News",
       "agent1_analysis": {
@@ -13521,7 +13521,7 @@
       "modeling_notes": ""
     }
   },
-  "agent2": {
+  "agent3": {
     "input": {
       "summary": "News - Capacité à traduire une News",
       "description": [
@@ -13662,7 +13662,7 @@
       "_normalized": true
     }
   },
-  "agent3": {
+  "agent4": {
     "input": {
       "story_summary": "News - Capacité à traduire une News",
       "coverage_threshold": 0.7,
@@ -13706,8 +13706,8 @@
           "Si la News n'est pas disponible dans la langue de connexion du lecteur, elle est affichée dans la langue d'origine de la News"
         ]
       },
-      "agent2_tests_count": 4,
-      "agent3_validation": {
+      "agent3_tests_count": 4,
+      "agent4_validation": {
         "coverage_rate": 1,
         "validation_status": "VALID",
         "ambiguity_count": 0,
@@ -13877,7 +13877,7 @@
       ]
     }
   },
-  "agent1_5": {
+  "agent2": {
     "input": {
       "summary": "PLD - RH de proximité - 360 HRLocal - Ses données contractuelles - (Front)",
       "agent1_analysis": {
@@ -13926,7 +13926,7 @@
       "modeling_notes": ""
     }
   },
-  "agent2": {
+  "agent3": {
     "input": {
       "summary": "PLD - RH de proximité - 360 HRLocal - Ses données contractuelles - (Front)",
       "description": [
@@ -14033,7 +14033,7 @@
       "_normalized": true
     }
   },
-  "agent3": {
+  "agent4": {
     "input": {
       "story_summary": "PLD - RH de proximité - 360 HRLocal - Ses données contractuelles - (Front)",
       "coverage_threshold": 0.7,
@@ -14066,8 +14066,8 @@
         "actors": ["RH de proximité"],
         "business_rules": []
       },
-      "agent2_tests_count": 3,
-      "agent3_validation": {
+      "agent3_tests_count": 3,
+      "agent4_validation": {
         "coverage_rate": 1,
         "validation_status": "VALID",
         "ambiguity_count": 0,
@@ -14194,7 +14194,7 @@
       "resolved_from_references": []
     }
   },
-  "agent1_5": {
+  "agent2": {
     "input": {
       "summary": "RH de proximité : Rechercher un processus RH (Poser une question RH en V9)",
       "agent1_analysis": {
@@ -14252,7 +14252,7 @@
       "modeling_notes": ""
     }
   },
-  "agent2": {
+  "agent3": {
     "input": {
       "summary": "RH de proximité : Rechercher un processus RH (Poser une question RH en V9)",
       "description": [
@@ -14334,7 +14334,7 @@
       "_normalized": true
     }
   },
-  "agent3": {
+  "agent4": {
     "input": {
       "story_summary": "RH de proximité : Rechercher un processus RH (Poser une question RH en V9)",
       "coverage_threshold": 0.7,
@@ -14372,8 +14372,8 @@
           "la recherche pour un utilisateur RH de proximité & gestionnaire est réalisée sur les processus RH et sur les pages legacy, sur son périmètre de confidentialité"
         ]
       },
-      "agent2_tests_count": 3,
-      "agent3_validation": {
+      "agent3_tests_count": 3,
+      "agent4_validation": {
         "coverage_rate": 1,
         "validation_status": "VALID",
         "ambiguity_count": 0,
@@ -14511,7 +14511,7 @@
       "resolved_from_references": ["NUXEPM-1529", "NUXEPM-1559", "YOU-12651"]
     }
   },
-  "agent1_5": {
+  "agent2": {
     "input": {
       "summary": "PLD - RH de proximité - 360 HRLocal - Ses données individuelles (FRONT) - Mise à jour directe via la démarche angularisée Déménagement & Situation familiale(M4)",
       "agent1_analysis": {
@@ -14581,7 +14581,7 @@
       "modeling_notes": ""
     }
   },
-  "agent2": {
+  "agent3": {
     "input": {
       "summary": "PLD - RH de proximité - 360 HRLocal - Ses données individuelles (FRONT) - Mise à jour directe via la démarche angularisée Déménagement & Situation familiale(M4)",
       "description": [
@@ -14664,7 +14664,7 @@
       "_normalized": true
     }
   },
-  "agent3": {
+  "agent4": {
     "input": {
       "story_summary": "PLD - RH de proximité - 360 HRLocal - Ses données individuelles (FRONT) - Mise à jour directe via la démarche angularisée Déménagement & Situation familiale(M4)",
       "coverage_threshold": 0.7,
@@ -14699,8 +14699,8 @@
           "sans workflow de validation"
         ]
       },
-      "agent2_tests_count": 3,
-      "agent3_validation": {
+      "agent3_tests_count": 3,
+      "agent4_validation": {
         "coverage_rate": 1,
         "validation_status": "VALID",
         "ambiguity_count": 0,
@@ -14871,7 +14871,7 @@
       "resolved_from_references": ["YS-1286", "YOU-8395", "YOU-9057", "YOU-9063", "PPBACKLOG-1926", "NUXEPM-709", "NUXEPM-711", "NUXEPM-713", "YOU-9058", "YOU-9059", "YOU-9060", "YOU-9061", "YOU-9062", "YOU-9064"]
     }
   },
-  "agent1_5": {
+  "agent2": {
     "input": {
       "summary": "Questions RH pour le compte de : informer le bénéficiaire de la demande par mail",
       "agent1_analysis": {
@@ -14933,7 +14933,7 @@
       "modeling_notes": ""
     }
   },
-  "agent2": {
+  "agent3": {
     "input": {
       "summary": "Questions RH pour le compte de : informer le bénéficiaire de la demande par mail",
       "description": [
@@ -15065,7 +15065,7 @@
       "_normalized": true
     }
   },
-  "agent3": {
+  "agent4": {
     "input": {
       "story_summary": "Questions RH pour le compte de : informer le bénéficiaire de la demande par mail",
       "coverage_threshold": 0.7,
@@ -15176,8 +15176,8 @@
           "L'option d'envoi de mail à chaque changement de statut est un choix de l'organisation"
         ]
       },
-      "agent2_tests_count": 7,
-      "agent3_validation": {
+      "agent3_tests_count": 7,
+      "agent4_validation": {
         "coverage_rate": 1,
         "validation_status": "PARTIALLY_VALID",
         "ambiguity_count": 4,
@@ -15351,7 +15351,7 @@
       "resolved_from_references": []
     }
   },
-  "agent1_5": {
+  "agent2": {
     "input": {
       "summary": "News - Capacité à mettre en forme le texte d'une News",
       "agent1_analysis": {
@@ -15404,7 +15404,7 @@
       "modeling_notes": ""
     }
   },
-  "agent2": {
+  "agent3": {
     "input": {
       "summary": "News - Capacité à mettre en forme le texte d'une News",
       "description": [
@@ -15514,7 +15514,7 @@
       "_normalized": true
     }
   },
-  "agent3": {
+  "agent4": {
     "input": {
       "story_summary": "News - Capacité à mettre en forme le texte d'une News",
       "coverage_threshold": 0.7,
@@ -15556,8 +15556,8 @@
         "actors": ["AUTEUR des News"],
         "business_rules": []
       },
-      "agent2_tests_count": 1,
-      "agent3_validation": {
+      "agent3_tests_count": 1,
+      "agent4_validation": {
         "coverage_rate": 0.8571,
         "validation_status": "VALID",
         "ambiguity_count": 0,
@@ -15709,7 +15709,7 @@
       "resolved_from_references": []
     }
   },
-  "agent1_5": {
+  "agent2": {
     "input": {
       "summary": "ST05 RH de proximité - Inbox \"Activités\" - Filtrer sur l'Acteur RH de proximité",
       "agent1_analysis": {
@@ -15762,7 +15762,7 @@
       "modeling_notes": ""
     }
   },
-  "agent2": {
+  "agent3": {
     "input": {
       "summary": "ST05 RH de proximité - Inbox \"Activités\" - Filtrer sur l'Acteur RH de proximité",
       "description": [
@@ -15881,7 +15881,7 @@
       "_normalized": true
     }
   },
-  "agent3": {
+  "agent4": {
     "input": {
       "story_summary": "ST05 RH de proximité - Inbox \"Activités\" - Filtrer sur l'Acteur RH de proximité",
       "coverage_threshold": 0.7,
@@ -15934,8 +15934,8 @@
           "Le filtre doit afficher uniquement les acteurs de l'utilisateur connecté"
         ]
       },
-      "agent2_tests_count": 3,
-      "agent3_validation": {
+      "agent3_tests_count": 3,
+      "agent4_validation": {
         "coverage_rate": 0.7143,
         "validation_status": "VALID",
         "ambiguity_count": 0,
@@ -16079,7 +16079,7 @@
         ]
       }
     },
-    "agent1_5": {
+    "agent2": {
       "input": {
         "summary": "ST01_RH de proximité - Widget et Page Processus RH : statuts des demandes",
         "agent1_analysis": {
@@ -16103,7 +16103,7 @@
         ]
       }
     },
-    "agent2": {
+    "agent3": {
       "input": {
         "summary": "ST01_RH de proximité - Widget et Page Processus RH : statuts des demandes",
         "description": [
@@ -16152,7 +16152,7 @@
         ]
       }
     },
-    "agent3": {
+    "agent4": {
       "input": {
         "story_summary": "ST01_RH de proximité - Widget et Page Processus RH : statuts des demandes",
         "coverage_threshold": 0.7,
@@ -16312,7 +16312,7 @@
         "resolved_from_references": []
       }
     },
-    "agent1_5": {
+    "agent2": {
       "input": {
         "summary": "ST17_RH de proximité - Prise en compte de l'acteur \"Superviseur\" dans SYD et Sidebarre",
         "agent1_analysis": {
@@ -16422,7 +16422,7 @@
         "modeling_notes": ""
       }
     },
-    "agent2": {
+    "agent3": {
       "input": {
         "summary": "ST17_RH de proximité - Prise en compte de l'acteur \"Superviseur\" dans SYD et Sidebarre",
         "description": [
@@ -16608,7 +16608,7 @@
         "_normalized": true
       }
     },
-    "agent3": {
+    "agent4": {
       "input": {
         "story_summary": "ST17_RH de proximité - Prise en compte de l'acteur \"Superviseur\" dans SYD et Sidebarre",
         "coverage_threshold": 0.7,
@@ -16669,8 +16669,8 @@
             "Combinaisons d'acteurs : RRH de proximité \"Superviseur\" (Global et local (établissement)+ Gestionnaire Paie et/ou Gestionnaire RH)"
           ]
         },
-        "agent2_tests_count": 2,
-        "agent3_validation": {
+        "agent3_tests_count": 2,
+        "agent4_validation": {
           "coverage_rate": 0.8571,
           "validation_status": "VALID",
           "ambiguity_count": 0,
@@ -16776,7 +16776,7 @@
           }
         ],
         "agent_versions": {
-          "agent3_embedding": "semantic",
+          "agent4_embedding": "semantic",
           "agent5_model": "nova-lite-2"
         },
         "processing_notes": [
@@ -16916,7 +16916,7 @@
       "resolved_from_references": []
     }
   },
-  "agent1_5": {
+  "agent2": {
     "input": {
       "summary": "ST03_RH de proximité - Poser une question RH : Alimentation automatique du bénéficiaire depuis le profil et les démarches collaborateur",
       "agent1_analysis": {
@@ -16967,7 +16967,7 @@
       "modeling_notes": ""
     }
   },
-  "agent2": {
+  "agent3": {
     "input": {
       "summary": "ST03_RH de proximité - Poser une question RH : Alimentation automatique du bénéficiaire depuis le profil et les démarches collaborateur",
       "description": [
@@ -17092,7 +17092,7 @@
       "_normalized": true
     }
   },
-  "agent3": {
+  "agent4": {
     "input": {
       "story_summary": "ST03_RH de proximité - Poser une question RH : Alimentation automatique du bénéficiaire depuis le profil et les démarches collaborateur",
       "coverage_threshold": 0.7,
@@ -17137,8 +17137,8 @@
         "business_rules": [],
         "technical_scope": []
       },
-      "agent2_tests_count": 1,
-      "agent3_validation": {
+      "agent3_tests_count": 1,
+      "agent4_validation": {
         "coverage_rate": 0.5,
         "validation_status": "INVALID",
         "ambiguity_count": 0,
@@ -17198,7 +17198,7 @@
         }
       ],
       "agent_versions": {
-        "agent3_embedding": "semantic",
+        "agent4_embedding": "semantic",
         "agent5_model": "nova-lite-2"
       },
       "processing_notes": [
@@ -17270,7 +17270,7 @@
       "resolved_from_references": []
     }
   },
-  "agent1_5": {
+  "agent2": {
     "input": {
       "summary": "News - Capacité à modifier et dupliquer une NEWS (Complément)",
       "agent1_analysis": {
@@ -17335,7 +17335,7 @@
       "modeling_notes": ""
     }
   },
-  "agent2": {
+  "agent3": {
     "input": {
       "summary": "News - Capacité à modifier et dupliquer une NEWS (Complément)",
       "description": [
@@ -17422,7 +17422,7 @@
       "_normalized": true
     }
   },
-  "agent3": {
+  "agent4": {
     "input": {
       "story_summary": "News - Capacité à modifier et dupliquer une NEWS (Complément)",
       "coverage_threshold": 0.7,
@@ -17452,8 +17452,8 @@
         "actors": [],
         "business_rules": []
       },
-      "agent2_tests_count": 2,
-      "agent3_validation": {
+      "agent3_tests_count": 2,
+      "agent4_validation": {
         "coverage_rate": 1,
         "validation_status": "VALID",
         "ambiguity_count": 0,
@@ -17634,7 +17634,7 @@
       "resolved_from_references": []
     }
   },
-  "agent1_5": {
+  "agent2": {
     "input": {
       "summary": "Absences : définition workflow manager - EM",
       "agent1_analysis": {
@@ -17716,7 +17716,7 @@
       "modeling_notes": ""
     }
   },
-  "agent2": {
+  "agent3": {
     "input": {
       "summary": "Absences : définition workflow manager - EM",
       "description": [
@@ -17850,7 +17850,7 @@
       "_normalized": true
     }
   },
-  "agent3": {
+  "agent4": {
     "input": {
       "story_summary": "Absences : définition workflow manager - EM",
       "coverage_threshold": 0.7,
@@ -17913,8 +17913,8 @@
           "L'absence ne doit plus s'afficher dans le planning après refus"
         ]
       },
-      "agent2_tests_count": 8,
-      "agent3_validation": {
+      "agent3_tests_count": 8,
+      "agent4_validation": {
         "coverage_rate": 1,
         "validation_status": "VALID",
         "ambiguity_count": 0,
@@ -17930,11 +17930,11 @@
         "overall_status": "APPROVED",
         "key_findings": [
           "La couverture atteint 100% (EXCELLENT) avec tous les 22 points testables couverts",
-          "Le rapport agent3 recense 0 cas de test validés (incohérence avec les 8 tests produits par agent2, à vérifier)",
+          "Le rapport agent4 recense 0 cas de test validés (incohérence avec les 8 tests produits par agent3, à vérifier)",
           "Statut VALID avec aucune paire dupliquée et aucune étape ambiguë"
         ],
         "next_steps": [
-          "Faire recontrôler par agent3 les 8 cas de test produits par agent2 afin de résorber l'écart de comptage",
+          "Faire recontrôler par agent4 les 8 cas de test produits par agent3 afin de résorber l'écart de comptage",
           "Définir des scénarios alternatifs et d'exception couvrant les cas limites (dates invalides, absence de justificatif, etc.)",
           "Planifier une revue de qualité pour valider la complétude des tests"
         ]
@@ -17955,8 +17955,8 @@
       "recommendations": [
         {
           "priority": "medium",
-          "action": "Faire valider par agent3 l'ensemble des 8 cas de test nominaux produits, actuellement absents du rapport de couverture détaillé",
-          "rationale": "Le rapport agent3 indique 0 test alors que 8 cas ont été générés par agent2 ; cet écart doit être clarifié avant clôture"
+          "action": "Faire valider par agent4 l'ensemble des 8 cas de test nominaux produits, actuellement absents du rapport de couverture détaillé",
+          "rationale": "Le rapport agent4 indique 0 test alors que 8 cas ont été générés par agent3 ; cet écart doit être clarifié avant clôture"
         },
         {
           "priority": "medium",
@@ -18049,7 +18049,7 @@
       "resolved_from_references": []
     }
   },
-  "agent1_5": {
+  "agent2": {
     "input": {
       "summary": "Inbox gestionnaire : Cohérence des filtres sur les statuts des Demandes traitées & à traiter",
       "agent1_analysis": {
@@ -18115,7 +18115,7 @@
       "modeling_notes": ""
     }
   },
-  "agent2": {
+  "agent3": {
     "input": {
       "summary": "Inbox gestionnaire : Cohérence des filtres sur les statuts des Demandes traitées & à traiter",
       "description": [
@@ -18224,7 +18224,7 @@
       "_normalized": true
     }
   },
-  "agent3": {
+  "agent4": {
     "input": {
       "story_summary": "Inbox gestionnaire : Cohérence des filtres sur les statuts des Demandes traitées & à traiter",
       "coverage_threshold": 0.7,
@@ -18261,8 +18261,8 @@
         "actors": ["gestionnaire"],
         "business_rules": []
       },
-      "agent2_tests_count": 2,
-      "agent3_validation": {
+      "agent3_tests_count": 2,
+      "agent4_validation": {
         "coverage_rate": 1,
         "validation_status": "VALID",
         "ambiguity_count": 0,
@@ -18451,7 +18451,7 @@
       ]
     }
   },
-  "agent1_5": {
+  "agent2": {
     "input": {
       "summary": "News - Visualisation du bandeau d'annonces par gestionnaire",
       "agent1_analysis": {
@@ -18540,7 +18540,7 @@
       "modeling_notes": ""
     }
   },
-  "agent2": {
+  "agent3": {
     "input": {
       "summary": "News - Visualisation du bandeau d'annonces par gestionnaire",
       "description": [
@@ -18685,7 +18685,7 @@
       "_normalized": true
     }
   },
-  "agent3": {
+  "agent4": {
     "input": {
       "story_summary": "News - Visualisation du bandeau d'annonces par gestionnaire",
       "coverage_threshold": 0.7,
@@ -18759,8 +18759,8 @@
           "Les annonces sont limitées au périmètre de confidentialité du gestionnaire."
         ]
       },
-      "agent2_tests_count": 3,
-      "agent3_validation": {
+      "agent3_tests_count": 3,
+      "agent4_validation": {
         "coverage_rate": 0.9286,
         "validation_status": "PARTIALLY_VALID",
         "ambiguity_count": 1,
@@ -18937,7 +18937,7 @@
         ]
       }
     },
-    "agent1_5": {
+    "agent2": {
       "input": {
         "summary": "ST13_RH de proximité : utilisation de toutes les fonctionnalités d'un RRH pour un user externe",
         "agent1_analysis": {
@@ -19059,7 +19059,7 @@
         "modeling_notes": ""
       }
     },
-    "agent2": {
+    "agent3": {
       "input": {
         "summary": "ST13_RH de proximité : utilisation de toutes les fonctionnalités d'un RRH pour un user externe",
         "description": [
@@ -19201,7 +19201,7 @@
         "_normalized": true
       }
     },
-    "agent3": {
+    "agent4": {
       "input": {
         "story_summary": "ST13_RH de proximité : utilisation de toutes les fonctionnalités d'un RRH pour un user externe",
         "coverage_threshold": 0.7,
@@ -19272,8 +19272,8 @@
             "L'utilisateur n'a pas de profil de paie, ni de démarches collaborateur et manager, ni de DN."
           ]
         },
-        "agent2_tests_count": 3,
-        "agent3_validation": {
+        "agent3_tests_count": 3,
+        "agent4_validation": {
           "coverage_rate": 0.7143,
           "validation_status": "PARTIALLY_VALID",
           "ambiguity_count": 0,
@@ -19450,7 +19450,7 @@
       "resolved_from_references": []
     }
   },
-  "agent1_5": {
+  "agent2": {
     "input": {
       "summary": "PPBACKLOG-7651 - Affichage du libellé emploi bulletin",
       "agent1_analysis": {
@@ -19528,7 +19528,7 @@
       "modeling_notes": ""
     }
   },
-  "agent2": {
+  "agent3": {
     "input": {
       "summary": "PPBACKLOG-7651 - Affichage du libellé emploi bulletin",
       "description": [
@@ -19678,7 +19678,7 @@
       "_normalized": true
     }
   },
-  "agent3": {
+  "agent4": {
     "input": {
       "story_summary": "PPBACKLOG-7651 - Affichage du libellé emploi bulletin",
       "coverage_threshold": 0.7,
@@ -19769,8 +19769,8 @@
           "En standard, le libellé du code emploi est affiché"
         ]
       },
-      "agent2_tests_count": 4,
-      "agent3_validation": {
+      "agent3_tests_count": 4,
+      "agent4_validation": {
         "coverage_rate": 1,
         "validation_status": "PARTIALLY_VALID",
         "ambiguity_count": 2,
@@ -20036,7 +20036,7 @@
       "resolved_from_references": []
     }
   },
-  "agent1_5": {
+  "agent2": {
     "input": {
       "summary": "News - Capacité à visualiser le nombre de news du tableau - M4",
       "agent1_analysis": {
@@ -20093,7 +20093,7 @@
       "modeling_notes": ""
     }
   },
-  "agent2": {
+  "agent3": {
     "input": {
       "summary": "News - Capacité à visualiser le nombre de news du tableau - M4",
       "description": [
@@ -20200,7 +20200,7 @@
       "_normalized": true
     }
   },
-  "agent3": {
+  "agent4": {
     "input": {
       "story_summary": "News - Capacité à visualiser le nombre de news du tableau - M4",
       "coverage_threshold": 0.7,
@@ -20252,8 +20252,8 @@
           "Les compteurs doivent correspondre aux éléments présents dans le tableau."
         ]
       },
-      "agent2_tests_count": 2,
-      "agent3_validation": {
+      "agent3_tests_count": 2,
+      "agent4_validation": {
         "coverage_rate": 1,
         "validation_status": "VALID",
         "ambiguity_count": 0,
@@ -20384,7 +20384,7 @@
       "resolved_from_references": []
     }
   },
-  "agent1_5": {
+  "agent2": {
     "input": {
       "summary": "News - Visualisation du bandeau d'annonces par collaborateur",
       "agent1_analysis": {
@@ -20431,7 +20431,7 @@
       "modeling_notes": ""
     }
   },
-  "agent2": {
+  "agent3": {
     "input": {
       "summary": "News - Visualisation du bandeau d'annonces par collaborateur",
       "description": [
@@ -20492,7 +20492,7 @@
       "_normalized": true
     }
   },
-  "agent3": {
+  "agent4": {
     "input": {
       "story_summary": "News - Visualisation du bandeau d'annonces par collaborateur",
       "coverage_threshold": 0.7,
@@ -20541,8 +20541,8 @@
         "actors": ["COLLABORATEUR"],
         "business_rules": []
       },
-      "agent2_tests_count": 1,
-      "agent3_validation": {
+      "agent3_tests_count": 1,
+      "agent4_validation": {
         "coverage_rate": 0.75,
         "validation_status": "VALID",
         "ambiguity_count": 0,
@@ -20598,1025 +20598,6 @@
           "priority": "low",
           "action": "Documenter les conditions de test pour la consultation sans téléchargement",
           "rationale": "Ce scénario critique nécessite une documentation claire pour la reproduction future"
-        }
-      ],
-      "processing_notes": [
-        "Sections narratives générées par LLM (nova-lite-2)",
-        "Itérations de gap-fill (Agent 3 → Agent 2): 0 / 2 max"
-      ]
-    }
-  }
-},
-{
-  "story_id": "NUXEPM-1736",
-  "agent1": {
-    "input": {
-      "summary": "News - Visualisation du bandeau d'annonces par manager",
-      "description": [
-        "En tant que MANAGER, je souhaite visualiser un bandeau d'annonces sur la page d'accueil, qui défile les annonces, afin de voir rapidement les annonces lorsque je me connecte.",
-        "Le manager voit les annonces destinées au manager.",
-        "S'il est également collaborateur, il voit les annonces destinées au manager et au collaborateur.",
-        "Pour les maquettes, voir la story NUXEPM-1733."
-      ],
-      "labels": ["HRA4U", "K-DATA", "PLD4U", "QA", "STREAM_HUB"],
-      "epic": {
-        "epic_key": "NUXEPM-1716",
-        "epic_summary": "K-NEWS - Gestion des news dans 4YOU (lot1) - Annonces - Actualités",
-        "epic_description": "Description de la gestion des News dans 4YOU. Projet initialement appelé K-DATA. Ce sujet reste éligible pour la V10 car non terminé en V9."
-      },
-      "issuelinks": [
-        { "type": "Relates", "direction": "outward", "key": "PPBACKLOG-2177", "status": "In Progress", "summary": "Intégration IA Lot 1", "description": "Scope : news dans le SYD Collaborateur Manager, suggestions de documents dans les démarches." },
-        { "type": "Relates", "direction": "inward", "key": "YOUQA-15464", "status": "Ready for use", "summary": "DEMKNEWSS1ST1_CT5 - Consulter le carrousel des News chez le Manager", "description": "Un auteur crée une News, un manager se connecte et consulte le carrousel des News." },
-        { "type": "Resolve", "direction": "inward", "key": "YOU-12699", "status": "Done", "summary": "News - Visualisation du bandeau d'annonces par manager", "description": "Prérequis : mise en œuvre de la confidentialité permettant à l'acteur Manager de voir uniquement les annonces qui lui sont destinées ; validation prévue via un test unitaire côté développeur." }
-      ]
-    },
-    "output": {
-      "story_id": "NUXEPM-1736",
-      "story_title": "News - Visualisation du bandeau d'annonces par manager",
-      "story_type": "functional",
-      "actors": ["MANAGER", "collaborateur"],
-      "actions": [
-        "visualiser un bandeau d'annonces sur la page d'accueil",
-        "voir rapidement les annonces",
-        "voir les annonces destinées au manager",
-        "voir les annonces destinées au collaborateur et au manager"
-      ],
-      "business_rules": [
-        "Le manager voit les annonces destinées au manager",
-        "Le collaborateur voit les annonces destinées au manager et au collaborateur"
-      ],
-      "technical_scope": [],
-      "testable_points": [
-        "Vérifier que le bandeau d'annonces s'affiche sur la page d'accueil pour un manager connecté",
-        "Vérifier que le bandeau d'annonces défile les annonces pour un manager connecté",
-        "Vérifier que le bandeau d'annonces affiche uniquement les annonces destinées au manager pour un manager connecté",
-        "Vérifier que le bandeau d'annonces s'affiche sur la page d'accueil pour un collaborateur connecté",
-        "Vérifier que le bandeau d'annonces défile les annonces pour un collaborateur connecté",
-        "Vérifier que le bandeau d'annonces affiche les annonces destinées au manager et au collaborateur pour un collaborateur connecté"
-      ],
-      "user_flows": [
-        "Connexion en tant que manager",
-        "Accès à la page d'accueil",
-        "Visualisation du bandeau d'annonces défilant les annonces destinées au manager",
-        "Connexion en tant que collaborateur",
-        "Accès à la page d'accueil",
-        "Visualisation du bandeau d'annonces défilant les annonces destinées au manager et au collaborateur"
-      ],
-      "acceptance_criteria_explicit": [],
-      "acceptance_criteria_inferred": [],
-      "clarification_questions": [],
-      "analysis_reason": [
-        "La story décrit clairement une fonctionnalité fonctionnelle : visualisation d'un bandeau d'annonces pour les managers et collaborateurs",
-        "Il y a des acteurs identifiés (manager, collaborateur) et des actions concrètes (visualiser un bandeau d'annonces, voir rapidement les annonces)",
-        "Les règles métier sont explicites concernant les annonces visibles selon le rôle de l'utilisateur"
-      ],
-      "resolved_from_references": []
-    }
-  },
-  "agent1_5": {
-    "input": {
-      "summary": "News - Visualisation du bandeau d'annonces par manager",
-      "agent1_analysis": {
-        "actors": ["MANAGER", "collaborateur"],
-        "testable_points": [
-          "Vérifier que le bandeau d'annonces affiche uniquement les annonces destinées au manager pour un manager connecté",
-          "Vérifier que le bandeau d'annonces affiche les annonces destinées au manager et au collaborateur pour un collaborateur connecté"
-        ],
-        "business_rules": [
-          "Le manager voit les annonces destinées au manager",
-          "Le collaborateur voit les annonces destinées au manager et au collaborateur"
-        ]
-      }
-    },
-    "output": {
-      "story_id": "NUXEPM-1736",
-      "business_goals": [
-        {
-          "id": "BG-1",
-          "label": "Visualiser les annonces appropriées",
-          "description": "Permettre aux managers et collaborateurs de voir rapidement les annonces qui leur sont destinées sur la page d'accueil",
-          "actors": ["MANAGER", "collaborateur"],
-          "priority": "moyenne"
-        }
-      ],
-      "business_workflows": [
-        {
-          "id": "BW-1",
-          "label": "Visualisation des annonces pour un manager",
-          "linked_goal_id": "BG-1",
-          "trigger": "Connexion en tant que manager",
-          "actors_involved": ["MANAGER"],
-          "steps": [
-            "Connexion en tant que manager",
-            "Accéder à la page d'accueil",
-            "Visualiser le bandeau d'annonces"
-          ],
-          "success_criteria": [
-            "Le bandeau d'annonces affiche uniquement les annonces destinées au manager"
-          ],
-          "alternative_paths": []
-        },
-        {
-          "id": "BW-2",
-          "label": "Visualisation des annonces pour un collaborateur",
-          "linked_goal_id": "BG-1",
-          "trigger": "Connexion en tant que collaborateur",
-          "actors_involved": ["collaborateur"],
-          "steps": [
-            "Connexion en tant que collaborateur",
-            "Accéder à la page d'accueil",
-            "Visualiser le bandeau d'annonces"
-          ],
-          "success_criteria": [
-            "Le bandeau d'annonces affiche les annonces destinées au manager et au collaborateur"
-          ],
-          "alternative_paths": []
-        }
-      ],
-      "modeling_notes": ""
-    }
-  },
-  "agent2": {
-    "input": {
-      "summary": "News - Visualisation du bandeau d'annonces par manager",
-      "description": [
-        "Le manager visualise un bandeau d'annonces défilant sur sa page d'accueil, limité aux annonces qui lui sont destinées.",
-        "S'il est également collaborateur, il voit en plus les annonces destinées au collaborateur."
-      ],
-      "agent1_analysis": {
-        "testable_points": [
-          "Vérifier que le bandeau d'annonces s'affiche sur la page d'accueil pour un manager connecté",
-          "Vérifier que le bandeau d'annonces défile les annonces pour un manager connecté",
-          "Vérifier que le bandeau d'annonces affiche uniquement les annonces destinées au manager pour un manager connecté",
-          "Vérifier que le bandeau d'annonces s'affiche sur la page d'accueil pour un collaborateur connecté",
-          "Vérifier que le bandeau d'annonces défile les annonces pour un collaborateur connecté",
-          "Vérifier que le bandeau d'annonces affiche les annonces destinées au manager et au collaborateur pour un collaborateur connecté"
-        ]
-      },
-      "agent15_business_model": {
-        "business_goals": [
-          { "id": "BG-1", "label": "Visualiser les annonces appropriées" }
-        ],
-        "business_workflows": [
-          { "id": "BW-1", "label": "Visualisation des annonces pour un manager" },
-          { "id": "BW-2", "label": "Visualisation des annonces pour un collaborateur" }
-        ]
-      },
-      "legacy_rag_examples": [
-        { "test_id": "YOUQA-15515", "title": "DEMKNEWSS2ST1CT13 - Confidentialité : consulter le corps d'une annonce dédiée aux managers d'un seul établissement", "score": 0.6922, "project": "YOUQA", "module_root": "KNews", "description": "Un auteur crée une annonce ciblant les managers d'un seul établissement ; le manager la voit, le gestionnaire et le collaborateur ne la voient pas sur leur carrousel." },
-        { "test_id": "YOUQA-15754", "title": "DEMKNEWSS2ST1CT14 - Confidentialité : consulter le corps d'une annonce dédiée au gestionnaire sur deux établissements de 2 sociétés différentes", "score": 0.6539, "project": "YOUQA", "module_root": "KNews", "description": "Un auteur crée une annonce ciblant les gestionnaires sur deux sociétés ; seuls les gestionnaires la voient, absente chez les managers et collaborateurs." },
-        { "test_id": "YOUQA-15464", "title": "DEMKNEWSS1ST1_CT5 - Consulter le carrousel des News chez le Manager", "score": 0.6175, "project": "YOUQA", "module_root": "KNews", "description": "Un auteur crée une News ciblant les managers ; le manager se connecte et consulte le carrousel (navigation gauche/droite, pagination, maximum 16 news)." },
-        { "test_id": "YOUQA-15578", "title": "DEMKNEWSS2ST3CT6 - Confidentialité : consulter les actualités dédiées aux managers", "score": 0.6143, "project": "YOUQA", "module_root": "KNews", "description": "Un auteur crée une actualité ciblant les managers ; le manager la consulte (popup avec titre, date, document), absente chez gestionnaire et collaborateur." },
-        { "test_id": "YOUQA-6295", "title": "ROLADMINS1ST3_CT1 - Visualiser les menus avec un admin ayant les rôles (Administrateur et Gestionnaire)", "score": 0.6063, "project": "YOUQA", "module_root": "Prise en compte des rôles technique : Rôle administrateur", "description": "Peu pertinent : parcours exhaustif des menus d'administration technique de la paie, hors périmètre du bandeau de news." }
-      ],
-      "rag_context": []
-    },
-    "retrieval_context": [
-      "YOUQA-15515 - DEMKNEWSS2ST1CT13",
-      "YOUQA-15754 - DEMKNEWSS2ST1CT14",
-      "YOUQA-15464 - DEMKNEWSS1ST1_CT5",
-      "YOUQA-15578 - DEMKNEWSS2ST3CT6",
-      "YOUQA-6295 - ROLADMINS1ST3_CT1"
-    ],
-    "output": {
-      "tests": [
-        {
-          "test_name": "Visualisation du bandeau d'annonces pour un manager",
-          "objective": "Confirmer que le bandeau d'annonces s'affiche et défile correctement pour un manager connecté, en affichant uniquement les annonces lui étant destinées",
-          "scenario_type": "NOM",
-          "priority": "High",
-          "steps": [
-            { "index": 1, "action": "Se connecter à l'application", "data": "Manager disposant d'au moins une annonce qui lui est destinée", "expected_result": "Le manager est connecté avec succès" },
-            { "index": 2, "action": "Accéder à la page d'accueil", "data": "", "expected_result": "La page d'accueil s'affiche correctement" },
-            { "index": 3, "action": "Consulter le bandeau d'annonces", "data": "", "expected_result": "Le bandeau s'affiche en haut de la page et défile automatiquement ; seules les annonces destinées au manager y sont présentes" }
-          ]
-        },
-        {
-          "test_name": "Visualisation du bandeau d'annonces pour un collaborateur ayant aussi le rôle manager",
-          "objective": "Confirmer l'affichage et le défilement du bandeau d'annonces pour un utilisateur cumulant les rôles manager et collaborateur",
-          "scenario_type": "NOM",
-          "priority": "High",
-          "steps": [
-            { "index": 1, "action": "Se connecter à l'application", "data": "Utilisateur ayant le rôle manager et collaborateur, avec des annonces destinées à chacun de ces rôles", "expected_result": "L'utilisateur est connecté avec succès" },
-            { "index": 2, "action": "Accéder à la page d'accueil", "data": "", "expected_result": "La page d'accueil s'affiche correctement" },
-            { "index": 3, "action": "Consulter le bandeau d'annonces", "data": "", "expected_result": "Le bandeau s'affiche en haut de la page et défile automatiquement ; les annonces destinées au manager et au collaborateur y sont toutes présentes" }
-          ]
-        }
-      ],
-      "_normalized": true
-    }
-  },
-  "agent3": {
-    "input": {
-      "story_summary": "News - Visualisation du bandeau d'annonces par manager",
-      "coverage_threshold": 0.7,
-      "testable_points": [
-        "Vérifier que le bandeau d'annonces s'affiche sur la page d'accueil pour un manager connecté",
-        "Vérifier que le bandeau d'annonces défile les annonces pour un manager connecté",
-        "Vérifier que le bandeau d'annonces affiche uniquement les annonces destinées au manager pour un manager connecté",
-        "Vérifier que le bandeau d'annonces s'affiche sur la page d'accueil pour un collaborateur connecté",
-        "Vérifier que le bandeau d'annonces défile les annonces pour un collaborateur connecté",
-        "Vérifier que le bandeau d'annonces affiche les annonces destinées au manager et au collaborateur pour un collaborateur connecté"
-      ],
-      "tests": [
-        { "test_name": "Visualisation du bandeau d'annonces pour un manager", "objective": "Confirmer que le bandeau d'annonces s'affiche et défile correctement pour un manager connecté, en affichant uniquement les annonces lui étant destinées", "scenario_type": "NOM", "priority": "High" },
-        { "test_name": "Visualisation du bandeau d'annonces pour un collaborateur ayant aussi le rôle manager", "objective": "Confirmer l'affichage et le défilement du bandeau d'annonces pour un utilisateur cumulant les rôles manager et collaborateur", "scenario_type": "NOM", "priority": "High" }
-      ]
-    },
-    "output": {
-      "coverage_rate": 1,
-      "uncovered_testable_points": [],
-      "duplicate_pairs": [],
-      "ambiguity_findings": [],
-      "validation_status": "VALID",
-      "correction_instructions": []
-    }
-  },
-  "agent5": {
-    "input": {
-      "agent1_analysis": {
-        "story_id": "NUXEPM-1736",
-        "story_type": "functional",
-        "actors": ["MANAGER", "collaborateur"],
-        "business_rules": [
-          "Le manager voit les annonces destinées au manager",
-          "Le collaborateur voit les annonces destinées au manager et au collaborateur"
-        ]
-      },
-      "agent2_tests_count": 2,
-      "agent3_validation": {
-        "coverage_rate": 1,
-        "validation_status": "VALID",
-        "ambiguity_count": 0,
-        "duplicate_pairs": 0
-      },
-      "correction_iterations": 1,
-      "max_correction_iterations": 2
-    },
-    "output": {
-      "report_title": "Rapport QA — NUXEPM-1736: News - Visualisation du bandeau d'annonces par manager",
-      "report_version": "2026.07.31",
-      "executive_summary": {
-        "overall_status": "APPROVED",
-        "key_findings": [
-          "La couverture atteint 100% (EXCELLENT) avec les 6 points testables validés",
-          "Aucun cas de test dupliqué détecté",
-          "Aucune étape ambiguë identifiée",
-          "Statut VALID confirmé pour les 2 cas de test nominaux"
-        ],
-        "next_steps": [
-          "Documenter les critères d'acceptation dans la story Jira",
-          "Planifier une revue de code pour les implémentations liées au bandeau d'annonces",
-          "Effectuer un dernier test de régression avant mise en production"
-        ]
-      },
-      "coverage_metrics": {
-        "coverage_rate": 100,
-        "total_testable_points": 6,
-        "covered_points": 6,
-        "uncovered_points": [],
-        "coverage_status": "EXCELLENT"
-      },
-      "quality_assurance": {
-        "validation_status": "VALID",
-        "duplicate_pairs": 0,
-        "ambiguity_count": 0,
-        "issues": []
-      },
-      "recommendations": [
-        {
-          "priority": "low",
-          "action": "Améliorer la description des objectifs de la story pour plus de clarté",
-          "rationale": "Bien que la validation soit VALID, une description plus détaillée des objectifs facilitera le suivi futur"
-        },
-        {
-          "priority": "low",
-          "action": "Revoir les libellés des cas de test pour une meilleure cohérence",
-          "rationale": "Avec une couverture parfaite, l'optimisation des libellés améliorera la maintenabilité des tests"
-        },
-        {
-          "priority": "low",
-          "action": "Ajouter des commentaires dans les étapes de test pour le débogage futur",
-          "rationale": "Aucune ambiguïté n'a été trouvée, mais des commentaires supplémentaires rendront le débogage plus efficace"
-        }
-      ],
-      "processing_notes": [
-        "Sections narratives générées par LLM (nova-lite-2)",
-        "Itérations de gap-fill (Agent 3 → Agent 2): 1 / 2 max"
-      ]
-    }
-  }
-},
-{
-  "story_id": "NUXEPM-2284",
-  "agent1": {
-    "input": {
-      "summary": "PPBACKLOG-7652 - Enveloppe Macro - Affichage du temps de travail",
-      "description": [
-        "Il existe une configuration permettant de préciser quelle rubrique afficher dans le profil collaborateur pour le temps de travail contractuel. Options : Week ==> ZYTL NBSTHW ==> Heures hebdomadaires ; Month ==> ZYTL NBSTHM ==> Heures mensuelles ; Years ==> ZYTL FORANU ==> Forfait annuel en jours ; Rien ==> si ZYTL FORANU différent de 0, affichage comme forfait annuel en jours, sinon affichage de ZYTL NBSTHM comme heures mensuelles.",
-        "Pour ce dernier cas, il faudrait aussi gérer le forfait d'heures annuelles et, si les zones forfait sont non renseignées, pouvoir choisir entre jour, hebdo ou mensuel. Cela doit s'adapter individuellement aux différents cas d'utilisation possibles de ZYTL, les entreprises ayant des collaborateurs de profils différents dans leur population.",
-        "Des modifications ont été réalisées chez de nombreux clients pour prendre en compte des cas non gérés en standard.",
-        "Proposition d'affichage : 'Forfait annuel : n heures' ou 'Forfait annuel : n jours'.",
-        "CR Atelier du 23/04 : il faudrait en priorité afficher si remplis dans ZYTL (Forfait annuel jour ou forfait annuel heure), si vide on reprend l'existant.",
-        "Sourcing HRA — ZYTL heures contractuelles : Forfait annuel jour = FORANU (unité jours) ; Forfait annuel heures = FORANH (unité heures) ; Heures travaillées = soit jour NBSTHD (heures de présence/jour), soit semaine NBSTHW (heures de présence/semaine), soit mois NBSTHM (heures de présence/mois), soit unité heures (config existante). Par défaut, c'est le paramétrage Heures mensuelles qui reste affiché, comme aujourd'hui."
-      ],
-      "labels": [
-        "DEMANDE_SERVICES",
-        "Planamélioration4YOU",
-        "STREAM_APPLICATIF"
-      ],
-      "epic": {
-        "epic_key": "PPBACKLOG-936",
-        "epic_summary": "Plateforme 4YOU - amélioration de la productivité des développements",
-        "epic_description": ""
-      },
-      "issuelinks": [
-        { "type": "Relates", "direction": "outward", "key": "PPBACKLOG-7652", "status": "Tested", "summary": "Affichage du temps de travail" },
-        { "type": "Relates", "direction": "inward", "key": "YOU-14068", "status": "Done-Done", "summary": "Capit Service - Affichage du temps de travail" },
-        { "type": "Relates", "direction": "inward", "key": "YOU-14085", "status": "Done-Done", "summary": "[REDACTION QA] Capit Service - Affichage du temps de travail" },
-        { "type": "Resolve", "direction": "inward", "key": "YOUQA-17580", "status": "Ready for use", "summary": "PROFILCOLLABS1ST2_TC1: Consulter l'affichage de temps contractuel pour un collaborateur à un forfait annuel en jours" },
-        { "type": "Resolve", "direction": "inward", "key": "YOUQA-17585", "status": "Ready for use", "summary": "PROFILCOLLABS1ST2_TC2: Consulter l'affichage de temps contractuel pour un collaborateur à un forfait annuel en heures" }
-      ],
-      "images": [
-        {
-          "filename": "2026-04-27_15h51_20.png",
-          "description": "Capture d'écran de l'écran 'Données contractuelles' du profil collaborateur (interface Sopra HR) : onglet 'Contrat' actif, formulaire de recherche (Nom, Matricule, Société), zone d'identification du collaborateur sélectionné avec boutons Soumettre/Annuler, liste 'Population favorite' à gauche, et à droite la section 'Heures contractuelles' avec date d'effet, type de temps contractuel (radio-boutons Quotidiennes/Hebdomadaire/Mensuel/% Temps plein), case à cocher 'Cadre au forfait jours', champ 'Forfait annuel heures' et liste déroulante de surcotisation."
-        }
-      ]
-    },
-    "output": {
-      "story_id": "NUXEPM-2284",
-      "story_title": "PPBACKLOG-7652 - Enveloppe Macro - Affichage du temps de travail",
-      "story_type": "functional",
-      "actors": [
-        "collaborateur"
-      ],
-      "actions": [
-        "afficher le temps de travail contractuel",
-        "gérer l'affichage selon le type de forfait",
-        "afficher le forfait annuel en jours ou en heures",
-        "afficher les heures travaillées selon la configuration"
-      ],
-      "business_rules": [
-        "Si ZYTL FORANU différent de 0 alors affichage de la valeur de la rubrique comme forfait annuel en jours",
-        "Si ZYTL FORANU est vide, reprendre l'affichage existant",
-        "Gérer le forfait d'heures annuelles et choisir entre jour, hebdo ou mensuel si les zones forfait sont non renseignées",
-        "Afficher en priorité le forfait annuel jour ou forfait annuel heures si remplis dans ZYTL",
-        "Par défaut, afficher le paramétrage Heure mensuelles"
-      ],
-      "technical_scope": [],
-      "testable_points": [
-        "Vérifier que le temps de travail contractuel est affiché dans le profil collaborateur",
-        "Vérifier que le forfait annuel en jours est affiché si ZYTL FORANU est rempli",
-        "Vérifier que le forfait annuel en heures est affiché si ZYTL FORANU est vide et que le forfait annuel heures est rempli",
-        "Vérifier que les heures travaillées sont affichées selon la configuration (quotidiennes, hebdomadaire, mensuel)",
-        "Vérifier que le paramétrage Heure mensuelles est affiché par défaut si aucune autre configuration n'est remplie",
-        "Vérifier que l'affichage s'adapte aux différents cas d'utilisation de ZYTL",
-        "Vérifier que les modifications réalisées chez les clients sont prises en compte"
-      ],
-      "user_flows": [
-        "Accéder au profil collaborateur",
-        "Consulter les données contractuelles",
-        "Vérifier l'affichage du temps de travail contractuel",
-        "Vérifier que le type de forfait affiché correspond aux données ZYTL"
-      ],
-      "acceptance_criteria_explicit": [
-        "Afficher le temps de travail contractuel selon la configuration ZYTL",
-        "Gérer les différents cas de forfait annuel (jours ou heures)",
-        "Afficher les heures travaillées selon la configuration existante",
-        "Par défaut, afficher le paramétrage Heure mensuelles"
-      ],
-      "acceptance_criteria_inferred": [],
-      "clarification_questions": [
-        "Quels sont les différents cas d'utilisation spécifiques à gérer pour ZYTL ?",
-        "Comment sont définies les zones forfait non renseignées ?",
-        "Quelles sont les valeurs exactes à afficher pour chaque type de forfait ?"
-      ],
-      "analysis_reason": [
-        "La story décrit clairement un comportement fonctionnel : l'affichage du temps de travail contractuel dans le profil collaborateur",
-        "Elle définit des règles métier spécifiques pour déterminer quel type de forfait afficher en fonction des configurations ZYTL",
-        "Elle mentionne des éléments d'UI spécifiques à vérifier (affichage dans le profil collaborateur, champs de configuration)"
-      ],
-      "resolved_from_references": []
-    }
-  },
-  "agent1_5": {
-    "input": {
-      "summary": "PPBACKLOG-7652 - Enveloppe Macro - Affichage du temps de travail",
-      "agent1_analysis": {
-        "actors": ["collaborateur"],
-        "testable_points": [
-          "Vérifier que le temps de travail contractuel est affiché dans le profil collaborateur",
-          "Vérifier que le forfait annuel en jours est affiché si ZYTL FORANU est rempli",
-          "Vérifier que le forfait annuel en heures est affiché si ZYTL FORANU est vide et que le forfait annuel heures est rempli",
-          "Vérifier que les heures travaillées sont affichées selon la configuration (quotidiennes, hebdomadaire, mensuel)",
-          "Vérifier que le paramétrage Heure mensuelles est affiché par défaut si aucune autre configuration n'est remplie"
-        ],
-        "business_rules": [
-          "Si ZYTL FORANU différent de 0 alors affichage de la valeur de la rubrique comme forfait annuel en jours",
-          "Si ZYTL FORANU est vide, reprendre l'affichage existant",
-          "Afficher en priorité le forfait annuel jour ou forfait annuel heures si remplis dans ZYTL",
-          "Par défaut, afficher le paramétrage Heure mensuelles"
-        ]
-      }
-    },
-    "output": {
-      "story_id": "NUXEPM-2284",
-      "business_goals": [
-        {
-          "id": "BG-1",
-          "label": "Consulter le temps de travail contractuel",
-          "description": "Un collaborateur veut voir clairement son temps de travail contractuel affiché dans son profil, en fonction de ses données contractuelles et de la configuration ZYTL.",
-          "actors": ["collaborateur"],
-          "priority": "moyenne"
-        }
-      ],
-      "business_workflows": [
-        {
-          "id": "BW-1",
-          "label": "Consultation du temps de travail contractuel",
-          "linked_goal_id": "BG-1",
-          "trigger": "L'utilisateur accède au profil collaborateur",
-          "actors_involved": ["collaborateur"],
-          "steps": [
-            "Accéder au profil collaborateur",
-            "Consulter les données contractuelles",
-            "Vérifier l'affichage du temps de travail contractuel",
-            "Vérifier que le type de forfait affiché correspond aux données ZYTL"
-          ],
-          "success_criteria": [
-            "Le temps de travail contractuel est affiché correctement dans le profil collaborateur",
-            "Le type de forfait affiché correspond aux données ZYTL et à la configuration existante"
-          ],
-          "alternative_paths": [
-            "Si ZYTL FORANU est différent de 0, afficher le forfait annuel en jours",
-            "Si ZYTL FORANU est vide, afficher le forfait annuel en heures ou le paramétrage Heure mensuelles selon la configuration"
-          ]
-        }
-      ],
-      "modeling_notes": ""
-    }
-  },
-  "agent2": {
-    "input": {
-      "summary": "PPBACKLOG-7652 - Enveloppe Macro - Affichage du temps de travail",
-      "description": [
-        "Afficher dans le profil collaborateur le temps de travail contractuel selon une priorité de rubriques ZYTL : forfait annuel jour (FORANU) en priorité si rempli, sinon forfait annuel heures (FORANH) si rempli, sinon les heures travaillées configurées (jour/semaine/mois), avec repli par défaut sur les heures mensuelles (comportement actuel)."
-      ],
-      "agent1_analysis": {
-        "testable_points": [
-          "Vérifier que le temps de travail contractuel est affiché dans le profil collaborateur",
-          "Vérifier que le forfait annuel en jours est affiché si ZYTL FORANU est rempli",
-          "Vérifier que le forfait annuel en heures est affiché si ZYTL FORANU est vide et que le forfait annuel heures est rempli",
-          "Vérifier que les heures travaillées sont affichées selon la configuration (quotidiennes, hebdomadaire, mensuel)",
-          "Vérifier que le paramétrage Heure mensuelles est affiché par défaut si aucune autre configuration n'est remplie",
-          "Vérifier que l'affichage s'adapte aux différents cas d'utilisation de ZYTL",
-          "Vérifier que les modifications réalisées chez les clients sont prises en compte"
-        ]
-      },
-      "agent15_business_model": {
-        "business_goals": [
-          { "id": "BG-1", "label": "Consulter le temps de travail contractuel" }
-        ],
-        "business_workflows": [
-          { "id": "BW-1", "label": "Consultation du temps de travail contractuel" }
-        ]
-      },
-      "legacy_rag_examples": [
-        {
-          "test_id": "HRAE2EQA-356",
-          "title": "TYPEACQS1ST1_CT1 - Donner un temps partiel au début du mois au salarié embauché",
-          "score": 0.7777,
-          "description": "[Gestionnaire RH] Modifier la situation contractuelle d'un salarié (temps partiel 80%) → [Collaborateur] consulter les données contractuelles depuis son profil et vérifier que le libellé du contrat reflète le changement (durée, type, temps partiel)."
-        },
-        {
-          "test_id": "HRAE2EQA-108",
-          "title": "UNITDECOMPTES3ST1_CT1- Créer une semaine type et un cycle de travail dans HRCT et embaucher un salarié",
-          "score": 0.7251,
-          "description": "[Gestionnaire RH] Créer une journée type, une semaine type et un cycle de travail (temps partiel demi-journée) dans HRCT, puis embaucher un salarié en lui affectant ce cycle."
-        },
-        {
-          "test_id": "HRAE2EQA-2665",
-          "title": "CONGPAYINTS6ST1_CT1 : Appliquer le passage à temps partiel en Janvier 2025",
-          "score": 0.7214,
-          "description": "[Gestionnaire RH] Embaucher un salarié à temps partiel (80%) → [Gestionnaire Paie] calculer et vérifier les éléments de congé mensuels proportionnels au temps partiel."
-        },
-        {
-          "test_id": "HRAE2EQA-99",
-          "title": "TYPEACQS3ST1_CT2 - Passer à temps partiel au début du mois : Acquisition annuelle fixe en fin de période",
-          "score": 0.7197,
-          "description": "[Gestionnaire de Paie] Modifier la situation contractuelle vers un temps partiel → [Collaborateur] consulter les données contractuelles mises à jour → [Gestionnaire de Paie] calculer et consulter les compteurs d'acquisition ZYOV sur plusieurs périodes."
-        },
-        {
-          "test_id": "YOUQA-13848",
-          "title": "DEMMESCONGESS1ST1CT1: Accéder à la démarche Mes absences et vérifier l'affichage des calendriers pour un collaborateur multicontrats",
-          "score": 0.7168,
-          "description": "[Collaborateur] Accéder à la démarche Mes absences (calendrier annuel puis mensuel) et vérifier l'affichage des soldes, motifs et filtre par cantons pour un profil multi-contrats."
-        }
-      ],
-      "rag_context": []
-    },
-    "retrieval_context": [
-      "HRAE2EQA-356 - TYPEACQS1ST1_CT1 - Donner un temps partiel au début du mois au salarié embauché",
-      "HRAE2EQA-108 - UNITDECOMPTES3ST1_CT1- Créer une semaine type et un cycle de travail dans HRCT et embaucher un salarié",
-      "HRAE2EQA-2665 - CONGPAYINTS6ST1_CT1 : Appliquer le passage à temps partiel en Janvier 2025",
-      "HRAE2EQA-99 - TYPEACQS3ST1_CT2 - Passer à temps partiel au début du mois : Acquisition annuelle fixe en fin de période",
-      "YOUQA-13848 - DEMMESCONGESS1ST1CT1: Accéder à la démarche Mes absences et vérifier l'affichage des calendriers pour un collaborateur multicontrats"
-    ],
-    "output": {
-      "tests": [
-        {
-          "test_name": "Consultation du temps de travail contractuel dans le profil collaborateur",
-          "objective": "Confirmer l'affichage du temps de travail contractuel dans le profil collaborateur selon la configuration ZYTL",
-          "scenario_type": "NOM",
-          "priority": "High",
-          "steps": [
-            { "index": 1, "action": "Accéder au profil collaborateur", "data": "", "expected_result": "Accès au profil collaborateur autorisé" },
-            { "index": 2, "action": "Consulter l'onglet des données contractuelles", "data": "", "expected_result": "Affichage des données contractuelles" },
-            { "index": 3, "action": "Constater l'affichage du temps de travail contractuel", "data": "", "expected_result": "Le temps de travail contractuel est affiché dans le profil collaborateur ; le type de forfait affiché correspond aux données ZYTL et à la configuration existante" }
-          ]
-        },
-        {
-          "test_name": "Affichage du forfait annuel en jours lorsque ZYTL FORANU est rempli",
-          "objective": "Confirmer que le forfait annuel en jours est affiché prioritairement si ZYTL FORANU est rempli",
-          "scenario_type": "NOM",
-          "priority": "High",
-          "steps": [
-            { "index": 1, "action": "Configurer un collaborateur avec ZYTL FORANU renseigné (différent de 0)", "data": "FORANU = 218 jours", "expected_result": "La rubrique FORANU est alimentée pour le collaborateur" },
-            { "index": 2, "action": "Accéder au profil collaborateur et consulter les données contractuelles", "data": "", "expected_result": "Affichage des données contractuelles" },
-            { "index": 3, "action": "Constater l'affichage du forfait annuel", "data": "", "expected_result": "L'affichage indique 'Forfait annuel : 218 jours', correspondant à la valeur de ZYTL FORANU" }
-          ]
-        },
-        {
-          "test_name": "Affichage du forfait annuel en heures lorsque FORANU est vide et FORANH rempli",
-          "objective": "Confirmer que le forfait annuel en heures est affiché si ZYTL FORANU est vide et que FORANH est rempli",
-          "scenario_type": "NOM",
-          "priority": "High",
-          "steps": [
-            { "index": 1, "action": "Configurer un collaborateur avec ZYTL FORANU vide et FORANH renseigné", "data": "FORANH = 1607 heures", "expected_result": "FORANU est vide, FORANH est alimenté pour le collaborateur" },
-            { "index": 2, "action": "Accéder au profil collaborateur et consulter les données contractuelles", "data": "", "expected_result": "Affichage des données contractuelles" },
-            { "index": 3, "action": "Constater l'affichage du forfait annuel", "data": "", "expected_result": "L'affichage indique 'Forfait annuel : 1607 heures', correspondant à la valeur de ZYTL FORANH" }
-          ]
-        },
-        {
-          "test_name": "Affichage des heures travaillées selon la configuration (quotidiennes, hebdomadaire, mensuel)",
-          "objective": "Confirmer que les heures travaillées sont affichées selon la configuration ZYTL sélectionnée (jour, semaine ou mois)",
-          "scenario_type": "NOM",
-          "priority": "High",
-          "steps": [
-            { "index": 1, "action": "Configurer un collaborateur sans forfait annuel (FORANU et FORANH vides) avec heures travaillées renseignées par jour (NBSTHD)", "data": "NBSTHD = 7h", "expected_result": "Le collaborateur est configuré avec des heures de présence par jour" },
-            { "index": 2, "action": "Accéder au profil collaborateur et consulter les données contractuelles", "data": "", "expected_result": "Le temps de travail affiché correspond aux heures quotidiennes configurées" },
-            { "index": 3, "action": "Répéter la vérification avec une configuration hebdomadaire (NBSTHW) puis mensuelle (NBSTHM)", "data": "NBSTHW = 35h ; NBSTHM = 151,67h", "expected_result": "L'affichage reflète respectivement les heures hebdomadaires puis mensuelles configurées" }
-          ]
-        },
-        {
-          "test_name": "Affichage du paramétrage Heures mensuelles par défaut",
-          "objective": "Confirmer que le paramétrage Heures mensuelles reste affiché par défaut si aucune configuration de forfait n'est remplie",
-          "scenario_type": "NOM",
-          "priority": "High",
-          "steps": [
-            { "index": 1, "action": "Configurer un collaborateur sans forfait annuel ni configuration spécifique des heures travaillées", "data": "FORANU, FORANH, NBSTHD, NBSTHW vides", "expected_result": "Aucune configuration de forfait n'est renseignée pour ce collaborateur" },
-            { "index": 2, "action": "Accéder au profil collaborateur et consulter les données contractuelles", "data": "", "expected_result": "Affichage des données contractuelles" },
-            { "index": 3, "action": "Constater l'affichage par défaut", "data": "", "expected_result": "Le paramétrage Heures mensuelles (ZYTL NBSTHM) est affiché par défaut, comme le comportement actuel ; aucun autre type de forfait n'est affiché" }
-          ]
-        }
-      ],
-      "_normalized": true
-    }
-  },
-  "agent3": {
-    "input": {
-      "story_summary": "PPBACKLOG-7652 - Enveloppe Macro - Affichage du temps de travail",
-      "coverage_threshold": 0.7,
-      "testable_points": [
-        "Vérifier que le temps de travail contractuel est affiché dans le profil collaborateur",
-        "Vérifier que le forfait annuel en jours est affiché si ZYTL FORANU est rempli",
-        "Vérifier que le forfait annuel en heures est affiché si ZYTL FORANU est vide et que le forfait annuel heures est rempli",
-        "Vérifier que les heures travaillées sont affichées selon la configuration (quotidiennes, hebdomadaire, mensuel)",
-        "Vérifier que le paramétrage Heure mensuelles est affiché par défaut si aucune autre configuration n'est remplie",
-        "Vérifier que l'affichage s'adapte aux différents cas d'utilisation de ZYTL",
-        "Vérifier que les modifications réalisées chez les clients sont prises en compte"
-      ],
-      "tests": [
-        { "test_name": "Consultation du temps de travail contractuel dans le profil collaborateur", "objective": "Confirmer l'affichage du temps de travail contractuel", "scenario_type": "NOM", "priority": "High" },
-        { "test_name": "Affichage du forfait annuel en jours lorsque ZYTL FORANU est rempli", "objective": "Confirmer l'affichage du forfait annuel en jours", "scenario_type": "NOM", "priority": "High" },
-        { "test_name": "Affichage du forfait annuel en heures lorsque FORANU est vide et FORANH rempli", "objective": "Confirmer l'affichage du forfait annuel en heures", "scenario_type": "NOM", "priority": "High" },
-        { "test_name": "Affichage des heures travaillées selon la configuration (quotidiennes, hebdomadaire, mensuel)", "objective": "Confirmer l'affichage selon la configuration d'heures travaillées", "scenario_type": "NOM", "priority": "High" },
-        { "test_name": "Affichage du paramétrage Heures mensuelles par défaut", "objective": "Confirmer l'affichage par défaut des heures mensuelles", "scenario_type": "NOM", "priority": "High" }
-      ]
-    },
-    "output": {
-      "coverage_rate": 0.8571,
-      "uncovered_testable_points": [
-        "Vérifier que l'affichage s'adapte aux différents cas d'utilisation de ZYTL"
-      ],
-      "duplicate_pairs": [],
-      "ambiguity_findings": [],
-      "validation_status": "VALID",
-      "correction_instructions": [
-        {
-          "instruction_type": "add_test",
-          "testable_point": "Vérifier que l'affichage s'adapte aux différents cas d'utilisation de ZYTL",
-          "rationale": "Aucun test existant ne couvre ce point testable (similarité sous le seuil)."
-        }
-      ]
-    }
-  },
-  "agent5": {
-    "input": {
-      "agent1_analysis": {
-        "story_id": "NUXEPM-2284",
-        "story_type": "functional",
-        "actors": ["collaborateur"],
-        "business_rules": [
-          "Si ZYTL FORANU différent de 0 alors affichage de la valeur de la rubrique comme forfait annuel en jours",
-          "Si ZYTL FORANU est vide, reprendre l'affichage existant",
-          "Gérer le forfait d'heures annuelles et choisir entre jour, hebdo ou mensuel si les zones forfait sont non renseignées",
-          "Afficher en priorité le forfait annuel jour ou forfait annuel heures si remplis dans ZYTL",
-          "Par défaut, afficher le paramétrage Heure mensuelles"
-        ]
-      },
-      "agent2_tests_count": 5,
-      "agent3_validation": {
-        "coverage_rate": 0.8571,
-        "validation_status": "VALID",
-        "ambiguity_count": 0,
-        "duplicate_pairs": 0
-      },
-      "correction_iterations": 1,
-      "max_correction_iterations": 2
-    },
-    "output": {
-      "report_title": "Rapport QA — NUXEPM-2284: PPBACKLOG-7652 - Enveloppe Macro - Affichage du temps de travail",
-      "report_version": "2026.07.31",
-      "executive_summary": {
-        "overall_status": "APPROVED",
-        "key_findings": [
-          "La couverture atteint 85.7% (EXCELLENT) avec 6 points testables sur 7 couverts",
-          "Aucun doublon détecté dans les cas de test",
-          "Aucune étape ambiguë identifiée",
-          "Statut VALID confirmé pour les 5 tests",
-          "1 point testable non couvert : l'adaptation de l'affichage aux différents cas d'utilisation de ZYTL"
-        ],
-        "next_steps": [
-          "Couvrir le dernier point testable manquant concernant les cas d'utilisation de ZYTL",
-          "Exécuter les tests pour confirmer la stabilité sur les environnements de production",
-          "Documenter les scénarios de test pour la revue technique"
-        ]
-      },
-      "coverage_metrics": {
-        "coverage_rate": 85.7,
-        "total_testable_points": 7,
-        "covered_points": 6,
-        "uncovered_points": [
-          "Vérifier que l'affichage s'adapte aux différents cas d'utilisation de ZYTL"
-        ],
-        "coverage_status": "EXCELLENT"
-      },
-      "quality_assurance": {
-        "validation_status": "VALID",
-        "duplicate_pairs": 0,
-        "ambiguity_count": 0,
-        "issues": []
-      },
-      "recommendations": [
-        {
-          "priority": "medium",
-          "action": "Ajouter un test pour valider l'affichage dans les différents cas d'utilisation de ZYTL",
-          "rationale": "Le point testable sur l'adaptation aux différents cas d'utilisation de ZYTL reste non couvert, bien que le taux global soit excellent à 85.7%"
-        },
-        {
-          "priority": "low",
-          "action": "Améliorer la description des objectifs du test si nécessaire",
-          "rationale": "Aucune ambiguïté ni doublon détecté, mais une clarification supplémentaire pourrait optimiser la qualité des tests"
-        },
-        {
-          "priority": "low",
-          "action": "Revoir les labels des tests pour une meilleure cohérence",
-          "rationale": "Aucune erreur de statut ou de duplication n'a été trouvée, mais une revue des labels est recommandée pour maintenir une bonne pratique"
-        }
-      ],
-      "processing_notes": [
-        "Sections narratives générées par LLM (nova-lite-2)",
-        "Itérations de gap-fill (Agent 3 → Agent 2): 1 / 2 max"
-      ]
-    }
-  }
-},
-{
-  "story_id": "NUXEPM-1884",
-  "agent1": {
-    "input": {
-      "summary": "News - Prévisualisation du document de l'actualité",
-      "description": [
-        "En tant que LECTEUR des News, je souhaite prévisualiser le document d'une actualité dans la popup qui s'ouvre lorsque je clique sur une actualité dans le carrousel, afin de disposer du contenu du document sans avoir à le télécharger.",
-        "Comportement : sur la popin de consultation de l'actualité, le lecteur a le choix d'ouvrir le document via un lien (même fenêtre ou nouvel onglet), ou de consulter le document dans le lecteur PDF/image qui s'ouvre dans la popin.",
-        "Attention : le visionnage du document doit être conforme aux critères d'accessibilité numérique : les PDF doivent être accessibles et conformes ; si le document est une image porteuse d'information, prévoir une zone Commentaire pour l'alternative contextuelle. Lorsque l'auteur joint une image, le texte suivant s'affiche derrière l'icône d'information : 'Vous avez ajouté une image comme document d'actualité, si cette image est porteuse d'information et pour respecter les normes d'accessibilité numérique, veuillez saisir le texte correspondant.'",
-        "La story d'étude a été réalisée sur le ticket YOU-12890, volontairement non liée pour raison de pilotage des PPBACKLOG entre 2025 et 2026."
-      ],
-      "labels": ["Candidat_V10", "Chiffrage-9.0.X-Done", "Grooming-1510", "K-DATA", "QA", "STREAM_APPLICATIF", "STREAM_HUB"],
-      "epic": {
-        "epic_key": "NUXEPM-1840",
-        "epic_summary": "K-NEWS - Gestion des news dans 4YOU (lot2) - Annonces - Actualités",
-        "epic_description": "Description de la gestion des News dans 4YOU. Projet initialement appelé K-DATA. Liste des tickets non traités sur 4YOU9."
-      },
-      "issuelinks": [
-        { "type": "Blocks", "direction": "inward", "key": "YOUQA-17730", "status": "Open", "summary": "KNews - Le bouton de consultation du document est incorrect", "description": "Anomalie : lors de la consultation d'une actualité par un gestionnaire, le bouton attendu 'Consulter le document' affiche à la place 'Consulter l'actualité'." },
-        { "type": "Cloners", "direction": "inward", "key": "YOU-13545", "status": "Done-Done", "summary": "News - Prévisualisation du document de l'actualité", "description": "Réalisation de la prévisualisation du document d'actualité (lien ou lecteur PDF/image intégré) avec conformité aux critères d'accessibilité numérique." },
-        { "type": "Relates", "direction": "outward", "key": "PPBACKLOG-6972", "status": "Done", "summary": "Intégration News Lot 2 travaux 2026", "description": "Finalisation des travaux d'intégration de la KData, scope à définir." },
-        { "type": "Resolve", "direction": "inward", "key": "YOUQA-15577", "status": "Ready for use", "summary": "DEMKNEWSS2ST3CT5 - Confidentialité : consulter les actualités dédiées aux Gestionnaires", "description": "Un auteur crée une actualité pour les gestionnaires ; consultation croisée par gestionnaire, collaborateur et manager." },
-        { "type": "Resolve", "direction": "inward", "key": "YOUQA-15578", "status": "Ready for use", "summary": "DEMKNEWSS2ST3CT6 - Confidentialité : consulter les actualités dédiées aux Managers", "description": "Un auteur crée une actualité pour les managers ; consultation croisée par manager, gestionnaire et collaborateur." },
-        { "type": "Resolve", "direction": "inward", "key": "YOUQA-15579", "status": "Ready for use", "summary": "DEMKNEWSS2ST3CT7 - Confidentialité : consulter les actualités dédiées au Collaborateur", "description": "Un auteur crée une annonce pour les collaborateurs ; consultation croisée par manager, collaborateur et gestionnaire." }
-      ],
-      "images": [
-        { "filename": "Lecteur PDF.png", "description": "Popin de consultation d'une actualité 'Vacances de Noël' avec lien vers le PDF (e-billet), boutons 'Fermer', 'Voir le document' (icône œil) et 'Télécharger le document'." },
-        { "filename": "Lecteur PDF 2.png", "description": "Aperçu intégré d'un e-billet de cinéma (logo UGC, badge VOSTF, QR code) dans la popin, avec boutons 'Fermer', 'Lire l'actualité' et 'Télécharger le document'." }
-      ]
-    },
-    "output": {
-      "story_id": "NUXEPM-1884",
-      "story_title": "News - Prévisualisation du document de l'actualité",
-      "story_type": "functional",
-      "actors": ["LECTEUR des News"],
-      "actions": [
-        "prévisualiser le document d'une actualité dans la popup",
-        "ouvrir le document via un lien",
-        "consulter le document dans le lecteur PDF/image qui s'ouvre dans la popin"
-      ],
-      "business_rules": [
-        "le visionnage du document doit être conforme aux critères d'accessibilité numérique",
-        "si le document est une image porteuse d'information, prévoir une zone Commentaire pour saisir l'alternative contextuelle",
-        "lorsqu'un auteur joint une image, afficher le message derrière l'icône d'information : 'Vous avez ajouté une image comme document d'actualité, si cette image est porteuse d'information et pour respecter les normes d'accessibilité numérique, veuillez saisir le texte correspondant.'"
-      ],
-      "technical_scope": [],
-      "testable_points": [
-        "Vérifier que le clic sur une actualité dans le carrousel ouvre la popin de consultation",
-        "Vérifier que la popin propose le choix entre ouvrir le document dans la même fenêtre ou dans un autre onglet",
-        "Vérifier que la popin propose le choix de consulter le document dans le lecteur PDF/image intégré",
-        "Vérifier que le lecteur PDF s'affiche correctement dans la popin",
-        "Vérifier que le lecteur image s'affiche correctement dans la popin",
-        "Vérifier que le message d'avertissement d'accessibilité s'affiche derrière l'icône d'information lorsque l'auteur joint une image",
-        "Vérifier que la zone de commentaire est disponible pour saisir l'alternative contextuelle lorsque l'image est porteuse d'information",
-        "Vérifier que le bouton 'Voir le document' est présent et fonctionnel",
-        "Vérifier que le bouton 'Télécharger le document' est présent et fonctionnel",
-        "Vérifier que le bouton 'Fermer' est présent et fonctionnel"
-      ],
-      "user_flows": [
-        "L'utilisateur clique sur une actualité dans le carrousel",
-        "Le système ouvre la popin de consultation de l'actualité",
-        "L'utilisateur choisit d'ouvrir le document dans la même fenêtre ou dans un autre onglet",
-        "L'utilisateur choisit de consulter le document dans le lecteur PDF/image intégré",
-        "Le système affiche le document dans le lecteur correspondant",
-        "Si le document est une image porteuse d'information, le système affiche le message d'avertissement d'accessibilité",
-        "L'utilisateur saisit l'alternative contextuelle dans la zone de commentaire si nécessaire",
-        "L'utilisateur peut utiliser les boutons 'Voir le document', 'Télécharger le document' et 'Fermer'"
-      ],
-      "acceptance_criteria_explicit": [],
-      "acceptance_criteria_inferred": [
-        "Le document doit être consultable dans la popin sans téléchargement",
-        "Le choix entre ouvrir dans la même fenêtre ou un autre onglet doit être fonctionnel",
-        "Le lecteur PDF/image doit afficher correctement le document",
-        "Le message d'avertissement d'accessibilité doit s'afficher pour les images porteuses d'information",
-        "La zone de commentaire doit être disponible pour saisir l'alternative contextuelle",
-        "Les boutons 'Voir le document', 'Télécharger le document' et 'Fermer' doivent être fonctionnels"
-      ],
-      "clarification_questions": [
-        "Quels types de documents sont supportés (PDF, image, etc.) ?",
-        "Comment est géré le cas où le document n'est pas accessible ou n'existe pas ?",
-        "Quelle est la durée de vie de la popin de consultation ?"
-      ],
-      "analysis_reason": [
-        "La story décrit clairement une fonctionnalité d'interface utilisateur pour prévisualiser des documents d'actualité dans une popin",
-        "Elle inclut des actions spécifiques pour l'utilisateur et des règles métier d'accessibilité",
-        "Les pièces jointes fournissent des informations supplémentaires sur l'UI et les éléments à tester"
-      ],
-      "resolved_from_references": []
-    }
-  },
-  "agent1_5": {
-    "input": {
-      "summary": "News - Prévisualisation du document de l'actualité",
-      "agent1_analysis": {
-        "actors": ["LECTEUR des News"],
-        "testable_points": [
-          "Vérifier que le clic sur une actualité dans le carrousel ouvre la popin de consultation",
-          "Vérifier que la popin propose le choix entre ouvrir le document dans la même fenêtre ou dans un autre onglet",
-          "Vérifier que le lecteur PDF/image s'affiche correctement dans la popin",
-          "Vérifier que le message d'avertissement d'accessibilité s'affiche pour une image porteuse d'information"
-        ],
-        "business_rules": [
-          "le visionnage du document doit être conforme aux critères d'accessibilité numérique",
-          "si le document est une image porteuse d'information, prévoir une zone Commentaire pour saisir l'alternative contextuelle"
-        ]
-      }
-    },
-    "output": {
-      "story_id": "NUXEPM-1884",
-      "business_goals": [
-        {
-          "id": "BG-1",
-          "label": "Consulter une actualité",
-          "description": "Permettre au lecteur de prévisualiser et de consulter le document d'une actualité dans une popup",
-          "actors": ["LECTEUR des News"],
-          "priority": "moyenne"
-        }
-      ],
-      "business_workflows": [
-        {
-          "id": "BW-1",
-          "label": "Prévisualisation du document d'actualité",
-          "linked_goal_id": "BG-1",
-          "trigger": "L'utilisateur clique sur une actualité dans le carrousel",
-          "actors_involved": ["LECTEUR des News"],
-          "steps": [
-            "Accéder à la popin de consultation de l'actualité",
-            "Choisir d'ouvrir le document dans la même fenêtre ou dans un autre onglet",
-            "Consulter le document dans le lecteur PDF/image intégré",
-            "Afficher le message d'avertissement d'accessibilité si le document est une image porteuse d'information",
-            "Saisir l'alternative contextuelle dans la zone de commentaire si nécessaire"
-          ],
-          "success_criteria": [
-            "Le document est consultable dans la popin sans téléchargement",
-            "L'utilisateur peut utiliser les boutons 'Voir le document', 'Télécharger le document' et 'Fermer'"
-          ],
-          "alternative_paths": [
-            "Si le document est une image porteuse d'information, afficher la zone de commentaire pour saisir l'alternative contextuelle"
-          ]
-        }
-      ],
-      "modeling_notes": ""
-    }
-  },
-  "agent2": {
-    "input": {
-      "summary": "News - Prévisualisation du document de l'actualité",
-      "description": [
-        "Le lecteur clique sur une actualité dans le carrousel : une popin s'ouvre lui proposant d'ouvrir le document via un lien ou de le consulter dans un lecteur PDF/image intégré.",
-        "Le visionnage doit être conforme aux critères d'accessibilité numérique ; si le document est une image porteuse d'information, une zone de commentaire permet de saisir l'alternative contextuelle."
-      ],
-      "agent1_analysis": {
-        "testable_points": [
-          "Vérifier que le clic sur une actualité dans le carrousel ouvre la popin de consultation",
-          "Vérifier que la popin propose le choix entre ouvrir le document dans la même fenêtre ou dans un autre onglet",
-          "Vérifier que la popin propose le choix de consulter le document dans le lecteur PDF/image intégré",
-          "Vérifier que le lecteur PDF s'affiche correctement dans la popin",
-          "Vérifier que le lecteur image s'affiche correctement dans la popin",
-          "Vérifier que le message d'avertissement d'accessibilité s'affiche derrière l'icône d'information lorsque l'auteur joint une image",
-          "Vérifier que la zone de commentaire est disponible pour saisir l'alternative contextuelle lorsque l'image est porteuse d'information",
-          "Vérifier que le bouton 'Voir le document' est présent et fonctionnel",
-          "Vérifier que le bouton 'Télécharger le document' est présent et fonctionnel",
-          "Vérifier que le bouton 'Fermer' est présent et fonctionnel"
-        ]
-      },
-      "agent15_business_model": {
-        "business_goals": [
-          { "id": "BG-1", "label": "Consulter une actualité" }
-        ],
-        "business_workflows": [
-          { "id": "BW-1", "label": "Prévisualisation du document d'actualité" }
-        ]
-      },
-      "legacy_rag_examples": [
-        { "test_id": "YOUQA-17039", "title": "DEMKNEWSS1ST3_CT13 - Consulter par l'auteur une Actualité dans le tableau des News", "score": 0.7206, "project": "YOUQA", "module_root": "KNews", "description": "Un auteur crée une actualité multi-langues puis la consulte via l'icône œil : popup avec titre, date de publication, texte, boutons 'Fermer' et 'Lire le document'." },
-        { "test_id": "YOUQA-15429", "title": "DEMKNEWSS1ST3_CT1 - Créer une actualité valide", "score": 0.7141, "project": "YOUQA", "module_root": "KNews", "description": "Un auteur crée une actualité valide avec illustration et document ; elle apparaît dans la liste des News avec les actions Consulter/Modifier/Dupliquer." },
-        { "test_id": "YOUQA-15465", "title": "DEMKNEWSS1ST1_CT6 - Consulter le carrousel des News chez le gestionnaire", "score": 0.7025, "project": "YOUQA", "module_root": "KNews", "description": "Un auteur crée une News ciblant les gestionnaires ; le gestionnaire consulte le carrousel (navigation, pagination, maximum 16 news)." },
-        { "test_id": "YOUQA-15492", "title": "DEMKNEWSS1ST1_CT7 - Consulter le carrousel des News chez le collaborateur", "score": 0.7024, "project": "YOUQA", "module_root": "KNews", "description": "Un auteur crée une actualité ciblant les collaborateurs ; le collaborateur consulte le carrousel ouvert par défaut, avec navigation et repli/dépli." },
-        { "test_id": "YOUQA-15581", "title": "DEMKNEWSS1ST2_CT8 - Supprimer une News en cours de publication", "score": 0.6969, "project": "YOUQA", "module_root": "KNews", "description": "Un administrateur des News supprime une News en cours de publication depuis la liste des News, avec popin de confirmation." }
-      ],
-      "rag_context": []
-    },
-    "retrieval_context": [
-      "YOUQA-17039 - DEMKNEWSS1ST3_CT13",
-      "YOUQA-15429 - DEMKNEWSS1ST3_CT1",
-      "YOUQA-15465 - DEMKNEWSS1ST1_CT6",
-      "YOUQA-15492 - DEMKNEWSS1ST1_CT7",
-      "YOUQA-15581 - DEMKNEWSS1ST2_CT8"
-    ],
-    "output": {
-      "tests": [
-        {
-          "test_name": "Prévisualisation du document d'actualité depuis le carrousel",
-          "objective": "Confirmer la prévisualisation du document d'une actualité dans la popin de consultation",
-          "scenario_type": "NOM",
-          "priority": "High",
-          "steps": [
-            { "index": 1, "action": "Cliquer sur une actualité dans le carrousel", "data": "LECTEUR des News ; une actualité avec document est publiée", "expected_result": "La popin de consultation de l'actualité s'affiche" },
-            { "index": 2, "action": "Consulter la présence des options d'ouverture du document", "data": "", "expected_result": "Les boutons 'Voir le document' et 'Télécharger le document' sont affichés et fonctionnels ; le bouton 'Fermer' est présent et fonctionnel" },
-            { "index": 3, "action": "Cliquer sur le bouton 'Voir le document'", "data": "", "expected_result": "Le lecteur PDF/image s'affiche correctement dans la popin, contenu visible et lisible" },
-            { "index": 4, "action": "Consulter le message d'avertissement pour un document de type image", "data": "Document d'actualité de type image", "expected_result": "Le message 'Vous avez ajouté une image comme document d'actualité, si cette image est porteuse d'information et pour respecter les normes d'accessibilité numérique, veuillez saisir le texte correspondant.' s'affiche derrière l'icône d'information" },
-            { "index": 5, "action": "Saisir du texte dans la zone de commentaire prévue pour l'alternative contextuelle", "data": "", "expected_result": "La zone de commentaire est disponible et le texte saisi est enregistré et associé à l'image" }
-          ]
-        }
-      ],
-      "_normalized": true
-    }
-  },
-  "agent3": {
-    "input": {
-      "story_summary": "News - Prévisualisation du document de l'actualité",
-      "coverage_threshold": 0.7,
-      "testable_points": [
-        "Vérifier que le clic sur une actualité dans le carrousel ouvre la popin de consultation",
-        "Vérifier que la popin propose le choix entre ouvrir le document dans la même fenêtre ou dans un autre onglet",
-        "Vérifier que la popin propose le choix de consulter le document dans le lecteur PDF/image intégré",
-        "Vérifier que le lecteur PDF s'affiche correctement dans la popin",
-        "Vérifier que le lecteur image s'affiche correctement dans la popin",
-        "Vérifier que le message d'avertissement d'accessibilité s'affiche derrière l'icône d'information lorsque l'auteur joint une image",
-        "Vérifier que la zone de commentaire est disponible pour saisir l'alternative contextuelle lorsque l'image est porteuse d'information",
-        "Vérifier que le bouton 'Voir le document' est présent et fonctionnel",
-        "Vérifier que le bouton 'Télécharger le document' est présent et fonctionnel",
-        "Vérifier que le bouton 'Fermer' est présent et fonctionnel"
-      ],
-      "tests": [
-        { "test_name": "Prévisualisation du document d'actualité depuis le carrousel", "objective": "Confirmer la prévisualisation du document d'une actualité dans la popin de consultation", "scenario_type": "NOM", "priority": "High" }
-      ]
-    },
-    "output": {
-      "coverage_rate": 0.9,
-      "uncovered_testable_points": [
-        "Vérifier que la popin propose le choix entre ouvrir le document dans la même fenêtre ou dans un autre onglet"
-      ],
-      "duplicate_pairs": [],
-      "ambiguity_findings": [],
-      "validation_status": "VALID",
-      "correction_instructions": [
-        {
-          "instruction_type": "add_test",
-          "testable_point": "Vérifier que la popin propose le choix entre ouvrir le document dans la même fenêtre ou dans un autre onglet",
-          "rationale": "Aucun test existant ne couvre ce point testable (similarité sous le seuil)."
-        }
-      ]
-    }
-  },
-  "agent5": {
-    "input": {
-      "agent1_analysis": {
-        "story_id": "NUXEPM-1884",
-        "story_type": "functional",
-        "actors": ["LECTEUR des News"],
-        "business_rules": [
-          "le visionnage du document doit être conforme aux critères d'accessibilité numérique",
-          "si le document est une image porteuse d'information, prévoir une zone Commentaire pour saisir l'alternative contextuelle",
-          "lorsqu'un auteur joint une image, afficher le message derrière l'icône d'information : 'Vous avez ajouté une image comme document d'actualité, si cette image est porteuse d'information et pour respecter les normes d'accessibilité numérique, veuillez saisir le texte correspondant.'"
-        ]
-      },
-      "agent2_tests_count": 1,
-      "agent3_validation": {
-        "coverage_rate": 0.9,
-        "validation_status": "VALID",
-        "ambiguity_count": 0,
-        "duplicate_pairs": 0
-      },
-      "correction_iterations": 0,
-      "max_correction_iterations": 2
-    },
-    "output": {
-      "report_title": "Rapport QA — NUXEPM-1884: News - Prévisualisation du document de l'actualité",
-      "report_version": "2026.08.01",
-      "executive_summary": {
-        "overall_status": "APPROVED",
-        "key_findings": [
-          "La couverture atteint 90% (EXCELLENT) avec 1 point testable non couvert sur 10",
-          "Aucun doublon détecté dans les paires de tests",
-          "Aucune étape ambiguë identifiée",
-          "Statut VALID confirmé pour la story"
-        ],
-        "next_steps": [
-          "Ajouter un test couvrant le choix d'ouverture du document dans la même fenêtre ou un autre onglet",
-          "Valider la cohérence des messages dans la popin",
-          "Documenter les conditions de régression pour le cas de test existant"
-        ]
-      },
-      "coverage_metrics": {
-        "coverage_rate": 90,
-        "total_testable_points": 10,
-        "covered_points": 9,
-        "uncovered_points": [
-          "Vérifier que la popin propose le choix entre ouvrir le document dans la même fenêtre ou dans un autre onglet"
-        ],
-        "coverage_status": "EXCELLENT"
-      },
-      "quality_assurance": {
-        "validation_status": "VALID",
-        "duplicate_pairs": 0,
-        "ambiguity_count": 0,
-        "issues": []
-      },
-      "recommendations": [
-        {
-          "priority": "low",
-          "action": "Ajouter un test pour valider le choix d'ouverture dans un nouvel onglet",
-          "rationale": "Le point non couvert représente 10% de la couverture totale et concerne une fonctionnalité utilisateur clé"
-        },
-        {
-          "priority": "low",
-          "action": "Vérifier la cohérence des libellés dans la popin",
-          "rationale": "Aucune ambiguïté détectée mais une validation supplémentaire est recommandée pour garantir une expérience utilisateur optimale"
-        },
-        {
-          "priority": "low",
-          "action": "Mettre à jour la documentation de la story avec les détails du test existant",
-          "rationale": "Permet un meilleur suivi futur et facilite la maintenance de la fonctionnalité"
         }
       ],
       "processing_notes": [

@@ -112,7 +112,7 @@ def agent1_factual_accuracy_metric(threshold: float = 0.85) -> GEval:
 
 
 # ---------------------------------------------------------------------------
-# AGENT 1.5 — Hallucination des règles métier dans le business model
+# AGENT 2 — Hallucination des règles métier dans le business model
 # Lacune comblée : la vérification déterministe (Agent2Metrics) ne
 # détectait que les acteurs inventés, pas les règles métier inventées
 # dans les success_criteria / steps / business_goals.
@@ -171,7 +171,7 @@ def business_workflow_quality_metric(threshold: float = 0.7) -> GEval:
 
 
 # ---------------------------------------------------------------------------
-# AGENT 2 — Conformité des tests aux workflows métier (agent1.5)
+# AGENT 3 — Conformité des tests aux workflows métier (agent1.5)
 # ---------------------------------------------------------------------------
 def agent3_workflow_compliance_metric(threshold: float = 0.7) -> GEval:
     """Les tests respectent-ils les workflows métier définis par agent1.5,
