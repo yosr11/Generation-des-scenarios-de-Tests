@@ -10,7 +10,7 @@ Agent Test est une application FastAPI orientée orchestration d’agents pour l
 - Routes d’administration, d’analyse, de génération et de gestion des stories
 - Frontend Vite/Tailwind dans le dossier `frontend`
 
-## Installation locale sans Docker
+## Installation locale 
 
 1. Créez un environnement virtuel :
    ```powershell
