@@ -50,7 +50,7 @@ Agent Test est une application FastAPI orientée orchestration d’agents pour l
 
 ## Lancer l’application
 
-L’application se lance indépendamment de `start.ps1`, avec deux processus séparés.
+L’application se lance avec deux processus séparés.
 
 Terminal 1 — backend :
 
@@ -66,13 +66,13 @@ npm run dev
 ```
 
 L’interface est accessible sur `http://localhost:3000` et l’API sur
-`http://localhost:8000/docs`. Le script `start.ps1` est optionnel.
+`http://localhost:8000/docs`.
 
 ## Déploiement
 
-Le projet peut être déployé sans dépendre de `start.ps1`. Pour un déploiement
-de recette ou de production, utiliser deux services séparés : FastAPI pour le
-backend et un serveur web (IIS, Nginx ou équivalent) pour le frontend compilé.
+Pour un déploiement de recette ou de production, utiliser deux services
+séparés : FastAPI pour le backend et un serveur web (IIS, Nginx ou équivalent)
+pour le frontend compilé.
 
 ### Préparation du serveur
 
