@@ -68,6 +68,107 @@ npm run dev
 L’interface est accessible sur `http://localhost:3000` et l’API sur
 `http://localhost:8000/docs`. Le script `start.ps1` est optionnel.
 
+## Déploiement
+
+Le projet peut être déployé sans dépendre de `start.ps1`. Pour un déploiement
+de recette ou de production, utiliser deux services séparés : FastAPI pour le
+backend et un serveur web (IIS, Nginx ou équivalent) pour le frontend compilé.
+
+### Préparation du serveur
+
+1. Cloner le dépôt et installer Python, Node.js et PostgreSQL.
+2. Créer l'environnement Python et installer les dépendances :
+
+   ```powershell
+   python -m venv .venv
+   .\.venv\Scripts\python.exe -m pip install -r requirements.txt
+   ```
+
+3. Créer `.env` à partir de `.env.example` et renseigner les vraies valeurs :
+
+   ```env
+   DATABASE_URL=postgresql+asyncpg://<user>:<password>@<host>:5432/<database>
+   JWT_SECRET=<secret-aleatoire-long>
+   ADMIN_EMAIL=<email-admin>
+   ADMIN_PASSWORD=<mot-de-passe-admin>
+   JIRA_PROD_URL=<url-jira>
+   JIRA_USERNAME=<compte-jira>
+   JIRA_PASSWORD=<mot-de-passe-jira>
+   AWS_ACCESS_KEY_ID=<access-key>
+   AWS_SECRET_ACCESS_KEY=<secret-key>
+   AWS_REGION=eu-west-3
+   LLM_PROVIDER=bedrock
+   BEDROCK_MODEL_ID=eu.amazon.nova-2-lite-v1:0
+   FRONTEND_BASE_URL=https://<domaine-frontend>
+   ALLOWED_ORIGINS=https://<domaine-frontend>
+   COOKIE_SECURE=true
+   ```
+
+Les secrets ne doivent jamais être commités dans Git. Le fichier `.env` est
+ignoré par `.gitignore`.
+
+### Premier administrateur
+
+Le premier compte administrateur est créé automatiquement lors de l'initialisation
+de l'application, à partir des variables `ADMIN_EMAIL` et `ADMIN_PASSWORD` du
+fichier `.env`.
+
+Cette création s'effectue uniquement si aucun administrateur n'existe encore dans
+la base de données. Si la base contient déjà un administrateur, les valeurs du
+`.env` ne modifient pas ses identifiants existants.
+
+Avant le premier démarrage, l'encadrant ou l'administrateur du déploiement doit
+remplacer les valeurs d'exemple dans le `.env` du serveur par ses propres
+identifiants :
+
+```env
+ADMIN_EMAIL=son-vrai-email
+ADMIN_PASSWORD=son-mot-de-passe-fort
+```
+
+`son-vrai-email` et `son-mot-de-passe-fort` sont des exemples de documentation :
+ils doivent être remplacés par les vraies valeurs avant le déploiement.
+
+Après le démarrage, se connecter sur `https://<domaine-frontend>/login` avec
+cet email et ce mot de passe. Ces identifiants doivent être transmis par un
+canal sécurisé et ne doivent jamais être ajoutés au README, au dépôt Git ou aux
+logs.
+
+### Base de données
+
+Appliquer les migrations sur la base de production :
+
+```powershell
+alembic upgrade head
+```
+
+### Démarrage production
+
+Démarrer le backend sans le mode développement `--reload` :
+
+```powershell
+.\.venv\Scripts\python.exe -m uvicorn app.main:app --host 0.0.0.0 --port 8000
+```
+
+Construire le frontend puis publier le dossier `frontend/dist/` avec IIS,
+Nginx ou un serveur web équivalent :
+
+```powershell
+cd frontend
+npm ci
+$env:VITE_API_BASE_URL="https://<domaine-api>"
+npm run build
+```
+
+Vérifications après déploiement :
+
+- ouvrir `https://<domaine-frontend>` ;
+- vérifier l'API sur `https://<domaine-api>/docs` ;
+- tester la connexion admin et QA ;
+- lancer une analyse complète jusqu'au rapport Agent 5 ;
+- vérifier les appels Jira et Amazon Bedrock ;
+- confirmer que HTTPS, CORS et les cookies fonctionnent.
+
 ## Migrations de base de données
 
 Les migrations sont stockées dans `alembic/`.
