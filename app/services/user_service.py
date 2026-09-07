@@ -5,7 +5,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
-from sqlalchemy import case, select, update
+from sqlalchemy import case, func, select, update
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -224,17 +224,26 @@ async def set_user_active(
 
 
 async def delete_user(
-    db: AsyncSession, user_id: int, current_admin_id: int
+    db: AsyncSession, user_id: int, current_admin_id: Optional[int]
 ) -> Dict[str, Any]:
     result = await db.execute(select(User).where(User.id == user_id))
     user = result.scalar_one_or_none()
     if not user:
         return {"ok": False, "error": "Utilisateur introuvable."}
-    if user.id == current_admin_id:
+    if current_admin_id is not None and user.id == current_admin_id:
         return {
             "ok": False,
             "error": "Vous ne pouvez pas supprimer votre propre compte.",
         }
+    if user.role == "admin":
+        admin_count = (
+            await db.execute(select(func.count(User.id)).where(User.role == "admin"))
+        ).scalar() or 0
+        if admin_count <= 1:
+            return {
+                "ok": False,
+                "error": "Impossible de supprimer le dernier administrateur.",
+            }
 
     await db.delete(user)
     await db.commit()

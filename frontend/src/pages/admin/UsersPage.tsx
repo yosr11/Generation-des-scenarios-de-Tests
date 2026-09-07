@@ -341,13 +341,15 @@ export const UsersPage: React.FC = () => {
                               : u.is_active ? <UserX size={14} /> : <UserCheck size={14} />}
                           </button>
                           {/* Delete */}
-                          <button type="button" onClick={() => handleDelete(u)} disabled={deletingId === u.id}
-                            className="p-2 rounded-xl text-brand-muted hover:text-brand-rose hover:bg-brand-rose/08 transition-all"
-                            title="Supprimer">
-                            {deletingId === u.id
-                              ? <span className="w-3.5 h-3.5 border-2 border-brand-rose/30 border-t-brand-rose rounded-full animate-spin block" />
-                              : <Trash2 size={14} />}
-                          </button>
+                          {currentUser?.id !== u.id && (
+                            <button type="button" onClick={() => handleDelete(u)} disabled={deletingId === u.id}
+                              className="p-2 rounded-xl text-brand-muted hover:text-brand-rose hover:bg-brand-rose/08 transition-all"
+                              title="Supprimer">
+                              {deletingId === u.id
+                                ? <span className="w-3.5 h-3.5 border-2 border-brand-rose/30 border-t-brand-rose rounded-full animate-spin block" />
+                                : <Trash2 size={14} />}
+                            </button>
+                          )}
                         </div>
                       </td>
                     </tr>

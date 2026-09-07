@@ -1,0 +1,46 @@
+[Image jointe : JeGèreLesFinsDeContrat.png]
+── Textes détectés (OCR) ──
+w  Votre décision
+3 Mohamed Q11CONGE02 %
+@ FRLFR4Y1315
+Mohamed Q11CONGE02
+FRLFR4Y1315
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+Il s'agit d'un **pop-up de sélection** ou d'une fenêtre modale. Son intention probable est de permettre à l'utilisateur de choisir ou de confirmer une décision concernant un enregistrement spécifique identifié par le nom et un code.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- **Pastille circulaire** : 
+  - Forme : cercle
+  - Couleur de fond : gris foncé ou noir
+  - Texte OCR contenu : « Mohamed Q11CONGE02 »
+- **Étiquette (tag/chip)** :
+  - Forme : rectangle avec coins arrondis
+  - Couleur de fond : blanc
+  - Texte OCR contenu : « FRLFR4Y1315 »
+- **Bouton de fermeture** :
+  - Forme : petit carré
+  - Couleur de fond : transparent (ou blanc selon le thème)
+  - Texte OCR contenu : « × » (symbole de fermeture)
+
+## 4. ICÔNES ET PICTOGRAMMES
+- **Icône de flèche pliée (chevron)** :
+  - Position : à gauche du titre « Votre décision » dans la barre d'en-tête
+  - Fonction probable : permet de replier/déplier la section ou la fenêtre modale
+
+## 5. AGENCEMENT ET RELATIONS
+- **Structure générale** : 
+  - En-tête avec titre « Votre décision » suivi d'une icône de flèche pliée.
+  - Corps de la fenêtre contenant un élément circulaire à gauche et un texte à droite.
+  - Zone de texte « FRLFR4Y1315 » placée sous le nom « Mohamed Q11CONGE02 », alignée à gauche dans le même conteneur.
+  - Bouton de fermeture positionné à droite du conteneur principal, aligné verticalement avec le texte.
+- **Hiérarchie** : 
+  - Le titre « Votre décision » est le plus important, suivi du nom et du code dans le conteneur.
+- **États** : 
+  - Le conteneur semble être en état actif ou sélectionné, indiqué par son bordure ou mise en évidence.
+- **Relations spatiales** : 
+  - Le bouton de fermeture est positionné à droite du conteneur, suggérant une action de fermeture directe de la fenêtre modale.
+  - Le nom et le code sont regroupés dans le même conteneur rectangulaire, indiquant qu'ils appartiennent à la même entité ou enregistrement.

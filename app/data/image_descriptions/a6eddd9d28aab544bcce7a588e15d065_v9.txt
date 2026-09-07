@@ -1,0 +1,40 @@
+[Image jointe : QuestionRH.png]
+── Textes détectés (OCR) ──
+= @ Mes questions RH
+Vous avez besoin d'information ou d'aide sur vos données personnelles contractuelle:
+demande de support ci-dessous. Vous avez la possibilité de joindre un document. Vot
+gestionnaire.
+Bénéficiaire *
+| | AHMED AHMED FRLFRA4YŸMANT11
+Informer le bénéficiaire du suivi de la question RH, par mail
+Mes questions RH
+ACcente
+OIS
+_—
+I AHMED AHMED FRLFR4YMANT11 |
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+Il s'agit d'un formulaire d'interface utilisateur intitulé « Mes questions RH », destiné à la soumission de demandes de support concernant les données personnelles contractuelles. L'écran permet à l'utilisateur de saisir des informations et de joindre un document, avec des options pour quitter, supprimer, sauvegarder, envoyer ou accepter la réponse.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée.
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- **Étiquette (chip) avec texte « AHMED AHMED FRLFR4YMANT11 »** : forme ovale, fond bleu clair, texte noir.
+- **Case à cocher** avec texte « Informer le bénéficiaire du suivi de la question RH, par mail » : case non cochée, texte noir.
+
+## 4. ICÔNES ET PICTOGRAMMES
+- **Icône de menu (trois lignes horizontales)** : située en haut à gauche, probablement pour ouvrir un menu de navigation.
+- **Icône de fermeture (croix)** : à droite de l'étiquette « AHMED AHMED FRLFR4YMANT11 », pour supprimer l'élément.
+- **Icône de validation (vérification)** : à côté de l'option « Je saisis ma demande », probablement pour confirmer la sélection.
+
+## 5. AGENCEMENT ET RELATIONS
+- **Structure générale** : l'écran est divisé en sections distinctes.
+  - En-tête avec le titre « Mes questions RH » et l'icône de menu.
+  - Zone de description en haut, suivie d'une ligne de boutons d'action (« Quitter », « Supprimer », « Sauvegarder », « Envoyer », « Accepter la réponse »).
+  - Section pliable « Je saisis ma demande » avec un contenu déplié.
+  - Champ de saisie « Bénéficiaire * » avec une étiquette et une case à cocher en dessous.
+- **Hiérarchie visuelle** : le titre principal est en gros caractères, suivi de la description en texte normal. Les boutons d'action sont alignés horizontalement et ont un style cohérent.
+- **Champs obligatoires** : indiqué par l'étoile rouge « * » à côté du texte « Bénéficiaire * ».
+- **États** : la case à cocher est désactivée (non cochée), et l'étiquette « AHMED AHMED FRLFR4YMANT11 » est sélectionnée.
+- **Relations spatiales** : le bouton « Quitter » est le premier de la ligne de boutons, suivi de « Supprimer », « Sauvegarder », « Envoyer », et « Accepter la réponse » dans cet ordre. Le champ « Bénéficiaire » est situé sous la section pliable, avec la case à cocher directement en dessous.

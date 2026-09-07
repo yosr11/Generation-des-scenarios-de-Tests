@@ -186,7 +186,7 @@ async def admin_delete_user(
     db: AsyncSession = Depends(get_db),
 ):
     _require_admin(current_user)
-    result = await delete_user(db, user_id, current_admin_id=current_user.user_id)
+    result = await delete_user(db, user_id, current_admin_id=current_user.user_id_int)
     if not result.get("ok"):
         raise HTTPException(status_code=400, detail=result.get("error"))
 

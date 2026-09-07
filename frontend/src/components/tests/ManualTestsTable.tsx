@@ -363,7 +363,13 @@ const TestEditDrawer: React.FC<{
             {Array.isArray(editedTest?.preconditions) && editedTest.preconditions.length > 0 ? (
               <div className="space-y-3">
                 {editedTest.preconditions.map((pre: string, pi: number) => (
-                  <div key={pi} className="grid gap-2 sm:grid-cols-[1fr_auto]">
+                  <div key={pi} className="grid gap-2 items-center sm:grid-cols-[auto_1fr_auto]">
+                    <span
+                      className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-extrabold text-white"
+                      style={{ background: 'linear-gradient(135deg, #0B1E3E, #1E3A8A)' }}
+                    >
+                      {pi + 1}
+                    </span>
                     <input
                       className="w-full text-sm text-brand-navy rounded-xl px-3 py-2 border border-brand-navy/[0.08] bg-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/10 transition-all font-sans"
                       value={pre}
@@ -411,6 +417,8 @@ const TestEditDrawer: React.FC<{
                 {editedTest.étapes.map((group: any, gi: number) => {
 
                   const opened = openedGroup === gi
+                  const preCount = Array.isArray(editedTest?.preconditions) ? editedTest.preconditions.length : 0
+                  const stepNumber = gi + 1 + preCount
 
                   return (
 
@@ -440,11 +448,11 @@ const TestEditDrawer: React.FC<{
                 background:'linear-gradient(135deg, #0B1E3E, #1E3A8A)'
             }}
         >
-            {gi+1}
+            {stepNumber}
         </span>
 
         <span className="text-xs font-extrabold text-brand-navy uppercase tracking-wider">
-            {group.titre || `Étape ${gi+1}`}
+            {group.titre || `Étape ${stepNumber}`}
         </span>
 
     </div>
@@ -569,7 +577,10 @@ const TestEditDrawer: React.FC<{
                 </div>
 
                 <div className="space-y-4">
-                  {editedTest.steps.map((step: any, si: number) => (
+                  {editedTest.steps.map((step: any, si: number) => {
+                    const preCount = Array.isArray(editedTest?.preconditions) ? editedTest.preconditions.length : 0
+                    const stepNumber = si + 1 + preCount
+                    return (
                     <div
                       key={si}
                       className="rounded-2xl border overflow-hidden"
@@ -578,8 +589,8 @@ const TestEditDrawer: React.FC<{
                       <div className="px-4 py-2.5 flex items-center gap-2"
                         style={{ background: 'rgba(10,22,40,0.04)', borderBottom: '1px solid rgba(10,22,40,0.08)' }}>
                         <span className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-extrabold text-white flex-shrink-0"
-                          style={{ background: CARD_GRADIENT }}>{si + 1}</span>
-                        <span className="text-xs font-extrabold text-brand-navy uppercase tracking-wider font-sans">Étape {si + 1}</span>
+                          style={{ background: CARD_GRADIENT }}>{stepNumber}</span>
+                        <span className="text-xs font-extrabold text-brand-navy uppercase tracking-wider font-sans">Étape {stepNumber}</span>
                       </div>
 
                       <div className="p-4 space-y-3">
@@ -627,7 +638,8 @@ const TestEditDrawer: React.FC<{
                         </div>
                       </div>
                     </div>
-                  ))}
+                    )
+                  })}
                 </div>
               </section>
             )

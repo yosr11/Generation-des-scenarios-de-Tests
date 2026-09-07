@@ -1,0 +1,40 @@
+[Image jointe : DN.png]
+── Textes détectés (OCR) ──
+— @ Dossier numérique
+S PNV TEST CONF SAL1 TEST CO
+ADEM ADEM
+O\
+FRLFRYRHSUP02
+Dossier numérique
+TEST CONF SAL1 TEST CO
+── Analyse visuelle (VLM) ──
+## 1. CONTEXTE
+Il s'agit d'une interface de recherche ou de sélection de dossier numérique, probablement dans un système de gestion de ressources humaines. L'écran permet de filtrer et afficher des dossiers individuels avec des options de recherche et de masquage.
+
+## 2. ANNOTATIONS AJOUTÉES PAR LE PO
+Aucune annotation détectée
+
+## 3. ÉLÉMENTS GRAPHIQUES NATIFS DE L'UI
+- **Pastille (pill)**: Forme ovale avec fond bleu, contenant le texte "SALARIÉ 4YOU"
+- **Champ de recherche**: Zone rectangulaire avec texte "Filtre sur arborescence et mots-clés" et icône de loupe à droite
+- **Case à cocher**: Case carrée avec texte "Masquer les emplacements vides"
+
+## 4. ICÔNES ET PICTOGRAMMES
+- **Icône de menu**: Trois lignes horizontales (hamburger) en haut à gauche
+- **Icône d'utilisateur**: Silhouette de profil dans le champ de recherche
+- **Icône de loupe**: À droite du champ de recherche
+- **Icône de tri/déploiement**: Triangle pointant vers le bas à droite du champ de recherche
+
+## 5. AGENCEMENT ET RELATIONS
+- **En-tête**: Contient le titre "Dossier numérique" et l'icône de menu
+- **Section principale**: 
+  - Pastille bleue "SALARIÉ 4YOU" avec deux libellés "TEST CONF SAL1" et "TEST CO" à côté
+  - Champ de recherche avec icône utilisateur et loupe
+  - Champ de filtre avec icône de tri/déploiement
+  - Case à cocher pour masquer les emplacements vides
+- **Hiérarchie**: Le titre principal est le plus gros et le plus haut, suivi des éléments de recherche et filtrage
+- **Relations spatiales**: 
+  - La pastille bleue est alignée avec les deux libellés de test
+  - Le champ de recherche utilisateur est directement sous la pastille
+  - La case à cocher est positionnée en bas à gauche
+  - Tous les éléments sont centrés horizontalement dans la largeur de l'écran

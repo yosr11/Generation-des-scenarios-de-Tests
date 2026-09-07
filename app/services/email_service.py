@@ -1,257 +1,549 @@
 ﻿import smtplib
 import logging
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+from email.message import EmailMessage
 from app.core.config import settings
 
 logger = logging.getLogger(__name__)
 
 
-async def send_reset_email(to_email: str, reset_url: str) -> bool:
+def _get_smtp_config():
+    return (
+        getattr(settings, "SMTP_HOST", None),
+        getattr(settings, "SMTP_PORT", 587),
+        getattr(settings, "SMTP_USER", None),
+        getattr(settings, "SMTP_PASSWORD", None),
+    )
+
+
+def _send(
+    msg: EmailMessage,
+    smtp_host: str,
+    smtp_port: int,
+    smtp_user: str,
+    smtp_password: str,
+    to_email: str,
+) -> bool:
+    try:
+        server = smtplib.SMTP(smtp_host, smtp_port)
+
+        if server.has_extn("STARTTLS"):
+            server.starttls()
+
+        if smtp_user and smtp_password and smtp_user.lower() != "test":
+            server.login(smtp_user, smtp_password)
+
+        server.send_message(msg)
+        server.quit()
+
+        logger.info(
+            "[EmailService] Email envoyé avec succès à %s",
+            to_email,
+        )
+        return True
+
+    except Exception as exc:
+        logger.error(
+            "[EmailService] Échec de l'envoi de l'email à %s: %s",
+            to_email,
+            str(exc),
+        )
+        return False
+
+
+async def send_reset_email(
+    to_email: str,
+    reset_url: str,
+) -> bool:
     """
-    Envoie un email contenant le lien de réinitialisation de mot de passe.
-    Lit la configuration SMTP depuis les settings.
+    Envoie un email contenant le lien de réinitialisation
+    de mot de passe.
     """
-    # Vérification si le SMTP est configuré
-    smtp_host = getattr(settings, "SMTP_HOST", None)
-    smtp_port = getattr(settings, "SMTP_PORT", 587)
-    smtp_user = getattr(settings, "SMTP_USER", None)
-    smtp_password = getattr(settings, "SMTP_PASSWORD", None)
-    smtp_from = getattr(settings, "SMTP_FROM", smtp_user or "no-reply@soprahr.com")
+
+    smtp_host, smtp_port, smtp_user, smtp_password = _get_smtp_config()
+
+    smtp_from = getattr(
+        settings,
+        "SMTP_FROM",
+        smtp_user or "no-reply@soprahr.com",
+    )
 
     if not smtp_host or not smtp_user or not smtp_password:
         logger.warning(
-            "[EmailService] SMTP non configuré. Lien de réinitialisation pour %s :\n%s",
+            "[EmailService] SMTP non configuré. "
+            "Lien de réinitialisation pour %s :\n%s",
             to_email,
             reset_url,
         )
-        # Retourne False pour indiquer que l'email réel n'a pas pu être envoyé
         return False
 
-    # Création du message
-    msg = MIMEMultipart("alternative")
+    msg = EmailMessage()
+
     msg["Subject"] = "Synaptest — Réinitialisation de votre mot de passe"
     msg["From"] = smtp_from
     msg["To"] = to_email
 
     text_content = (
         f"Bonjour,\n\n"
-        f"Vous avez demandé la réinitialisation de votre mot de passe pour la plateforme Synaptest.\n"
-        f"Veuillez cliquer sur le lien ci-dessous pour configurer un nouveau mot de passe :\n"
+        f"Vous avez demandé la réinitialisation de votre mot de passe "
+        f"pour la plateforme Synaptest.\n"
+        f"Veuillez cliquer sur le lien ci-dessous pour configurer "
+        f"un nouveau mot de passe :\n"
         f"{reset_url}\n\n"
         f"Ce lien est valable pendant 1 heure.\n\n"
         f"L'équipe Synaptest"
     )
 
     html_content = f"""
-    <html>
-      <body style="font-family: Arial, sans-serif; color: #1e293b; line-height: 1.6;">
-        <div style="max-w: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff;">
-          <div style="text-align: center; border-bottom: 2px solid #f43f5e; padding-bottom: 15px; margin-bottom: 20px;">
-            <h2 style="color: #0a0f2e; margin: 0;">Synap<span style="color: #f43f5e;">test</span></h2>
-            <p style="font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin: 5px 0 0 0;">Plateforme de tests QA</p>
-          </div>
-          <p>Bonjour,</p>
-          <p>Vous avez demandé la réinitialisation de votre mot de passe pour votre compte Synaptest.</p>
-          <p>Veuillez cliquer sur le bouton ci-dessous pour configurer un nouveau mot de passe :</p>
-          <div style="text-align: center; margin: 30px 0;">
-            <a href="{reset_url}" style="background: linear-gradient(135deg, #ef4444, #f43f5e); color: #ffffff; text-decoration: none; padding: 12px 24px; font-weight: bold; border-radius: 8px; box-shadow: 0 4px 12px rgba(244,63,94,0.3); display: inline-block;">
-              Réinitialiser mon mot de passe
-            </a>
-          </div>
-          <p style="font-size: 12px; color: #64748b;">
-            Si le bouton ne fonctionne pas, vous pouvez copier et coller le lien suivant dans votre navigateur :<br/>
-            <a href="{reset_url}" style="color: #6366f1;">{reset_url}</a>
-          </p>
-          <p style="font-size: 12px; color: #94a3b8; border-top: 1px solid #f1f5f9; padding-top: 15px; margin-top: 25px;">
-            Ce lien de réinitialisation est valable pendant 1 heure. Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet email en toute sécurité.
-          </p>
-        </div>
-      </body>
-    </html>
-    """
+<html>
+  <body style="font-family: Arial, sans-serif; color: #1e293b; line-height: 1.6;">
 
-    msg.attach(MIMEText(text_content, "plain"))
-    msg.attach(MIMEText(html_content, "html"))
+    <div style="
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      background-color: #ffffff;
+    ">
 
-    try:
-        server = smtplib.SMTP(smtp_host, smtp_port)
-        # STARTTLS uniquement si le serveur le supporte (MailHog en local ne le supporte pas)
-        if server.has_extn("STARTTLS"):
-            server.starttls()
-        # Login uniquement si des identifiants sont fournis (MailHog n'en a pas besoin)
-        if smtp_user and smtp_password and smtp_user.lower() != "test":
-            server.login(smtp_user, smtp_password)
-        server.sendmail(smtp_from, to_email, msg.as_string())
-        server.quit()
-        logger.info("[EmailService] Email envoyé avec succès à %s", to_email)
-        return True
-    except Exception as exc:
-        logger.error(
-            "[EmailService] Échec de l'envoi de l'email à %s: %s", to_email, str(exc)
-        )
-        return False
+      <div style="
+        text-align: center;
+        border-bottom: 2px solid #f43f5e;
+        padding-bottom: 15px;
+        margin-bottom: 20px;
+      ">
+        <h2 style="color: #0a0f2e; margin: 0;">
+          Synap<span style="color: #f43f5e;">test</span>
+        </h2>
+
+        <p style="
+          font-size: 11px;
+          color: #64748b;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          margin: 5px 0 0 0;
+        ">
+          Plateforme de tests QA
+        </p>
+      </div>
+
+      <p>Bonjour,</p>
+
+      <p>
+        Vous avez demandé la réinitialisation de votre mot de passe
+        pour votre compte Synaptest.
+      </p>
+
+      <p>
+        Veuillez cliquer sur le bouton ci-dessous pour configurer
+        un nouveau mot de passe :
+      </p>
+
+      <div style="text-align: center; margin: 30px 0;">
+
+        <a
+          href="{reset_url}"
+          style="
+            background: linear-gradient(135deg, #ef4444, #f43f5e);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 12px 24px;
+            font-weight: bold;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(244,63,94,0.3);
+            display: inline-block;
+          "
+        >
+          Réinitialiser mon mot de passe
+        </a>
+
+      </div>
+
+      <p style="
+        font-size: 12px;
+        color: #64748b;
+      ">
+        Si le bouton ne fonctionne pas, vous pouvez copier et coller
+        le lien suivant dans votre navigateur :
+        <br/>
+
+        <a
+          href="{reset_url}"
+          style="color: #6366f1;"
+        >
+          {reset_url}
+        </a>
+      </p>
+
+      <p style="
+        font-size: 12px;
+        color: #94a3b8;
+        border-top: 1px solid #f1f5f9;
+        padding-top: 15px;
+        margin-top: 25px;
+      ">
+        Ce lien de réinitialisation est valable pendant 1 heure.
+        Si vous n'êtes pas à l'origine de cette demande,
+        vous pouvez ignorer cet email en toute sécurité.
+      </p>
+
+    </div>
+
+  </body>
+</html>
+"""
+
+    # IMPORTANT :
+    # On laisse Python gérer automatiquement l'encodage UTF-8.
+    msg.set_content(text_content)
+    msg.add_alternative(
+        html_content,
+        subtype="html",
+    )
+
+    return _send(
+        msg,
+        smtp_host,
+        smtp_port,
+        smtp_user,
+        smtp_password,
+        to_email,
+    )
 
 
 async def send_admin_account_created_email(
-    to_email: str, temporary_password: str, display_name: str | None = None
+    to_email: str,
+    temporary_password: str,
+    display_name: str | None = None,
 ) -> bool:
     """
-    Envoie un email de bienvenue lors de la création d'un compte administrateur.
-    Contient le mot de passe temporaire que l'admin peut garder ou modifier.
+    Envoie un email de bienvenue lors de la création
+    d'un compte administrateur.
     """
-    smtp_host = getattr(settings, "SMTP_HOST", None)
-    smtp_port = getattr(settings, "SMTP_PORT", 587)
-    smtp_user = getattr(settings, "SMTP_USER", None)
-    smtp_password = getattr(settings, "SMTP_PASSWORD", None)
-    smtp_from = getattr(settings, "SMTP_FROM", smtp_user or "no-reply@soprahr.com")
+
+    smtp_host, smtp_port, smtp_user, smtp_password = _get_smtp_config()
+
+    smtp_from = getattr(
+        settings,
+        "SMTP_FROM",
+        smtp_user or "no-reply@soprahr.com",
+    )
 
     if not smtp_host or not smtp_user or not smtp_password:
         logger.warning(
-            "[EmailService] SMTP non configuré. Email admin non envoyé à %s",
+            "[EmailService] SMTP non configuré. "
+            "Email admin non envoyé à %s",
             to_email,
         )
         return False
 
-    msg = MIMEMultipart("alternative")
+    msg = EmailMessage()
+
     msg["Subject"] = "Synaptest — Votre compte administrateur a été créé"
     msg["From"] = smtp_from
     msg["To"] = to_email
 
+    display = display_name or ""
+
     text_content = (
-        f"Bonjour {display_name or ''},\n\n"
+        f"Bonjour {display},\n\n"
         f"Un compte administrateur a été créé pour vous sur Synaptest.\n"
         f"Vos identifiants sont :\n"
         f"Email : {to_email}\n"
         f"Mot de passe temporaire : {temporary_password}\n\n"
-        f"Vous pouvez utiliser ce mot de passe pour vous connecter ou le modifier ultérieurement.\n\n"
+        f"Vous pouvez utiliser ce mot de passe pour vous connecter "
+        f"ou le modifier ultérieurement.\n\n"
         f"L'équipe Synaptest"
     )
 
+    login_url = (
+        f"{settings.FRONTEND_BASE_URL.rstrip('/')}/login"
+    )
+
     html_content = f"""
-    <html>
-      <body style="font-family: Arial, sans-serif; color: #1e293b; line-height: 1.6;">
-        <div style="max-w: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff;">
-          <div style="text-align: center; border-bottom: 2px solid #f43f5e; padding-bottom: 15px; margin-bottom: 20px;">
-            <h2 style="color: #0a0f2e; margin: 0;">Synap<span style="color: #f43f5e;">test</span></h2>
-            <p style="font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin: 5px 0 0 0;">Plateforme de tests QA</p>
-          </div>
-          <p>Bonjour {display_name or ''},</p>
-          <p><strong>Un compte administrateur a été créé pour vous sur Synaptest.</strong></p>
-          <p>Vos identifiants de connexion sont :</p>
-          <div style="background-color: #f8fafc; padding: 15px; border-left: 4px solid #6366f1; border-radius: 4px; margin: 20px 0;">
-            <p style="margin: 5px 0;"><strong>Email :</strong> <code style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px;">{to_email}</code></p>
-            <p style="margin: 5px 0;"><strong>Mot de passe temporaire :</strong> <code style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px;">{temporary_password}</code></p>
-          </div>
-          <p>Vous pouvez utiliser ce mot de passe pour vous connecter ou le modifier ultérieurement dans vos paramètres de profil.</p>
-          <div style="text-align: center; margin: 30px 0;">
-            <a href="{settings.FRONTEND_BASE_URL.rstrip('/')}/login" style="background: linear-gradient(135deg, #ef4444, #f43f5e); color: #ffffff; text-decoration: none; padding: 12px 24px; font-weight: bold; border-radius: 8px; box-shadow: 0 4px 12px rgba(244,63,94,0.3); display: inline-block;">
-              Accéder à Synaptest
-            </a>
-          </div>
-          <p style="font-size: 12px; color: #94a3b8; border-top: 1px solid #f1f5f9; padding-top: 15px; margin-top: 25px;">
-            Si vous n'êtes pas à l'origine de cette demande, contactez votre administrateur système.
-          </p>
-        </div>
-      </body>
-    </html>
-    """
+<html>
+  <body style="font-family: Arial, sans-serif; color: #1e293b; line-height: 1.6;">
 
-    msg.attach(MIMEText(text_content, "plain"))
-    msg.attach(MIMEText(html_content, "html"))
+    <div style="
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      background-color: #ffffff;
+    ">
 
-    try:
-        server = smtplib.SMTP(smtp_host, smtp_port)
-        if server.has_extn("STARTTLS"):
-            server.starttls()
-        if smtp_user and smtp_password and smtp_user.lower() != "test":
-            server.login(smtp_user, smtp_password)
-        server.sendmail(smtp_from, to_email, msg.as_string())
-        server.quit()
-        logger.info("[EmailService] Email admin envoyé avec succès à %s", to_email)
-        return True
-    except Exception as exc:
-        logger.error(
-            "[EmailService] Échec de l'envoi de l'email admin à %s: %s", to_email, str(exc)
-        )
-        return False
+      <div style="
+        text-align: center;
+        border-bottom: 2px solid #f43f5e;
+        padding-bottom: 15px;
+        margin-bottom: 20px;
+      ">
+        <h2 style="color: #0a0f2e; margin: 0;">
+          Synap<span style="color: #f43f5e;">test</span>
+        </h2>
+
+        <p style="
+          font-size: 11px;
+          color: #64748b;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          margin: 5px 0 0 0;
+        ">
+          Plateforme de tests QA
+        </p>
+      </div>
+
+      <p>Bonjour {display},</p>
+
+      <p>
+        <strong>
+          Un compte administrateur a été créé pour vous
+          sur Synaptest.
+        </strong>
+      </p>
+
+      <p>
+        Vos identifiants de connexion sont :
+      </p>
+
+      <div style="
+        background-color: #f8fafc;
+        padding: 15px;
+        border-left: 4px solid #6366f1;
+        border-radius: 4px;
+        margin: 20px 0;
+      ">
+
+        <p style="margin: 5px 0;">
+          <strong>Email :</strong>
+
+          <code style="
+            background: #e2e8f0;
+            padding: 2px 6px;
+            border-radius: 3px;
+          ">
+            {to_email}
+          </code>
+        </p>
+
+        <p style="margin: 5px 0;">
+          <strong>Mot de passe temporaire :</strong>
+
+          <code style="
+            background: #e2e8f0;
+            padding: 2px 6px;
+            border-radius: 3px;
+          ">
+            {temporary_password}
+          </code>
+        </p>
+
+      </div>
+
+      <p>
+        Vous pouvez utiliser ce mot de passe pour vous connecter
+        ou le modifier ultérieurement dans vos paramètres de profil.
+      </p>
+
+      <div style="text-align: center; margin: 30px 0;">
+
+        <a
+          href="{login_url}"
+          style="
+            background: linear-gradient(135deg, #ef4444, #f43f5e);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 12px 24px;
+            font-weight: bold;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(244,63,94,0.3);
+            display: inline-block;
+          "
+        >
+          Accéder à Synaptest
+        </a>
+
+      </div>
+
+      <p style="
+        font-size: 12px;
+        color: #94a3b8;
+        border-top: 1px solid #f1f5f9;
+        padding-top: 15px;
+        margin-top: 25px;
+      ">
+        Si vous n'êtes pas à l'origine de cette demande,
+        contactez votre administrateur système.
+      </p>
+
+    </div>
+
+  </body>
+</html>
+"""
+
+    # Encodage automatique UTF-8
+    msg.set_content(text_content)
+    msg.add_alternative(
+        html_content,
+        subtype="html",
+    )
+
+    return _send(
+        msg,
+        smtp_host,
+        smtp_port,
+        smtp_user,
+        smtp_password,
+        to_email,
+    )
 
 
 async def send_account_created_email(
-    to_email: str, jira_username: str, display_name: str | None = None
+    to_email: str,
+    jira_username: str,
+    display_name: str | None = None,
 ) -> bool:
     """
-    Envoie un email de bienvenue lors de la création d'un compte testeur.
-    Informe l'utilisateur qu'il peut se connecter avec ses identifiants Jira.
+    Envoie un email de bienvenue lors de la création
+    d'un compte testeur.
     """
-    smtp_host = getattr(settings, "SMTP_HOST", None)
-    smtp_port = getattr(settings, "SMTP_PORT", 587)
-    smtp_user = getattr(settings, "SMTP_USER", None)
-    smtp_password = getattr(settings, "SMTP_PASSWORD", None)
-    smtp_from = getattr(settings, "SMTP_FROM", smtp_user or "no-reply@soprahr.com")
+
+    smtp_host, smtp_port, smtp_user, smtp_password = _get_smtp_config()
+
+    smtp_from = getattr(
+        settings,
+        "SMTP_FROM",
+        smtp_user or "no-reply@soprahr.com",
+    )
 
     if not smtp_host or not smtp_user or not smtp_password:
         logger.warning(
-            "[EmailService] SMTP non configuré. Email de bienvenue non envoyé à %s (jira_username=%s)",
+            "[EmailService] SMTP non configuré. "
+            "Email de bienvenue non envoyé à %s "
+            "(jira_username=%s)",
             to_email,
             jira_username,
         )
         return False
 
-    msg = MIMEMultipart("alternative")
+    msg = EmailMessage()
+
     msg["Subject"] = "Synaptest — Votre accès a été créé"
     msg["From"] = smtp_from
     msg["To"] = to_email
 
+    display = display_name or ""
+
     text_content = (
-        f"Bonjour {display_name or ''},\n\n"
+        f"Bonjour {display},\n\n"
         f"Vous avez accès à Synaptest.\n"
-        f"Vous pouvez vous connecter avec vos identifiants de session"
+        f"Vous pouvez vous connecter avec vos identifiants de session.\n\n"
         f"L'équipe Synaptest"
     )
 
+    login_url = (
+        f"{settings.FRONTEND_BASE_URL.rstrip('/')}/login"
+    )
+
     html_content = f"""
-    <html>
-      <body style="font-family: Arial, sans-serif; color: #1e293b; line-height: 1.6;">
-        <div style="max-w: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff;">
-          <div style="text-align: center; border-bottom: 2px solid #f43f5e; padding-bottom: 15px; margin-bottom: 20px;">
-            <h2 style="color: #0a0f2e; margin: 0;">Synap<span style="color: #f43f5e;">test</span></h2>
-            <p style="font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin: 5px 0 0 0;">Plateforme de tests QA</p>
-          </div>
-          <p>Bonjour {display_name or ''},</p>
-          <p><strong>Vous avez accès à Synaptest.</strong></p>
-          <p>Vous pouvez vous connecter avec vos identifiants de session:</p>
+<html>
+  <body style="font-family: Arial, sans-serif; color: #1e293b; line-height: 1.6;">
 
-          <div style="text-align: center; margin: 30px 0;">
-            <a href="{settings.FRONTEND_BASE_URL.rstrip('/')}/login" style="background: linear-gradient(135deg, #ef4444, #f43f5e); color: #ffffff; text-decoration: none; padding: 12px 24px; font-weight: bold; border-radius: 8px; box-shadow: 0 4px 12px rgba(244,63,94,0.3); display: inline-block;">
-              Accéder à Synaptest
-            </a>
-          </div>
-          <p style="font-size: 12px; color: #94a3b8; border-top: 1px solid #f1f5f9; padding-top: 15px; margin-top: 25px;">
-            Si vous n'êtes pas à l'origine de cette demande, contactez votre administrateur.
-          </p>
-        </div>
-      </body>
-    </html>
-    """
+    <div style="
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      background-color: #ffffff;
+    ">
 
-    msg.attach(MIMEText(text_content, "plain"))
-    msg.attach(MIMEText(html_content, "html"))
+      <div style="
+        text-align: center;
+        border-bottom: 2px solid #f43f5e;
+        padding-bottom: 15px;
+        margin-bottom: 20px;
+      ">
 
-    try:
-        server = smtplib.SMTP(smtp_host, smtp_port)
-        # STARTTLS uniquement si le serveur le supporte (MailHog en local ne le supporte pas)
-        if server.has_extn("STARTTLS"):
-            server.starttls()
-        # Login uniquement si des identifiants sont fournis (MailHog n'en a pas besoin)
-        if smtp_user and smtp_password and smtp_user.lower() != "test":
-            server.login(smtp_user, smtp_password)
-        server.sendmail(smtp_from, to_email, msg.as_string())
-        server.quit()
-        logger.info("[EmailService] Email envoyé avec succès à %s", to_email)
-        return True
-    except Exception as exc:
-        logger.error(
-            "[EmailService] Échec de l'envoi de l'email à %s: %s", to_email, str(exc)
-        )
-        return False
+        <h2 style="color: #0a0f2e; margin: 0;">
+          Synap<span style="color: #f43f5e;">test</span>
+        </h2>
+
+        <p style="
+          font-size: 11px;
+          color: #64748b;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          margin: 5px 0 0 0;
+        ">
+          Plateforme de tests QA
+        </p>
+
+      </div>
+
+      <p>Bonjour {display},</p>
+
+      <p>
+        <strong>
+          Vous avez accès à Synaptest.
+        </strong>
+      </p>
+
+      <p>
+        Vous pouvez vous connecter avec vos identifiants de session :
+      </p>
+
+      <div style="text-align: center; margin: 30px 0;">
+
+        <a
+          href="{login_url}"
+          style="
+            background: linear-gradient(135deg, #ef4444, #f43f5e);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 12px 24px;
+            font-weight: bold;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(244,63,94,0.3);
+            display: inline-block;
+          "
+        >
+          Accéder à Synaptest
+        </a>
+
+      </div>
+
+      <p style="
+        font-size: 12px;
+        color: #94a3b8;
+        border-top: 1px solid #f1f5f9;
+        padding-top: 15px;
+        margin-top: 25px;
+      ">
+        Si vous n'êtes pas à l'origine de cette demande,
+        contactez votre administrateur.
+      </p>
+
+    </div>
+
+  </body>
+</html>
+"""
+
+    # Encodage automatique UTF-8
+    msg.set_content(text_content)
+    msg.add_alternative(
+        html_content,
+        subtype="html",
+    )
+
+    return _send(
+        msg,
+        smtp_host,
+        smtp_port,
+        smtp_user,
+        smtp_password,
+        to_email,
+    )
