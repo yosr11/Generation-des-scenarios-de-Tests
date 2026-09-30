@@ -210,3 +210,7 @@ Il exécute :
 - `alembic/` : migrations de base de données
 - `tests/` : tests unitaires et d’intégration
 - `frontend/` : interface utilisateur Vite/Tailwind
+
+## Démonstration
+
+
