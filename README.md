@@ -1,5 +1,11 @@
 # Agent Test
 
+
+https://github.com/user-attachments/assets/8ca31b0c-12d1-408a-b083-73a400f20528
+
+
+
+
 Agent Test est une application FastAPI orientée orchestration d’agents pour l’analyse de stories, la génération de tests et l’intégration avec des services externes comme Jira, Groq et Microsoft.
 
 ## Fonctionnalités principales
